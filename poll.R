@@ -1,4 +1,3 @@
-setwd("C:/Users/harvi/Desktop/Random Stuff/Polling/Polling")
 library(readr)
 poll <- read_csv("poll2.csv")
 library(reshape2)
