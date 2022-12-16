@@ -10,7 +10,7 @@ library(bbplot)
 library(tidyquant)
 library(scales)
 
-# TWITTER GRAPH
+# MAIN GRAPH
 
 ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
