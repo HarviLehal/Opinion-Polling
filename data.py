@@ -10,10 +10,8 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 print(df[0])
-# convert list to dataframe
 df0=pd.DataFrame(df[0])
 data22 = df0.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-# data = data.reset_index(level=[1], drop=True)
 headers = ['Dates conducted', 'Sample size', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 data22[headers] = data22[headers].apply(lambda x: x.str.replace(',',''))
@@ -32,8 +30,6 @@ print(data22)
 
 df1=pd.DataFrame(df[1])
 data21 = df1.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-# data = data.reset_index(level=[1], drop=True)
-
 data21[headers] = data21[headers].apply(lambda x: x.str.replace(',',''))
 data21.columns = data21.columns.droplevel(-1)
 data21['Dates conducted'] = [x.strip()[-6:] for x in data21['Dates conducted']]
@@ -51,7 +47,6 @@ df2=pd.DataFrame(df[2])
 print(df2)
 data20 = df2.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
 data20 = data20.rename(columns={'Brexit':'Reform'})
-# data = data.reset_index(level=[1], drop=True)
 data20[headers] = data20[headers].apply(lambda x: x.str.replace(',',''))
 data20.columns = data20.columns.droplevel(-1)
 data20['Dates conducted'] = [x.strip()[-6:] for x in data20['Dates conducted']]
