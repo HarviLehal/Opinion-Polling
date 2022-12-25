@@ -1,5 +1,5 @@
 library(reticulate)
-use_python("data.py")
+py_run_file("data.py")
 library(readr)
 poll <- read_csv("poll.csv")
 library(reshape2)
@@ -28,7 +28,7 @@ ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
-  scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B"))+
+  scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   geom_smooth(method="loess",fullrange=TRUE,se=TRUE,span=0.3,size=0.75)+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))
@@ -37,7 +37,7 @@ ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
-  scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B"))+
+  scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
