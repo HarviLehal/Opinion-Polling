@@ -25,5 +25,6 @@ for z in parties:
     data[z] = [x.replace('?','-') for x in data[z]]
     data[z] = [x.replace('[a]','') for x in data[z]]
 data = data[data['Sample size'] != data['Con']]
+data = data.rename(columns={'Dates Conducted':'Date'})
 print(data)
 data.to_csv('poll.csv')
