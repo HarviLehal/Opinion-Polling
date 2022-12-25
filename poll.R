@@ -1,5 +1,5 @@
 library(reticulate)
-use_python("data.py")
+py_run_file("data.py")
 library(readr)
 poll <- read_csv("poll.csv")
 library(reshape2)
