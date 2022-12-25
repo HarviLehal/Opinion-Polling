@@ -27,7 +27,6 @@ for z in parties:
     data22[z] = [x.replace('?','-') for x in data22[z]]
     data22[z] = [x.replace('[a]','') for x in data22[z]]
 data22 = data22[data22['Sample size'] != data22['Con']]
-data22 = data22.rename(columns={'Dates Conducted':'Date'})
 print(data22)
 
 
@@ -46,7 +45,6 @@ for z in parties:
     data21[z] = [x.replace('?','-') for x in data21[z]]
     data21[z] = [x.replace('[a]','') for x in data21[z]]
 data21 = data21[data21['Sample size'] != data21['Con']]
-data21 = data21.rename(columns={'Dates Conducted':'Date'})
 print(data21)
 
 df2=pd.DataFrame(df[2])
@@ -66,11 +64,11 @@ for z in parties:
     data20[z] = [x.replace('?','-') for x in data20[z]]
     data20[z] = [x.replace('[a]','') for x in data20[z]]
 data20 = data20[data20['Sample size'] != data20['Con']]
-data20 = data20.rename(columns={'Dates Conducted':'Date'})
 print(data20)
 
 data = pd.concat([data22,data21,data20])
 data = data[:-2]
 data = data.drop(["Sample size"], axis=1)
+data = data.rename(columns={'Dates conducted':'Date'})
 print(data)
 data.to_csv('poll.csv', index=False)
