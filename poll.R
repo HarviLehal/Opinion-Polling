@@ -14,30 +14,37 @@ library(ggplot2)
 library(bbplot)
 library(tidyquant)
 library(scales)
+library(Cairo)
 
 # MAIN GRAPH
 
-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,wilder=TRUE)
 
+ggsave(plot=plot1, file="plot1.png",width = 15, height = 7.5, type = "cairo-png")
+
 # LOESS GRAPH
 
-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   geom_smooth(method="loess",fullrange=TRUE,se=TRUE,span=0.3,size=0.75)+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))
 
+ggsave(plot=plot2, file="plot2.png",width = 15, height = 7.5, type = "cairo-png")
+
 # EXPERIMENTAL THINGS
 
-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
+
+ggsave(plot=plot3, file="plot3.png",width = 15, height = 7.5, type = "cairo-png")
