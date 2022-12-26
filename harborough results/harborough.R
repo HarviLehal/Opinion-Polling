@@ -1,5 +1,9 @@
 library(readr)
+<<<<<<< HEAD
 poll <- read_csv("harborough results/harborough.csv")
+=======
+poll <- read_csv("harborough.csv")
+>>>>>>> 6edf762f7db247814e386accb8c0204e9728c104
 library(reshape2)
 d <- melt(poll, id.vars="year")
 d$year<-as.Date(d$year, "%d/%m/%Y")
