@@ -22,8 +22,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
-  scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,wilder=TRUE)
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE)
 
 ggsave(plot=plot1, file="plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -32,9 +32,9 @@ ggsave(plot=plot1, file="plot1.png",width = 15, height = 7.5, type = "cairo-png"
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=TRUE,span=0.3,size=0.75)+
-  bbplot::bbc_style()+
-  scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))
+  geom_smooth(method="loess",fullrange=TRUE,se=TRUE,span=0.075,linewidth=0.75)+
+  # bbplot::bbc_style()+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))
 
 ggsave(plot=plot2, file="plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -44,7 +44,7 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
-  scale_y_continuous(name="Vote",labels = formattable::percent,breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
 
 ggsave(plot=plot3, file="plot3.png",width = 15, height = 7.5, type = "cairo-png")
