@@ -12,7 +12,7 @@ library(scales)
 
 # MAIN GRAPH
 
-ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
+plot<-ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
   geom_point(size=2)+
   scale_color_manual(values = c("#0087DC", "#E4003B", "#FAA61A", "#528D6B", "#6D3177", "#DCDCDC"))+
   geom_line(size=1)+
@@ -20,3 +20,5 @@ ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
   theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1),panel.grid.minor.x = element_blank())+
   scale_y_continuous(name="Vote", labels = scales::percent_format(accuracy = 1))+
   labs(title="Election Results in Harborough Constituency Between 1885 and 2019")
+
+ggsave(plot=plot, file="harborough results/plot.png",width = 15, height = 7.5, type = "cairo-png")
