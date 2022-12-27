@@ -1,20 +1,21 @@
 library(reticulate)
-py_run_file("data.py")
-library(readr)
-poll <- read_csv("poll.csv")
-library(reshape2)
-d <- melt(poll, id.vars="Date")
-d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value<-as.numeric(sub("%","",d$value))/100
-d$value[is.nan(d$value)] <- 0
-library(formattable)
-d$value<-formattable::percent(d$value)
-print(class(d$value))
 library(ggplot2)
 library(bbplot)
 library(tidyquant)
 library(scales)
 library(Cairo)
+library(reshape2)
+library(readr)
+library(formattable)
+
+py_run_file("UK_Elections/data.py")
+poll <- read_csv("UK_Elections/poll.csv")
+d <- melt(poll, id.vars="Date")
+d$Date<-as.Date(d$Date, "%d %b %Y")
+d$value<-as.numeric(sub("%","",d$value))/100
+d$value[is.nan(d$value)] <- 0
+d$value<-formattable::percent(d$value)
+
 
 # MAIN GRAPH
 
@@ -25,7 +26,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE)
 
-ggsave(plot=plot1, file="plot1.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1, file="UK_Elections/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
 # LOESS GRAPH
 
@@ -36,7 +37,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))
 
-ggsave(plot=plot2, file="plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2, file="UK_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
 # EXPERIMENTAL THINGS
 
@@ -47,4 +48,4 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
 
-ggsave(plot=plot3, file="plot3.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot3, file="UK_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
