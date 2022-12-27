@@ -34,7 +34,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#FFCC00","#3db5e6","#ff5f5f","#870000","#006aa7", "#2db34a","#0d5ca6","#ed1c24","#951b88"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)
+  geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
+  theme(axis.text=element_blank())
 
 ggsave(plot=plot1, file="Turkish_Elections/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -45,7 +46,8 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#FFCC00","#3db5e6","#ff5f5f","#870000","#006aa7", "#2db34a","#0d5ca6","#ed1c24","#951b88"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75)+
   # bbplot::bbc_style()+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  theme(axis.text=element_blank())
 
 ggsave(plot=plot2, file="Turkish_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -56,7 +58,8 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#FFCC00","#3db5e6","#ff5f5f","#870000","#006aa7", "#2db34a","#0d5ca6","#ed1c24","#951b88"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
+  geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)+
+  theme(axis.text=element_blank())
 
 ggsave(plot=plot3, file="Turkish_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
 
