@@ -10,6 +10,16 @@ library(formattable)
 
 py_run_file("Turkish_Elections/data.py")
 poll <- read_csv("Turkish_Elections/poll.csv")
+z = length(poll$Date)
+for (i in 1:z){
+  print( i)
+  if (nchar(poll$Date[i]) < 10) {
+    print(nchar(poll$Date[i]))
+    poll$Date[i] <- paste("15 ", poll$Date[i])
+}
+}
+  
+
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(sub("%","",d$value))/100
@@ -49,3 +59,4 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
 
 ggsave(plot=plot3, file="Turkish_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
+
