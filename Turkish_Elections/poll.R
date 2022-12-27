@@ -8,8 +8,8 @@ library(reshape2)
 library(readr)
 library(formattable)
 
-py_run_file("UK_Elections/data.py")
-poll <- read_csv("UK_Elections/poll.csv")
+py_run_file("Turkish_Elections/data.py")
+poll <- read_csv("Turkish_Elections/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(sub("%","",d$value))/100
@@ -26,7 +26,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE)
 
-ggsave(plot=plot1, file="UK_Elections/plot1.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1, file="Turkish_Elections/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
 # LOESS GRAPH
 
@@ -37,7 +37,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))
 
-ggsave(plot=plot2, file="UK_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2, file="Turkish_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
 # EXPERIMENTAL THINGS
 
@@ -48,4 +48,4 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)
 
-ggsave(plot=plot3, file="UK_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot3, file="Turkish_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
