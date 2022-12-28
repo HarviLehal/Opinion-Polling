@@ -31,15 +31,15 @@ data21 = df8.drop(["Polling Firm/Link", "Sample Size", "Majority"], axis=1)
 headers = ['Date', 'United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others',]
 parties = ['United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']
 data21.columns = headers
+data21['United Right'] = [x.replace('[t]','') for x in data21['United Right'].astype(str)]
 for z in parties:
-        data22[z] = [x.replace('[t]','') for x in data21[z]]
-data21['United Right'] = data21['United Right'].astype('float').astype(str)
-data21['Date'] = [x.strip()[-11:] for x in data21['Date']]
+        data21[z] = data21[z].astype('object').astype(str)
+data21['Date'] = [x.strip()[-11:] for x in data21['Date'].astype(str)]
 data21['Date'] = [x.replace('–','') for x in data21['Date']]
-
 data21.drop(data21.tail(1).index,inplace=True)
 print(data21)
 
+# df.drop(df.columns[-1], axis=1, inplace=True)
 
 
 data = pd.concat([data22,data21])
