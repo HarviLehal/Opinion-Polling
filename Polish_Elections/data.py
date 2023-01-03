@@ -10,7 +10,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df7=pd.DataFrame(df[7])
+df7=pd.DataFrame(df[8])
 data22 = df7.drop(["Polling Firm/Link", "Sample Size", "Majority", "Kukiz'15"], axis=1)
 headers = ['Date', 'United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']
 parties = ['United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']
@@ -26,7 +26,7 @@ for z in parties:
 data22.drop(data22.tail(1).index,inplace=True)
 print(data22)
 
-df8=pd.DataFrame(df[8])
+df8=pd.DataFrame(df[9])
 data21 = df8.drop(["Polling Firm/Link", "Sample Size", "Majority"], axis=1)
 headers = ['Date', 'United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others',]
 parties = ['United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']

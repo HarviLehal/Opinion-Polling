@@ -11,7 +11,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[0])
-data22 = df0.drop(["Polling firm", "Sample size", "Others", "DV","SNS","Others","ALI","Unnamed: 12_level_0","Unnamed: 21_level_0"], axis=1)
+data22 = df0.drop(["Polling firm", "Sample size", "Others", "DV","SNS","Others","ALI","Unnamed: 12_level_0"], axis=1)
 headers = ['Date', 'OĽaNO', 'SMER-SD', 'SR', 'ĽSNS', 'PS', 'SPOLU', 'SaS', 'ZĽ', 'KDH', 'HLAS-SD', 'REP']
 parties = ['OĽaNO', 'SMER-SD', 'SR', 'ĽSNS', 'PS', 'SPOLU', 'SaS', 'ZĽ', 'KDH', 'HLAS-SD', 'REP']
 data22.columns = headers
