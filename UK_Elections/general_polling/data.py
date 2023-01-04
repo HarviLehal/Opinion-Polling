@@ -10,15 +10,31 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 print(df[0])
+
+
 df0=pd.DataFrame(df[0])
-data22 = df0.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-headers = ['Dates conducted', 'Sample size', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
+data23 = df0.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
+headers = ['Date', 'Sample size', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
-data22[headers] = data22[headers].apply(lambda x: x.str.replace(',',''))
-data22.columns = data22.columns.droplevel(-1)
-data22['Dates conducted'] = [x.strip()[-6:] for x in data22['Dates conducted']]
-data22['Dates conducted'] = [x.replace('–','') for x in data22['Dates conducted']]
-data22['Dates conducted'] = [x+' 2022' for x in data22['Dates conducted']]
+data23.columns = headers
+data23['Date'] = [x.strip()[-6:] for x in data23['Date']]
+data23['Date'] = [x.replace('–','') for x in data23['Date']]
+data23['Date'] = [x+' 2023' for x in data23['Date']]
+for z in parties:
+    data23[z] = [x.replace('–','-') for x in data23[z]]
+    data23[z] = [x.replace('TBC','-') for x in data23[z]]
+    data23[z] = [x.replace('?','-') for x in data23[z]]
+    data23[z] = [x.replace('[a]','') for x in data23[z]]
+data23 = data23[data23['Sample size'] != data23['Con']]
+print(data23)
+
+
+df1=pd.DataFrame(df[1])
+data22 = df1.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
+data22.columns = headers
+data22['Date'] = [x.strip()[-6:] for x in data22['Date']]
+data22['Date'] = [x.replace('–','') for x in data22['Date']]
+data22['Date'] = [x+' 2022' for x in data22['Date']]
 for z in parties:
     data22[z] = [x.replace('–','-') for x in data22[z]]
     data22[z] = [x.replace('TBC','-') for x in data22[z]]
@@ -28,13 +44,14 @@ data22 = data22[data22['Sample size'] != data22['Con']]
 print(data22)
 
 
-df1=pd.DataFrame(df[1])
-data21 = df1.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-data21[headers] = data21[headers].apply(lambda x: x.str.replace(',',''))
-data21.columns = data21.columns.droplevel(-1)
-data21['Dates conducted'] = [x.strip()[-6:] for x in data21['Dates conducted']]
-data21['Dates conducted'] = [x.replace('–','') for x in data21['Dates conducted']]
-data21['Dates conducted'] = [x+' 2021' for x in data21['Dates conducted']]
+df2=pd.DataFrame(df[2])
+print(df2)
+data21 = df2.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
+data21.columns = headers
+data21['Date'] = [x.strip()[-6:] for x in data21['Date']]
+data21['Date'] = [x.replace('–','') for x in data21['Date']]
+data21['Date'] = [x+' 2021' for x in data21['Date']]
+
 for z in parties:
     data21[z] = [x.replace('–','-') for x in data21[z]]
     data21[z] = [x.replace('TBC','-') for x in data21[z]]
@@ -43,15 +60,14 @@ for z in parties:
 data21 = data21[data21['Sample size'] != data21['Con']]
 print(data21)
 
-df2=pd.DataFrame(df[2])
-print(df2)
-data20 = df2.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-data20 = data20.rename(columns={'Brexit':'Reform'})
-data20[headers] = data20[headers].apply(lambda x: x.str.replace(',',''))
-data20.columns = data20.columns.droplevel(-1)
-data20['Dates conducted'] = [x.strip()[-6:] for x in data20['Dates conducted']]
-data20['Dates conducted'] = [x.replace('–','') for x in data20['Dates conducted']]
-data20['Dates conducted'] = [x+' 2020' for x in data20['Dates conducted']]
+
+df3=pd.DataFrame(df[3])
+print(df3)
+data20 = df3.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
+data20.columns = headers
+data20['Date'] = [x.strip()[-6:] for x in data20['Date']]
+data20['Date'] = [x.replace('–','') for x in data20['Date']]
+data20['Date'] = [x+' 2020' for x in data20['Date']]
 
 for z in parties:
     data20[z] = [x.replace('–','-') for x in data20[z]]
@@ -61,9 +77,9 @@ for z in parties:
 data20 = data20[data20['Sample size'] != data20['Con']]
 print(data20)
 
-data = pd.concat([data22,data21,data20])
+
+data = pd.concat([data23,data22,data21,data20])
 data = data[:-2]
 data = data.drop(["Sample size"], axis=1)
-data = data.rename(columns={'Dates conducted':'Date'})
 print(data)
 data.to_csv('UK_Elections/general_polling/poll.csv', index=False)
