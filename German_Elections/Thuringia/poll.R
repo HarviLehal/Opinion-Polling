@@ -25,8 +25,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   bbplot::bbc_style()+
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
   geom_hline(aes(yintercept=h), alpha=0.75)+
-  geom_text(aes((min(d$Date)+15),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
-
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
 
 ggsave(plot=plot1, file="German_Elections/Thuringia/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -40,7 +40,8 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
   geom_hline(aes(yintercept=h), alpha=0.75)+
-  geom_text(aes((min(d$Date)+15),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
 
 ggsave(plot=plot2, file="German_Elections/Thuringia/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -54,8 +55,8 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
   geom_hline(aes(yintercept=h), alpha=0.75)+
-  geom_text(aes((min(d$Date)+15),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
-
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
 
 ggsave(plot=plot3, file="German_Elections/Thuringia/plot3.png",width = 15, height = 7.5, type = "cairo-png")
 
