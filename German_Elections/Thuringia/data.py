@@ -18,6 +18,7 @@ data22.columns = headers
 data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
 data22=data22[~data22.Date.str.contains("26 Sep 2021")]
+data22=data22[~data22.Date.str.contains("27 Oct 2019")]
 
 print(data22)
 data22.to_csv('German_Elections/Thuringia/poll.csv', index=False)
