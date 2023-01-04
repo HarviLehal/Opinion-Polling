@@ -25,6 +25,7 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(sub("%","",d$value))/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
+election<-as.Date("18 06 2023", "%d %m %Y")
 
 
 # MAIN GRAPH
@@ -35,7 +36,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
-  theme(axis.title=element_blank(),legend.title = element_blank())
+  theme(axis.title=element_blank(),legend.title = element_blank())+
+  # geom_text(aes(election,0.02,label = "Election Date", vjust = -1, alpha=0.5),colour="#56595c", angle = 90)+
+  xlim(min(d$Date), election)
 
 ggsave(plot=plot1, file="Turkish_Elections/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -47,7 +50,10 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75)+
   # bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  theme(axis.title=element_blank(),legend.title = element_blank())
+  theme(axis.title=element_blank(),legend.title = element_blank())+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  # geom_text(aes(election,0.02,label = "Election Date", vjust = -1, alpha=0.5),colour="#56595c", angle = 90)+
+  xlim(min(d$Date), election)
 
 ggsave(plot=plot2, file="Turkish_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -59,7 +65,9 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)+
-  theme(axis.title=element_blank(),legend.title = element_blank())
+  theme(axis.title=element_blank(),legend.title = element_blank())+
+  # geom_text(aes(election,0.02,label = "Election Date", vjust = -1, alpha=0.5),colour="#56595c", angle = 90)+
+  xlim(min(d$Date), election)
 
 ggsave(plot=plot3, file="Turkish_Elections/plot3.png",width = 15, height = 7.5, type = "cairo-png")
 
