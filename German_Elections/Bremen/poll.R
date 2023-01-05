@@ -22,7 +22,7 @@ election<-as.Date("14 05 2023", "%d %m %Y")
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
-  scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#0000AA", "#A2A9B1"))+
+  scale_color_manual(values = c("#000000","#E3000F","#46962b","#BE3075","#009EE0", "#ffed00", "#0000AA", "#A2A9B1"))+
   bbplot::bbc_style()+
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
   geom_hline(aes(yintercept=h), alpha=0.75)+
