@@ -16,10 +16,11 @@ d$value<-as.numeric(d$value)/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
+old <-as.Date("27 10 2019", "%d %m %Y")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(data=d[d$Date!=as.Date("27 10 2019", "%d %m %Y"),],size=0.5) +
+  geom_point(data=d[d$Date!=old,],size=0.5) +
   scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#A2A9B1"))+
   bbplot::bbc_style()+
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
@@ -33,16 +34,16 @@ ggsave(plot=plot1, file="German_Elections/Thuringia/plot1.png",width = 15, heigh
 # LOESS GRAPH
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(data=d[d$Date!=as.Date("27 10 2019", "%d %m %Y"),],size=1,alpha=0.5) +
+  geom_point(data=d[d$Date!=old,],size=1,alpha=0.75) +
   scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#A2A9B1"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75)+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75,data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
   geom_hline(aes(yintercept=h), alpha=0.75)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
-  geom_point(data=d[d$Date==as.Date("27 10 2019", "%d %m %Y"),],size=4, shape=18, alpha=0.5)
+  geom_point(data=d[d$Date==old,],size=4, shape=18, alpha=0.5)
 
 
 ggsave(plot=plot2, file="German_Elections/Thuringia/plot2.png",width = 15, height = 7.5, type = "cairo-png")
