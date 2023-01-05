@@ -22,7 +22,7 @@ election<-as.Date("14 05 2023", "%d %m %Y")
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
-  scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#0000AA", "#A2A9B1"))+
+  scale_color_manual(values = c("#000000","#E3000F","#46962b","#BE3075","#009EE0", "#ffed00", "#0000AA", "#A2A9B1"))+
   bbplot::bbc_style()+
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
   geom_hline(aes(yintercept=h), alpha=0.75)+
@@ -39,7 +39,7 @@ ggsave(plot=plot1, file="German_Elections/Bremen/plot1.png",width = 15, height =
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1,alpha=0.5) +
-  scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#0000AA", "#A2A9B1"))+
+  scale_color_manual(values = c("#000000","#E3000F","#46962b","#BE3075","#009EE0", "#ffed00", "#0000AA", "#A2A9B1"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75)+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -57,7 +57,7 @@ ggsave(plot=plot2, file="German_Elections/Bremen/plot2.png",width = 15, height =
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5) +
-  scale_color_manual(values = c("#BE3075","#009EE0","#000000","#E3000F","#46962b", "#ffed00", "#0000AA", "#A2A9B1"))+
+  scale_color_manual(values = c("#000000","#E3000F","#46962b","#BE3075","#009EE0", "#ffed00", "#0000AA", "#A2A9B1"))+
   bbplot::bbc_style()+
   geom_ma(ma_fun=EMA, n = 5,linetype="solid",size=0.75,ratio=0.1)+
   theme(axis.title=element_blank(),legend.title = element_blank(),
