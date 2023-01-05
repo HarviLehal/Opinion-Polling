@@ -16,7 +16,6 @@ d$value<-as.numeric(d$value)/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
-old<- as.Date("27 10 2019", "%d %m %Y")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -26,7 +25,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE)+
   geom_hline(aes(yintercept=h), alpha=0.75)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
+  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
+  geom_point(data=d[d$Date==as.Date("27 10 2019", "%d %m %Y"),],size=4, shape=18, alpha=0.5)
 
 ggsave(plot=plot1, file="German_Elections/Thuringia/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -41,14 +41,9 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
   geom_hline(aes(yintercept=h), alpha=0.75)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_text(aes((old+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
-  geom_point(aes(x=old,y=formattable::percent(0.310)),colour="#BE3075", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.234)),colour="#009EE0", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.217)),colour="#000000", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.082)),colour="#E3000F", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.052)),colour="#46962b", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.050)),colour="#ffed00", shape=18, size=2.5)+
-  geom_point(aes(x=old,y=formattable::percent(0.049)),colour="#A2A9B1", shape=18, size=2.5)
+  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
+  geom_point(data=d[d$Date==as.Date("27 10 2019", "%d %m %Y"),],size=4, shape=18, alpha=0.5)
+
 
 ggsave(plot=plot2, file="German_Elections/Thuringia/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
