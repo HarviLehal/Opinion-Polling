@@ -23,4 +23,4 @@ data22.drop(data22.tail(5).index,inplace=True)
 for z in parties:
   data22[z] = data22[z].str.split('%').str[0]
 print(data22)
-data22.to_csv('Slovak_Elections//poll.csv', index=False)
+data22.to_csv('Slovak_Elections/poll.csv', index=False)
