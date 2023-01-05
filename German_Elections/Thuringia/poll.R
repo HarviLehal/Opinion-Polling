@@ -16,7 +16,7 @@ d$value<-as.numeric(d$value)/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
-
+old<- as.Date("27 10 2019", "%d %m %Y")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
