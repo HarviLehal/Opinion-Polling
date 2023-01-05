@@ -10,3 +10,5 @@ So far I have graphed:
 * Polls for the next Turkish Presidential Election
 * Seat projections for the next Polish Parliamentary Election
 * Polls for the next Slovak Parliamentary Election
+* Polls for the various Spanish Regional Elections
+* Graph of the US Speakers votes because it is funny
