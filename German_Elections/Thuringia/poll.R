@@ -41,7 +41,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
   geom_hline(aes(yintercept=h), alpha=0.75)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_text(aes((min(d$Date)+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
+  geom_text(aes((old+20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
   geom_point(aes(x=old,y=formattable::percent(0.310)),colour="#BE3075", shape=18, size=2.5)+
   geom_point(aes(x=old,y=formattable::percent(0.234)),colour="#009EE0", shape=18, size=2.5)+
   geom_point(aes(x=old,y=formattable::percent(0.217)),colour="#000000", shape=18, size=2.5)+
