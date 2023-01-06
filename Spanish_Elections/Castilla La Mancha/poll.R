@@ -24,12 +24,12 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c('#EF1C27',"#1D84CE","#EB6109","#63BE21","#7B4977"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
-  # bbplot::bbc_style()+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'), legend.text = element_text(size=16))+
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.text = element_text(size=16))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  # geom_text(aes(election,0.02,label = "Election Date", vjust = -1, alpha=0.5),colour="#56595c", angle = 90)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
