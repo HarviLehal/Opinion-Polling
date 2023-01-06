@@ -15,7 +15,7 @@ data22 = df0.drop(["Polling firm/Commissioner", "Sample size", "Turnout", "Lead"
 headers = ['Date', 'PP', 'CpM', 'PSOE', 'VOX', 'Cs', 'UP','AM']
 parties = ['PP', 'CpM', 'PSOE', 'VOX', 'Cs', 'UP','AM']
 data22.columns = headers
-data22.drop(data22.tail(4).index,inplace=True)
+data22.drop(data22.index[[-1,-3,-4]],inplace=True)
 data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
 
