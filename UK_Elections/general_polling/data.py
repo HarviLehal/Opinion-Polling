@@ -79,7 +79,9 @@ print(data20)
 
 
 data = pd.concat([data23,data22,data21,data20])
-data = data[:-2]
+data.drop(data.index[[-2]],inplace=True)
+data['Date'] = data['Date'].replace(['c 2019 2020'], '12 Dec 2019')
+
 data = data.drop(["Sample size"], axis=1)
 print(data)
 data.to_csv('UK_Elections/general_polling/poll.csv', index=False)
