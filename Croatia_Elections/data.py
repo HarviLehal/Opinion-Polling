@@ -1,6 +1,7 @@
 import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
+import dateparser
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Croatian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
