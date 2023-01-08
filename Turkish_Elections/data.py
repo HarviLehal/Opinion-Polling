@@ -99,6 +99,9 @@ data19.loc[len(data19.index),['Dates conducted']] = '24 Jun 2018'
 data19[parties] = data19[parties].astype(float)
 data19['CHP'] = data19[CHP].sum(axis=1)
 data19 = data19.drop(CHP, axis=1)
+data19.loc[len(data19.index),['CHP']] = 30.6
+data19.loc[len(data19.index)-1,['CHP']] = 27.7
+
 print(data19)
 
 
