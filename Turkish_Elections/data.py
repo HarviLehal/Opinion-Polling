@@ -72,14 +72,38 @@ data20[parties] = data20[parties].astype(float)
 data20['CHP'] = data20[CHP].sum(axis=1)
 data20['HDP'] = data20[HDP].sum(axis=1)
 data20 = data20.drop(CHP + HDP, axis=1)
+data20.loc[len(data20.index)-2,['CHP']] = 35.1
 print(data20)
 
+df3=pd.DataFrame(df[3])
+data19 = df3.drop(["Polling firm", "Sample size","Others", "Lead"], axis=1)
+headers = ['Dates conducted', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP', 'IYI', 'SAADET', 'MHP', 'DEVA', 'GP', 'MP']
+parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP', 'IYI', 'SAADET', 'MHP', 'DEVA', 'GP', 'MP']
+CHP = ['CHP1', 'CHP2', 'CHP3']
+data19.columns = headers
+data19 = data19[data19['AKP'] != data19['Dates conducted']]
+for z in parties:
+    data19[z] = [x.replace('-','0') for x in data19[z].astype(str)]
+    data19[z] = [x.replace('–','0') for x in data19[z].astype(str)]
+    data19[z] = [x.replace('—','0') for x in data19[z].astype(str)]
+    data19[z] = [x.replace('[nb 3]','') for x in data19[z].astype(str)]
+    data19[z] = [x.replace('[nb 2]','') for x in data19[z].astype(str)]
+data19.AKP = data19.AKP.astype('float').astype(str)
+data19.CHP1 = data19.CHP1.astype('float').astype(str)
+data19['Dates conducted'] = [x.strip()[-6:] for x in data19['Dates conducted']]
+data19['Dates conducted'] = [x.replace('–','') for x in data19['Dates conducted']]
+data19['Dates conducted'] = [x+' 2019' for x in data19['Dates conducted']]
+data19.loc[len(data19.index)-1,['Dates conducted']] = 'Jul 2018'
+data19.loc[len(data19.index),['Dates conducted']] = '24 Jun 2018'
+
+data19[parties] = data19[parties].astype(float)
+data19['CHP'] = data19[CHP].sum(axis=1)
+data19 = data19.drop(CHP, axis=1)
+print(data19)
 
 
 
-
-data = pd.concat([data22,data21,data20])
-data = data[:-2]
+data = pd.concat([data22,data21,data20,data19])
 data = data.rename(columns={'Dates conducted':'Date'})
 print(data)
 data.to_csv('Turkish_Elections/poll.csv', index=False)
