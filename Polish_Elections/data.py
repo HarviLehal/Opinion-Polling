@@ -36,7 +36,7 @@ for z in parties:
         data21[z] = data21[z].astype('object').astype(str)
 data21['Date'] = [x.strip()[-11:] for x in data21['Date'].astype(str)]
 data21['Date'] = [x.replace('–','') for x in data21['Date']]
-data21.drop(data21.tail(1).index,inplace=True)
+data21.drop(data21.index[[-1,-3]],inplace=True)
 print(data21)
 
 # df.drop(df.columns[-1], axis=1, inplace=True)
