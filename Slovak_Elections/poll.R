@@ -45,9 +45,9 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 ggsave(plot=plot, file="Slovak_Elections/plot.svg",width = 15, height = 7.5)
-aaa=readLines("plot.svg",-1)
+aaa=readLines("Slovak_Elections/plot.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
-writeLines(bbb,"plot.svg")
+writeLines(bbb,"Slovak_Elections/plot.svg")
 
 
 # FRENCH
@@ -74,7 +74,7 @@ plot_fr<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 ggsave(plot=plot_fr, file="Slovak_Elections/plot_fr.svg",width = 15, height = 7.5)
 
-aaa=readLines("plot_fr.svg",-1)
+aaa=readLines("Slovak_Elections/plot_fr.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
-writeLines(bbb,"plot_fr.svg")
+writeLines(bbb,"Slovak_Elections/plot_fr.svg")
 
