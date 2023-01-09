@@ -23,7 +23,7 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c("#255AAA","#DF262D","#C0C0C0",
                                 "#DC5A2D","#CBE264","#326BA4","#CC272C"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

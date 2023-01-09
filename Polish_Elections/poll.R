@@ -12,8 +12,7 @@ py_run_file("Polish_Elections/data.py")
 poll <- read_csv("Polish_Elections/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value[is.nan(d$value)] <- 0
-d<-na.omit(d)
+d$value[d$value=='-'] <- NULL
 h <- 231
 election<-as.Date("11 11 2023", "%d %m %Y")
 old<-min(d$Date)
@@ -24,7 +23,6 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#122746", "#F9C013", "#A2A9B1"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
-  # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank())+
   geom_hline(aes(yintercept=h))+
   geom_text(aes((election-5),h,label = "Majority (231 Seats)",hjust=1 ,vjust = -1),colour="#56595c")+
