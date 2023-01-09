@@ -33,4 +33,4 @@ for z in parties:
 data22.drop([0], axis=0, inplace=True)
 print(data22)
 
-data22.to_csv('Slovak_Elections/poll2.csv', index=False)
+data22.to_csv('Slovak_Elections/poll.csv', index=False)
