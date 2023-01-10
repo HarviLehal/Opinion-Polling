@@ -29,8 +29,10 @@ for i in range(4):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
   d[i] = d[i][d[i]['Con'] != d[i]['Green']]
   for z in parties:
-    d[i][z] = [x.replace('TBC','-') for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('%',' ') for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('TBC','') for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('%','') for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–','') for x in d[i][z].astype(str)]
+
 
 D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1]],inplace=True)
@@ -48,22 +50,23 @@ ef=pd.read_html(str(tables))
 
 
 headers = ['Date', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform', 'UKIP', 'Change UK']
-parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
+parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform', 'UKIP', 'Change UK']
 e = {}
 e[0]=pd.DataFrame(ef[0])
 e[0]=e[0].drop(["Pollster/client(s)", "Area", "Other", "Plaid Cymru", "Lead", "Sample size"], axis=1)
 e[0].columns = headers
 e[0]['Date2'] = e[0]['Date'].str.split('–').str[1]
 e[0].Date2.fillna(e[0].Date, inplace=True)
-e[0]['Date2'] = [x+ str(2019-i) for x in e[0]['Date2'].astype(str)]
+e[0]['Date2'] = [x+ str(2019) for x in e[0]['Date2'].astype(str)]
 e[0]['Date'] = e[0]['Date2']
 e[0] = e[0].drop(['Date2'], axis=1)
 e[0].Date=e[0].Date.astype(str).apply(lambda x: dateparser.parse(x))
 e[0] = e[0][e[0]['Con'] != e[0]['Green']]
 for z in parties:
-  e[0][z] = [x.replace('TBC','-') for x in e[0][z].astype(str)]
-	e[0][z] = [x.replace('%','') for x in e[0][z].astype(str)]
-
+  e[0][z] = [x.replace('TBC','') for x in e[0][z].astype(str)]
+  e[0][z] = [x.replace('%','') for x in e[0][z].astype(str)]
+  e[0][z] = [x.replace('–','') for x in e[0][z].astype(str)]
+  
 headers = ['Date', 'Con', 'Lab', 'Lib Dem', 'SNP', 'UKIP', 'Green']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'UKIP', 'Green']
 
@@ -73,14 +76,15 @@ for i in range(2):
   e[i+1].columns = headers
   e[i+1]['Date2'] = e[i+1]['Date'].str.split('–').str[1]
   e[i+1].Date2.fillna(e[i+1].Date, inplace=True)
-  e[i+1]['Date2'] = [x+ str(2019) for x in e[i+1]['Date2'].astype(str)]
+  e[i+1]['Date2'] = [x+ str(2018-i) for x in e[i+1]['Date2'].astype(str)]
   e[i+1]['Date'] = e[i+1]['Date2']
   e[i+1] = e[i+1].drop(['Date2'], axis=1)
   e[i+1].Date=e[i+1].Date.astype(str).apply(lambda x: dateparser.parse(x))
   e[i+1] = e[i+1][e[i+1]['Con'] != e[i+1]['Green']]
   for z in parties:
-    e[i+1][z] = [x.replace('TBC','-') for x in e[i+1][z].astype(str)]
+    e[i+1][z] = [x.replace('TBC','') for x in e[i+1][z].astype(str)]
     e[i+1][z] = [x.replace('%','') for x in e[i+1][z].astype(str)]
+    e[i+1][z] = [x.replace('–','') for x in e[i+1][z].astype(str)]
 
 E = pd.concat(e.values(), ignore_index=True)
 E.drop(E.index[[0,1,-1]],inplace=True)
@@ -110,10 +114,11 @@ for i in range(3):
   f[i].Date=f[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
   f[i] = f[i][f[i]['Con'] != f[i]['Green']]
   for z in parties:
-    f[i][z] = [x.replace('TBC','-') for x in f[i][z].astype(str)]
+    f[i][z] = [x.replace('TBC','') for x in f[i][z].astype(str)]
     f[i][z] = [x.replace('%','') for x in f[i][z].astype(str)]
     f[i][z] = [x.replace('[a]','') for x in f[i][z].astype(str)]
     f[i][z] = [x.replace('[b]','') for x in f[i][z].astype(str)]
+    f[i][z] = [x.replace('–','') for x in f[i][z].astype(str)]
 
 F = pd.concat(f.values(), ignore_index=True)
 F.drop(F.index[[0]],inplace=True)
@@ -144,7 +149,8 @@ for i in range(3):
   g[i] = g[i][g[i]['Con'] != g[i]['Green']]
   for z in parties:
     g[i][z] = [x.replace('%','') for x in g[i][z].astype(str)]
-
+    g[i][z] = [x.replace('–','') for x in g[i][z].astype(str)]
+    
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2015_United_Kingdom_general_election_(2010–2012)"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
@@ -168,7 +174,8 @@ g[4].Date=g[4].Date.astype(str).apply(lambda x: dateparser.parse(x))
 g[4] = g[4][g[4]['Con'] != g[4]['Lib Dem']]
 for z in parties:
   g[4][z] = [x.replace('%','') for x in g[4][z].astype(str)]
-
+  g[4][z] = [x.replace('–','') for x in g[4][z].astype(str)]
+  
 
 headers = ['Date', 'Con', 'Lab', 'Lib Dem']
 parties = ['Con', 'Lab', 'Lib Dem']
@@ -187,9 +194,10 @@ for i in range(2):
   g[i+5] = g[i+5][g[i+5]['Con'] != g[i+5]['Lib Dem']]
   for z in parties:
     g[i+5][z] = [x.replace('%','') for x in g[i+5][z].astype(str)]
-
+    g[i+5][z] = [x.replace('–','') for x in g[i+5][z].astype(str)]
+    
 G = pd.concat(g.values(), ignore_index=True)
-G.drop(G.index[[0]],inplace=True)
+G.drop(G.index[[0,1]],inplace=True)
 
 
 # 2010 GENERAL ELECTION
