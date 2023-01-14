@@ -14,10 +14,11 @@ df=pd.read_html(str(tables), decimal=',', thousands='.')
 # 2023 POLLS
 
 df0=pd.DataFrame(df[0])
-data23 = df0.drop(['Anket şirketi',	'Örneklem', 'Diğerleri','Fark','Erbakan YRP'], axis=1)
-headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP', 'İYİ', 'MHP','DEVA', 'GP', 'SAADET', 'MP']
-parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP', 'İYİ', 'MHP','DEVA', 'GP', 'SAADET', 'MP']
+data23 = df0.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Erbakan YRP'], axis=1)
+headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
+parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 CHP = ['CHP1', 'CHP2', 'CHP3']
+HDP = ['HDP1', 'HDP2']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 # data23['Date'] = ['15 ' + x for x in data23['Date'].astype(str)]
@@ -30,14 +31,15 @@ for z in parties:
     data23[z] = [x.replace('–','0') for x in data23[z].astype(str)]
 data23[parties] = data23[parties].astype(float)
 data23['CHP'] = data23[CHP].sum(axis=1)
-data23 = data23.drop(CHP, axis=1)
+data23['HDP'] = data23[HDP].sum(axis=1)
+data23 = data23.drop(CHP + HDP, axis=1)
 print(data23)
 
 
 # 2022 POLLS
 
 df1=pd.DataFrame(df[1])
-data22 = df1.drop(['Anket şirketi',	'Örneklem', 'Diğerleri','Fark',], axis=1)
+data22 = df1.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark',], axis=1)
 headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 HDP = ['HDP1', 'HDP2']
@@ -95,7 +97,7 @@ parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'CHP4', 'HDP1', 'HDP2', 'İYİ', 'MHP'
 CHP = ['CHP1', 'CHP2', 'CHP3', 'CHP4']
 HDP = ['HDP1', 'HDP2']
 data20.columns = headers  
-data20 = data21[data20['AKP'] != data20['MHP']]
+data20 = data20[data20['AKP'] != data20['MHP']]
 data20['Date2'] = data20['Date'].str.split('–').str[1]
 # data20['Date'] = ['15 ' + x for x in data20['Date'].astype(str)]
 data20.Date2.fillna(data20.Date, inplace=True)
