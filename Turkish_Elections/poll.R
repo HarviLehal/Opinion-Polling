@@ -34,7 +34,7 @@ old<-min(d$Date)
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c("#FFCC00","#3db5e6","#870000","#006aa7", "#2db34a" ,"#ff5f5f","#0d5ca6","#ed1c24","#951b88"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
