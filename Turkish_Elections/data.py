@@ -14,11 +14,11 @@ df=pd.read_html(str(tables), decimal=',', thousands='.')
 # 2023 POLLS
 
 df0=pd.DataFrame(df[0])
-data23 = df0.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Erbakan YRP'], axis=1)
-headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
-parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
+data23 = df0.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Erbakan YRP','Diğerleri'], axis=1)
+headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
+parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 CHP = ['CHP1', 'CHP2', 'CHP3']
-HDP = ['HDP1', 'HDP2']
+HDP = ['HDP1', 'HDP2', 'HDP3']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 # data23['Date'] = ['15 ' + x for x in data23['Date'].astype(str)]
@@ -39,7 +39,7 @@ print(data23)
 # 2022 POLLS
 
 df1=pd.DataFrame(df[1])
-data22 = df1.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark',], axis=1)
+data22 = df1.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Diğerleri'], axis=1)
 headers = ['Date', 'AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 parties = ['AKP', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'İYİ', 'MHP', 'DEVA', 'GP', 'SAADET', 'MP']
 HDP = ['HDP1', 'HDP2']
