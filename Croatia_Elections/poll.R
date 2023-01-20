@@ -36,3 +36,33 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 ggsave(plot=plot, file="Croatia_Elections/plot.png",width = 15, height = 7.5, type = "cairo-png")
+
+
+
+# NEW VERSION
+
+poll2 <- read_csv("Croatia_Elections/poll2.csv")
+d <- melt(poll2, id.vars="Date")
+d$value<-as.numeric(d$value)
+# d$value[is.nan(d$value)] <- 0
+d$value<-formattable::percent(d$value)
+election<-as.Date("22 07 2024", "%d %m %Y")
+old<-min(d$Date)
+
+plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
+  scale_color_manual(values = c("#255AAA","#DF262D","#000000",
+                                "#DC5A2D","#CBE264","#a2aab3"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.text = element_text(size=16))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+
+ggsave(plot=plot2, file="Croatia_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
