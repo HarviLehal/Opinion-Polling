@@ -14,8 +14,8 @@ df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[1])
 data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided", "BM 365","Centar","RF", "NS R", "HNS", "KH","IDS","HSS","HSU","HS", "Others"], axis=1)
-headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo', 'Fokus', 'SD']
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo', 'Fokus', 'SD']
+headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
+parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
 data22.columns = headers
 
 data22 = data22[data22['HDZ'] != data22['Fokus']]
@@ -45,8 +45,8 @@ data22.to_csv('Croatia_Elections/poll.csv', index=False)
 
 df0=pd.DataFrame(df[1])
 data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided"], axis=1)
-headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
+headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
+parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
 Other = ['o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
 
 data22.columns = headers
@@ -75,11 +75,11 @@ for z in parties:
 data22[parties] = data22[parties].astype(float)
 data22['o2']=np.where(data22['o2'] == data22['o3'], 0, data22['o2'])
 data22['o3']=np.where(data22['o3'] == data22['o4'], 0, data22['o3'])
-data22['o1']=np.where(data22['Možemo'] == data22['o1'], 0, data22['o1'])
+data22['o1']=np.where(data22['Možemo!'] == data22['o1'], 0, data22['o1'])
 data22['Other'] = data22[Other].sum(axis=1)
 
 data22 = data22.drop(Other, axis=1)
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo', 'Other']
+parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Other']
 
 data22[parties] = data22[parties].div(data22[parties].sum(axis=1), axis=0)
 

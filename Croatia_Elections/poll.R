@@ -21,7 +21,7 @@ old<-min(d$Date)
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
-  scale_color_manual(values = c("#255AAA","#DF262D","#C0C0C0",
+  scale_color_manual(values = c("#255AAA","#DF262D","#000000",
                                 "#DC5A2D","#CBE264","#326BA4","#CC272C"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
@@ -42,6 +42,7 @@ ggsave(plot=plot, file="Croatia_Elections/plot.png",width = 15, height = 7.5, ty
 # NEW VERSION
 
 poll2 <- read_csv("Croatia_Elections/poll2.csv")
+poll2<-subset(poll2,select=-c(Other))
 d <- melt(poll2, id.vars="Date")
 d$value<-as.numeric(d$value)
 # d$value[is.nan(d$value)] <- 0
