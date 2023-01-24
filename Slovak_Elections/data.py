@@ -15,8 +15,8 @@ df=pd.read_html(str(tables), decimal=',', thousands='.')
 df0=pd.DataFrame(df[0])
 data22 = df0.drop(["Sondeur", "Échantillon", 'SPOLU', 'SMK', 'Most-Híd', 'Autres'], axis=1)
 
-headers = ['Date', 'OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZL', 'KDH', 'SNS', 'HLAS', 'Rep']
-parties = ['OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZL', 'KDH', 'SNS', 'HLAS', 'Rep']
+headers = ['Date', 'OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
+parties = ['OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
 data22.columns = headers
 # data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 # data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
