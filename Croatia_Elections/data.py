@@ -36,6 +36,7 @@ for z in parties:
   data22[z] = [x.replace('[l]','') for x in data22[z]]
   data22[z] = [x.replace('[m]','') for x in data22[z]]
   data22[z] = [x.replace('[n]','') for x in data22[z]]
+  data22[z] = [x.replace('[o]','') for x in data22[z]]
 
 
 print(data22)
@@ -69,6 +70,7 @@ for z in parties:
   data22[z] = [x.replace('[l]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[m]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[n]','0') for x in data22[z].astype(str)]
+  data22[z] = [x.replace('[o]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('-','0') for x in data22[z].astype(str)]
 
