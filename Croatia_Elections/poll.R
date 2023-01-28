@@ -20,7 +20,7 @@ old<-min(d$Date)
 # LOESS GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#255AAA","#DF262D","#000000",
                                 "#DC5A2D","#CBE264","#326BA4","#CC272C"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
@@ -51,7 +51,7 @@ election<-as.Date("22 07 2024", "%d %m %Y")
 old<-min(d$Date)
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#255AAA","#DF262D","#000000",
                                 "#DC5A2D","#CBE264","#a2aab3"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+

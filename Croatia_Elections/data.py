@@ -12,7 +12,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df0=pd.DataFrame(df[1])
+df0=pd.DataFrame(df[2])
 data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided", "BM 365","Centar","RF", "NS R", "HNS", "KH","IDS","HSS","HSU","HS", "Others"], axis=1)
 headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
 parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
@@ -37,6 +37,7 @@ for z in parties:
   data22[z] = [x.replace('[m]','') for x in data22[z]]
   data22[z] = [x.replace('[n]','') for x in data22[z]]
   data22[z] = [x.replace('[o]','') for x in data22[z]]
+  data22[z] = [x.replace('[p]','') for x in data22[z]]
 
 
 print(data22)
@@ -44,7 +45,7 @@ data22.to_csv('Croatia_Elections/poll.csv', index=False)
 
 # FIXED GRAPH
 
-df0=pd.DataFrame(df[1])
+df0=pd.DataFrame(df[2])
 data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided"], axis=1)
 headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
 parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
@@ -71,6 +72,7 @@ for z in parties:
   data22[z] = [x.replace('[m]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[n]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[o]','0') for x in data22[z].astype(str)]
+  data22[z] = [x.replace('[p]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('-','0') for x in data22[z].astype(str)]
 
