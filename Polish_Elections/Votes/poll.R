@@ -25,7 +25,7 @@ old <-min(d$Date)
 # LOESS GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.35)+
   scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#122746", "#F9C013"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
