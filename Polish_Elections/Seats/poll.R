@@ -8,8 +8,8 @@ library(reshape2)
 library(readr)
 library(formattable)
 
-py_run_file("Polish_Elections/data.py")
-poll <- read_csv("Polish_Elections/poll.csv")
+py_run_file("Polish_Elections/Seats/data.py")
+poll <- read_csv("Polish_Elections/Seats/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value[d$value=='-'] <- NULL
@@ -32,5 +32,5 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
-ggsave(plot=plot, file="Polish_Elections/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Polish_Elections/Seats/plot.png",width = 15, height = 7.5, type = "cairo-png")
 
