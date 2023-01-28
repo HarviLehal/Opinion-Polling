@@ -68,7 +68,7 @@ geom_bar(stat="identity",width=0.8)+
 scale_fill_manual(values = c("#D82C3C","#AC347D","#6F9323",
                              "#CB182D","#2D843B","#236666",
                              "#F9DA5A","#3064F1", "#2760A7"))+
-geom_text(aes(label=value,y = 0)), hjust=0, color="black",
+geom_text(aes(label=value,y = 0), hjust=0, color="black",
           position = position_dodge(1), size=3.5)+
 theme_minimal()+
 theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank())+
