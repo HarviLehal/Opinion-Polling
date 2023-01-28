@@ -1,6 +1,7 @@
 import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
+import dateparser
 
 wikiurl="https://en.wikipedia.org/wiki/2024_Lithuanian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -18,10 +19,14 @@ data22.columns = headers
 
 data22['Date'] = [x.replace('[a]','') for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('[b]','') for x in data22['Date'].astype(str)]
-data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
-data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
-data22.loc[len(data22.index)-1,['Date']] = '11 Oct 2020'
-data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x))
+data22['Date2'] = data22['Date'].str.split('–').str[1]
+data22.Date2.fillna(data22['Date'].str.split('-').str[1], inplace=True)
+data22.Date2.fillna(data22.Date, inplace=True)
+data22.Date = data22.Date2
+data22 = data22.drop(['Date2'],axis=1)
+data22.Date = data22['Date'].astype(str)
+data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
 
 # for z in parties:
 #   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
