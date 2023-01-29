@@ -81,7 +81,7 @@ geom_text(aes(label = ifelse(d2$Date == min(d2$Date),paste("(",d2$value,")"),"")
 theme_minimal()+
 theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
       panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
-ggtitle('30 day average (2021 Result)')+
+ggtitle('30 day average \n (2021 Result)')+
 coord_flip()
 
 
