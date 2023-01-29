@@ -10,24 +10,15 @@ library(formattable)
 
 py_run_file("Turkish_Elections/data.py")
 poll <- read_csv("Turkish_Elections/poll.csv")
-# z = length(poll$Date)
-# for (i in 1:z){
-#   print( i)
-#   if (nchar(poll$Date[i]) < 10) {
-#     print(nchar(poll$Date[i]))
-#     poll$Date[i] <- paste("15 ", poll$Date[i])
-#   }
-# }
 
 
 d <- melt(poll, id.vars="Date")
-# d$Date<-as.Date(d$Date, "%d %b %Y")
-# d$value<-as.numeric(sub("%","",d$value))/100
-# d$value[is.nan(d$value)] <- 0
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 election<-as.Date("18 06 2023", "%d %m %Y")
+d$Date<-as.Date(d$Date)
 old<-min(d$Date)
+h <- formattable::percent(0.5)
 
 # MAIN GRAPH
 
@@ -40,6 +31,8 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.text = element_text(size=16))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_hline(aes(yintercept=h))+
+  geom_text(aes((election),h,label = "50%",hjust=1 ,vjust = -1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -59,6 +52,7 @@ d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value)
 election<-as.Date("18 06 2023", "%d %m %Y")
 old<-min(d2$Date)
+d2$Date<-as.Date(d2$Date)
 
 # MAIN GRAPH
 
@@ -71,6 +65,8 @@ plot2<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.text = element_text(size=16))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_hline(aes(yintercept=h))+
+  geom_text(aes((election),h,label = "50%",hjust=1 ,vjust = -1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d2$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
