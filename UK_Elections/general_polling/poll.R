@@ -141,7 +141,9 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
             hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF"))+
   ggtitle('30 day average \n (2019 Result)')+
   coord_flip()
 
