@@ -145,6 +145,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF"))+
   ggtitle('30 day average \n (2019 Result)')+
+  scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
 
