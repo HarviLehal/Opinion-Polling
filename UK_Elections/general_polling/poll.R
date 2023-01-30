@@ -7,6 +7,8 @@ library(Cairo)
 library(reshape2)
 library(readr)
 library(formattable)
+library(ggpubr)
+
 py_run_file("UK_Elections/general_polling/data.py")
 poll <- read_csv("UK_Elections/general_polling/poll.csv")
 d <- melt(poll, id.vars="Date")
@@ -97,3 +99,54 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 
 ggsave(plot=plot3, file="UK_Elections/general_polling/plot3.png",width =12 , height = 6)
+
+
+
+# BAR CHART!!
+poll <- read_csv("UK_Elections/general_polling/poll.csv")
+poll$Date <- as.Date(poll$Date, "%d %b %Y")
+Date <- c(max(poll$Date))
+poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
+  as.numeric(sub("%","",as.character(x)))))
+d2 <- poll[poll$Date==min(poll$Date),]
+poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll$Reform[is.na(poll$Reform)] <- 0
+d1 <- colMeans(poll[-1])
+d1 <- as.data.frame(d1)
+d1 <- t(d1)
+d1 <- cbind(Date, d1)
+d1 <- as.data.frame(d1)
+d1$Date <- as.Date(d1$Date)
+d2 <- as.data.frame(d2)
+
+d1 <- melt(d1, id.vars="Date")
+d1$value<-as.numeric(d1$value)/100
+d1$value<-formattable::percent(d1$value, digits = 1)
+
+d2 <- melt(d2, id.vars="Date")
+d2$value<-as.numeric(d2$value)/100
+d2$value<-formattable::percent(d2$value, digits = 1)
+
+d3<-rbind(d2,d1)
+
+plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+  geom_bar(stat="identity",width=0.9, position=position_dodge())+
+  scale_fill_manual(values = c("#77c0ed","#0087DC","#f27999","#E4003B",
+                               "#fcd38b","#FAA61A","#fcf7c5","#FDF38E",
+                               "#9dc7af","#528D6B","#80dae8","#12B6CF"))+
+  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),
+                y = 0),
+            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+  theme_minimal()+
+  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank())+
+  ggtitle('30 day average \n (2019 Result)')+
+  coord_flip()
+
+
+plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
+ggsave(plot=plot1a, file="UK_Elections/general_polling/plot1a.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK_Elections/general_polling/plot2a.png",width = 15, height = 7.5, type = "cairo-png")
