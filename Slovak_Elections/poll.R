@@ -18,7 +18,7 @@ d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 g <- formattable::percent(0.07)
 f <- formattable::percent(0.10)
-election<-as.Date("24 02 2024", "%d %m %Y")
+election<-as.Date("30 09 2023", "%d %m %Y")
 old <-as.Date("29 02 2020", "%d %m %Y")
 # MAIN GRAPH
 
