@@ -35,6 +35,7 @@ for z in parties:
         data[z] = [x.replace('[t]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[ax]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[ay]','') for x in data[z].astype(str)]
+        data[z] = [x.replace('[az]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[u]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[v]','') for x in data[z].astype(str)]
         data[z] = data[z].astype('float').astype(str)
