@@ -28,8 +28,8 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#FAE202","#287556","#2862AF","#3F9BE2", "#D41715", "#332995","#87BB3A"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#f5d41b","#287556","#2862AF","#3F9BE2", "#D41715", "#332995","#87BB3A"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -71,7 +71,7 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#fcf081","#FAE202","#7dbaa2","#287556",
+scale_fill_manual(values = c("#fae789","#f5d41b","#7dbaa2","#287556",
                              "#86a9d9","#2862AF","#9bcef2","#3F9BE2",
                              "#e88080","#D41715","#8781c9","#332995",
                              "#bddb8f","#87BB3A"))+
