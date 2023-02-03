@@ -145,7 +145,7 @@ data19 = data19.drop(CHP, axis=1)
 parties = ['Erdoğan', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu','CHP Total', 'HDP Total']
 for z in parties:
   data19[z] = data19[z].apply(lambda x: x/4 if x > 100 else x)
-data19.loc[len(data19.index)-1,['Date']] = 'Haziran 2018'
+data19.loc[len(data19.index)-1,['Date']] = '30 Haziran 2018'
 data19.loc[len(data19.index),['Date']] = '24 Haziran 2018'
 
 print(data19)
