@@ -14,10 +14,10 @@ df=pd.read_html(str(tables))
 
 data22=pd.DataFrame(df[1])
 
-headers = ['1','Date','2','3','D','B','V','S','F','P','C','M','J','4','5','6','7','8']
+headers = ['1','Date','2','3','D','B','V','S','F','P','C','M','J','4','5']
 parties = ['D','B','V','S','F','P','C','M','J']
 data22.columns = headers
-data22 = data22.drop(['1','2','3','4','5','6','7','8'], axis=1)
+data22 = data22.drop(['1','2','3','4','5'], axis=1)
 
 
 data22['Date2'] = data22['Date'].str.split('–').str[1]
