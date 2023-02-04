@@ -33,7 +33,7 @@ print(data)
 data.to_csv('Dutch_Elections/poll.csv', index=False)
 
 
-data2=pd.DataFrame(df[1])
+data2=pd.DataFrame(df[0])
 data2=data2.drop(["Polling firm", "Sample size", "Others", "Lead"], axis=1)
 
 headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
@@ -46,8 +46,17 @@ data2.Date2.fillna(data2.Date, inplace=True)
 data2.Date = data2.Date2
 data2 = data2.drop(['Date2'],axis=1)
 data2.Date = data2['Date'].astype(str)
-data2=data2[~data2.Date.str.contains("16 Mar 2022")]
 data2.Date = data2.Date.apply(lambda x: dateparser.parse(x))
 data2 = data2[data2['VVD'] != data2['BIJ1']]
+for z in parties:
+    data2[z] = [x.replace('–','') for x in data2[z].astype(str)]
+Fusie=['PvdA','GL']
+data2[Fusie] = data2[Fusie].astype(float)
+data2['PvdA-GL'] = data2[Fusie].sum(axis=1)
+data2 = data2.drop(Fusie, axis=1)
+
+data2 = data2[['Date','VVD','D66','PVV','PvdA-GL','CDA','SP','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']]
 
 data2.to_csv('Dutch_Elections/poll2.csv', index=False)
+
+
