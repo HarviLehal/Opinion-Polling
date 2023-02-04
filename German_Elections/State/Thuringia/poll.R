@@ -8,8 +8,8 @@ library(reshape2)
 library(readr)
 library(formattable)
 
-py_run_file("German_Elections/Thuringia/data.py")
-poll <- read_csv("German_Elections/Thuringia/poll.csv")
+py_run_file("German_Elections/State/Thuringia/data.py")
+poll <- read_csv("German_Elections/State/Thuringia/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
@@ -35,4 +35,4 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=h), alpha=0.75)+
   geom_text(aes((max(d$Date)-20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
 
-ggsave(plot=plot, file="German_Elections/Thuringia/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="German_Elections/State/Thuringia/plot.png",width = 15, height = 7.5, type = "cairo-png")

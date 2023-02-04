@@ -20,4 +20,4 @@ data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
 data22=data22[~data22.Date.str.contains("26 Sep 2021")]
 
 print(data22)
-data22.to_csv('German_Elections/Thuringia/poll.csv', index=False)
+data22.to_csv('German_Elections/State/Thuringia/poll.csv', index=False)

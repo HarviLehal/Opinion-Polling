@@ -9,8 +9,8 @@ library(readr)
 library(formattable)
 library(ggbreak)
 
-py_run_file("German_Elections/Bremen/data.py")
-poll <- read_csv("German_Elections/Bremen/poll.csv")
+py_run_file("German_Elections/State/Bremen/data.py")
+poll <- read_csv("German_Elections/State/Bremen/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
@@ -41,5 +41,5 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_break(c(old+90, as.Date("01 01 2022", "%d %m %Y")))+
   scale_x_date(date_breaks = "3 month", date_labels =  "%m %Y",limits = c(old-10,election+10))
 
-ggsave(plot=plot, file="German_Elections/Bremen/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="German_Elections/State/Bremen/plot.png",width = 15, height = 7.5, type = "cairo-png")
 

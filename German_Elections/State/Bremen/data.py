@@ -24,4 +24,4 @@ for z in parties:
 
     
 print(data22)
-data22.to_csv('German_Elections/Bremen/poll.csv', index=False)
+data22.to_csv('German_Elections/State/Bremen/poll.csv', index=False)
