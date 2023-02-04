@@ -98,3 +98,8 @@ plot<-plot+theme(legend.position = "none")
 plot2<-ggarrange(plot, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 
 ggsave(plot=plot2, file="Lithuanian_Elections/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+
+ggsave(plot=plot2, file="Lithuanian_Elections/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Lithuanian_Elections/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Lithuanian_Elections/plot.svg")
