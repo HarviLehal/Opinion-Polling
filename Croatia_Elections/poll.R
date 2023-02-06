@@ -7,6 +7,7 @@ library(Cairo)
 library(reshape2)
 library(readr)
 library(formattable)
+library(ggpubr)
 
 py_run_file("Croatia_Elections/data.py")
 poll <- read_csv("Croatia_Elections/poll.csv")
