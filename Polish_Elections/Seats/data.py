@@ -31,6 +31,9 @@ data = pd.concat([data22,data21])
 
 for z in parties:
         data[z] = [x.replace('[av]','') for x in data[z].astype(str)]
+        data[z] = [x.replace('[ba]','') for x in data[z].astype(str)]
+        data[z] = [x.replace('[bb]','') for x in data[z].astype(str)]
+        data[z] = [x.replace('[bc]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[aw]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[t]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[ax]','') for x in data[z].astype(str)]
@@ -39,7 +42,13 @@ for z in parties:
         data[z] = [x.replace('[u]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[v]','') for x in data[z].astype(str)]
         data[z] = data[z].astype('float').astype(str)
-data['Date'] = [x.strip()[-11:] for x in data['Date'].astype(str)]
-data['Date'] = [x.replace('–','') for x in data['Date']]
+data['Date2'] = data['Date'].str.split('–').str[1]
+data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)
+data.Date2.fillna(data.Date, inplace=True)
+data.Date = data.Date2
+data = data.drop(['Date2'],axis=1)
+data.Date = data['Date'].astype(str)
+data.Date = data.Date.apply(lambda x: dateparser.parse(x))
+
 print(data)
-data.to_csv('Polish_Elections/poll.csv', index=False)
+data.to_csv('Polish_Elections/Seats/poll.csv', index=False)
