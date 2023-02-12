@@ -84,8 +84,8 @@ d1 <- t(d1)
 d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
-d2[-1]<-data.frame(apply(d2[-1], 2, function(x) 
-  as.numeric(x)))
+d2[-1]<-lapply(d2[-1],as.numeric)
+
 d2 <- as.data.frame(d2)
 
 d1 <- melt(d1, id.vars="Date")
