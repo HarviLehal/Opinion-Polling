@@ -50,7 +50,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 
-ggsave(plot=plot1, file="UK_Elections/general_polling/plot1.png",width = 15, height = 7.5, type = "cairo-png")
+# ggsave(plot=plot1, file="UK_Elections/general_polling/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
 # LOESS GRAPH
 
@@ -74,7 +74,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
-ggsave(plot=plot2, file="UK_Elections/general_polling/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+# ggsave(plot=plot2, file="UK_Elections/general_polling/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
 # EXPERIMENTAL THINGS
 
@@ -150,5 +150,5 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK_Elections/general_polling/plot1a.png",width = 15, height = 7.5, type = "cairo-png")
-ggsave(plot=plot2a, file="UK_Elections/general_polling/plot2a.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1a, file="UK_Elections/general_polling/plot1.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK_Elections/general_polling/plot2.png",width = 15, height = 7.5, type = "cairo-png")
