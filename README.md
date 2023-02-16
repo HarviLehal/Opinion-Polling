@@ -20,8 +20,7 @@ So far I have graphed polls for:
 * The next New Zealand General Election
 * The next Norwegian Storting Election
 * The next Polish Sejm Election
-  - Along with seat* The next Slovak Národná rada Election
- projections
+    - Along with seat projections
 * The next Slovak Národná rada Election
 * Various Spanish Regional Elections
 * The next Turkish Presidential Election
