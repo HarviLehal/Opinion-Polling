@@ -12,8 +12,8 @@ So far I have graphed polls for:
 * The next Finnish Eduskunta Election
 * The next German Bundestag Election
   - The Landtag Elections in:
-    -Thuringia
-    -Bremen
+    * Thuringia
+    * Bremen
 * The next Icelandic Alþing Election
 * The next Irish Dáil Election
 * The next Lithuanian Seimas Election
