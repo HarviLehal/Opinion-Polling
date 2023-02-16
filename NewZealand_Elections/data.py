@@ -34,3 +34,13 @@ for i in range(1):
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('NewZealand_Elections/poll.csv', index=False)
+
+Gov=['Lab', 'Green']
+Opp=['Nat', 'ACT']
+D[parties] = D[parties].astype(float)
+
+D['Lab + Green'] = D[Gov].sum(axis=1)
+D['Nat + ACT'] = D[Opp].sum(axis=1)
+# D['Other'] = 100-D['Lab + Green']-D['Nat + ACT']
+D = D.drop(parties, axis=1)
+D.to_csv('NewZealand_Elections/poll2.csv', index=False)
