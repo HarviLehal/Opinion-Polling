@@ -19,6 +19,10 @@ data22.columns = headers
 
 data22['Date'] = [x.replace('[a]','') for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('[b]','') for x in data22['Date'].astype(str)]
+data22['Date'] = [x.replace('[c]','') for x in data22['Date'].astype(str)]
+data22['Date'] = [x.replace('[d]','') for x in data22['Date'].astype(str)]
+data22['Date'] = [x.replace('[e]','') for x in data22['Date'].astype(str)]
+data22['Date'] = [x.replace('[f]','') for x in data22['Date'].astype(str)]
 data22['Date2'] = data22['Date'].str.split('–').str[1]
 data22.Date2.fillna(data22['Date'].str.split('-').str[1], inplace=True)
 data22.Date2.fillna(data22.Date, inplace=True)
