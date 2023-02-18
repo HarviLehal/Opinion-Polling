@@ -26,11 +26,11 @@ f<-formattable::percent(0.6)
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,]) +
+  geom_point(size=1, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$Date!=old,])+
+  geom_ma(ma_fun=EMA, n = 3,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$Date!=old,])+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
@@ -44,7 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 # LOESS GRAPH
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   bbplot::bbc_style()+
@@ -107,5 +107,5 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1.png",width = 15, height = 7.5, type = "cairo-png")
-ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1P.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2P.png",width = 15, height = 7.5, type = "cairo-png")
