@@ -76,6 +76,9 @@ for z in parties:
   data21[z] = [x.replace('[u]','') for x in data21[z].astype(str)]
   data21[z] = [x.replace('[v]','') for x in data21[z].astype(str)]
   data21[z] = [x.replace('[w]','') for x in data21[z].astype(str)]
+  data21[z] = [x.replace('[j]','') for x in data21[z].astype(str)]
+  data21[z] = [x.replace('[n]','') for x in data21[z].astype(str)]
+  data21[z] = [x.replace('[s]','') for x in data21[z].astype(str)]
 
 
 # 2020
@@ -102,6 +105,7 @@ data20.Date = data20.Date.apply(lambda x: dateparser.parse(x))
 for z in parties:
   data20[z] = [x.replace('[ac]','') for x in data20[z].astype(str)]
   data20[z] = [x.replace('[ad]','') for x in data20[z].astype(str)]
+  data20[z] = [x.replace('[ae]','') for x in data20[z].astype(str)]
   data20[z] = [x.replace('–','0') for x in data20[z].astype(str)]
   data20[z] = [x.replace('-','0') for x in data20[z].astype(str)]
 data20[parties] = data20[parties].astype(float)

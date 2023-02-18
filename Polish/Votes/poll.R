@@ -24,7 +24,7 @@ old <-min(d$Date)
 
 # LOESS GRAPH
 
-plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.35)+
   scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#122746", "#F9C013"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
@@ -42,4 +42,63 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
-ggsave(plot=plot, file="Polish/Votes/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1, file="Polish/Votes/plot.png",width = 15, height = 7.5, type = "cairo-png")
+
+plot1<-plot1+  theme(axis.title=element_blank(),legend.title = element_blank(),
+                     legend.key.size = unit(2, 'lines'),
+                     legend.position = "none")
+
+poll <- read_csv("Polish/Votes/poll.csv")
+# poll$Date <- as.Date(poll$Date, "%d %b %Y")
+Date <- c(max(poll$Date))
+poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
+  as.numeric(sub("%","",as.character(x)))))
+d2 <- poll[poll$Date==min(poll$Date),]
+poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll[-1][is.na(poll[-1])] <- 0
+d2[-1][is.na(d2[-1])] <- 0
+d1 <- colMeans(poll[-1],na.rm = TRUE)
+d1 <- as.data.frame(d1)
+d1 <- t(d1)
+d1 <- cbind(Date, d1)
+d1 <- as.data.frame(d1)
+d1$Date <- as.Date(d1$Date)
+d2 <- as.data.frame(d2)
+
+d1 <- melt(d1, id.vars="Date")
+d1$value<-as.numeric(d1$value)/100
+d1$value<-formattable::percent(d1$value, digits = 1)
+
+d2 <- melt(d2, id.vars="Date")
+d2$value<-as.numeric(d2$value)/100
+d2$value<-formattable::percent(d2$value, digits = 1)
+
+d3<-rbind(d2,d1)
+
+
+
+
+
+plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+  geom_bar(stat="identity",width=0.9, position=position_dodge())+
+  scale_fill_manual(values = c("#7d8abd","#263778","#fac593","#F68F2D",
+                               "#c274a9","#851A64","#7ed96c","#1BB100",
+                               "#677fa3","#122746","#fcdc88","#F9C013"))+
+                                          geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
+                                                        y = 0),
+                                                    hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
+                y = 0),
+            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+  theme_minimal()+
+  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  ggtitle('30 day average \n (2020 Result)')+
+  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  coord_flip()
+
+
+plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot
