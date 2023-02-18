@@ -3,7 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Scottish_Parliament_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -11,8 +11,8 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df0=pd.DataFrame(df[6])
-data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
+df0=pd.DataFrame(df[1])
+data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead", "Alba"], axis=1)
 headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
 parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
 data23.columns = headers
@@ -26,9 +26,7 @@ for z in parties:
     data23[z] = [x.replace('–','-') for x in data23[z]]
     data23[z] = [x.replace('TBA','-') for x in data23[z]]
     data23[z] = [x.replace('?','-') for x in data23[z]]
-data23 = data23[data23['Green'] != data23['Con']]
+data23 = data23[data23['Lib Dem'] != data23['SNP']]
 print(data23)
 
-
-print(data)
-data23.to_csv('UK/Subnational/Scotland/poll.csv', index=False)
+data23.to_csv('UK/Subnational/Scotland/poll2.csv', index=False)
