@@ -106,6 +106,7 @@ for z in parties:
   data20[z] = [x.replace('[ac]','') for x in data20[z].astype(str)]
   data20[z] = [x.replace('[ad]','') for x in data20[z].astype(str)]
   data20[z] = [x.replace('[ae]','') for x in data20[z].astype(str)]
+  data20[z] = [x.replace('[af]','') for x in data20[z].astype(str)]
   data20[z] = [x.replace('–','0') for x in data20[z].astype(str)]
   data20[z] = [x.replace('-','0') for x in data20[z].astype(str)]
 data20[parties] = data20[parties].astype(float)

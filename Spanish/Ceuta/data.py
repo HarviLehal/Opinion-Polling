@@ -23,6 +23,7 @@ for z in parties:
   data22[z] = [x.replace('?','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[a]','0') for x in data22[z].astype(str)]
+  data22[z] = [x.replace('[b]','0') for x in data22[z].astype(str)]
   data22[z] = [x.replace('[c]','0') for x in data22[z].astype(str)]
   data22[z] = data22[z].str.split(' ').str[0]
 

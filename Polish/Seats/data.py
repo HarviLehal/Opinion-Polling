@@ -44,6 +44,7 @@ for z in parties:
         data[z] = [x.replace('[az]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[u]','') for x in data[z].astype(str)]
         data[z] = [x.replace('[v]','') for x in data[z].astype(str)]
+        data[z] = [x.replace('[w]','') for x in data[z].astype(str)]
         data[z] = data[z].astype('float').astype(str)
 data['Date2'] = data['Date'].str.split('–').str[1]
 data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)
