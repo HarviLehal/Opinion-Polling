@@ -9,6 +9,7 @@ library(readr)
 library(formattable)
 library(svglite)
 library(Rcpp)
+library(ggpubr)
 
 py_run_file("Polish/Votes/data.py")
 poll <- read_csv("Polish/Votes/poll.csv")

@@ -20,6 +20,7 @@ parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'Akşener
 CHP = ['CHP1', 'CHP2', 'CHP3']
 HDP = ['HDP1', 'HDP2', 'HDP3']
 data23.columns = headers
+data23 = data23[data23['Erdoğan'] != data23['Babacan']]
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 # data23['Date'] = ['15 ' + x for x in data23['Date'].astype(str)]
 data23.Date2.fillna(data23.Date, inplace=True)
