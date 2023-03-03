@@ -22,7 +22,6 @@ So far I have graphed polls for:
 * The next Polish Sejm Election
     - Along with seat projections
 * The next Slovak Národná rada Election
-* Various Spanish Regional Elections
 * The next Turkish Presidential Election
 * The next UK General Election
   - Voting history of Harborough Constituency since 1885
