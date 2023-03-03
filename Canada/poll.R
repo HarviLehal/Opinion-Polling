@@ -19,7 +19,6 @@ poll <- read_csv("Canada/poll.csv")
 d <- melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-h <- formattable::percent(0.05)
 
 election<-as.Date("14 10 2023", "%d %m %Y")
 old <-min(d$Date)
@@ -38,8 +37,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
-  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
