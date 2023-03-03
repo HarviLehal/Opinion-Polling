@@ -1,0 +1,36 @@
+import pandas as pd # library for data analysis
+import requests # library to handle requests
+from bs4 import BeautifulSoup # library to parse HTML documents
+import numpy as np
+import dateparser
+
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2023_Greek_legislative_election"
+table_class="wikitable sortable jquery-tablesorter"
+response=requests.get(wikiurl)
+print(response.status_code)
+soup = BeautifulSoup(response.text, 'html.parser')
+tables = soup.find_all('table',class_="wikitable")
+df=pd.read_html(str(tables))
+
+headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ-ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
+parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ-ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
+d = {}
+for i in range(1):
+  d[i]=pd.DataFrame(df[i])
+  d[i]=d[i].drop(["Polling firm/Commissioner","Sample size","Unnamed: 9_level_0","EK","ED","Lead"], axis=1)
+  d[i].columns = headers
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i] = d[i][d[i]['ΝΔ'] != d[i]['KKE']]
+  for z in parties:
+    d[i][z] = d[i][z].str.split(' ').str[0]
+
+for i in range(1):
+  d[i].drop(d[i].index[[-1,-3]],inplace=True)
+
+D = pd.concat(d.values(), ignore_index=True)
+
+D.to_csv('Greece/poll.csv', index=False)
