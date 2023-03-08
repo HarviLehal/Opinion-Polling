@@ -13,7 +13,7 @@ library(ggpubr)
 
 py_run_file("Dutch/data.py")
 poll <- read_csv("Dutch/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 election<-as.Date("01 03 2025", "%d %m %Y")
 old <-min(d$Date)
@@ -44,7 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 # PVDA-GL FUSIE
 
 poll <- read_csv("Dutch/poll2.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 election<-as.Date("01 03 2025", "%d %m %Y")
 old <-min(d$Date)
@@ -88,8 +88,8 @@ d2[-1]<-lapply(d2[-1],as.numeric)
 
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
-d2 <- melt(d2, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value[is.na(d2$value)] <- 0 # FIXES 0 SEATS OLD ELECTION PARTIES
 
 d3<-rbind(d2,d1)

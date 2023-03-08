@@ -14,10 +14,10 @@ borne <- read_csv("French/Approval_Ratings/borne.csv")
 castex <- read_csv("French/Approval_Ratings/castex.csv")
 philippe <- read_csv("French/Approval_Ratings/philippe.csv")
 
-d1 <- melt(macron, id.vars="Date")
-d2 <- melt(borne, id.vars="Date")
-d3 <- melt(castex, id.vars="Date")
-d4 <- melt(philippe, id.vars="Date")
+d1 <- reshape2::melt(macron, id.vars="Date")
+d2 <- reshape2::melt(borne, id.vars="Date")
+d3 <- reshape2::melt(castex, id.vars="Date")
+d4 <- reshape2::melt(philippe, id.vars="Date")
 
 d <- rbind(d1,d2,d3,d4)
 d.list<-lapply(1:4,function(x) eval(parse(text=paste0("d",x))))
@@ -31,9 +31,9 @@ list2env(d.list,.GlobalEnv)
 
 # SANS BORNE
 
-d1 <- melt(macron, id.vars="Date")
-d2 <- melt(castex, id.vars="Date")
-d3 <- melt(philippe, id.vars="Date")
+d1 <- reshape2::melt(macron, id.vars="Date")
+d2 <- reshape2::melt(castex, id.vars="Date")
+d3 <- reshape2::melt(philippe, id.vars="Date")
 
 d <- rbind(d1,d2,d3)
 d.list<-lapply(1:3,function(x) eval(parse(text=paste0("d",x))))

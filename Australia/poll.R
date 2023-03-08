@@ -16,7 +16,7 @@ library(data.table)
 library(hrbrthemes)
 py_run_file("Australia/data.py")
 poll <- read_csv("Australia/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(sub("%","",d$value))/100
 d$value<-formattable::percent(d$value)
 
@@ -59,11 +59,11 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(sub("%","",d1$value))/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(sub("%","",d2$value))/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
@@ -102,7 +102,7 @@ ggsave(plot=plot, file="Australia/plot.png",width = 15, height = 7.5, type="cair
 # COALITION
 
 poll <- read_csv("Australia/poll2.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(sub("%","",d$value))/100
 h <- formattable::percent(0.05)
 
@@ -141,11 +141,11 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 

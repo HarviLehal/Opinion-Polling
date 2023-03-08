@@ -12,7 +12,7 @@ py_run_file("Turkish/data.py")
 poll <- read_csv("Turkish/poll.csv")
 
 
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 election<-as.Date("18 06 2023", "%d %m %Y")
@@ -47,7 +47,7 @@ ggsave(plot=plot, file="Turkish/plot.png",width = 15, height = 7.5, type = "cair
 py_run_file("Turkish/data2.py")
 poll2 <- read_csv("Turkish/poll2.csv")
 
-d2 <- melt(poll2, id.vars="Date")
+d2 <- reshape2::melt(poll2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value)
 election<-as.Date("18 06 2023", "%d %m %Y")

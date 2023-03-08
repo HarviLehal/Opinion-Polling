@@ -2,6 +2,7 @@ import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Polish_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -29,25 +30,9 @@ print(data21)
 
 
 data = pd.concat([data22,data21])
-
+p = re.compile(r'\[[a-z]+\]')
 for z in parties:
-        data[z] = [x.replace('[av]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[ba]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[bb]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[bc]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[bd]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[be]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[bf]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[bg]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[aw]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[t]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[ax]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[ay]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[az]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[u]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[v]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[w]','') for x in data[z].astype(str)]
-        data[z] = [x.replace('[x]','') for x in data[z].astype(str)]
+        data[z] = [p.sub('', x) for x in data[z].astype(str)]
         data[z] = data[z].astype('float').astype(str)
 data['Date2'] = data['Date'].str.split('–').str[1]
 data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)

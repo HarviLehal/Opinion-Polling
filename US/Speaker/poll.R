@@ -4,7 +4,7 @@ library(Cairo)
 library(reshape2)
 library(readr)
 poll <- read_csv("US/Speaker/speaker.csv")
-d <- melt(poll, id.vars="Round")
+d <- reshape2::melt(poll, id.vars="Round")
 h <- 218
 
 # MAIN GRAPH
@@ -28,7 +28,7 @@ ggsave(plot=plot, file="US/Speaker/plot.png",width = 7.5, height = 10, type = "c
 # BREAKDOWN
 
 poll2 <- read_csv("US/Speaker/speaker2.csv")
-d2 <- melt(poll2, id.vars="Round")
+d2 <- reshape2::melt(poll2, id.vars="Round")
 h <- 218
 
 
@@ -56,7 +56,7 @@ ggsave(plot=plot2, file="US/Speaker/plot2.png",width = 7.5, height = 10, type = 
 
 d3<-poll
 d3$Present<-NULL
-d3 <- melt(d3, id.vars="Round")
+d3 <- reshape2::melt(d3, id.vars="Round")
 
 plot3<-ggplot(data=d3,aes(x=Round,y=value, colour=variable, group=variable)) +
   geom_point(size=2,data=d3[d3$variable!='Threshold',]) +
@@ -77,7 +77,7 @@ ggsave(plot=plot3, file="US/Speaker/plot3.png",width = 15, height = 7.5, type = 
 
 d4<-poll2
 d4$Present<-NULL
-d4 <- melt(d4, id.vars="Round")
+d4 <- reshape2::melt(d4, id.vars="Round")
 
 plot4<-ggplot(data=d4,aes(x=Round,y=value, colour=variable, group=variable)) +
   geom_point(size=2,data=d4[d4$variable!='Threshold',],alpha=0.75) +

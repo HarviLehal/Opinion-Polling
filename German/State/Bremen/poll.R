@@ -11,7 +11,7 @@ library(ggbreak)
 
 py_run_file("German/State/Bremen/data.py")
 poll <- read_csv("German/State/Bremen/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 d$value[is.nan(d$value)] <- 0

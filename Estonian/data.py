@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2023_Estonian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,6 +12,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[a-z]+\]')
 
 headers = ['Date','R','K','EKRE','I','SDE','E200','ER']
 parties = ['R','K','EKRE','I','SDE','E200','ER']
@@ -20,21 +22,8 @@ for i in range(2):
   d[i]=d[i].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.", "Parem"], axis=1)
   d[i].columns = headers
   for z in headers:
-      d[i][z] = [x.replace('[a]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[b]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[c]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[d]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[e]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[f]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[g]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[h]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[i]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[j]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[k]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[l]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[m]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[n]','') for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('[o]','') for x in d[i][z].astype(str)]
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -52,21 +41,7 @@ for i in range(2):
   d[i+2]=d[i+2].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp."], axis=1)
   d[i+2].columns = headers
   for z in headers:
-      d[i+2][z] = [x.replace('[a]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[b]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[c]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[d]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[e]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[f]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[g]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[h]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[i]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[j]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[k]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[l]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[m]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[n]','') for x in d[i+2][z].astype(str)]
-      d[i+2][z] = [x.replace('[o]','') for x in d[i+2][z].astype(str)]
+      d[i+2][z] = [p.sub('', x) for x in d[i+2][z].astype(str)]
   d[i+2]['Date2'] = d[i+2]['Date'].str.split('–').str[1]
   d[i+2].Date2.fillna(d[i+2]['Date'].str.split('-').str[1], inplace=True)
   d[i+2].Date2.fillna(d[i+2].Date, inplace=True)
@@ -80,21 +55,7 @@ d[4]=pd.DataFrame(df[4])
 d[4]=d[4].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.","TULE"], axis=1)
 d[4].columns = headers
 for z in headers:
-    d[4][z] = [x.replace('[a]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[b]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[c]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[d]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[e]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[f]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[g]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[h]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[i]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[j]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[k]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[l]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[m]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[n]','') for x in d[4][z].astype(str)]
-    d[4][z] = [x.replace('[o]','') for x in d[4][z].astype(str)]
+   d[4][z] = [p.sub('', x) for x in d[4][z].astype(str)]
 d[4]['Date2'] = d[4]['Date'].str.split('–').str[1]
 d[4].Date2.fillna(d[4]['Date'].str.split('-').str[1], inplace=True)
 d[4].Date2.fillna(d[4].Date, inplace=True)
@@ -111,21 +72,8 @@ for i in range(2):
   d[i+5]=d[i+5].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.","EVA"], axis=1)
   d[i+5].columns = headers
   for z in headers:
-      d[i+5][z] = [x.replace('[a]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[b]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[c]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[d]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[e]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[f]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[g]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[h]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[i]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[j]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[k]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[l]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[m]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[n]','') for x in d[i+5][z].astype(str)]
-      d[i+5][z] = [x.replace('[o]','') for x in d[i+5][z].astype(str)]
+    d[i+5][z] = [p.sub('', x) for x in d[i+5][z].astype(str)]
+
   d[i+5]['Date2'] = d[i+5]['Date'].str.split('–').str[1]
   d[i+5].Date2.fillna(d[i+5]['Date'].str.split('-').str[1], inplace=True)
   d[i+5].Date2.fillna(d[i+5].Date, inplace=True)

@@ -16,7 +16,7 @@ library(data.table)
 
 py_run_file("Swedish/data.py")
 poll <- read_csv("Swedish/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 h<-formattable::percent(0.04)
@@ -58,11 +58,11 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
@@ -97,7 +97,7 @@ ggsave(plot=plotA, file="Swedish/plot.png",width = 15, height = 7.5, type="cairo
 # COALITION GRAPH
 
 poll <- read_csv("Swedish/coalition.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
@@ -135,11 +135,11 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
@@ -171,7 +171,7 @@ ggsave(plot=plotB, file="Swedish/plot2.png",width = 15, height = 7.5, type="cair
 # COALITION SEAT GRAPH
 
 poll <- read_csv("Swedish/seats.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 
 election<-as.Date("13 09 2026", "%d %m %Y")
 old <-min(d$Date)
@@ -210,9 +210,9 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 
 d3<-rbind(d2,d1)
 

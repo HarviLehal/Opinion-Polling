@@ -8,7 +8,7 @@ library(scales)
 library(Cairo)
 
 poll <- read_csv("UK/constituency_results/leicester_east/leicester_east.csv")
-d <- melt(poll, id.vars="year")
+d <- reshape2::melt(poll, id.vars="year")
 d$year<-as.Date(d$year, "%d/%m/%Y")
 d$value<-formattable::percent(d$value)
 

@@ -12,7 +12,7 @@ library(Rcpp)
 
 py_run_file("Finnish/data.py")
 poll <- read_csv("Finnish/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
@@ -41,7 +41,7 @@ ggsave(plot=plot, file="Finnish/plot.png",width = 15, height = 7.5,type="cairo-p
 
 
 poll <- read_csv("Finnish/poll2.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 

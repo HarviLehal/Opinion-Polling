@@ -10,7 +10,7 @@ library(formattable)
 
 py_run_file("Polish/Seats/data.py")
 poll <- read_csv("Polish/Seats/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value[d$value=='-'] <- NULL
 h <- 231

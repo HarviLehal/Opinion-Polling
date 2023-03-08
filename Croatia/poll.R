@@ -11,7 +11,7 @@ library(ggpubr)
 
 py_run_file("Croatia/data.py")
 poll <- read_csv("Croatia/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 # d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
@@ -44,7 +44,7 @@ ggsave(plot=plot, file="Croatia/plot.png",width = 15, height = 7.5, type = "cair
 
 poll2 <- read_csv("Croatia/poll2.csv")
 poll2<-subset(poll2,select=-c(Other))
-d <- melt(poll2, id.vars="Date")
+d <- reshape2::melt(poll2, id.vars="Date")
 d$value<-as.numeric(d$value)
 # d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
@@ -88,10 +88,10 @@ d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
-d1 <- melt(d1, id.vars="Date")
+d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-d2 <- melt(d2, id.vars="Date")
+d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)

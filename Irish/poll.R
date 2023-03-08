@@ -12,7 +12,7 @@ library(Rcpp)
 
 py_run_file("Irish/data.py")
 poll <- read_csv("Irish/poll.csv")
-d <- melt(poll, id.vars="Date")
+d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 

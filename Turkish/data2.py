@@ -2,6 +2,7 @@ import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
+import re
 
 wikiurl="https://tr.wikipedia.org/wiki/2023_Türkiye_cumhurbaşkanlığı_seçimi_için_yapılan_anketler"
 table_class="wikitable sortable jquery-tablesorter"
@@ -10,6 +11,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
+p = re.compile(r'\[[a-z 0-9]+\]')
 
 # 2023 POLLS
 
@@ -30,6 +32,9 @@ data23 = data23.drop(['Date2'], axis=1)
 
 for z in parties:
     data23[z] = [x.replace('–','0') for x in data23[z].astype(str)]
+    data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
+    data23[z] = [x.replace(',','.') for x in data23[z].astype(str)]
+    data23[z] = data23[z].astype('float').astype(str)
 data23[parties] = data23[parties].astype(float)
 data23['CHP Total'] = data23[CHP].sum(axis=1)
 data23['HDP Total'] = data23[HDP].sum(axis=1)
@@ -53,8 +58,10 @@ data22['Date'] = data22['Date2']
 data22 = data22.drop(['Date2'], axis=1)
 
 for z in parties:
-    data22[z] = [x.replace('12,4[no 1]','6.2') for x in data22[z].astype(str)]
     data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
+    data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
+    data22[z] = [x.replace(',','.') for x in data22[z].astype(str)]
+    data22[z] = data22[z].astype('float').astype(str)
 data22[parties] = data22[parties].astype(float)
 data22['CHP Total'] = data22[CHP].sum(axis=1)
 data22['HDP Total'] = data22[HDP].sum(axis=1)
@@ -80,6 +87,9 @@ data21 = data21.drop(['Date2'], axis=1)
 
 for z in parties:
     data21[z] = [x.replace('–','0') for x in data21[z].astype(str)]
+    data21[z] = [p.sub('', x) for x in data21[z].astype(str)]
+    data21[z] = [x.replace(',','.') for x in data21[z].astype(str)]
+    data21[z] = data21[z].astype('float').astype(str)
 data21[parties] = data21[parties].astype(float)
 data21['CHP Total'] = data21[CHP].sum(axis=1)
 data21['HDP Total'] = data21[HDP].sum(axis=1)
@@ -108,6 +118,9 @@ data20 = data20.drop(['Date2'], axis=1)
 
 for z in parties:
     data20[z] = [x.replace('–','0') for x in data20[z].astype(str)]
+    data20[z] = [p.sub('', x) for x in data20[z].astype(str)]
+    data20[z] = [x.replace(',','.') for x in data20[z].astype(str)]
+    data20[z] = data20[z].astype('float').astype(str)
 data20[parties] = data20[parties].astype(float)
 data20['CHP Total'] = data20[CHP].sum(axis=1)
 data20['HDP Total'] = data20[HDP].sum(axis=1)
@@ -136,9 +149,9 @@ data19 = data19.drop(['Date2'], axis=1)
 
 for z in parties:
     data19[z] = [x.replace('–','0') for x in data19[z].astype(str)]
-    data19[z] = [x.replace('30,6[no 4]','30.6') for x in data19[z].astype(str)]
-    data19[z] = [x.replace('56,7[no 3]','56.7') for x in data19[z].astype(str)]
-    data19[z] = [x.replace('52,6[no 3]','52.6') for x in data19[z].astype(str)]
+    data19[z] = [p.sub('', x) for x in data19[z].astype(str)]
+    data19[z] = [x.replace(',','.') for x in data19[z].astype(str)]
+    data19[z] = data19[z].astype('float').astype(str)
 
 data19[parties] = data19[parties].astype(float)
 data19['CHP Total'] = data19[CHP].sum(axis=1)
@@ -156,5 +169,7 @@ print(data19)
 
 data = pd.concat([data23,data22,data21,data20,data19])
 data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x))
+data.rename(columns={'CHP Total':'Kılıçdaroğlu'}, inplace=True)
+
 print(data)
 data.to_csv('Turkish/poll2.csv', index=False)

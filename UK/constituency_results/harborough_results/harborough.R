@@ -7,7 +7,7 @@ library(tidyquant)
 library(scales)
 
 poll <- read_csv("UK/constituency_results/harborough_results/harborough.csv")
-d <- melt(poll, id.vars="year")
+d <- reshape2::melt(poll, id.vars="year")
 d$year<-as.Date(d$year, "%d/%m/%Y")
 d$value<-formattable::percent(d$value)
 
