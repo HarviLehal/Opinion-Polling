@@ -169,7 +169,6 @@ print(data19)
 
 data = pd.concat([data23,data22,data21,data20,data19])
 data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x))
-data.rename(columns={'CHP Total':'Kılıçdaroğlu'}, inplace=True)
 
 print(data)
 data.to_csv('Turkish/poll2.csv', index=False)
