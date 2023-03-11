@@ -1,6 +1,9 @@
 import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
+import numpy as np
+import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -9,79 +12,31 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
-print(df[0])
+p = re.compile(r'\[[a-z]+\]')
 
-
-df0=pd.DataFrame(df[0])
-data23 = df0.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-headers = ['Date', 'Sample size', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
+headers = ['Date', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
-data23.columns = headers
-data23['Date'] = [x.strip()[-6:] for x in data23['Date']]
-data23['Date'] = [x.replace('–','') for x in data23['Date']]
-data23['Date'] = [x+' 2023' for x in data23['Date']]
-for z in parties:
-    data23[z] = [x.replace('–','-') for x in data23[z]]
-    data23[z] = [x.replace('TBC','-') for x in data23[z]]
-    data23[z] = [x.replace('?','-') for x in data23[z]]
-    data23[z] = [x.replace('[a]','') for x in data23[z]]
-data23 = data23[data23['Sample size'] != data23['Con']]
-print(data23)
+d = {}
+for i in range(4):
+  d[i]=pd.DataFrame(df[i])
+  d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
+  d[i].columns = headers
+  for z in headers:
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–','-') for x in d[i][z]]
+    d[i][z] = [x.replace('TBC','-') for x in d[i][z]]
+    d[i][z] = [x.replace('?','-') for x in d[i][z]]
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i] = d[i][d[i]['Con'] != d[i]['Reform']]
+  
+D = pd.concat(d.values(), ignore_index=True)
+D.drop(D.index[[-2]],inplace=True)
+D.loc[len(D.index),['Date']] = '12 Dec 2019'
 
-
-df1=pd.DataFrame(df[1])
-data22 = df1.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-data22.columns = headers
-data22['Date'] = [x.strip()[-6:] for x in data22['Date']]
-data22['Date'] = [x.replace('–','') for x in data22['Date']]
-data22['Date'] = [x+' 2022' for x in data22['Date']]
-for z in parties:
-    data22[z] = [x.replace('–','-') for x in data22[z]]
-    data22[z] = [x.replace('TBC','-') for x in data22[z]]
-    data22[z] = [x.replace('?','-') for x in data22[z]]
-    data22[z] = [x.replace('[a]','') for x in data22[z]]
-data22 = data22[data22['Sample size'] != data22['Con']]
-print(data22)
-
-
-df2=pd.DataFrame(df[2])
-print(df2)
-data21 = df2.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-data21.columns = headers
-data21['Date'] = [x.strip()[-6:] for x in data21['Date']]
-data21['Date'] = [x.replace('–','') for x in data21['Date']]
-data21['Date'] = [x+' 2021' for x in data21['Date']]
-
-for z in parties:
-    data21[z] = [x.replace('–','-') for x in data21[z]]
-    data21[z] = [x.replace('TBC','-') for x in data21[z]]
-    data21[z] = [x.replace('?','-') for x in data21[z]]
-    data21[z] = [x.replace('[a]','') for x in data21[z]]
-data21 = data21[data21['Sample size'] != data21['Con']]
-print(data21)
-
-
-df3=pd.DataFrame(df[3])
-print(df3)
-data20 = df3.drop(["Pollster", "Client", "Area", "Others", "Lead"], axis=1)
-data20.columns = headers
-data20['Date'] = [x.strip()[-6:] for x in data20['Date']]
-data20['Date'] = [x.replace('–','') for x in data20['Date']]
-data20['Date'] = [x+' 2020' for x in data20['Date']]
-
-for z in parties:
-    data20[z] = [x.replace('–','-') for x in data20[z]]
-    data20[z] = [x.replace('TBC','-') for x in data20[z]]
-    data20[z] = [x.replace('?','-') for x in data20[z]]
-    data20[z] = [x.replace('[a]','') for x in data20[z]]
-data20 = data20[data20['Sample size'] != data20['Con']]
-print(data20)
-
-
-data = pd.concat([data23,data22,data21,data20])
-data.drop(data.index[[-2]],inplace=True)
-data['Date'] = data['Date'].replace(['c 2019 2020'], '12 Dec 2019')
-
-data = data.drop(["Sample size"], axis=1)
-print(data)
-data.to_csv('UK/general_polling/poll.csv', index=False)
+D.to_csv('UK/general_polling/poll.csv', index=False)
