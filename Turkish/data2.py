@@ -15,7 +15,7 @@ p = re.compile(r'\[[a-z 0-9]+\]')
 
 # 2023 POLLS
 
-df0=pd.DataFrame(df[0])
+df0=pd.DataFrame(df[2])
 data23 = df0.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Erbakan YRP','Diğerleri'], axis=1)
 headers = ['Date', 'Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
 parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
@@ -44,7 +44,7 @@ print(data23)
 
 # 2022 POLLS
 
-df1=pd.DataFrame(df[1])
+df1=pd.DataFrame(df[3])
 data22 = df1.drop(['Anket şirketi',	'Örneklem', 'Özdağ ZP','Fark','Diğerleri'], axis=1)
 headers = ['Date', 'Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
 parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
@@ -71,7 +71,7 @@ print(data22)
 
 # 2021 POLLS
 
-df2=pd.DataFrame(df[2])
+df2=pd.DataFrame(df[4])
 data21 = df2.drop(['Anket şirketi',	'Örneklem', 'Diğerleri','Fark',], axis=1)
 headers = ['Date', 'Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
 parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'HDP1', 'HDP2', 'HDP3', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu', 'İnce']
@@ -101,7 +101,7 @@ print(data21)
 
 # 2021 POLLS
 
-df3=pd.DataFrame(df[3])
+df3=pd.DataFrame(df[5])
 data20 = df3.drop(['Anket şirketi',	'Örneklem', 'Diğerleri','Fark',], axis=1)
 headers = ['Date', 'Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'CHP4', 'HDP1', 'HDP2', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu']
 parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'CHP4', 'HDP1', 'HDP2', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu']
@@ -133,7 +133,7 @@ for z in parties:
 print(data20)
 
 
-df4=pd.DataFrame(df[4])
+df4=pd.DataFrame(df[6])
 data19 = df4.drop(['Anket şirketi',	'Örneklem', 'Diğerleri','Fark',], axis=1)
 headers = ['Date', 'Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'CHP4', 'HDP Total', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu']
 parties = ['Erdoğan', 'CHP1', 'CHP2', 'CHP3', 'CHP4', 'HDP Total', 'Akşener', 'Bahçeli', 'Babacan', 'Davutoğlu', 'Karamollaoğlu']
