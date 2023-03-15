@@ -17,7 +17,7 @@ parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ-ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ2
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Polling firm/Commissioner","Sample size","Unnamed: 9_level_0","EK","ED","Lead"], axis=1)
+  d[i]=d[i].drop(["Polling firm/Commissioner","Sample size","Unnamed: 9_level_0","EK","Unnamed: 11_level_0","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
