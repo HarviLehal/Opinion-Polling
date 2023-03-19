@@ -26,7 +26,7 @@ old <-as.Date("29 02 2020", "%d %m %Y")
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
-  scale_color_manual(values = c("#BED62F","#D82222","#034B9F","#005222","#00BDFF", "#81a128", "#FDBB12","#FFE17C","#173A70", "#FF0000", "#000000"))+
+  scale_color_manual(values = c("#BED62F","#D82222","#034B9F","#005222","#00BDFF","#4D0E90","#81a128","#FDBB12","#FFE17C","#173A70","#81163B","#000000"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -54,7 +54,7 @@ writeLines(bbb,"Slovak/plot.svg")
 
 plot_fr<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
-  scale_color_manual(values = c("#BED62F","#D82222","#034B9F","#005222","#00BDFF", "#81a128", "#FDBB12","#FFE17C","#173A70", "#FF0000", "#000000"))+
+  scale_color_manual(values = c("#BED62F","#D82222","#034B9F","#005222","#00BDFF","#4D0E90","#81a128","#FDBB12","#FFE17C","#173A70","#81163B","#000000"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

@@ -23,9 +23,9 @@ h <- formattable::percent(0.5)
 # MAIN GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
+  geom_point(size=1, data=d,alpha=0.75)+
   scale_color_manual(values = c("#FFCC00","#ed1c24","#3e4042","#0d5ca6"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.85,linewidth=0.75, data=d)+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -35,9 +35,7 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes((election),h,label = "50%",hjust=1 ,vjust = -1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(old, election)+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
 
 ggsave(plot=plot, file="Turkish/Campaign/plot.svg",width = 15, height = 7.5)
 aaa=readLines("Turkish/Campaign/plot.svg",-1)

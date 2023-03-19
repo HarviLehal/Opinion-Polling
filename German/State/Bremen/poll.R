@@ -16,7 +16,6 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
-h <- formattable::percent(0.05)
 election<-as.Date("14 05 2023", "%d %m %Y")
 old<-min(d$Date)
 
@@ -36,8 +35,6 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_hline(aes(yintercept=h), alpha=0.75)+
-  geom_text(aes(election-20,h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")+
   scale_x_break(c(old+90, as.Date("01 01 2022", "%d %m %Y")))+
   scale_x_date(date_breaks = "3 month", date_labels =  "%m %Y",limits = c(old-10,election+10))
 

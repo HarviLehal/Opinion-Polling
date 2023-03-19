@@ -26,7 +26,7 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3DA49A","#319032","#2D568C","#D41720",
                                 "#D6136E","#E98313","#711625","#C2312F",
-                                "#369C3A","#F3BB0C","#121072"))+
+                                "#369C3A","#F3BB0C","#221DC1"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
@@ -80,7 +80,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#90d1cb","#3DA49A","#85c785","#319032","#83a0c7","#2D568C","#eb8188","#D41720",
                                "#eb81b2","#D6136E","#f5bf84","#E98313","#b86e7c","#711625","#e08d90","#C2312F",
-                               "#8ccf8f","#369C3A","#fadc84","#F3BB0C","#6c6aba","#121072"))+
+                               "#8ccf8f","#369C3A","#fadc84","#F3BB0C","#6c6aba","#221DC1"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value,""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),

@@ -13,10 +13,10 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 
 df0=pd.DataFrame(df[0])
-data22 = df0.drop(["Sondeur", "Échantillon", 'SPOLU', 'SMK', 'Most-Híd', 'Autres'], axis=1)
+data22 = df0.drop(["Sondeur", "Échantillon", 'SMK', 'Most-Híd', 'Autres'], axis=1)
 
-headers = ['Date', 'OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
-parties = ['OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
+headers = ['Date', 'OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SPOLU/Dem', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
+parties = ['OĽaNO', 'SMER', 'SR', 'ĽSNS', 'PS', 'SPOLU/Dem', 'SaS', 'ZĽ', 'KDH', 'SNS', 'HLAS', 'Rep']
 data22.columns = headers
 # data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 # data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
@@ -30,7 +30,15 @@ data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
 
 for z in parties:
   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
+
+for i in range(len(data22)):
+  if data22['SPOLU/Dem'][i]==data22['PS'][i]:
+    data22['SPOLU/Dem'][i] = 'nan'
+
 data22.drop([0], axis=0, inplace=True)
+
+    
 print(data22)
+  
 
 data22.to_csv('Slovak/poll.csv', index=False)
