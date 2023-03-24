@@ -24,8 +24,20 @@ h <- formattable::percent(0.5)
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.75)+
-  scale_color_manual(values = c("#FFCC00","#ed1c24","#3e4042","#0d5ca6"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.85,linewidth=0.75, data=d)+
+  scale_color_manual(values = c("#FFCC00","#ed1c24","#3e4042",
+                                "#0d5ca6","#AA692F","#b81a1a"))+
+  # geom_ma(ma_fun=EMA, n = 2,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='Erdoğan',])+
+  # geom_ma(ma_fun=EMA, n = 2,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='Kılıçdaroğlu',])+
+  # geom_ma(ma_fun=EMA, n = 2,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='Oğan',])+
+  # geom_ma(ma_fun=EMA, n = 2,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='İnce',])+
+  # geom_ma(ma_fun=EMA, n = 1,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='Erbakan',])+
+  # geom_ma(ma_fun=EMA, n = 1,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$variable=='Perinçek',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=0.9,se=FALSE,linewidth=0.75, data=d[d$variable=='Erdoğan',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=0.9,se=FALSE,linewidth=0.75, data=d[d$variable=='Kılıçdaroğlu',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=0.85,se=FALSE,linewidth=0.75, data=d[d$variable=='Oğan',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=0.85,se=FALSE,linewidth=0.75, data=d[d$variable=='İnce',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=1,se=FALSE,linewidth=0.75, data=d[d$variable=='Erbakan',])+
+  geom_smooth(method='loess',fullrange=TRUE,span=1,se=FALSE,linewidth=0.75, data=d[d$variable=='Perinçek',])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

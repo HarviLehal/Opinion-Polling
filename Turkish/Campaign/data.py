@@ -14,9 +14,9 @@ df=pd.read_html(str(tables))
 # 2023 POLLS
 
 df0=pd.DataFrame(df[0])
-data = df0.drop(['Polling firm','Sample size', 'Others','Lead'], axis=1)
-headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
-parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
+data = df0.drop(['Polling firm','Published by','Sample size', 'Others','Lead',], axis=1)
+headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce','Erbakan', 'Perinçek']
+parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce','Erbakan', 'Perinçek']
 data.columns = headers
 data = data[data['Erdoğan'] != data['İnce']]
 data['Date2'] = data['Date'].str.split('–').str[1]

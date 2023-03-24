@@ -42,5 +42,17 @@ data = data.drop(['Date2'],axis=1)
 data.Date = data['Date'].astype(str)
 data.Date = data.Date.apply(lambda x: dateparser.parse(x))
 
+
+
 print(data)
 data.to_csv('Polish/Seats/poll.csv', index=False)
+
+UO = ['Civic Coalition', 'The Left', 'Polish Coalition', 'Poland 2050']
+R = ['United Right', 'Confederation']
+
+data[parties] = data[parties].astype(float)
+data['United Opposition (KO + Lewica + PSL + PL2050'] = data[UO].sum(axis=1)
+data['Right Wing (PiS + Konfederacja)'] = data[R].sum(axis=1)
+data = data.drop(UO + R, axis=1)
+
+data.to_csv('Polish/Seats/poll2.csv', index=False)
