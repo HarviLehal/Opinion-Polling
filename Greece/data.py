@@ -12,8 +12,8 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ-ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
-parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ-ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
+headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ - ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
+parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ - ΚΙΝΑΛ','KKE','ΕΛ','ΜέΡΑ25']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -27,6 +27,7 @@ for i in range(1):
   d[i] = d[i][d[i]['ΝΔ'] != d[i]['KKE']]
   for z in parties:
     d[i][z] = d[i][z].str.split(' ').str[0]
+    d[i][z] = [x.replace('–','') for x in d[i][z].astype(str)]
 
 for i in range(1):
   d[i].drop(d[i].index[[-1,-3]],inplace=True)
@@ -34,3 +35,11 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 
 D.to_csv('Greece/poll.csv', index=False)
+
+Left = ['ΣΥΡΙΖΑ', 'KKE', 'ΜέΡΑ25']
+
+D[parties] = D[parties].astype(float)
+D['ΑΡΙΣΤΕΡΆ (ΣΥΡΙΖΑ + KKE + ΜέΡΑ25)'] = D[Left].sum(axis=1)
+D = D.drop(Left, axis=1)
+
+D.to_csv('Greece/poll2.csv', index=False)

@@ -14,8 +14,7 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-py_run_file("Greece/data.py")
-poll <- read_csv("Greece/poll.csv")
+poll <- read_csv("Greece/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -28,9 +27,8 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#325BC7","#E48291",
-                                "#389043","#D61616",
-                                "#6192CE","#B83824"))+
+  scale_color_manual(values = c("#325BC7","#389043",
+                                "#6192CE","#D61616"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -44,7 +42,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 
-poll <- read_csv("Greece/poll.csv")
+poll <- read_csv("Greece/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -72,9 +70,8 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#8fa5e3","#325BC7","#f2bdc7","#E48291",
-                             "#89c793","#389043","#eb8181","#D61616",
-                             "#acc8e8","#6192CE","#db8f84","#B83824"))+
+scale_fill_manual(values = c("#8fa5e3","#325BC7","#89c793","#389043",
+                             "#acc8e8","#6192CE","#eb8181","#D61616"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -94,4 +91,4 @@ coord_flip()
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
-ggsave(plot=plot, file="Greece/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Greece/plot2.png",width = 15, height = 7.5, type="cairo-png")
