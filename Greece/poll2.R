@@ -27,8 +27,7 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#325BC7","#389043",
-                                "#6192CE","#D61616"))+
+  scale_color_manual(values = c("#D61616","#325BC7"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -70,8 +69,8 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#8fa5e3","#325BC7","#89c793","#389043",
-                             "#acc8e8","#6192CE","#eb8181","#D61616"))+
+scale_fill_manual(values = c("#eb8181","#D61616",
+                             "#8fa5e3","#325BC7"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
