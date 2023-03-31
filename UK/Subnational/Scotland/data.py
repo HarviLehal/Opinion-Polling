@@ -30,5 +30,5 @@ data23 = data23[data23['Green'] != data23['Con']]
 print(data23)
 
 
-print(data)
+print(data23)
 data23.to_csv('UK/Subnational/Scotland/poll.csv', index=False)

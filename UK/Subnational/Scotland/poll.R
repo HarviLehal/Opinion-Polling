@@ -18,6 +18,7 @@ d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
 
+Yousaf<-as.Date("29 03 2023", "%d %m %Y")
 Carlaw<-as.Date("14 02 2020", "%d %m %Y")
 Ross<-as.Date("05 08 2020", "%d %m %Y")
 Sarwar<-as.Date("27 02 2021", "%d %m %Y")
@@ -37,11 +38,13 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
+  geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Carlaw, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_vline(xintercept=Ross, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_text(aes(Sarwar,f,label = "Sarwar", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
   geom_text(aes(Sturgeon,f,label = "Sturgeon announces resignation", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
+  geom_text(aes(Yousaf,f,label = "Yousaf", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Carlaw,f,label = "Carlaw", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_text(aes(Ross,f,label = "Ross", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -62,6 +65,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
+  geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Carlaw, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_vline(xintercept=Ross, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_text(aes(Sarwar,f,label = "Sarwar",
@@ -69,6 +73,8 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(Alex,f,label = "Cole-Hamilton",
                 vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
   geom_text(aes(Sturgeon,f,label = "Sturgeon announces resignation",
+                vjust = -1, hjust=0, angle=-90),colour="#decb10")+
+  geom_text(aes(Yousaf,f,label = "Yousaf",
                 vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Carlaw,f,label = "Carlaw",
                 vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
