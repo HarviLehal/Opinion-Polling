@@ -11,10 +11,10 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df0=pd.DataFrame(df[6])
+df0=pd.DataFrame(df[7])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
-parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
+headers = ['Date', 'Lab', 'Con', 'Plaid Cymru', 'Lib Dem', 'Reform', 'Green']
+parties = ['Lab', 'Con', 'Plaid Cymru', 'Lib Dem', 'Reform', 'Green']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)
@@ -26,6 +26,6 @@ for z in parties:
     data23[z] = [x.replace('–','-') for x in data23[z]]
     data23[z] = [x.replace('TBA','-') for x in data23[z]]
     data23[z] = [x.replace('?','-') for x in data23[z]]
-data23 = data23[data23['Green'] != data23['Con']]
+data23 = data23[data23['Lab'] != data23['Green']]
 print(data23)
-data23.to_csv('UK/Subnational/Scotland/poll.csv', index=False)
+data23.to_csv('UK/Subnational/Wales/poll.csv', index=False)
