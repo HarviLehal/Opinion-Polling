@@ -19,7 +19,7 @@ headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 data.columns = headers
 data = data[data['Erdoğan'] != data['İnce']]
-data['Date2'] = data['Date'].str.split('–').str[1]
+data['Date2'] = data['Date'].str.split('-').str[1]
 data.Date2.fillna(data.Date, inplace=True)
 data['Date2'] = [x+' 2023' for x in data['Date2'].astype(str)]
 data['Date'] = data['Date2']
