@@ -26,7 +26,7 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.75)+
   scale_color_manual(values = c("#FFCC00","#ed1c24",
                                 "#3e4042","#0d5ca6"))+
-  geom_smooth(method='loess',fullrange=TRUE,span=1,se=FALSE,linewidth=0.75, data=d)+
+  geom_smooth(method='loess',fullrange=TRUE,span=0.6,se=FALSE,linewidth=0.75, data=d)+
   # stat_smooth(method='lm', formula = y~poly(x,2),se=FALSE)+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
