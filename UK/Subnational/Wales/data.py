@@ -21,7 +21,7 @@ data23.Date2.fillna(data23.Date, inplace=True)
 # data23['Date2'] = [x+ str(2023-i) for x in data23['Date2'].astype(str)]
 data23['Date'] = data23['Date2']
 data23 = data23.drop(['Date2'], axis=1)
-data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x))
+data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
     data23[z] = [x.replace('–','-') for x in data23[z]]
     data23[z] = [x.replace('TBA','-') for x in data23[z]]

@@ -3,7 +3,6 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
 import re
-
 wikiurl="https://en.wikipedia.org/wiki/2024_Lithuanian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
@@ -34,7 +33,7 @@ data22.Date = data22.Date2
 data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
 data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
-data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 # for z in parties:
 #   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]

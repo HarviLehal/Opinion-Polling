@@ -32,7 +32,7 @@ for i in range(4):
   d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Con'] != d[i]['Reform']]
   
 D = pd.concat(d.values(), ignore_index=True)

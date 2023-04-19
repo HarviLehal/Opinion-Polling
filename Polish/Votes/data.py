@@ -31,7 +31,7 @@ data23.Date = data23.Date2
 data23 = data23.drop(['Date2'],axis=1)
 data23.Date = data23['Date'].astype(str)
 data23['Date'] = [x+' 2023' for x in data23['Date']]
-data23.Date = data23.Date.apply(lambda x: dateparser.parse(x))
+data23.Date = data23.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data23 = data23[data23['PiS'] != data23['Lewica']]
 for z in parties:
   data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
@@ -53,7 +53,7 @@ data22.Date = data22.Date2
 data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
 data22['Date'] = [x+' 2022' for x in data22['Date']]
-data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data22 = data22[data22['PiS'] != data22['Lewica']]
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
@@ -75,7 +75,7 @@ data21.Date = data21.Date2
 data21 = data21.drop(['Date2'],axis=1)
 data21.Date = data21['Date'].astype(str)
 data21['Date'] = [x+' 2021' for x in data21['Date']]
-data21.Date = data21.Date.apply(lambda x: dateparser.parse(x))
+data21.Date = data21.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data21 = data21[data21['PiS'] != data21['Lewica']]
 
 for z in parties:
@@ -102,7 +102,7 @@ data20.Date = data20['Date'].astype(str)
 data20['Date'] = [x+' 2020' for x in data20['Date']]
 data20=data20[~data20.Date.str.contains("12 Jul 2020")]
 data20=data20[~data20.Date.str.contains("28 Jun 2020")]
-data20.Date = data20.Date.apply(lambda x: dateparser.parse(x))
+data20.Date = data20.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data20 = data20[data20['PiS'] != data20['Lewica']]
 
 for z in parties:
@@ -131,7 +131,7 @@ data19.Date = data19.Date2
 data19 = data19.drop(['Date2'],axis=1)
 data19.Date = data19['Date'].astype(str)
 data19['Date'] = [x+' 2019' for x in data19['Date']]
-data19.Date = data19.Date.apply(lambda x: dateparser.parse(x))
+data19.Date = data19.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data19.drop(data19.index[[-1,-3,]],inplace=True)
 data19 = data19[data19['PiS'] != data19['Lewica']]
 for z in parties:

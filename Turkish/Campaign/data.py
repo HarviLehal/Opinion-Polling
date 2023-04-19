@@ -28,6 +28,6 @@ data = data.drop(['Date2'], axis=1)
 print(data)
 
 
-data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x))
+data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 print(data)
 data.to_csv('Turkish/Campaign/poll.csv', index=False)

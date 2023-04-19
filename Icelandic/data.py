@@ -26,7 +26,7 @@ data22.Date2.fillna(data22.Date, inplace=True)
 data22.Date = data22.Date2
 data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
-data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 print(data22)
 

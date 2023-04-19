@@ -40,7 +40,7 @@ data.Date2.fillna(data.Date, inplace=True)
 data.Date = data.Date2
 data = data.drop(['Date2'],axis=1)
 data.Date = data['Date'].astype(str)
-data.Date = data.Date.apply(lambda x: dateparser.parse(x))
+data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 
 

@@ -26,7 +26,7 @@ for i in range(2):
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['S'] != d[i]['V']]
 
 for i in range(1):
@@ -47,7 +47,7 @@ for i in range(2):
   e[i].Date2.fillna(e[i].Date, inplace=True)
   e[i]['Date'] = e[i]['Date2']
   e[i] = e[i].drop(['Date2'], axis=1)
-  e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for i in range(1):
   e[i].drop(e[i].index[[-1]],inplace=True)
@@ -68,7 +68,7 @@ for i in range(2):
   f[i].Date2.fillna(f[i].Date, inplace=True)
   f[i]['Date'] = f[i]['Date2']
   f[i] = f[i].drop(['Date2'], axis=1)
-  f[i].Date=f[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  f[i].Date=f[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for i in range(1):
   f[i].drop(f[i].index[[-1]],inplace=True)

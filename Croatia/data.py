@@ -21,7 +21,7 @@ parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
 data22.columns = headers
 
 data22 = data22[data22['HDZ'] != data22['Fokus']]
-data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x))
+data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
@@ -41,7 +41,7 @@ Other = ['o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o1
 data22.columns = headers
 
 data22 = data22[data22['HDZ'] != data22['o3']]
-data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x))
+data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for z in parties:
   data22[z] = [p.sub('0', x) for x in data22[z].astype(str)]

@@ -30,7 +30,7 @@ for i in range(2):
   d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['R'] != d[i]['SDE']]
 
 
@@ -48,7 +48,7 @@ for i in range(2):
   d[i+2]['Date2'] = [x+ str(2022-i) for x in d[i+2]['Date2'].astype(str)]
   d[i+2]['Date'] = d[i+2]['Date2']
   d[i+2] = d[i+2].drop(['Date2'], axis=1)
-  d[i+2].Date=d[i+2].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i+2].Date=d[i+2].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i+2] = d[i+2][d[i+2]['R'] != d[i+2]['SDE']]
 
 d[4]=pd.DataFrame(df[4])
@@ -62,7 +62,7 @@ d[4].Date2.fillna(d[4].Date, inplace=True)
 d[4]['Date2'] = [x+ str(2020) for x in d[4]['Date2'].astype(str)]
 d[4]['Date'] = d[4]['Date2']
 d[4] = d[4].drop(['Date2'], axis=1)
-d[4].Date=d[4].Date.astype(str).apply(lambda x: dateparser.parse(x))
+d[4].Date=d[4].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 d[4] = d[4][d[4]['R'] != d[4]['SDE']]
   
 
@@ -80,7 +80,7 @@ for i in range(2):
   d[i+5]['Date2'] = [x+ str(2020-i) for x in d[i+5]['Date2'].astype(str)]
   d[i+5]['Date'] = d[i+5]['Date2']
   d[i+5] = d[i+5].drop(['Date2'], axis=1)
-  d[i+5].Date=d[i+5].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i+5].Date=d[i+5].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i+5] = d[i+5][d[i+5]['R'] != d[i+5]['SDE']]
 
 d[6].drop(d[6].index[[-1]],inplace=True)

@@ -29,7 +29,7 @@ data22=data22[~data22.Date.str.contains("26 May 2019")]
 data22=data22[~data22.Date.str.contains("13 Jun 2021")]
 data22=data22[~data22.Date.str.contains("23 Jan 2022")]
 data22=data22[~data22.Date.str.contains("24 Feb 2022")]
-data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data22.drop(data22.index[[0]],inplace=True)
 
 

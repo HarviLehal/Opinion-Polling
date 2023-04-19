@@ -95,7 +95,7 @@ data21['CHP Total'] = data21[CHP].sum(axis=1)
 data21['HDP Total'] = data21[HDP].sum(axis=1)
 data21 = data21.drop(CHP + HDP, axis=1)
 
-data21.Date = data21.Date.apply(lambda x: dateparser.parse(x))
+data21.Date = data21.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 print(data21)
 
 
@@ -168,7 +168,7 @@ print(data19)
 
 
 data = pd.concat([data23,data22,data21,data20,data19])
-data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x))
+data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 print(data)
 data.to_csv('Turkish/poll2.csv', index=False)

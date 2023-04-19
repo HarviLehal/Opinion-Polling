@@ -20,7 +20,7 @@ headers = ['Date','SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
 parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
 data22.columns = headers
 
-data22.Date = data22.Date.apply(lambda x: dateparser.parse(x))
+data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
     data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
 print(data22)

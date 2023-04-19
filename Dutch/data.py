@@ -25,7 +25,7 @@ data.Date2.fillna(data.Date, inplace=True)
 data.Date = data.Date2
 data = data.drop(['Date2'],axis=1)
 data.Date = data['Date'].astype(str)
-data.Date = data.Date.apply(lambda x: dateparser.parse(x))
+data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data = data[data['VVD'] != data['BIJ1']]
 
 print(data)
@@ -46,7 +46,7 @@ data2.Date2.fillna(data2.Date, inplace=True)
 data2.Date = data2.Date2
 data2 = data2.drop(['Date2'],axis=1)
 data2.Date = data2['Date'].astype(str)
-data2.Date = data2.Date.apply(lambda x: dateparser.parse(x))
+data2.Date = data2.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 data2 = data2[data2['VVD'] != data2['BIJ1']]
 for z in parties:
     data2[z] = [x.replace('–','') for x in data2[z].astype(str)]

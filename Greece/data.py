@@ -23,7 +23,7 @@ for i in range(1):
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x))
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['ΝΔ'] != d[i]['KKE']]
   for z in parties:
     d[i][z] = d[i][z].str.split(' ').str[0]

@@ -35,7 +35,7 @@ for z in dfs0:
   z['Date'] = [x.replace('–','') for x in z['Date']]
   z['Date'] = [x.replace('-','') for x in z['Date']]
 
-  z.Date = z.Date.apply(lambda x: dateparser.parse(x))
+  z.Date = z.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   
 for x in partiesM:
   dfm0[x] = [y.replace('~','') for y in dfm0[x]]
@@ -63,7 +63,7 @@ for z in dfs1:
   z['Date'] = [x.strip()[-12:] for x in z['Date']]
   z['Date'] = [x.replace('–','') for x in z['Date']]
   z['Date'] = [x.replace('-','') for x in z['Date']]
-  z.Date = z.Date.apply(lambda x: dateparser.parse(x))
+  z.Date = z.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   
 for x in partiesM:
   dfm1[x] = [y.replace('~','') for y in dfm1[x]]
@@ -92,7 +92,7 @@ for z in dfs2:
   z['Date'] = [x.strip()[-12:] for x in z['Date']]
   z['Date'] = [x.replace('–','') for x in z['Date']]
   z['Date'] = [x.replace('-','') for x in z['Date']]
-  z.Date = z.Date.apply(lambda x: dateparser.parse(x))
+  z.Date = z.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   
 for x in partiesM:
   dfm2[x] = [y.replace('~','') for y in dfm2[x]]
