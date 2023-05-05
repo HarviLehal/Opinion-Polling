@@ -13,7 +13,7 @@ df=pd.read_html(str(tables))
 
 # 2023 POLLS
 
-df0=pd.DataFrame(df[0])
+df0=pd.DataFrame(df[1])
 data = df0.drop(['Polling firm','Published by','Sample size', 'Others','Lead'], axis=1)
 headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
