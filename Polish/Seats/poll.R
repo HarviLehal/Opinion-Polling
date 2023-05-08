@@ -21,7 +21,7 @@ old<-min(d$Date)
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
-  scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#122746", "#F9C013", "#A2A9B1"))+
+  scale_color_manual(values = c("#263778","#F68F2D","#851A64","#9ca410","#122746","#A2A9B1","#1BB100","#F9C013"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),legend.title = element_blank())+
   geom_hline(aes(yintercept=h))+
@@ -31,6 +31,6 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-
+plot
 ggsave(plot=plot, file="Polish/Seats/plot.png",width = 15, height = 7.5, type = "cairo-png")
 
