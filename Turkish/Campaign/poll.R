@@ -38,8 +38,8 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=h))+
   geom_text(aes((election),h,label = "50%",hjust=1 ,vjust = -1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=ban, linetype="dashed", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_text(aes(ban,g,label = "Polling Ban", vjust = -1, angle=-90))+
+  # geom_vline(xintercept=ban, linetype="dashed", color = "#56595c", alpha=0.5, size=0.75)+
+  # geom_text(aes(ban,g,label = "Polling Ban", vjust = -1, angle=-90))+
   xlim(old, election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
 plot
