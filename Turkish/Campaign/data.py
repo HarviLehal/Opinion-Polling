@@ -19,15 +19,13 @@ headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 data.columns = headers
 data = data[data['Erdoğan'] != data['İnce']]
-data['Date2'] = data['Date'].str.split('-').str[1]
+data['Date2'] = data['Date'].str.split('–').str[1]
+data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)
 data.Date2.fillna(data.Date, inplace=True)
 data['Date2'] = [x+' 2023' for x in data['Date2'].astype(str)]
 data['Date'] = data['Date2']
 data = data.drop(['Date2'], axis=1)
-
-print(data)
-
-
 data.Date = data.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
 print(data)
 data.to_csv('Turkish/Campaign/poll.csv', index=False)
