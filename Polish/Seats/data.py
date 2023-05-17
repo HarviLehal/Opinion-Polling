@@ -14,10 +14,14 @@ df=pd.read_html(str(tables))
 
 df6=pd.DataFrame(df[9])
 data23 = df6.drop(["Polling Firm/Link", "Sample Size", "Majority"], axis=1)
-headers = ['Date', 'United Right', 'Civic Coalition', 'The Left', 'Polish Coalition-Poland 2050', 'Confederation', 'Others']
-parties = ['United Right', 'Civic Coalition', 'The Left', 'Polish Coalition-Poland 2050', 'Confederation', 'Others']
+headers = ['Date','United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
+parties = ['United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
+threeway = ['Polish Coalition','Poland 2050']
 data23.columns = headers
 print(data23)
+data23[parties] = data23[parties].astype(float)
+data23['Third Way']=np.where(data23['Polish Coalition']<40, data23['Polish Coalition']+data23['Poland 2050'], data23['Polish Coalition'])
+data23=data23.drop(threeway, axis=1)
 
 df7=pd.DataFrame(df[10])
 data22 = df7.drop(["Polling Firm/Link", "Sample Size", "Majority", "Kukiz'15"], axis=1)
@@ -54,7 +58,7 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 print(data)
 data.to_csv('Polish/Seats/poll.csv', index=False)
 
-UO = ['Civic Coalition', 'The Left', 'Polish Coalition', 'Poland 2050', 'Polish Coalition-Poland 2050']
+UO = ['Civic Coalition', 'The Left', 'Polish Coalition', 'Poland 2050', 'Third Way']
 R = ['United Right', 'Confederation']
 
 data[parties] = data[parties].astype(float)
