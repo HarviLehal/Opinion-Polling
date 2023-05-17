@@ -18,6 +18,8 @@ data = df0.drop(['Polling firm','Published by','Sample size','Lead'], axis=1)
 headers = ['Date', 'Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 parties = ['Erdoğan', 'Kılıçdaroğlu', 'Oğan', 'İnce']
 data.columns = headers
+new_row = pd.DataFrame({'Date': '14 May', 'Erdoğan':49.5 , 'Kılıçdaroğlu':44.9 , 'Oğan':5.2 , 'İnce':0.4}, index=[0])
+data = pd.concat([new_row,data]).reset_index(drop=True)
 data = data[data['Erdoğan'] != data['İnce']]
 data['Date2'] = data['Date'].str.split('–').str[1]
 data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)
