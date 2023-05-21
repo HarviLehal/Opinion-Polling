@@ -21,15 +21,19 @@ g <- formattable::percent(0.08)
 
 election<-as.Date("11 11 2023", "%d %m %Y")
 old <-min(d$Date)
+new<-d[d$variable!='Trzecia Droga',]
+new2<-d[d$variable=='Trzecia Droga',]
+new2<-new2[!is.na(new2$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.35)+
-  scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#122746", "#F9C013"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
-  # bbplot::bbc_style()+
+  scale_color_manual(values = c("#263778","#F68F2D","#851A64","#1BB100","#F9C013","#122746","#9ca410"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
+  bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
@@ -45,12 +49,13 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 ggsave(plot=plot1, file="Polish/Votes/plot.png",width = 15, height = 7.5, type = "cairo-png")
 
-plot1<-plot1+  theme(axis.title=element_blank(),legend.title = element_blank(),
-                     legend.key.size = unit(2, 'lines'),
-                     legend.position = "none")
+# plot1<-plot1+  theme(axis.title=element_blank(),legend.title = element_blank(),
+#                      legend.key.size = unit(2, 'lines'),
+#                      legend.position = "none")
 
 poll <- read_csv("Polish/Votes/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
+
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
@@ -75,21 +80,22 @@ d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
+d3<-d3[d3$variable!='PL2050',]
+d3<-d3[d3$variable!='Koalicja',]
+d3<-d3[!is.na(d3$value),]
+d3$variable<-droplevels(d3$variable)
 
 
 
 
-
-plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+plot2<-ggplot(data=d3, aes(x=d3$variable, y=value,fill=interaction(Date,d3$variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#7d8abd","#263778","#fac593","#F68F2D",
-                               "#c274a9","#851A64","#7ed96c","#1BB100",
-                               "#677fa3","#122746","#fcdc88","#F9C013"))+
-                                          geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
-                                                        y = 0),
-                                                    hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),
+                               "#c274a9","#851A64","#677fa3","#122746",
+                               "#ccd173","#9ca410"))+
+  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
             hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
