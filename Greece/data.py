@@ -32,6 +32,9 @@ for i in range(1):
 d[0].drop(d[0].index[[-1,-3]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
+new_row = pd.DataFrame({'Date': '21 May 2023', 'ΝΔ':40.81 , 'ΣΥΡΙΖΑ':20.06 , 'ΠΑΣΟΚ - ΚΙΝΑΛ':11.58 , 'KKE':7.18, 'ΕΛ':4.47, 'ΜέΡΑ25':2.58}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('Greece/poll.csv', index=False)
 
@@ -41,5 +44,7 @@ D[parties] = D[parties].astype(float)
 D['Αριστερά  (ΣΥΡΙΖΑ+ KKE+ ΜέΡΑ25+ ΠΑΣΟΚ)'] = D[Left].sum(axis=1)
 D['Δεξιά     (ΝΔ+ΕΛ)'] = D[Right].sum(axis=1)
 D = D.drop(Left+Right, axis=1)
+
+
 
 D.to_csv('Greece/poll2.csv', index=False)
