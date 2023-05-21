@@ -118,6 +118,7 @@ for z in parties:
   data20[z] = [x.replace('-','0') for x in data20[z].astype(str)]
   data20[z] = data20[z].astype('float').astype(str)
 
+data20[KO]=data20[KO].astype('float')
 data20['KO'] = np.where(data20['KO1'] == data20['KO2'],data20['KO2'],data20[KO].sum(axis=1))
 data20 = data20.drop(KO, axis=1)
 
@@ -152,3 +153,13 @@ data = data[data['PiS'] != data['Lewica']]
 
 
 data.to_csv('Polish/Votes/poll.csv', index=False)
+
+parties = ['PiS','KO','Lewica','Koalicja','PL2050','Konfederacja', 'Trzecia Droga']
+UO = ['KO', 'Lewica', 'Koalicja', 'PL2050', 'Trzecia Droga']
+R = ['PiS', 'Konfederacja']
+data[parties] = data[parties].astype(float)
+data['United Opposition (KO + Lewica + Trzecia Droga)'] = data[UO].sum(axis=1)
+data['Right Wing (PiS + Konfederacja)'] = data[R].sum(axis=1)
+data = data.drop(UO + R, axis=1)
+
+data.to_csv('Polish/Votes/poll2.csv', index=False)

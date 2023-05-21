@@ -47,8 +47,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
-ggsave(plot=plot1, file="Polish/Votes/plot.png",width = 15, height = 7.5, type = "cairo-png")
-
 # plot1<-plot1+  theme(axis.title=element_blank(),legend.title = element_blank(),
 #                      legend.key.size = unit(2, 'lines'),
 #                      legend.position = "none")
@@ -109,4 +107,4 @@ plot2<-ggplot(data=d3, aes(x=d3$variable, y=value,fill=interaction(Date,d3$varia
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
-ggsave(plot=plot, file="Polish/Votes/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Polish/Votes/plot.png",width = 15, height = 7.5, type = "cairo-png")
