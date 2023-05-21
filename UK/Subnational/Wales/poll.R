@@ -21,21 +21,6 @@ old<-as.Date("12 12 2019", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 
-# MAIN GRAPH
-
-plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#E4003B","#0087DC","#1e5b53",
-                                "#FAA61A","#12B6CF","#528D6B"))+
-  bbplot::bbc_style()+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$Date!=old,])+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_hline(yintercept = 0, size = 1, colour="#333333")
-
 
 # LOESS GRAPH
 
@@ -96,7 +81,5 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   coord_flip()
 
 
-plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK/Subnational/Wales/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 ggsave(plot=plot2a, file="UK/Subnational/Wales/plot2.png",width = 15, height = 7.5, type = "cairo-png")
