@@ -28,11 +28,11 @@ old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#325BC7","#E48291",
                                 "#389043","#D61616",
                                 "#6192CE","#B83824"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
