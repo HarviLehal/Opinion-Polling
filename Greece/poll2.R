@@ -81,14 +81,14 @@ d4<-rbind(d2,d1)
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#325BC7","#8fa5e3",
-                               "#E48291","#f2bdc7",
-                               "#389043","#89c793",
-                               "#D61616","#eb8181",
-                               "#6192CE","#acc8e8",
-                               "#C15127","#e09f87",
-                               "#9F1897","#cf78ca",
-                               "#EF3F24","#f79d8f"))+
+  scale_fill_manual(values = c("#8fa5e3","#325BC7",
+                               "#f2bdc7","#E48291",
+                               "#89c793","#389043",
+                               "#eb8181","#D61616",
+                               "#acc8e8","#6192CE",
+                               "#e09f87","#C15127",
+                               "#cf78ca","#9F1897",
+                               "#f79d8f","#EF3F24"))+
   geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 1),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
