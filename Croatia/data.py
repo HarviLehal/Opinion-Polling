@@ -15,49 +15,91 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 df0=pd.DataFrame(df[2])
-data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided", "BM 365","Centar","RF", "NS R", "HNS", "KH","IDS","HSS","HSU","HS", "Others"], axis=1)
-headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Fokus', 'SD']
+data22 = df0.drop(["Polling firm","Votes","Lead"], axis=1)
+headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
+parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
 data22.columns = headers
 
 data22 = data22[data22['HDZ'] != data22['Fokus']]
+data22=data22.reset_index(drop=True)
 data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z]]
+  data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z]]
+  # data22[z] = [x.replace(-,str(np.NaN)) for x in data22[z]]
+  
+for z in parties:
+  data22[z] = data22[z].astype('float')
 
+data22['Centar']=np.where(data22['Centar1'] != data22['Centar2'], data22['Centar1']+data22['Centar2'], data22['Centar1'])
+data22 = data22.drop(["Centar1","Centar2"], axis=1)
+
+Restart = ['SDP','HSS','IDS','HSU']
+data22['Restart']=data22[Restart].sum(axis=1)
+data22 = data22.drop(Restart, axis=1)
+
+headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others','Undecided']
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others','Undecided']
+data22=data22.reindex(columns=headers)
+data22.loc[len(data22.index)-1,['RF']] = np.NaN
+data22.loc[len(data22.index)-2,['RF']] = np.NaN
+data22.loc[len(data22.index)-1,['Fokus']] = np.NaN
+
+data22.to_csv('Croatia/poll.csv', index=False)
+
+data22['Undecided'].fillna(0, inplace=True)
+data22['total']=data22[parties].sum(axis=1)
+
+data22['decided']=data22['total']-data22['Undecided']
 
 print(data22)
-data22.to_csv('Croatia/poll.csv', index=False)
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others']
+data22[parties] = data22[parties].div(data22['decided'], axis=0)*100
+
+data22 = data22.drop(["decided","total","Undecided"], axis=1)
+
+data22.to_csv('Croatia/poll2.csv', index=False)
+
+
+
+
+
+
+
+
+
 
 # FIXED GRAPH
 
-df0=pd.DataFrame(df[2])
-data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided"], axis=1)
-headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
-Other = ['o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
-
-data22.columns = headers
-
-data22 = data22[data22['HDZ'] != data22['o3']]
-data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-
-for z in parties:
-  data22[z] = [p.sub('0', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
-  data22[z] = [x.replace('-','0') for x in data22[z].astype(str)]
-
-data22[parties] = data22[parties].astype(float)
-data22['o2']=np.where(data22['o2'] == data22['o3'], 0, data22['o2'])
-data22['o3']=np.where(data22['o3'] == data22['o4'], 0, data22['o3'])
-data22['o1']=np.where(data22['Možemo!'] == data22['o1'], 0, data22['o1'])
-data22['Other'] = data22[Other].sum(axis=1)
-
-data22 = data22.drop(Other, axis=1)
-parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Other']
-
-data22[parties] = data22[parties].div(data22[parties].sum(axis=1), axis=0)
-
-print(data22)
-data22.to_csv('Croatia/poll2.csv', index=False)
+# df0=pd.DataFrame(df[2])
+# data22 = df0.drop(["Polling firm","Votes","Lead", "Undecided"], axis=1)
+# headers = ['Date', 'HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
+# parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
+# Other = ['o1', 'o2', 'o3', 'o4', 'o5', 'o6', 'o7', 'o8', 'o9', 'o10', 'o11', 'o12', 'o13', 'o14']
+# 
+# data22.columns = headers
+# 
+# data22 = data22[data22['HDZ'] != data22['o3']]
+# data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+# 
+# for z in parties:
+#   data22[z] = [p.sub('0', x) for x in data22[z].astype(str)]
+#   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
+#   data22[z] = [x.replace('-','0') for x in data22[z].astype(str)]
+#   
+# 
+# data22[parties] = data22[parties].astype(float)
+# data22['o2']=np.where(data22['o2'] == data22['o3'], 0, data22['o2'])
+# data22['o3']=np.where(data22['o3'] == data22['o4'], 0, data22['o3'])
+# data22['o1']=np.where(data22['Možemo!'] == data22['o1'], 0, data22['o1'])
+# data22['Other'] = data22[Other].sum(axis=1)
+# 
+# data22 = data22.drop(Other, axis=1)
+# parties = ['HDZ', 'SDP', 'DP', 'Most', 'Možemo!', 'Other']
+# 
+# data22[parties] = data22[parties].div(data22[parties].sum(axis=1), axis=0)
+# 
+# print(data22)
+# data22.to_csv('Croatia/poll2.csv', index=False)
