@@ -44,7 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
   geom_hline(aes(yintercept=h))+
-  geom_text(aes((election-5),h,label = "4% Threshold",hjust=1 ,vjust = -1),colour="#56595c")+
+  geom_text(aes((next_election-5),h,label = "4% Threshold",hjust=1 ,vjust = -1),colour="#56595c")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=old_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), next_election)+

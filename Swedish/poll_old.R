@@ -27,7 +27,7 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#A60D0E","#DF253A","#419129","#1E4838", "#2B69B3", "#3F9BDB","#255DA1","#F9E00C"))+
+  scale_color_manual(values = c("#A60D0E","#DF253A","#419129","#1E4838", "#2B69B3", "#3F9BDB","#255DA1","#e0ca0b"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -43,13 +43,13 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 
 
-poll <- read_csv("Swedish/poll.csv")
-poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date))
+poll <- read_csv("Swedish/poll_old.csv")
+Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
+  as.numeric(x)))
+d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1])
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -57,6 +57,7 @@ d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
+d3 <- as.data.frame(d3)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
@@ -66,24 +67,30 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
-d3<-rbind(d2,d1)
+d3 <- reshape2::melt(d3, id.vars="Date")
+d3$value<-as.numeric(d3$value)/100
+d3$value<-formattable::percent(d3$value, digits = 1)
 
-plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+d4<-rbind(d1,d2,d3)
+
+plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#d17171","#A60D0E","#f08d97","#DF253A",
-                             "#93c981","#419129","#74a391","#1E4838",
-                             "#86add9","#2B69B3","#9acced","#3F9BDB",
-                             "#7ea2cf","#255DA1","#fcf086","#F9E00C"))+
-geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+scale_fill_manual(values = c("#af2526","#d17171","#A60D0E","#e23b4e","#f08d97","#DF253A",
+                             "#549c3e","#93c981","#419129","#355a4c","#74a391","#1E4838",
+                             "#4078bb","#86add9","#2B69B3","#52a5df","#9acced","#3F9BDB",
+                             "#3b6daa","#7ea2cf","#255DA1","#e3cf23","#f0e585","#e0ca0b"))+
+geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2),
+              y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
-          hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+geom_text(aes(label = ifelse(d4$Date == min(d4$Date),paste("(",d2$value,")"),""),
+              y = 0),
+          hjust=0, color="#000000", position = position_dodge(1), size=3.5)+
 theme_minimal()+
 theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('30 day average \n (2018 Result)')+
+ggtitle(' 2022 Result \n 7 day average \n (2018 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
