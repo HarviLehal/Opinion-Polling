@@ -243,7 +243,7 @@ plotC<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotC
 
 ggsave(plot=plotC, file="Swedish/plot3.png",width = 15, height = 7.5, type="cairo-png")
-ggsave(plot=plotB, file="Swedish/plot3.svg",width = 15, height = 7.5)
+ggsave(plot=plotC, file="Swedish/plot3.svg",width = 15, height = 7.5)
 aaa=readLines("Swedish/plot3.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
 writeLines(bbb,"Swedish/plot3.svg")
