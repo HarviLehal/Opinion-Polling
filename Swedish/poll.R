@@ -28,7 +28,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#A60D0E","#DF253A","#419129","#1E4838", "#2B69B3", "#3F9BDB","#255DA1","#e0ca0b"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -49,7 +49,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1])
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -83,7 +83,7 @@ theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('30 day average \n (2022 Result)')+
+ggtitle('14 day average \n (2022 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
@@ -92,7 +92,10 @@ plotA<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotA
 
 ggsave(plot=plotA, file="Swedish/plot.png",width = 15, height = 7.5, type="cairo-png")
-
+ggsave(plot=plotA, file="Swedish/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Swedish/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Swedish/plot.svg")
 
 # COALITION GRAPH
 
@@ -107,7 +110,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DF253A","#3F9BDB"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -126,7 +129,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1])
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -157,7 +160,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('30 day average \n (2022 Result)')+
+  ggtitle('14 day average \n (2022 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
@@ -166,7 +169,10 @@ plotB<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotB
 
 ggsave(plot=plotB, file="Swedish/plot2.png",width = 15, height = 7.5, type="cairo-png")
-
+ggsave(plot=plotB, file="Swedish/plot2.svg",width = 15, height = 7.5)
+aaa=readLines("Swedish/plot2.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Swedish/plot2.svg")
 
 # COALITION SEAT GRAPH
 
@@ -181,7 +187,7 @@ h <- 175
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DF253A","#3F9BDB"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -201,7 +207,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- round(colMeans(poll[-1]))
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -228,7 +234,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('30 day average \n (2022 Result)')+
+  ggtitle('14 day average \n (2022 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
@@ -237,3 +243,7 @@ plotC<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotC
 
 ggsave(plot=plotC, file="Swedish/plot3.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plotB, file="Swedish/plot3.svg",width = 15, height = 7.5)
+aaa=readLines("Swedish/plot3.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Swedish/plot3.svg")
