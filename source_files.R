@@ -3,6 +3,7 @@
 source("Australia/poll.R")
 source("Canada/poll.R")
 source("Croatia/poll.R")
+source("Denmark/poll.R")
 source("Dutch/poll.R")
 source("German/Federal/poll.R")
 source("German/State/Thuringia/poll.R")
