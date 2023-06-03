@@ -8,6 +8,7 @@ So far I have graphed polls for:
 * The next Australian Federal Election
 * The next Canadian Federal Election
 * The next Croatian Sabor Election
+* The next Danish Folketing election
 * The next Dutch Tweede Kamer election
 * ~~The 2023 Estonian Riigikogu Election~~
 * ~~The 2023 Finnish Eduskunta Election~~
