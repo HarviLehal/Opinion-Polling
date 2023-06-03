@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
 
-wikiurl="https://fr.wikipedia.org/wiki/Liste_de_sondages_pour_les_%C3%A9lections_l%C3%A9gislatives_slovaques_de_2023"
+wikiurl="https://fr.wikipedia.org/wiki/Liste_de_sondages_pour_les_élections_législatives_slovaques_de_2023"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
