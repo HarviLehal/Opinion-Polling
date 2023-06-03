@@ -56,9 +56,9 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-30),]
-poll[-1][is.na(poll[-1])] <- 0
-d2[-1][is.na(d2[-1])] <- 0
-d1 <- colMeans(poll[-1])
+# poll[-1][is.na(poll[-1])] <- 0
+# d2[-1][is.na(d2[-1])] <- 0
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -83,7 +83,8 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#8ccf8f","#369C3A","#fadc84","#F3BB0C","#6c6aba","#221DC1"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value,""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),
+                y = 0),
             hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -96,7 +97,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 plot<-plot+theme(legend.position = "none")
 plot2<-ggarrange(plot, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-
+plot2
 ggsave(plot=plot2, file="Lithuanian/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 
 ggsave(plot=plot2, file="Lithuanian/plot.svg",width = 15, height = 7.5)

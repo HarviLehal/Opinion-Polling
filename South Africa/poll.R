@@ -14,10 +14,13 @@ poll <- read_csv("South Africa/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(sub("%","",d$value))/100
-d$value[is.nan(d$value)] <- 0
+# d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 election<-as.Date("08 05 2024", "%d %m %Y")
 old <-min(d$Date)
+new<-d[d$variable!='Action SA',]
+new2<-d[d$variable=='Action SA',]
+new2<-new2[!is.na(new2$value),]
 
 # LOESS GRAPH
 
@@ -28,7 +31,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.9,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.9,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -72,7 +76,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#69d373","#05b615"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.nan(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),
                 y = 0),
             hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
   theme_minimal()+
