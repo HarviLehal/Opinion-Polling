@@ -26,6 +26,7 @@ So far I have graphed polls for:
 * The next Polish Sejm Election
     - Along with seat projections
 * The next Slovak Národná rada Election
+* The next South African General Election
 * The next Swedish Riksdag Election
 * ~~The 2023 Turkish Presidential Election~~
 * The next UK General Election
