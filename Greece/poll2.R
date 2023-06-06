@@ -33,7 +33,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#389043","#D61616",
                                 "#6192CE","#C15127",
                                 "#9F1897","#EF3F24"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
