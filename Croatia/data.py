@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-df0=pd.DataFrame(df[2])
+df0=pd.DataFrame(df[1])
 data22 = df0.drop(["Polling firm","Votes","Lead"], axis=1)
 headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
 parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
@@ -103,3 +103,4 @@ data22.to_csv('Croatia/poll2.csv', index=False)
 # 
 # print(data22)
 # data22.to_csv('Croatia/poll2.csv', index=False)
+
