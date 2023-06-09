@@ -21,11 +21,12 @@ for i in range(4):
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
   d[i].columns = headers
-  for z in headers:
+  for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('–','-') for x in d[i][z]]
-    d[i][z] = [x.replace('TBC','-') for x in d[i][z]]
-    d[i][z] = [x.replace('?','-') for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -34,8 +35,14 @@ for i in range(4):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Con'] != d[i]['Reform']]
-  
+
 D = pd.concat(d.values(), ignore_index=True)
+
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = D[z].str.strip('%')
+  D[z] = D[z].astype('float')
+  
 D.drop(D.index[[-2]],inplace=True)
 D.loc[len(D.index),['Date']] = '12 Dec 2019'
 

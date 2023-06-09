@@ -8,13 +8,15 @@ library(reshape2)
 library(readr)
 library(formattable)
 library(ggpubr)
+library(zoo)
+library(dplyr)
 
 py_run_file("UK/general_polling/data.py")
 poll <- read_csv("UK/general_polling/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value<-as.numeric(sub("%","",d$value))/100
-d$value[is.nan(d$value)] <- 0
+d$value<-as.numeric(d$value)/100
+d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
 
@@ -28,12 +30,18 @@ g<-formattable::percent(0.55)
 
 # MAIN GRAPH
 
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = zoo::rollmean(value, k = 14, fill = NA, align = "right"))
+
+
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$Date!=old,])+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_vline(xintercept=starm, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=davey, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=green, linetype="dashed", color = "#528D6B", alpha=0.5, size=1)+
@@ -47,8 +55,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
+plot1
 
 # ggsave(plot=plot1, file="UK/general_polling/plot1.png",width = 15, height = 7.5, type = "cairo-png")
 
@@ -109,7 +117,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -143,7 +151,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('7 day average \n (2019 Result)')+
+  ggtitle('14 day average \n (2019 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
