@@ -46,6 +46,31 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = zoo::rollmean(value, k = 7, fill = NA, align = "right"))
+
+
+plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
+                                "#FBBE00","#AA692F","#B43377"))+
+  # geom_ma(data=d,n=7,linetype="solid")+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  # bbplot::bbc_style()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
+  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+plot3
 poll <- read_csv("German/Federal/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
@@ -99,3 +124,9 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="German/Federal/plot.png",width = 15, height = 7.5, type="cairo-png")
+
+plot<-ggarrange(plot3, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot
+ggsave(plot=plot, file="German/Federal/plot2.png",width = 15, height = 7.5, type="cairo-png")
+
+
