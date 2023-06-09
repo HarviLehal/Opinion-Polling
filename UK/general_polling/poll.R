@@ -16,7 +16,7 @@ poll <- read_csv("UK/general_polling/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
-d$value[is.na(d$value)] <- 0
+# d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
 
@@ -33,8 +33,7 @@ g<-formattable::percent(0.55)
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = zoo::rollmean(value, k = 14, fill = NA, align = "right"))
-
+  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
