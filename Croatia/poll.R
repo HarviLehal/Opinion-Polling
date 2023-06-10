@@ -24,8 +24,8 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#255AAA","#DF262D","#082464","#DC5A2D",
                                 "#CBE264","#cc0404","#cc1c74","#05accc",
-                                "#e4bc42","#ff931e","#3cb371","#4a217b",
-                                "#043c7c","#841116","#bbbdbe","#56595c"))+
+                                "#e4bc42","#ff931e","#043c7c","#841116",
+                                "#bbbdbe","#56595c"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
