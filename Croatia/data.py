@@ -16,8 +16,8 @@ p = re.compile(r'\[[a-z]+\]')
 
 df0=pd.DataFrame(df[1])
 data22 = df0.drop(["Polling firm","Votes","Lead"], axis=1)
-headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
-parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','BM365','NS-R','IDS','HSS','HSU','HS','SD','Others','Undecided']
+headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
+parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
 data22.columns = headers
 
 data22 = data22[data22['HDZ'] != data22['Fokus']]
@@ -40,8 +40,8 @@ Restart = ['SDP','HSS','IDS','HSU']
 data22['Restart']=data22[Restart].sum(axis=1)
 data22 = data22.drop(Restart, axis=1)
 
-headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others','Undecided']
-parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others','Undecided']
+headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
 data22=data22.reindex(columns=headers)
 data22.loc[len(data22.index)-1,['RF']] = np.NaN
 data22.loc[len(data22.index)-2,['RF']] = np.NaN
@@ -55,7 +55,7 @@ data22['total']=data22[parties].sum(axis=1)
 data22['decided']=data22['total']-data22['Undecided']
 
 print(data22)
-parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','BM365','NS-R','HS','SD','Others']
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others']
 data22[parties] = data22[parties].div(data22['decided'], axis=0)*100
 
 data22 = data22.drop(["decided","total","Undecided"], axis=1)

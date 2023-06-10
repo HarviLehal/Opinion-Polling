@@ -39,10 +39,6 @@ c[1]['A-IV']=np.where(c[1]['A']==c[1]['IV'],c[1]['A'],c[1]['A']+c[1]['IV'])
 threeway = ['A','IV']
 c[1] = c[1].drop(threeway, axis=1)
 
-# for z in threeway:
-data23['Koalicja'][data23['Koalicja']==data23['Trzecia Droga']]=np.nan
-data23['PL2050'][data23['Trzecia Droga']==data23['PL2050']]=np.nan
-
 headers = ['Date','FdI','PD','M5S','Lega','FI','A-IV','AVS','+E','Italexit']
 parties = ['FdI','PD','M5S','Lega','FI','A-IV','+E','Italexit']
 for j in range(1):
@@ -58,9 +54,6 @@ for j in range(1):
   c[i+2].Date=c[i+2].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   c[i+2] = c[i+2][c[i+2]['FdI'] != c[i+2]['+E']]
   
-  
-for i in range(2):
-  c[i+2].drop(c[i+2].index[[-1]],inplace=True)
 
 C = pd.concat(c.values(), ignore_index=True)
 C.to_csv('Italy/poll.csv', index=False)
