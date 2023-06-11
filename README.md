@@ -21,7 +21,7 @@ So far I have graphed polls for:
 * The next Irish Dáil Election
 * The next Italian General Election
 * The next Lithuanian Seimas Election
-* The next Montenergrin Skupština Election
+* ~~The 2023 Montenergrin Skupština Election~~
 * The next New Zealand General Election
 * The next Norwegian Storting Election
 * The next Polish Sejm Election
