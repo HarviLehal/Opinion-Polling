@@ -13,7 +13,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df6=pd.DataFrame(df[10])
+df6=pd.DataFrame(df[9])
 data23 = df6.drop(["Polling Firm/Link", "Sample Size", "Majority",'KO+L+KP +P2050'], axis=1)
 headers = ['Date','United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
 parties = ['United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
@@ -21,10 +21,10 @@ threeway = ['Polish Coalition','Poland 2050']
 data23.columns = headers
 print(data23)
 data23[parties] = data23[parties].astype(float)
-data23['Third Way']=np.where(data23['Polish Coalition']<40, data23['Polish Coalition']+data23['Poland 2050'], data23['Polish Coalition'])
+data23['Third Way']=np.where(data23['Polish Coalition']<20, data23['Polish Coalition']+data23['Poland 2050'], data23['Polish Coalition'])
 data23=data23.drop(threeway, axis=1)
 
-df7=pd.DataFrame(df[11])
+df7=pd.DataFrame(df[10])
 data22 = df7.drop(["Polling Firm/Link", "Sample Size", "Majority", "Kukiz'15",'KO+L+KP +P2050'], axis=1)
 headers = ['Date', 'United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']
 parties = ['United Right', 'Civic Coalition', 'The Left', 'Polish Coalition', 'Confederation', 'Poland 2050', 'Others']
@@ -32,7 +32,7 @@ data22.columns = headers
 data22.drop(data22.tail(1).index,inplace=True)
 print(data22)
 
-df8=pd.DataFrame(df[12])
+df8=pd.DataFrame(df[11])
 data21 = df8.drop(["Polling Firm/Link", "Sample Size", "Majority",'KO+L+KP +P2050'], axis=1)
 data21.columns = headers
 data21.drop(data21.index[[-1,-3]],inplace=True)
