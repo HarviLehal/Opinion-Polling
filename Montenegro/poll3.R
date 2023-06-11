@@ -11,6 +11,7 @@ library(svglite)
 library(Rcpp)
 library(ggpubr)
 
+py_run_file("Montenegro/data2.py")
 poll <- read_csv("Montenegro/poll3.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
@@ -26,7 +27,7 @@ plot<-ggplot(data=d[d$Date!=old|d$Date!=election,],aes(x=Date,y=value, colour=va
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.75)+
   scale_color_manual(values = c("#6866B2","#F08080","#00008B","#6CB4EE",
                                 "#32CD32","#FF0000","#2B2C2D","#FFCC00","#800080"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
