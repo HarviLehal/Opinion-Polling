@@ -107,11 +107,20 @@ D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1,-3]],inplace=True)
 
 Sumar = ['SMR', 'UP', 'MP']
-parties = ['PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB','MP','UP']
+parties = ['PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB','MP','UP','Cs']
 D[parties] = D[parties].apply(lambda x: x.str.strip()).replace('', np.nan)
 D = D.drop(D[D["PSOE"]=='29.0nan'].index)
 D[parties] = D[parties].astype(float)
 D['Sumar'] = D[Sumar].sum(axis=1)
 D = D.drop(Sumar, axis=1)
+D = D.drop(D[D["Sumar"]==38.4].index)
 
 D.to_csv('Spain/poll.csv', index=False)
+
+Left = ['Sumar','PSOE','PNV','EHB','ERC']
+Right = ['PP','VOX']
+D['Left (PSOE + Sumar + PNV + EHB + ERC)'] = D[Left].sum(axis=1)
+D['Right (PP + VOX)'] = D[Right].sum(axis=1)
+D = D.drop(Left + Right, axis=1)
+
+D.to_csv('Spain/poll2.csv', index=False)
