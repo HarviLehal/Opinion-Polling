@@ -31,3 +31,13 @@ data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_
 print(data22)
 
 data22.to_csv('Icelandic/poll.csv', index=False)
+data22[parties] = data22[parties].astype(float)
+
+Left = ['V','S','P','F','J']
+Right = ['D','B','M']
+
+data22['Left (VSPFJ)'] = data22[Left].sum(axis=1)
+data22['Right (DBM)'] = data22[Right].sum(axis=1)
+data22 = data22.drop(Left + Right, axis=1)
+
+data22.to_csv('Icelandic/poll2.csv', index=False)
