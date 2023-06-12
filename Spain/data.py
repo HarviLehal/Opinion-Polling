@@ -114,6 +114,7 @@ D[parties] = D[parties].astype(float)
 D['Sumar'] = D[Sumar].sum(axis=1)
 D = D.drop(Sumar, axis=1)
 D = D.drop(D[D["Sumar"]==38.4].index)
+D = D.drop(D[D["Date"]==dateparser.parse('2022-12-22')].index)
 
 D.to_csv('Spain/poll.csv', index=False)
 
