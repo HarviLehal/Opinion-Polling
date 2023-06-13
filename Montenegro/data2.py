@@ -63,7 +63,7 @@ import re
 df = pd.read_csv('Montenegro/poll2.csv')
 new_row1 = pd.DataFrame({'Date':'28 May 2023','DPS':22.1,'SD':np.nan,'DF':15.3 ,'SNP':2.4,'DCG':np.nan,'CnB':np.nan,'DCG-URA':12.9,'BS':4.3,'SDP':np.nan,'ASh':np.nan,'PES!':32.5},index=[0])
 
-new_row = pd.DataFrame({'Date':'11 June 2023','DPS':23.8,'SD':np.nan,'DF':14.8 ,'SNP':3.3,'DCG':np.nan,'CnB':np.nan,'DCG-URA':12.3,'BS':6.9,'SDP':2.8,'ASh':1.4,'PES!':25.6},index=[0])
+new_row = pd.DataFrame({'Date':'11 June 2023','DPS':23.3,'SD':np.nan,'DF':14.8 ,'SNP':3.2,'DCG':np.nan,'CnB':np.nan,'DCG-URA':12.5,'BS':7.1,'SDP':2.9,'ASh':1.9,'PES!':25.6},index=[0])
 D = pd.concat([new_row1,df]).reset_index(drop=True)
 D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
