@@ -27,7 +27,7 @@ old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#03386a","#ef1c27","#fcec3f",
                                 "#048404","#0484dc","#0039aa",
                                 "#d4448c","#bc3454","#fcd404",
@@ -55,7 +55,7 @@ d <- d %>%
 
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#03386a","#ef1c27","#fcec3f",
                                 "#048404","#0484dc","#0039aa",
                                 "#d4448c","#bc3454","#fcd404",
