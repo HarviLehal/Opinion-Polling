@@ -32,8 +32,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#325BC7","#E48291",
                                 "#389043","#D61616",
                                 "#6192CE","#C15127",
-                                "#9F1897","#EF3F24"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.55,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
+                                "#9F1897","#EF3F24",
+                                "#E8B460"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -88,7 +89,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#acc8e8","#6192CE",
                                "#e09f87","#C15127",
                                "#cf78ca","#9F1897",
-                               "#f79d8f","#EF3F24"))+
+                               "#f79d8f","#EF3F24",
+                               "#f1d2a0","#E8B460"))+
   geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 1),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+

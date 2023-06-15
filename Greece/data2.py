@@ -12,12 +12,12 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25']
-parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25']
+headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','Σπαρτιάτες']
+parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','Σπαρτιάτες']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Polling firm/Commissioner","Sample size","Lead","SPARTANS"], axis=1)
+  d[i]=d[i].drop(["Polling firm/Commissioner","Sample size","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
