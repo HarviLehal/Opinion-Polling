@@ -12,11 +12,11 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
-p = re.compile(r'\[[a-z]+\]')
+p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9','drop10','drop11','drop12']
+headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9']
 parties = ['PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB']
-drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8','drop9','drop10','drop11','drop12']
+drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8','drop9']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
