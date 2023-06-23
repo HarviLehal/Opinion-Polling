@@ -55,7 +55,7 @@ plot1
 # BAR CHART!!
 poll <- read_csv("Greece/poll2.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date))
+Date <- c(max(poll$Date,na.rm=TRUE))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
