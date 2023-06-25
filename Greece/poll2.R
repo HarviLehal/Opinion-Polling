@@ -31,9 +31,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#325BC7","#E48291",
                                 "#389043","#D61616",
-                                "#6192CE","#C15127",
-                                "#9F1897","#EF3F24",
-                                "#E8B460"))+
+                                "#E8B460","#6192CE",
+                                "#C15127","#9F1897",
+                                "#EF3F24"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -55,18 +55,20 @@ plot1
 # BAR CHART!!
 poll <- read_csv("Greece/poll2.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date,na.rm=TRUE))
+Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
+  as.numeric(x)))
+d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-1),]
-d1 <- colMeans(poll[-1],na.rm = TRUE)
+poll<-poll[poll$Date>(max(poll$Date)-7),]
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
+d3 <- as.data.frame(d3)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
@@ -76,22 +78,25 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
-d4<-rbind(d2,d1)
+d3 <- reshape2::melt(d3, id.vars="Date")
+d3$value<-as.numeric(d3$value)/100
+d3$value<-formattable::percent(d3$value, digits = 1)
 
+d4<-rbind(d1,d2,d3)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#8fa5e3","#325BC7",
-                               "#f2bdc7","#E48291",
-                               "#89c793","#389043",
-                               "#eb8181","#D61616",
-                               "#acc8e8","#6192CE",
-                               "#e09f87","#C15127",
-                               "#cf78ca","#9F1897",
-                               "#f79d8f","#EF3F24",
-                               "#f1d2a0","#E8B460"))+
-  geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 1),
+  scale_fill_manual(values = c("#325BC7","#8fa5e3","#325BC7",
+                               "#E48291","#f2bdc7","#E48291",
+                               "#389043","#89c793","#389043",
+                               "#D61616","#eb8181","#D61616",
+                               "#E8B460","#f1d2a0","#E8B460",
+                               "#6192CE","#acc8e8","#6192CE",
+                               "#C15127","#e09f87","#C15127",
+                               "#9F1897","#cf78ca","#9F1897",
+                               "#EF3F24","#f79d8f","#EF3F24"))+
+  geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),paste("(",d2$value,")"),""),
@@ -102,13 +107,14 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('7 day Average \n (May 2023 Election)')+
+  ggtitle(' Results (70.30% Reporting) \n 7 day Average \n (2019 Election)')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
+
 
 ggsave(plot=plot, file="Greece/plot2.png",width = 15, height = 7.5, type="cairo-png")
 

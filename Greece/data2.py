@@ -29,11 +29,11 @@ for i in range(1):
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = [x.replace('–','') for x in d[i][z].astype(str)]
     
-d[0].drop(d[0].index[[-1,-3]],inplace=True)
+d[0].drop(d[0].index[[-1,-3,0,1,2,3]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
-# new_row = pd.DataFrame({'Date': '21 May 2023', 'ΝΔ':40.81 , 'ΣΥΡΙΖΑ':20.06 , 'ΠΑΣΟΚ - ΚΙΝΑΛ':11.58 , 'KKE':7.18, 'ΕΛ':4.47, 'ΜέΡΑ25':2.58}, index=[0])
-# D = pd.concat([new_row,D]).reset_index(drop=True)
-# D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+new_row = pd.DataFrame({'Date': '25 June 2023', 'ΝΔ':40.43 , 'ΣΥΡΙΖΑ':17.83 , 'ΠΑΣΟΚ':12.23 , 'KKE':7.49,'Σπαρτιάτες':4.71,'ΕΛ':4.49,'Νίκη':3.74,'ΠΕ':3.15,'ΜέΡΑ25':2.42}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('Greece/poll2.csv', index=False)
