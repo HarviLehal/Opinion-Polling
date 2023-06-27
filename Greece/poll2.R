@@ -28,13 +28,13 @@ old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#325BC7","#E48291",
                                 "#389043","#D61616",
-                                "#E8B460","#6192CE",
-                                "#C15127","#9F1897",
-                                "#EF3F24"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
+                                "#6192CE","#C15127",
+                                "#9F1897","#EF3F24",
+                                "#E8B460"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -91,11 +91,11 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#E48291","#f2bdc7","#E48291",
                                "#389043","#89c793","#389043",
                                "#D61616","#eb8181","#D61616",
-                               "#E8B460","#f1d2a0","#E8B460",
                                "#6192CE","#acc8e8","#6192CE",
                                "#C15127","#e09f87","#C15127",
                                "#9F1897","#cf78ca","#9F1897",
-                               "#EF3F24","#f79d8f","#EF3F24"))+
+                               "#EF3F24","#f79d8f","#EF3F24",
+                               "#E8B460","#f1d2a0","#E8B460"))+
   geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -107,7 +107,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Results (70.30% Reporting) \n 7 day Average \n (2019 Election)')+
+  ggtitle(' Results \n 7 day Average \n (2019 Election)')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 

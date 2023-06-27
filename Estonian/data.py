@@ -83,7 +83,8 @@ for i in range(2):
   d[i+5].Date=d[i+5].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i+5] = d[i+5][d[i+5]['R'] != d[i+5]['SDE']]
 
-d[6].drop(d[6].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
+D.drop(D.index[[-1,1]],inplace=True)
+
 D.to_csv('Estonian/poll.csv', index=False)
