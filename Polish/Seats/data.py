@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 df6=pd.DataFrame(df[9])
-data23 = df6.drop(["Polling Firm/Link", "Sample Size", "Majority",'KO+L+KP +P2050'], axis=1)
+data23 = df6.drop(["Polling Firm/Link", "Sample Size", "Majority",'KO+L+TD'], axis=1)
 headers = ['Date','United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
 parties = ['United Right','Civic Coalition','The Left','Polish Coalition','Poland 2050','Confederation','Others']
 threeway = ['Polish Coalition','Poland 2050']
@@ -68,3 +68,4 @@ data['Right Wing (PiS + Konfederacja)'] = data[R].sum(axis=1)
 data = data.drop(UO + R, axis=1)
 
 data.to_csv('Polish/Seats/poll2.csv', index=False)
+
