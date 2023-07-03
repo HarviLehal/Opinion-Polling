@@ -16,7 +16,7 @@ So far I have graphed polls for:
   - The Landtag Elections in:
     * Thuringia
     * ~~Bremen~~
-* The 2023 Greek Βουλή Election
+* ~~The 2023 Greek Βουλή Election~~
 * The next Icelandic Alþing Election
 * The next Irish Dáil Election
 * The next Italian General Election
