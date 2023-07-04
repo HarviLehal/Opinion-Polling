@@ -46,6 +46,9 @@ p = re.compile(r'\[[a-z]+\]')
 for z in parties:
         data[z] = [p.sub('', x) for x in data[z].astype(str)]
         data[z] = data[z].astype('float').astype(str)
+        
+
+data[Date] = [p.sub('', x) for x in data[Date].astype(str)]
 data['Date2'] = data['Date'].str.split('–').str[1]
 data.Date2.fillna(data['Date'].str.split('-').str[1], inplace=True)
 data.Date2.fillna(data.Date, inplace=True)
