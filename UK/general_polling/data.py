@@ -26,6 +26,7 @@ for i in range(4):
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)

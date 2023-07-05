@@ -29,12 +29,18 @@ f<-formattable::percent(0.6)
 
 # MAIN GRAPH
 
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+
+
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_ma(ma_fun=EMA, n = 5,linetype="solid",linewidth=0.75,wilder=TRUE, data=d[d$Date!=old,])+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
