@@ -26,11 +26,11 @@ old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#ef1c27","#1d84ce","#63be21",
                                 "#ffb232","#00c7ae","#4aae4a",
                                 "#b5cf18","#ec640c","#ef4b91"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -43,7 +43,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
-
+plot1
 # Moving Average
 
 
@@ -115,6 +115,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
+plot
 
 ggsave(plot=plot, file="Spain/plot.png",width = 15, height = 7.5, type="cairo-png")
 
