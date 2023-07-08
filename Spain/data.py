@@ -120,7 +120,7 @@ D.to_csv('Spain/poll.csv', index=False)
 
 Left = ['Sumar','PSOE','PNV','EHB','ERC']
 Right = ['PP','VOX']
-D['Left (PSOE + Sumar + PNV + EHB + ERC)'] = D[Left].sum(axis=1)
+D['Govt (PSOE + Sumar + EHB + ERC + PNV)'] = D[Left].sum(axis=1)
 D['Right (PP + VOX)'] = D[Right].sum(axis=1)
 D = D.drop(Left + Right, axis=1)
 
