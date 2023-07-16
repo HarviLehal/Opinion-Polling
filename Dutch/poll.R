@@ -15,7 +15,7 @@ py_run_file("Dutch/data.py")
 poll <- read_csv("Dutch/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
-election<-as.Date("01 03 2025", "%d %m %Y")
+election<-as.Date("22 11 2023", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -46,7 +46,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 poll <- read_csv("Dutch/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
-election<-as.Date("01 03 2025", "%d %m %Y")
+election<-as.Date("22 11 2023", "%d %m %Y")
 old <-min(d$Date)
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
