@@ -57,7 +57,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#552C83","#262B57","#DD601C",
                                 "#45B6B1","#8C2591","#99C11A",
                                 "#FBFD00","#162141"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
