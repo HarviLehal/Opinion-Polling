@@ -19,7 +19,6 @@ poll <- read_csv("NewZealand/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-h <- formattable::percent(0.05)
 
 election<-as.Date("14 10 2023", "%d %m %Y")
 old <-min(d$Date)
@@ -30,15 +29,14 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#CC3028","#00529F",
-                                "#098137","#FBBE00"))+
+                                "#098137","#FBBE00",
+                                "#b30013"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.55,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
-  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -77,7 +75,8 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
 scale_fill_manual(values = c("#F7B7B7","#CC3028","#B5CEFF","#00529F",
-                             "#9EED8E","#098137","#fadc7d","#FBBE00"))+
+                             "#9EED8E","#098137","#fadc7d","#FBBE00",
+                             "#d16671","#b30013"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -177,7 +176,7 @@ plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable),
 
 
 plot2<-ggarrange(plot1a, plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
-plot
+plot2
 
 ggsave(plot=plot2, file="NewZealand/plot2.png",width = 15, height = 7.5, type="cairo-png")
 
