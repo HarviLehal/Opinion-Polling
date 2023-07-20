@@ -11,6 +11,7 @@ library(svglite)
 library(Rcpp)
 library(ggpubr)
 
+py_run_file("Dutch/data2.py")
 poll <- read_csv("Dutch/poll3.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-formattable::percent(d$value)

@@ -62,6 +62,7 @@ for z in parties:
   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
   data2[z] = [x.replace('%', 'e-2') for x in data2[z].astype(str)]
 data2[parties] = data2[parties].astype(float)
+data2['PvdA']=np.where(data2['PvdA']>0.1, 0, data2['PvdA'])
 Fusie=['PvdA','GL']
 data2[Fusie] = data2[Fusie].astype(float)
 data2['PvdA-GL'] = data2[Fusie].sum(axis=1)
