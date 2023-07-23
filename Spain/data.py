@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9']
-parties = ['PSOE','PP','VOX','SMR','ERC','JxCat','PNV','EHB']
+headers = ['drop1','Date','drop2','drop3','PSOE','PP','SMR','VOX','ERC','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9']
+parties = ['PSOE','PP','SMR','VOX','ERC','JxCat','PNV','EHB']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8','drop9']
 d = {}
 for i in range(1):
@@ -116,6 +116,14 @@ D = D.drop(Sumar, axis=1)
 D = D.drop(D[D["Sumar"]==38.4].index)
 D = D.drop(D[D["Date"]==dateparser.parse('2022-12-22')].index)
 
+new_row = pd.DataFrame({'Date':'24 July 2023','PSOE':31.71,'PP':33.01,'VOX':12.39,'ERC':1.89,'JxCat':1.6,'PNV':1.13,'EHB':1.36,'Cs':np.nan,'Sumar':12.31}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.drop(D.index[[1,2,3]],inplace=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+D = D[['Date','PSOE','PP','Sumar','VOX','ERC','JxCat','PNV','EHB', 'Cs']]
+
+
 D.to_csv('Spain/poll.csv', index=False)
 
 Left = ['Sumar','PSOE','PNV','EHB','ERC']
@@ -123,5 +131,5 @@ Right = ['PP','VOX']
 D['Govt (PSOE + Sumar + EHB + ERC + PNV)'] = D[Left].sum(axis=1)
 D['Right (PP + VOX)'] = D[Right].sum(axis=1)
 D = D.drop(Left + Right, axis=1)
-
+D = D.drop(D[D['Govt (PSOE + Sumar + EHB + ERC + PNV)'] < 34].index)
 D.to_csv('Spain/poll2.csv', index=False)
