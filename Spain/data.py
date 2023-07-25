@@ -56,7 +56,7 @@ for i in range(1):
 headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
 parties = ['PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
-for i in range(2):
+for i in range(1):
   d[i+2]=pd.DataFrame(df[i+2])
   d[i+2].columns = headers
   d[i+2]=d[i+2].drop(drops, axis=1)
@@ -73,7 +73,36 @@ for i in range(2):
     d[i+2][z] = [x.replace('–',str(np.NaN)) for x in d[i+2][z].astype(str)]
     d[i+2][z] = [x.replace('?',str(np.NaN)) for x in d[i+2][z].astype(str)]
 
+
+wikiurl="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_2023_Spanish_general_election_(2022)"
+table_class="wikitable sortable jquery-tablesorter"
+response=requests.get(wikiurl)
+print(response.status_code)
+soup = BeautifulSoup(response.text, 'html.parser')
+tables = soup.find_all('table',class_="wikitable")
+df=pd.read_html(str(tables))
+headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
+parties = ['PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB']
+drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
+for i in range(1):
+  d[i+3]=pd.DataFrame(df[i])
+  d[i+3].columns = headers
+  d[i+3]=d[i+3].drop(drops, axis=1)
+  d[i+3]['Date2'] = d[i+3]['Date'].str.split('–').str[1]
+  d[i+3].Date2.fillna(d[i+3].Date, inplace=True)
+  d[i+3]['Date2'] = [x+ str(2021-i) for x in d[i+3]['Date2'].astype(str)]
+  d[i+3]['Date'] = d[i+3]['Date2']
+  d[i+3] = d[i+3].drop(['Date2'], axis=1)
+  d[i+3].Date=d[i+3].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  d[i+3] = d[i+3][d[i+3]['PSOE'] != d[i+3]['EHB']]
+  for z in parties:
+    d[i+3][z] = [p.sub('', x) for x in d[i+3][z].astype(str)]
+    d[i+3][z] = d[i+3][z].str.split(' ').str[0]
+    d[i+3][z] = [x.replace('–',str(np.NaN)) for x in d[i+3][z].astype(str)]
+    d[i+3][z] = [x.replace('?',str(np.NaN)) for x in d[i+3][z].astype(str)]
+
 d[3].drop(d[3].index[[-1,-2,-3]],inplace=True)
+
 
 wikiurl="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_2023_Spanish_general_election_(2019–2021)"
 table_class="wikitable sortable jquery-tablesorter"
@@ -116,7 +145,7 @@ D = D.drop(Sumar, axis=1)
 D = D.drop(D[D["Sumar"]==38.4].index)
 D = D.drop(D[D["Date"]==dateparser.parse('2022-12-22')].index)
 
-new_row = pd.DataFrame({'Date':'24 July 2023','PSOE':31.71,'PP':33.01,'VOX':12.39,'ERC':1.89,'JxCat':1.6,'PNV':1.13,'EHB':1.36,'Cs':np.nan,'Sumar':12.31}, index=[0])
+new_row = pd.DataFrame({'Date':'24 July 2023','PSOE':31.70,'PP':33.05,'VOX':12.39,'ERC':1.89,'JxCat':1.6,'PNV':1.13,'EHB':1.36,'Cs':np.nan,'Sumar':12.31}, index=[0])
 D = pd.concat([new_row,D]).reset_index(drop=True)
 D.drop(D.index[[1,2,3]],inplace=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
