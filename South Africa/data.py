@@ -18,7 +18,7 @@ headers = ['Date', 'ANC', 'DA', 'EFF', 'IFP', 'VF Plus', 'ACDP', 'Action SA']
 parties = ['ANC', 'DA', 'EFF', 'IFP', 'VF Plus', 'ACDP', 'Action SA']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Polling Organisation", "Don't Know[a]","Others", "Lead", "Sample Size"], axis=1)
   d[i].columns = headers
   for z in headers:
