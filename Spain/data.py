@@ -90,7 +90,7 @@ for i in range(1):
   d[i+3]=d[i+3].drop(drops, axis=1)
   d[i+3]['Date2'] = d[i+3]['Date'].str.split('–').str[1]
   d[i+3].Date2.fillna(d[i+3].Date, inplace=True)
-  d[i+3]['Date2'] = [x+ str(2021-i) for x in d[i+3]['Date2'].astype(str)]
+  d[i+3]['Date2'] = [x+ str(2022) for x in d[i+3]['Date2'].astype(str)]
   d[i+3]['Date'] = d[i+3]['Date2']
   d[i+3] = d[i+3].drop(['Date2'], axis=1)
   d[i+3].Date=d[i+3].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
