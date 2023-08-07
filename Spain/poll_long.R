@@ -21,7 +21,6 @@ poll<-dplyr::bind_rows(poll1,poll2)
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-h<-formattable::percent(0.04)
 next_election<-as.Date("22 08 2027", "%d %m %Y")
 election<-as.Date("23 07 2023", "%d %m %Y")
 old_election <-min(d$Date)
@@ -45,8 +44,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
-  geom_hline(aes(yintercept=h))+
-  geom_text(aes((next_election-5),h,label = "4% Threshold",hjust=1 ,vjust = -1),colour="#56595c")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=old_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), next_election)+
@@ -64,8 +61,8 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==election,]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
-d1 <- colMeans(poll[-1])
+poll<-poll[poll$Date>(max(poll$Date)-7),]
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -86,15 +83,15 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
 
-scale_fill_manual(values = c("#cc454c","#bf161f","#f46068","#ef1c27",
-                             "#3185c0","#1a77b9","#61a9dd","#1d84ce",
-                             "#df699c","#d74483","#f481b2","#ef4b91",
-                             "#7abc4b","#59ab1e","#92d264","#63be21",
-                             "#e9aa42","#e6a02d","#ffc970","#ffb232",
-                             "#33c2b1","#00b39d","#4dd8c6","#00c7ae",
-                             "#69b169","#439d43","#80c680","#4aae4a",
-                             "#b5c845","#a3ba16","#cbdd5d","#b5cf18",
-                             "#dd7b3c","#d45a0b","#f29355","#ec640c"))+
+scale_fill_manual(values = c("#f46068","#ef1c27",
+                             "#61a9dd","#1d84ce",
+                             "#f481b2","#ef4b91",
+                             "#92d264","#63be21",
+                             "#ffc970","#ffb232",
+                             "#4dd8c6","#00c7ae",
+                             "#80c680","#4aae4a",
+                             "#cbdd5d","#b5cf18",
+                             "#f29355","#ec640c"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
 geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
@@ -104,7 +101,7 @@ theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('30 day average \n (2022 Result)')+
+ggtitle('30 day average \n (2023 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
