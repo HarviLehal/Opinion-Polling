@@ -2,6 +2,7 @@ import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
+import numpy as np
 
 wikiurl="https://en.wikipedia.org/wiki/Next_Senedd_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,7 +12,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df0=pd.DataFrame(df[0])
+df0=pd.DataFrame(df[1])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Other", "Lead","AWA"], axis=1)
 headers = ['Date', 'Lab', 'Con', 'Plaid Cymru', 'Lib Dem', 'Green', 'Reform']
 parties = ['Lab', 'Con', 'Plaid Cymru', 'Lib Dem', 'Green', 'Reform']
@@ -32,7 +33,7 @@ print(data23)
 data23.to_csv('UK/Subnational/Wales/poll_Senedd_C.csv', index=False)
 
 
-df0=pd.DataFrame(df[1])
+df0=pd.DataFrame(df[2])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead", "UKIP"], axis=1)
 headers = ['Date', 'Lab', 'Con', 'Plaid Cymru', 'Green', 'Lib Dem', 'AWA', 'Reform']
 parties = ['Lab', 'Con', 'Plaid Cymru', 'Green', 'Lib Dem', 'AWA', 'Reform']
