@@ -13,7 +13,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
-parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']]
+parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
 d = {}
 
 for i in range(1):
