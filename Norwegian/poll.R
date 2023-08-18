@@ -28,7 +28,8 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#D82C3C","#AC347D","#6F9323","#CB182D", "#2D843B", "#236666","#F9DA5A","#3064F1", "#2760A7"))+
+  scale_color_manual(values = c("#D82C3C","#AC347D","#6F9323","#CB182D","#2D843B",
+                                "#236666","#F9DA5A","#3064F1","#2760A7","#08b4cc"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -98,7 +99,7 @@ scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
                              "#b1c97d","#6F9323","#e6818c","#CB182D",
                              "#82c28d","#2D843B","#78b3b3","#236666",
                              "#fcedac","#F9DA5A","#94b0f7","#3064F1",
-                             "#81a6d4","#2760A7"))+
+                             "#81a6d4","#2760A7","#6bd2e0","#08b4cc"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
