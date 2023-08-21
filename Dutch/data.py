@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data=pd.DataFrame(df[0])
+data=pd.DataFrame(df[1])
 data=data.drop(["Polling firm", "Sample size","Lead","Ref"], axis=1)
 
 headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
@@ -38,7 +38,7 @@ print(data)
 data.to_csv('Dutch/poll.csv', index=False)
 
 
-data2=pd.DataFrame(df[0])
+data2=pd.DataFrame(df[1])
 data2=data2.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
 
 headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
