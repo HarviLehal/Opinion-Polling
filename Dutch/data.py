@@ -14,11 +14,11 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data=pd.DataFrame(df[1])
+data=pd.DataFrame(df[0])
 data=data.drop(["Polling firm", "Sample size","Lead","Ref"], axis=1)
 
-headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
-parties = ['VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
+headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']
+parties = ['VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']
 data.columns = headers
 
 data['Date2'] = data['Date'].str.split('–').str[1]
@@ -38,11 +38,11 @@ print(data)
 data.to_csv('Dutch/poll.csv', index=False)
 
 
-data2=pd.DataFrame(df[1])
+data2=pd.DataFrame(df[0])
 data2=data2.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
 
-headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
-parties = ['VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']
+headers = ['Date','VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']
+parties = ['VVD','D66','PVV','CDA','SP','PvdA','GL','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']
 data2.columns = headers
 
 data2['Date2'] = data2['Date'].str.split('–').str[1]
@@ -63,7 +63,7 @@ data2[Fusie] = data2[Fusie].astype(float)
 data2['PvdA-GL'] = data2[Fusie].sum(axis=1)
 data2 = data2.drop(Fusie, axis=1)
 
-data2 = data2[['Date','VVD','D66','PVV','PvdA-GL','CDA','SP','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL']]
+data2 = data2[['Date','VVD','D66','PVV','PvdA-GL','CDA','SP','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']]
 
 data2.to_csv('Dutch/poll2.csv', index=False)
 
