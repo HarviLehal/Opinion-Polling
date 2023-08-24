@@ -56,7 +56,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#7C1B1C","#226B26","#43A6EB",
                                 "#552C83","#262B57","#DD601C",
                                 "#45B6B1","#8C2591","#99C11A",
-                                "#FBFD00","#162141"))+
+                                "#FBFD00","#162141","#8ea8d7"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -97,11 +97,11 @@ d3<-rbind(d2,d1)
 plot3<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#858be6","#222ACA","#92d692","#3DAD3E","#657dad","#0E2758",
-                                "#e68383","#cc1d1d","#a1e39d","#53C74A","#f58787","#E81718",
-                                "#bd7375","#7C1B1C","#77b57b","#226B26","#9fd3f5","#43A6EB",
-                                "#a080bf","#552C83","#7b80ab","#262B57","#f0ad89","#DD601C",
-                                "#97dbd5","#45B6B1","#c37fc9","#8C2591","#cae080","#99C11A",
-                                "#fafc7e","#FBFD00","#6c7aa1","#162141"))+
+                               "#e68383","#cc1d1d","#a1e39d","#53C74A","#f58787","#E81718",
+                               "#bd7375","#7C1B1C","#77b57b","#226B26","#9fd3f5","#43A6EB",
+                               "#a080bf","#552C83","#7b80ab","#262B57","#f0ad89","#DD601C",
+                               "#97dbd5","#45B6B1","#c37fc9","#8C2591","#cae080","#99C11A",
+                               "#fafc7e","#FBFD00","#6c7aa1","#162141","#bbcbe7","#8ea8d7"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),

@@ -31,7 +31,9 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 data = data[data['VVD'] != data['BIJ1']]
 for z in parties:
   data[z] = [p.sub('', x) for x in data[z].astype(str)]
-  
+  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+data[parties] = data[parties].astype(float)
 
 print(data)
 
@@ -55,6 +57,7 @@ data2.Date = data2.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DA
 data2 = data2[data2['VVD'] != data2['BIJ1']]
 for z in parties:
   data2[z] = [p.sub('', x) for x in data2[z].astype(str)]
+  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
 data2[parties] = data2[parties].astype(float)
 data2['PvdA']=np.where(data2['PvdA']>20, 0, data2['PvdA'])
