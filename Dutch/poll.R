@@ -10,26 +10,39 @@ library(formattable)
 library(svglite)
 library(Rcpp)
 library(ggpubr)
+library(zoo)
+library(dplyr)
 
 py_run_file("Dutch/data.py")
-poll <- read_csv("Dutch/poll.csv")
+poll <- read_csv("Dutch/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 election<-as.Date("22 11 2023", "%d %m %Y")
 old <-min(d$Date)
-# MAIN GRAPH
 
-# SEATS
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+
+
+new<-d[d$variable!='NSC',]
+new2<-d[d$variable=='NSC',]
+new2<-new2[!is.na(new2$value),]
+
+# LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#222ACA","#3DAD3E","#0E2758",
-                                "#53C74A","#E81718","#D21D24",
-                                "#8ABD00","#7C1B1C","#226B26",
-                                "#43A6EB","#552C83","#262B57",
-                                "#DD601C","#45B6B1","#8C2591",
-                                "#99C11A","#FBFD00","#162141"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+                                "#cc1d1d","#53C74A","#E81718",
+                                "#7C1B1C","#226B26","#43A6EB",
+                                "#552C83","#262B57","#DD601C",
+                                "#45B6B1","#8C2591","#99C11A",
+                                "#FBFD00","#162141","#8ea8d7"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=new[new$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_line(linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -41,13 +54,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
 
-# PVDA-GL FUSIE
-
-poll <- read_csv("Dutch/poll2.csv")
-d <- reshape2::melt(poll, id.vars="Date")
-d$value<-as.numeric(d$value)
-election<-as.Date("22 11 2023", "%d %m %Y")
-old <-min(d$Date)
+# MA GRAPH
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
@@ -57,7 +64,8 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#552C83","#262B57","#DD601C",
                                 "#45B6B1","#8C2591","#99C11A",
                                 "#FBFD00","#162141","#8ea8d7"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -67,16 +75,15 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-
 # BAR CHART
 
 poll <- read_csv("Dutch/poll2.csv")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-d1 <- round(colMeans(poll[-1]), digits=0)
+d1 <- round(colMeans(poll[-1],na.rm = TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1[d1 == 0] <- 1   # ADDS 1 TO PARTY WITH 0 SEATS BUT REMOVE IF SUM OF PARTIES >150
 sum(d1)
@@ -111,14 +118,21 @@ plot3<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('30 day average \n (2019 Result)')+
+  ggtitle('14 day average \n (2019 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
 
 
-plot<-ggarrange(plot2, plot3,ncol = 2, nrow = 1,widths=c(2,0.5))
-plot
+plotA<-ggarrange(plot1, plot3,ncol = 2, nrow = 1,widths=c(2,0.5))
+plotA
 
-ggsave(plot=plot, file="Dutch/plot.png",width = 15, height = 7.5, type="cairo-png")
+plotB<-ggarrange(plot2, plot3,ncol = 2, nrow = 1,widths=c(2,0.5))
+plotB
+
+
+
+ggsave(plot=plotA, file="Dutch/plot.png",width = 15, height = 7.5, type="cairo-png")
+
+ggsave(plot=plotB, file="Dutch/plot3.png",width = 15, height = 7.5, type="cairo-png")
 
