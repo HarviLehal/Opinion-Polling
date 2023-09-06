@@ -8,6 +8,7 @@ library(reshape2)
 library(readr)
 library(formattable)
 library(ggpubr)
+library(dplyr)
 
 py_run_file("UK/Subnational/Scotland/data.py")
 poll <- read_csv("UK/Subnational/Scotland/poll.csv")
