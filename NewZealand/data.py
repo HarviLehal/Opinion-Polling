@@ -10,7 +10,7 @@ response=requests.get(wikiurl)
 print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
-df=pd.read_html(str(tables))
+df=pd.read_html(str(tables[0]))
 
 headers = ['Date','Lab','Nat','Green','ACT','TPM']
 parties = ['Lab','Nat','Green','ACT','TPM']
