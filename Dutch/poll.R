@@ -26,8 +26,8 @@ d <- d %>%
   mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
 
 
-new<-d[d$variable!='NSC',]
-new2<-d[d$variable=='NSC',]
+new<-d[d$variable!='D66',]
+new2<-d[d$variable=='D66',]
 new2<-new2[!is.na(new2$value),]
 
 # LOESS GRAPH
@@ -40,9 +40,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#552C83","#262B57","#DD601C",
                                 "#45B6B1","#8C2591","#99C11A",
                                 "#FBFD00","#162141","#8ea8d7"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
+  # gghighlight(d$variable=='D66',label_key = d$variable)+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=new[new$Date!=old,])+
   # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
-  geom_line(linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -52,7 +53,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-
+plot1
 
 # MA GRAPH
 
