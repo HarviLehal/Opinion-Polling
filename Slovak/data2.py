@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','drop4','drop5','drop6','drop7','drop8','SPOLU/Dem','SNS','drop9','Hlas','Rep','drop10']
-parties = ['OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','SPOLU/Dem','SNS','Hlas','Rep']
-drops = ['drop1','drop2','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
+headers = ['drop1','Date','drop2','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','drop4','MKP/Alliance','drop6','drop7','drop8','SPOLU/Dem','SNS','drop9','Hlas','Rep','drop10']
+parties = ['OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','MKP/Alliance','SPOLU/Dem','SNS','Hlas','Rep']
+drops = ['drop1','drop2','drop4','drop6','drop7','drop8','drop9','drop10']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -40,9 +40,9 @@ d[0]['OĽaNO-ZĽ']=np.where(d[0]['ZĽ']==d[0]['OĽaNO'], d[0]['ZĽ'], np.NaN)
 d[0]['OĽaNO']=np.where(d[0]['OĽaNO']==d[0]['OĽaNO-ZĽ'], np.NaN, d[0]['OĽaNO'])
 d[0]['ZĽ']=np.where(d[0]['ZĽ']==d[0]['OĽaNO-ZĽ'], np.NaN, d[0]['ZĽ'])
 
-headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','drop4','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
-parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','SNS','Hlas','Rep']
-drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
+headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
+parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','MKP/Alliance','SNS','Hlas','Rep']
+drops = ['drop1','drop2','drop3','drop5','drop6','drop7','drop8']
 
 for j in range(1):
   i = j+1
@@ -63,9 +63,9 @@ for j in range(1):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
 
-headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','drop4','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
-parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','SNS','Hlas','Rep']
-drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
+headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
+parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','MKP/Alliance','SNS','Hlas','Rep']
+drops = ['drop1','drop2','drop3','drop5','drop6','drop7','drop8']
 
 for j in range(1):
   i = j+2
@@ -95,7 +95,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1,-2,-3,-4]],inplace=True)
 
 D[parties] = D[parties].astype(float)
-D = D[['Date','OĽaNO-ZĽ','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','KDH','SNS','Hlas','Rep']]
+D = D[['Date','OĽaNO-ZĽ','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','KDH','SNS','Hlas','Rep','MKP/Alliance']]
 
   
 
