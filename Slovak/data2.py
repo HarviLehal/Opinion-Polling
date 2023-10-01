@@ -93,14 +93,15 @@ d[2]['SPOLU/Dem']=np.where(d[2]['SPOLU/Dem']==d[2]['PS'], np.NaN, d[2]['SPOLU/De
 
 D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1,-2,-3,-4]],inplace=True)
+D.drop(D.index[[1,2]],inplace=True)
 
 D[parties] = D[parties].astype(float)
 D = D[['Date','OĽaNO-ZĽ','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','KDH','SNS','Hlas','Rep','MKP/Alliance']]
 D['OĽaNO'].fillna(D['OĽaNO-ZĽ'], inplace=True)
 D = D.drop(['OĽaNO-ZĽ'],axis=1)
 
-new_row = pd.DataFrame({'Date': '30 September 2023','OĽaNO':9.09,'ZĽ':np.NaN,'Smer':23.44,'SR':2.26,'ĽSNS':0.86,'PS':16.67,'SPOLU/Dem':2.89,'SASKA':6.04,'KDH':6.94,'SNS':5.70,'Hlas':15.10,'Rep':4.84,'MKP/Alliance':4.49}, index=[0])
-D = pd.concat([new_row,D]).reset_index(drop=True)
+# new_row = pd.DataFrame({'Date': '30 September 2023','OĽaNO':9.09,'ZĽ':np.NaN,'Smer':23.44,'SR':2.26,'ĽSNS':0.86,'PS':16.67,'SPOLU/Dem':2.89,'SASKA':6.04,'KDH':6.94,'SNS':5.70,'Hlas':15.10,'Rep':4.84,'MKP/Alliance':4.49}, index=[0])
+# D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 
