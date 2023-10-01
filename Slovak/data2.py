@@ -99,7 +99,7 @@ D = D[['Date','OĽaNO-ZĽ','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SPOLU/Dem','
 D['OĽaNO'].fillna(D['OĽaNO-ZĽ'], inplace=True)
 D = D.drop(['OĽaNO-ZĽ'],axis=1)
 
-new_row = pd.DataFrame({'Date': '30 September 2023','OĽaNO':8,'ZĽ':np.NaN,'Smer':21.9,'SR':2.3,'ĽSNS':0.5,'PS':23.5,'SPOLU/Dem':3,'SASKA':6.4,'KDH':5.3,'SNS':4.4,'Hlas':12.2,'Rep':6,'MKP/Alliance':4.3}, index=[0])
+new_row = pd.DataFrame({'Date': '30 September 2023','OĽaNO':9.09,'ZĽ':np.NaN,'Smer':23.44,'SR':2.26,'ĽSNS':0.86,'PS':16.67,'SPOLU/Dem':2.89,'SASKA':6.04,'KDH':6.94,'SNS':5.70,'Hlas':15.10,'Rep':4.84,'MKP/Alliance':4.49}, index=[0])
 D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 

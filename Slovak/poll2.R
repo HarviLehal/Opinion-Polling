@@ -33,10 +33,10 @@ old <-as.Date("29 02 2020", "%d %m %Y")
 # LOESS GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#BED62F","#FDBB12","#D82222","#034B9F","#005222","#00BDFF",
                                 "#4D0E90","#78fc04","#FFE17C","#173A70","#81163B","#000000","#08a454"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
@@ -49,8 +49,8 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 plot
 
 ggsave(plot=plot, file="Slovak/plot.svg",width = 15, height = 7.5)
@@ -65,7 +65,7 @@ plot_fr<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#BED62F","#FDBB12","#D82222","#034B9F","#005222","#00BDFF",
                                 "#4D0E90","#78fc04","#FFE17C","#173A70","#81163B","#000000","#08a454"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
@@ -78,8 +78,8 @@ plot_fr<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 plot_fr
 ggsave(plot=plot_fr, file="Slovak/plot_fr.svg",width = 15, height = 7.5)
 
@@ -148,7 +148,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Focus Exit Poll \n 7 day Average \n (2020 Election)')+
+  ggtitle(' Result (97.57% counted) \n 7 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 
