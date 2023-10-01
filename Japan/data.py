@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
 
-wikiurl="https://en.wikipedia.org/wiki/Next_Japanese_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Japanese_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -17,7 +17,7 @@ parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','SJ48','None']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[2])
+  d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Respondents","Polling firm","Others", "Und./ no ans.", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
