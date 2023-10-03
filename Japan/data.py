@@ -18,7 +18,7 @@ d = {}
 
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Respondents","Polling firm","Others", "Und./ no ans.", "Lead"], axis=1)
+  d[i]=d[i].drop(["Sample size","Polling firm","Others", "Und./ no ans.", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
