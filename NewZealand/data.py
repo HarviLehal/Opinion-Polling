@@ -12,12 +12,12 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables[0]))
 
-headers = ['Date','Lab','Nat','Green','ACT','TPM']
-parties = ['Lab','Nat','Green','ACT','TPM']
+headers = ['Date','Lab','Nat','Green','ACT','TPM','NZF']
+parties = ['Lab','Nat','Green','ACT','TPM','NZF']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Polling organisation", "Sample size", "Lead", "NCP", "TOP","NZF"], axis=1)
+  d[i]=d[i].drop(["Polling organisation", "Sample size", "Lead", "NCP", "TOP"], axis=1)
   d[i].columns = headers
   d[i]['Date'] = [x.replace('2–7, 14–15 Mar 2022','15 Mar 2022') for x in d[i]['Date'].astype(str)]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -41,6 +41,8 @@ for z in parties:
   D[z] = D[z].astype('float')
 D.to_csv('NewZealand/poll.csv', index=False)
 
+parties = ['Lab','Nat','Green','ACT','TPM']
+
 Gov=['Lab', 'Green', 'TPM']
 Opp=['Nat', 'ACT']
 D[parties] = D[parties].astype(float)
@@ -49,4 +51,5 @@ D['Lab + Green + TPM'] = D[Gov].sum(axis=1)
 D['Nat + ACT'] = D[Opp].sum(axis=1)
 # D['Other'] = 100-D['Lab + Green']-D['Nat + ACT']
 D = D.drop(parties, axis=1)
+D = D[['Date','Lab + Green + TPM','Nat + ACT','NZF']]
 D.to_csv('NewZealand/poll2.csv', index=False)
