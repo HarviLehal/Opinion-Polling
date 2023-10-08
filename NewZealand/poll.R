@@ -22,6 +22,7 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("14 10 2023", "%d %m %Y")
 old <-min(d$Date)
+h<-formattable::percent(0.05)
 # MAIN GRAPH
 
 # LOESS GRAPH

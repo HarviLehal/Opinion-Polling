@@ -66,7 +66,7 @@ UO = ['Civic Coalition', 'The Left', 'Polish Coalition', 'Poland 2050', 'Third W
 R = ['United Right', 'Confederation']
 
 data[parties] = data[parties].astype(float)
-data['United Opposition (KO + Lewica + PSL + PL2050'] = data[UO].sum(axis=1)
+data['United Opposition (KO + Lewica + PSL + PL2050)'] = data[UO].sum(axis=1)
 data['Right Wing (PiS + Konfederacja)'] = data[R].sum(axis=1)
 data = data.drop(UO + R, axis=1)
 
