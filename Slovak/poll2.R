@@ -33,7 +33,7 @@ old <-as.Date("29 02 2020", "%d %m %Y")
 # LOESS GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#BED62F","#FDBB12","#D82222","#034B9F","#005222","#00BDFF",
                                 "#4D0E90","#78fc04","#FFE17C","#173A70","#81163B","#000000","#08a454"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
@@ -62,7 +62,7 @@ writeLines(bbb,"Slovak/plot.svg")
 # FRENCH
 
 plot_fr<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#BED62F","#FDBB12","#D82222","#034B9F","#005222","#00BDFF",
                                 "#4D0E90","#78fc04","#FFE17C","#173A70","#81163B","#000000","#08a454"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
