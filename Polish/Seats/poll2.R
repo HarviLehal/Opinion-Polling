@@ -11,7 +11,7 @@ library(formattable)
 poll <- read_csv("Polish/Seats/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value[d$value=='-'] <- NULL
+# d$value[d$value=='-'] <- NULL
 h <- 231
 election<-as.Date("15 10 2023", "%d %m %Y")
 old<-min(d$Date)

@@ -57,11 +57,12 @@ data = data.drop(['Date2'],axis=1)
 data.Date = data['Date'].astype(str)
 data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
+data.drop(data.index[[0,2,3,4]],inplace=True)
 
-# new_row = pd.DataFrame({'Date': '15 October 2023','United Right':178,'Civic Coalition':155,'The Left':38,'Confederation':25,'Others':1,'Third Way':63,'Polish Coalition':np.nan,'Poland 2050':np.nan}, index=[0])
+# new_row = pd.DataFrame({'Date': '15 October 2023','United Right':194,'Civic Coalition':157,'The Left':26,'Confederation':18,'Others':1,'Third Way':65,'Polish Coalition':np.nan,'Poland 2050':np.nan}, index=[0])
 # data = pd.concat([new_row,data]).reset_index(drop=True)
 # data.Date=data.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-
+# 
 
 print(data)
 data.to_csv('Polish/Seats/poll.csv', index=False)
