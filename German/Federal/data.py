@@ -32,3 +32,46 @@ for i in range(2):
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('German/Federal/poll.csv', index=False)
+
+
+
+
+Gov = ['SPD','Grüne','FDP']
+Right = ['Union', 'AfD']
+
+D[parties] = D[parties].astype(float)
+D['Government'] = D[Gov].sum(axis=1)
+D['Right Wing'] = D[Right].sum(axis=1)
+D = D.drop(Gov + Right, axis=1)
+
+D.to_csv('German/Federal/poll2.csv', index=False)
+
+
+
+D = pd.concat(d.values(), ignore_index=True)
+
+RG              = ['SPD','Grüne']
+GroKo           = ['Union','SPD']
+Ampel           = ['SPD','Grüne','FDP']
+Jamaika         = ['Union','Grüne','FDP']
+Deutschland     = ['Union','SPD','FDP']
+Kenia           = ['Union','SPD','Grüne']
+Kiwi            = ['Union','Grüne']
+Rechts          = ['Union','AfD']
+Kemmerich       = ['Union','AfD','FDP']
+# Mehrheit        = ['SPD','Union','Grüne','FDP','AfD']
+
+D[parties] = D[parties].astype(float)
+D['Rot-Grün'] = D[RG].sum(axis=1)               # RG  (Maroon) #770004
+D['GroKo'] = D[GroKo].sum(axis=1)               # RB  (Black) #10305B
+D['Ampel'] = D[Ampel].sum(axis=1)               # RGY (Red) #DD1529
+D['Jamaika'] = D[Jamaika].sum(axis=1)           # BGY (Green) #509A3A
+D['Deutschland'] = D[Deutschland].sum(axis=1)   # BRY (Yellow) #FBBE00
+D['Kenia'] = D[Kenia].sum(axis=1)               # BRG (Orange) #E5963F
+D['Kiwi'] = D[Kiwi].sum(axis=1)                 # BG  (Kiwi Green) #8EE53F
+D['Rechts'] = D[Rechts].sum(axis=1)            # BBr (AfD blue) #0489DB
+D['Kemmerich'] = D[Kemmerich].sum(axis=1)       # BBr (Brown) #AA692F
+# D['Mehrheit'] = D[Mehrheit].sum(axis=1)/2
+D = D.drop(parties, axis=1)
+
+D.to_csv('German/Federal/poll3.csv', index=False)
