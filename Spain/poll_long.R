@@ -40,7 +40,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#63be21","#ffb232","#00c7ae",
                                 "#4aae4a","#b5cf18","#ec640c"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d_old[d_old$Date!=election,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
@@ -109,4 +109,4 @@ coord_flip()
 plotA<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotA
 
-ggsave(plot=plotA, file="Swedish/plot_long.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plotA, file="Spain/plot_long.png",width = 15, height = 7.5, type="cairo-png")

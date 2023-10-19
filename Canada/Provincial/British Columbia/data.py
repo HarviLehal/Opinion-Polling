@@ -29,7 +29,7 @@ for i in range(1):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['NDP'] != d[i]['Green']]
-
+  
 for i in range(1):
   d[i].drop(d[i].index[[-1,-2]],inplace=True)
 
@@ -42,4 +42,7 @@ for z in parties:
   D[z] = [x.replace('—',str(np.NaN)) for x in D[z]]
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
+  
+D = D.dropna(subset=['Date'])
+
 D.to_csv('Canada/Provincial/British Columbia/poll.csv', index=False)

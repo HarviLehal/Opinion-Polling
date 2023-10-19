@@ -14,7 +14,8 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-poll <- read_csv("Spain/poll2_new.csv")
+py_run_file("Spain/data2.py")
+poll <- read_csv("Spain/poll_new.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -25,8 +26,10 @@ election<-as.Date("22 07 2027", "%d %m %Y")
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#00c7ae","#ef1c27","#1d84ce"))+
+  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
+  scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91",
+                                "#63be21","#ffb232","#00c7ae",
+                                "#4aae4a","#b5cf18","#ec640c"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -42,7 +45,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 
 
-poll <- read_csv("Spain/poll2_new.csv")
+poll <- read_csv("Spain/poll_new.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -70,9 +73,15 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#4dd8c6","#00c7ae",
-                               "#f46068","#ef1c27",
-                               "#61a9dd","#1d84ce"))+
+  scale_fill_manual(values = c("#f46068","#ef1c27",
+                               "#61a9dd","#1d84ce",
+                               "#f481b2","#ef4b91",
+                               "#92d264","#63be21",
+                               "#ffc970","#ffb232",
+                               "#4dd8c6","#00c7ae",
+                               "#80c680","#4aae4a",
+                               "#cbdd5d","#b5cf18",
+                               "#f29355","#ec640c"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -89,10 +98,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   coord_flip()
 
 
-plot2
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
-ggsave(plot=plot, file="Spain/bloc_new.png",width = 15, height = 7.5, type="cairo-png")
 
-
+ggsave(plot=plot, file="Spain/plot_new.png",width = 15, height = 7.5, type="cairo-png")

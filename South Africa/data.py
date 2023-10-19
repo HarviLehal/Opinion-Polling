@@ -21,12 +21,13 @@ for i in range(1):
   d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Polling Organisation", "Don't Know[a]","Others", "Lead", "Sample Size"], axis=1)
   d[i].columns = headers
-  for z in headers:
+  for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
+  d[i].Date2.fillna(d[i]['Date'].str.split('–').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
