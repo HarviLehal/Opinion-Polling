@@ -16,9 +16,15 @@ headers = ['Date','SPD','Union','Grüne','FDP','AfD','Linke']
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 d = {}
 for i in range(3):
+  if i ==0:
+    headers.append('FW')
+  elif i == 1:
+    headers.remove('FW')
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Abs.", "Others", "Lead"], axis=1)
   d[i].columns = headers
+  if i == 0:
+      d[i]=d[i].drop(['FW'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
