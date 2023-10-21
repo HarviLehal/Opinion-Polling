@@ -28,7 +28,7 @@ Sturgeon<-as.Date("15 02 2023", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 
-# MAIN GRAPH
+# MAIN GRAPH (SCOTTISH WESTMINSTER)
 
 d <- d %>%
   group_by(variable) %>%
@@ -140,5 +140,5 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1.png",width = 15, height = 7.5, type = "cairo-png")
-ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1_Westminster.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2_Westminster.png",width = 15, height = 7.5, type = "cairo-png")
