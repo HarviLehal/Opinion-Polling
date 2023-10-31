@@ -12,7 +12,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-data22=pd.DataFrame(df[1])
+data22=pd.DataFrame(df[2])
 
 headers = ['1','Date','2','3','D','B','V','S','F','P','C','M','J','4','5']
 parties = ['D','B','V','S','F','P','C','M','J']
