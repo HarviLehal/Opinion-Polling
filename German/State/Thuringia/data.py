@@ -14,8 +14,8 @@ df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[1])
 data22 = df0.drop(["Polling firm", "Sample size","Lead"], axis=1)
-headers = ['Date','Linke','AfD','CDU','SPD','Grüne','FDP','Others']
-parties = ['Linke','AfD','CDU','SPD','Grüne','FDP','Others']
+headers = ['Date','Linke','AfD','CDU','SPD','Grüne','FDP','BSW','Others']
+parties = ['Linke','AfD','CDU','SPD','Grüne','FDP','BSW','Others']
 data22.columns = headers
 data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
@@ -26,8 +26,8 @@ for z in parties:
 data22=data22[~data22.Others.str.contains(".mw-parser-output")]
 data22[parties] = data22[parties].astype(float)
 
-# data22=data22.drop(data22[data22['Wag'] > 0].index)
-# data22=data22.drop('Wag', axis=1)
+data22=data22.drop(data22[data22['BSW'] > 0].index)
+data22=data22.drop('BSW', axis=1)
 
 
 print(data22)
