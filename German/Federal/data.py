@@ -27,7 +27,7 @@ for i in range(3):
   d[i].columns = headers
   if i == 0:
       d[i]=d[i].drop(['FW'], axis=1)
-      d[i]=d[i].drop(['BSW'], axis=1)
+      # d[i]=d[i].drop(['BSW'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
@@ -38,12 +38,23 @@ for i in range(3):
 
 for i in range(2):
   d[i].drop(d[i].index[[-1]],inplace=True)
+  
 
 D = pd.concat(d.values(), ignore_index=True)
+
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+for z in parties:
+    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+D=D.drop(D[D['BSW'] > 0].index)
+D=D.drop('BSW', axis=1)
+
 D.to_csv('German/Federal/poll.csv', index=False)
 
 
 
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 
 Gov = ['SPD','Grüne','FDP']
 Right = ['Union', 'AfD']
@@ -59,6 +70,14 @@ D.to_csv('German/Federal/poll2.csv', index=False)
 
 D = pd.concat(d.values(), ignore_index=True)
 
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+for z in parties:
+    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+D=D.drop(D[D['BSW'] > 0].index)
+D=D.drop('BSW', axis=1)
+
 RG              = ['SPD','Grüne']
 GroKo           = ['Union','SPD']
 Ampel           = ['SPD','Grüne','FDP']
@@ -69,6 +88,7 @@ Kiwi            = ['Union','Grüne']
 Rechts          = ['Union','AfD']
 Kemmerich       = ['Union','AfD','FDP']
 # Mehrheit        = ['SPD','Union','Grüne','FDP','AfD']
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 
 D[parties] = D[parties].astype(float)
 D['Rot-Grün'] = D[RG].sum(axis=1)               # RG  (Maroon) #770004
