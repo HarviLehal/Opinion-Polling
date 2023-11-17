@@ -23,7 +23,8 @@ for i in range(4):
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
