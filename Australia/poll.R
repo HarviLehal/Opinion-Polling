@@ -31,7 +31,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#2031CC","#D23A38",
                                 "#3AA54F","#E76E29",
                                 "#F8CC10","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -43,6 +43,28 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+
+plot1ma<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=0.5, data=d[d$Date!=old,]) +
+  scale_color_manual(values = c("#2031CC","#D23A38",
+                                "#3AA54F","#E76E29",
+                                "#F8CC10","#a2aab3"))+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+
+plot1ma
 
 poll <- read_csv("Australia/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -50,7 +72,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -88,7 +110,7 @@ theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('30 day average \n (2020 Result)')+
+ggtitle('14 day average \n (2020 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
@@ -97,6 +119,8 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Australia/plot.png",width = 15, height = 7.5, type="cairo-png")
+plot<-ggarrange(plot1ma, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+ggsave(plot=plot, file="Australia/plot_ma.png",width = 15, height = 7.5, type="cairo-png")
 
 
 # COALITION
@@ -114,17 +138,37 @@ old <-min(d$Date)
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#D23A38","#2031CC"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(),breaks=seq(0,0.6,0.02))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+
+plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=0.5, data=d[d$Date!=old,]) +
+  scale_color_manual(values = c("#D23A38","#2031CC"))+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+
 
 poll <- read_csv("Australia/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -132,8 +176,8 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
-d1 <- colMeans(poll[-1])
+poll<-poll[poll$Date>(max(poll$Date)-7),]
+d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -165,13 +209,15 @@ plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('30 day average \n (2020 Result)')+
+  ggtitle('7 day average \n (2020 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
 
 plot2<-ggarrange(plot1a, plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2
-
 ggsave(plot=plot2, file="Australia/plot2.png",width = 15, height = 7.5, type="cairo-png")
+plot2<-ggarrange(plot1ama, plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot2
+ggsave(plot=plot2, file="Australia/plot2_ma.png",width = 15, height = 7.5, type="cairo-png")
 
