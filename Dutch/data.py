@@ -67,6 +67,11 @@ data2['PvdA-GL'] = data2[Fusie].sum(axis=1)
 data2 = data2.drop(Fusie, axis=1)
 
 data2 = data2[['Date','VVD','D66','PVV','PvdA-GL','CDA','SP','FvD','PvdD','CU','Volt','JA21','SGP','DENK','50+','BBB','BIJ1','BVNL','NSC']]
+data2.drop(data2.index[[0,1]],inplace=True)
+
+new_row = pd.DataFrame({'Date': '22 Nov 2023', 'VVD':24, 'D66':9, 'PVV':37, 'PvdA-GL':25, 'CDA':5, 'SP':5, 'FvD':3, 'PvdD':3, 'CU':3, 'Volt':2, 'JA21':1, 'SGP':3, 'DENK':3, '50+':0, 'BBB':7, 'BIJ1':0, 'BVNL':0, 'NSC':20}, index=[0])
+new_row.Date=new_row.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+data2 = pd.concat([new_row,data2]).reset_index(drop=True)
 
 data2.to_csv('Dutch/poll2.csv', index=False)
 
