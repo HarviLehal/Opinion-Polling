@@ -28,7 +28,7 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  # d[i] = d[i][d[i]['DPP'] != d[i]['TPP']]
+  d[i] = d[i][d[i]['DPP'] != d[i]['TPP']]
 
   
 
@@ -54,7 +54,7 @@ D['total']=D[parties].sum(axis=1)
 D['decided']=D['total']-D['Other']
 
 print(D)
-D[parties] = D[parties].div(D['decided'], axis=0)*100
+D[parties] = D[parties].div(D['total'], axis=0)*100
 
 D = D.drop(["decided","total","Other"], axis=1)
 # new_row = pd.DataFrame({'Date': '11 Jan 2020', 'DPP':57.13 , 'KMT':38.61 , 'TPP':np.NaN}, index=[0])
