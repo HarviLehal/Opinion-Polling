@@ -18,10 +18,10 @@ d = {}
 for i in range(3):
   if i ==0:
     headers.append('FW')
-    headers.append('BSW')
+    # headers.append('BSW')
   elif i == 1:
     headers.remove('FW')
-    headers.remove('BSW')
+    # headers.remove('BSW')
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Abs.", "Others", "Lead"], axis=1)
   d[i].columns = headers
@@ -43,12 +43,13 @@ for i in range(2):
 D = pd.concat(d.values(), ignore_index=True)
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
     D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
     D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-D=D.drop(D[D['BSW'] > 0].index)
-D=D.drop('BSW', axis=1)
+# D=D.drop(D[D['BSW'] > 0].index)
+# D=D.drop('BSW', axis=1)
 
 D.to_csv('German/Federal/poll.csv', index=False)
 
@@ -71,12 +72,13 @@ D.to_csv('German/Federal/poll2.csv', index=False)
 D = pd.concat(d.values(), ignore_index=True)
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
     D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
     D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-D=D.drop(D[D['BSW'] > 0].index)
-D=D.drop('BSW', axis=1)
+# D=D.drop(D[D['BSW'] > 0].index)
+# D=D.drop('BSW', axis=1)
 
 RG              = ['SPD','Grüne']
 GroKo           = ['Union','SPD']
