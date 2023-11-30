@@ -15,11 +15,27 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 q = re.compile(r'\[\d+\]')
 
-headers = ['Date','DPP','KMT','TPP','Ind','Other']
-parties = ['DPP','KMT','TPP','Ind','Other']
+headers = ['Date','DPP','KMT','TPP','Other']
+parties = ['DPP','KMT','TPP','Other']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[5])
+  d[i]=d[i].drop(["Pollster", "Sample size"], axis=1)
+  d[i].columns = headers
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  d[i] = d[i][d[i]['DPP'] != d[i]['TPP']]
+
+headers = ['Date','DPP','KMT','TPP','Ind','Other']
+parties = ['DPP','KMT','TPP','Ind','Other']
+d = {}
+for j in range(1):
+  i = j+1
+  d[i]=pd.DataFrame(df[6])
   d[i]=d[i].drop(["Pollster", "Sample size"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
