@@ -66,7 +66,7 @@ D.reset_index(drop=True)
 
 D.to_csv('Taiwan/poll.csv', index=False)
 
-new_row = pd.DataFrame({'Date': '11 Jan 2020', 'DPP':57.13 , 'KMT':38.61 , 'TPP':np.NaN, 'Other/Undecided':4.26}, index=[0])
+new_row = pd.DataFrame({'Date': '11 Jan 2020', 'DPP':57.13 , 'KMT':38.61 , 'TPP':np.NaN, 'Other':4.26}, index=[0])
 new_row.Date=new_row.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 D = pd.concat([new_row,D]).reset_index(drop=True)
 
