@@ -15,7 +15,7 @@ library(dplyr)
 library(ggbreak)
 
 py_run_file("Dutch/data.py")
-poll <- read_csv("Dutch/poll2.csv")
+poll <- read_csv("Dutch/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 election<-as.Date("22 11 2023", "%d %m %Y")
@@ -26,11 +26,6 @@ z <- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
-
-
-# new<-d[d$variable!='NSC',]
-# new2<-d[d$variable=='NSC',]
-# new2<-new2[!is.na(new2$value),]
 
 # LOESS GRAPH
 
@@ -43,10 +38,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#45B6B1","#8C2591","#99C11A",
                                 "#FBFD00","#162141","#f0c400"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  # gghighlight(d$variable=='D66',label_key = d$variable)+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=new[new$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
-  # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
@@ -81,7 +72,7 @@ plot2<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
 plot2
 # BAR CHART
 
-poll <- read_csv("Dutch/poll2.csv")
+poll <- read_csv("Dutch/poll.csv")
 Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
