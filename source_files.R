@@ -1,5 +1,7 @@
 # IN TERMINAL TYPE THE FOLLOWING:  Rscript source_files.R
 
+source("Austrian/poll.R")
+source("Austrian/poll_coalition.R")
 source("Australia/poll.R")
 source("Belgian/poll.R")
 source("Canada/Federal/poll.R")
