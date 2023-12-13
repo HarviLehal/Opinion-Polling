@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_Belgian_federal_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_Belgian_elections"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
