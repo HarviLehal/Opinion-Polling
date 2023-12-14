@@ -15,7 +15,7 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 data2=pd.DataFrame(df[1])
-data2=data2.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
+data2=data2.drop(["Polling firm", "Sample size", "Lead"], axis=1)
 
 headers = ['Date','PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
 parties = ['PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
@@ -34,7 +34,7 @@ for z in parties:
   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
 data2[parties] = data2[parties].astype(float)
-data2['PvdA']=np.where(data2['PvdA']>18, 0, data2['PvdA'])
+data2['PvdA']=np.where(data2['PvdA']==data2['GL'], 0, data2['PvdA'])
 Fusie=['PvdA','GL']
 data2[Fusie] = data2[Fusie].astype(float)
 data2['PvdA-GL'] = data2[Fusie].sum(axis=1)

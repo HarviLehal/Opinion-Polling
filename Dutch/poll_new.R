@@ -20,7 +20,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 # election<-as.Date("22 11 2023", "%d %m %Y")
 old <-min(d$Date)
-max<-as.Date(old+14)
+max<-max(d$Date)+14
 
 z <- d[d$Date!=old,]
 z <- z %>%

@@ -20,7 +20,7 @@ poll<-dplyr::bind_rows(poll1,poll2)
 # poll <- rbind(poll1,poll2) 
 d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("22 11 2023", "%d %m %Y")
-next_election<-as.Date(election+14)
+next_election<-max(d$Date)+14
 old_election <-min(d$Date)
 
 d_old <- reshape2::melt(poll1, id.vars="Date")
