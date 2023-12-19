@@ -1,6 +1,8 @@
 import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
+import numpy as np
+import dateparser
 
 wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -10,97 +12,123 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-print(df[25])
-df0=pd.DataFrame(df[25])
-sunak22 = df0.drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
-headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
-parties = ['Starmer', 'Sunak', 'Unsure']
-sunak22.columns = headers
-sunak22['Date'] = [x.strip()[-6:] for x in sunak22['Date']]
-sunak22['Date'] = [x.replace('–','') for x in sunak22['Date']]
-sunak22['Date'] = [x+' 2022' for x in sunak22['Date']]
-print(sunak22)
+
+# RISHI SUNAK
 
 print(df[26])
-df1=pd.DataFrame(df[26])
-sunak21 = df1.drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
 headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
 parties = ['Starmer', 'Sunak', 'Unsure']
-sunak21.columns = headers
-sunak21['Date'] = [x.strip()[-6:] for x in sunak21['Date']]
-sunak21['Date'] = [x.replace('–','') for x in sunak21['Date']]
-sunak21['Date'] = [x+' 2021' for x in sunak21['Date']]
-print(sunak21)
+d = {}
+for i in range(2):
+  d[i]=pd.DataFrame(df[i+26])
+  d[i]=d[i].drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
+  d[i].columns = headers
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  
+D = pd.concat(d.values(), ignore_index=True)
+D = D[~(D['Date'] < '2022-10-25')]
 
-print(df[27])
-df2=pd.DataFrame(df[27])
-sunak20 = df2.drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
-headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
-parties = ['Starmer', 'Sunak', 'Unsure']
-sunak20.columns = headers
-sunak20['Date'] = [x.strip()[-6:] for x in sunak20['Date']]
-sunak20['Date'] = [x.replace('–','') for x in sunak20['Date']]
-sunak20['Date'] = [x+' 2020' for x in sunak20['Date']]
-print(sunak20)
+for z in parties:
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = D[z].str.strip('%')
+D[parties] = D[parties].astype(float)
 
-print(df[28])
-df3=pd.DataFrame(df[28])
-truss = df3.drop(["Pollster/client", "Area", "Sample size", "Lead", "None of these"], axis=1)
-truss.drop([5] , axis=0, inplace=True)
-truss = truss[['Date(s) conducted', 'Liz Truss','Keir Starmer','Unsure']]
-headers = ['Date', 'Truss', 'Starmer', 'Unsure']
-parties = ['Truss', 'Starmer', 'Unsure']
-truss.columns = headers
-truss['Date'] = [x.strip()[-6:] for x in truss['Date']]
-truss['Date'] = [x.replace('–','') for x in truss['Date']]
-truss['Date'] = [x+' 2022' for x in truss['Date']]
-print(truss)
 
-print(df[29])
-df4=pd.DataFrame(df[29])
-boris22 = df4.drop(["Pollster/client", "Area", "Refused", "Sample size", "Lead", "None of these"], axis=1)
-# boris22.drop([5] , axis=0, inplace=True)
-# boris22 = truss22[['Date(s) conducted', 'Liz Truss','Keir Starmer','Unsure']]
-headers = ['Date', 'Johnson', 'Starmer', 'Unsure']
-parties = ['Johnson', 'Starmer', 'Unsure']
-boris22.columns = headers
-boris22['Date'] = [x.strip()[-6:] for x in boris22['Date']]
-boris22['Date'] = [x.replace('–','') for x in boris22['Date']]
-boris22['Date'] = [x+' 2022' for x in boris22['Date']]
-print(boris22)
+# LIZ TRUSS
 
 print(df[30])
-df5=pd.DataFrame(df[30])
-boris21 = df5.drop(["Pollster/client", "Area", "Refused", "Sample size", "Lead", "None of these"], axis=1)
-# boris22.drop([5] , axis=0, inplace=True)
-# boris22 = truss22[['Date(s) conducted', 'Liz Truss','Keir Starmer','Unsure']]
-headers = ['Date', 'Johnson', 'Starmer', 'Unsure']
-parties = ['Johnson', 'Starmer', 'Unsure']
-boris21.columns = headers
-boris21['Date'] = [x.strip()[-6:] for x in boris21['Date']]
-boris21['Date'] = [x.replace('–','') for x in boris21['Date']]
-boris21['Date'] = [x+' 2021' for x in boris21['Date']]
-print(boris21)
+e = {}
+headers = ['Date', 'Truss', 'Starmer', 'Unsure']
+parties = ['Truss', 'Starmer', 'Unsure']
+for i in range(1):
+  e[i]=pd.DataFrame(df[30])
+  e[i]=e[i].drop(["Pollster/client", "Area", "Sample size","None of these", "Lead"], axis=1)
+  e[i].columns = headers
+  e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
+  e[i].Date2.fillna(e[i].Date, inplace=True)
+  e[i]['Date2'] = [x+ str(2022-i) for x in e[i]['Date2'].astype(str)]
+  e[i]['Date'] = e[i]['Date2']
+  e[i] = e[i].drop(['Date2'], axis=1)
+  e[i] = e[i][e[i]['Truss'] != e[i]['Starmer']]
+  e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+    
+E = pd.concat(e.values(), ignore_index=True)
+E = E[~(E['Date'] < '2022-09-06')]
+
+for z in parties:
+  E[z] = [x.replace('–',str(np.NaN)) for x in E[z].astype(str)]
+  E[z] = [x.replace('—',str(np.NaN)) for x in E[z].astype(str)]
+  E[z] = E[z].str.strip('%')
+E[parties] = E[parties].astype(float)
+
+
+# BORIS JOHNSON
 
 print(df[31])
-df6=pd.DataFrame(df[31])
-boris20 = df6.drop(["Pollster/client", "Area", "Refused", "Sample size", "Lead", "None of these"], axis=1)
-# boris22.drop([5] , axis=0, inplace=True)
-# boris22 = truss22[['Date(s) conducted', 'Liz Truss','Keir Starmer','Unsure']]
-headers = ['Date', 'Johnson', 'Starmer', 'Unsure']
-parties = ['Johnson', 'Starmer', 'Unsure']
-boris20.columns = headers
-boris20['Date'] = [x.strip()[-6:] for x in boris20['Date']]
-boris20['Date'] = [x.replace('–','') for x in boris20['Date']]
-boris20['Date'] = [x+' 2020' for x in boris20['Date']]
-print(boris20)
+f = {}
+headers = ['Date', 'Boris', 'Starmer', 'Unsure']
+parties = ['Boris', 'Starmer', 'Unsure']
+for i in range(3):
+  f[i]=pd.DataFrame(df[i+31])
+  f[i]=f[i].drop(["Pollster/client", "Area", "Sample size","None of these","Refused","Lead"], axis=1)
+  f[i].columns = headers
+  f[i]['Date2'] = f[i]['Date'].str.split('–').str[1]
+  f[i].Date2.fillna(f[i].Date, inplace=True)
+  f[i]['Date2'] = [x+ str(2022-i) for x in f[i]['Date2'].astype(str)]
+  f[i]['Date'] = f[i]['Date2']
+  f[i] = f[i].drop(['Date2'], axis=1)
+  f[i].Date=f[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+    
+F = pd.concat(f.values(), ignore_index=True)
+
+for z in parties:
+  F[z] = [x.replace('–',str(np.NaN)) for x in F[z].astype(str)]
+  F[z] = [x.replace('—',str(np.NaN)) for x in F[z].astype(str)]
+  F[z] = F[z].str.strip('%')
+F[parties] = F[parties].astype(float)
 
 
-boris = pd.concat([boris22,boris21,boris20])
-print(boris)
-sunak = pd.concat([sunak22,sunak21,sunak20])
-print(sunak)
+# JEREMY CORBYN
+wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_2019_United_Kingdom_general_election"
+table_class="wikitable sortable jquery-tablesorter"
+response=requests.get(wikiurl)
+print(response.status_code)
+soup = BeautifulSoup(response.text, 'html.parser')
+tables = soup.find_all('table',class_="wikitable")
+df=pd.read_html(str(tables))
 
-sunak.to_csv('UK/leadership_approval/sunak.csv', index=False)
-boris.to_csv('UK/leadership_approval/boris.csv', index=False)
-truss.to_csv('UK/leadership_approval/truss.csv', index=False)
+
+print(df[32])
+g = {}
+headers = ['Date', 'Boris', 'Corbyn', 'Unsure']
+parties = ['Boris', 'Corbyn', 'Unsure']
+for i in range(1):
+  g[i]=pd.DataFrame(df[32])
+  g[i]=g[i].drop(["Polling organisation/client","Area","Sample size","None of these","Refused","Refused","Lead"], axis=1)
+  g[i].columns = headers
+  g[i]['Date2'] = g[i]['Date'].str.split('–').str[1]
+  g[i].Date2.fillna(g[i].Date, inplace=True)
+  g[i]['Date2'] = [x+ str(2019-i) for x in g[i]['Date2'].astype(str)]
+  g[i]['Date'] = g[i]['Date2']
+  g[i] = g[i].drop(['Date2'], axis=1)
+  g[i].Date=g[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+    
+G = pd.concat(g.values(), ignore_index=True)
+
+for z in parties:
+  G[z] = [x.replace('–',str(np.NaN)) for x in G[z].astype(str)]
+  G[z] = [x.replace('—',str(np.NaN)) for x in G[z].astype(str)]
+  G[z] = G[z].str.strip('%')
+G[parties] = G[parties].astype(float)
+
+
+D.to_csv('UK/leadership_approval/sunak.csv', index=False)
+E.to_csv('UK/leadership_approval/truss.csv', index=False)
+F.to_csv('UK/leadership_approval/boris.csv', index=False)
+G.to_csv('UK/leadership_approval/corbyn.csv',index=False)
