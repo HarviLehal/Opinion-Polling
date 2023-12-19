@@ -182,8 +182,8 @@ poll <- read_csv("Belgian/seats_coalition.csv")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-30),]
-poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(x)))
+# poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
+#   as.numeric(x)))
 d1 <- round(colMeans(poll[-1],na.rm = TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1[d1 == 0] <- 1   # ADDS 1 TO PARTY WITH 0 SEATS BUT REMOVE IF SUM OF PARTIES >150
