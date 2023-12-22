@@ -50,7 +50,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
-d1 <- colMeans(poll[-1])
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -125,12 +125,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 poll <- read_csv("Swedish/coalition.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date))
+Date <- c(max(poll$Date,na.rm=TRUE))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-d2 <- poll[poll$Date==min(poll$Date),]
+d2 <- poll[poll$Date==min(poll$Date,na.rm=TRUE),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
-d1 <- colMeans(poll[-1])
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -208,7 +208,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
-d1 <- round(colMeans(poll[-1]))
+d1 <- round(colMeans(poll[-1],na.rm=TRUE))
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
