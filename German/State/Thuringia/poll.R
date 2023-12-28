@@ -17,6 +17,7 @@ d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 old <-min(d$Date)
+election<-as.Date("01 09 2024", "%d %m %Y")
 # MAIN GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -28,11 +29,12 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.key.size = unit(2, 'lines'),
         legend.text = element_text(size=16))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  xlim(old, max(d$Date))+
+  xlim(old, election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(aes(yintercept=h), alpha=0.75)+
-  geom_text(aes((max(d$Date)-20),h,label = "5% Electoral Threshold", vjust = -1),colour="#56595c")
+  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")
 
 ggsave(plot=plot, file="German/State/Thuringia/plot.png",width = 15, height = 7.5, type = "cairo-png")
