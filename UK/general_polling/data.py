@@ -17,7 +17,8 @@ p = re.compile(r'\[[a-z]+\]')
 headers = ['Date', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 d = {}
-for i in range(4):
+for j in range(4):
+  i=j+1
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
   d[i].columns = headers
