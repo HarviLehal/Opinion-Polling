@@ -20,7 +20,7 @@ parties = ['DPP','KMT','TPP','Other']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[7])
-  d[i]=d[i].drop(["Pollster", "Sample size"], axis=1)
+  d[i]=d[i].drop(["Pollster", "Sample size","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -32,11 +32,11 @@ for i in range(1):
 
 headers = ['Date','DPP','KMT','TPP','Ind','Other']
 parties = ['DPP','KMT','TPP','Ind','Other']
-d = {}
+# d = {}
 for j in range(1):
   i = j+1
   d[i]=pd.DataFrame(df[8])
-  d[i]=d[i].drop(["Pollster", "Sample size"], axis=1)
+  d[i]=d[i].drop(["Pollster", "Sample size","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)

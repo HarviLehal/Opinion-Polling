@@ -17,8 +17,8 @@ p = re.compile(r'\[[a-z]+\]')
 headers = ['Date', 'Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
 d = {}
-for j in range(4):
-  i=j+1
+for i in range(5):
+  # i=j+1
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
   d[i].columns = headers
@@ -33,7 +33,7 @@ for j in range(4):
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
