@@ -16,7 +16,7 @@ headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
 d = {}
 
-for i in range(1):
+for i in range(2):
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
   d[i].columns = headers
@@ -32,7 +32,7 @@ headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
 
 for j in range(2):
-  i = j+1
+  i = j+2
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
   d[i].columns = headers

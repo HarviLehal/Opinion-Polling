@@ -18,13 +18,13 @@ headers = ['drop1','Date','drop2','drop3','PP','PSOE','VOX','Sumar','ERC','JxCat
 parties = ['PP','PSOE','VOX','Sumar','ERC','JxCat','EHB','PNV','Podemos']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
 d = {}
-for i in range(1):
+for i in range(2):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2023) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
