@@ -64,6 +64,7 @@
 <circle cx='286.14' cy='125.64' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='283.56' cy='175.47' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='278.91' cy='134.44' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
+<circle cx='276.85' cy='96.34' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='275.30' cy='193.05' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='271.69' cy='110.99' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='269.11' cy='245.81' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
@@ -133,6 +134,7 @@
 <circle cx='286.14' cy='386.49' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='283.56' cy='348.39' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='278.91' cy='383.56' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
+<circle cx='276.85' cy='436.31' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='275.30' cy='322.01' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='271.69' cy='409.94' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='269.11' cy='295.63' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
@@ -193,8 +195,8 @@
 <circle cx='77.65' cy='254.60' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='76.62' cy='257.53' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='73.00' cy='280.98' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
-<polyline points='75.34,285.71 84.89,256.05 94.45,229.66 104.01,206.47 113.56,186.54 123.12,167.48 132.68,164.98 142.23,167.17 151.79,167.48 161.35,163.12 170.90,156.93 180.46,151.27 190.02,149.50 199.58,152.50 209.13,149.66 218.69,142.18 228.25,130.05 237.80,121.07 247.36,121.58 256.92,126.77 266.47,132.51 276.03,140.20 285.59,148.77 295.14,158.73 304.70,168.83 ' style='stroke-width: 1.60; stroke: #DF253A; stroke-linecap: butt;' />
-<polyline points='75.34,232.96 84.89,265.10 94.45,293.91 104.01,319.59 113.56,341.77 123.12,363.14 132.68,366.03 142.23,363.58 151.79,361.93 161.35,366.23 170.90,373.07 180.46,380.04 190.02,383.28 199.58,380.72 209.13,382.79 218.69,388.66 228.25,398.80 237.80,405.94 247.36,404.27 256.92,398.25 266.47,392.91 276.03,386.75 285.59,380.04 295.14,372.45 304.70,365.32 ' style='stroke-width: 1.60; stroke: #3F9BDB; stroke-linecap: butt;' />
+<polyline points='75.34,285.75 84.89,256.05 94.45,229.64 104.01,206.49 113.56,186.64 123.12,167.75 132.68,165.24 142.23,167.26 151.79,167.48 161.35,162.19 170.90,156.26 180.46,151.81 190.02,150.53 199.58,152.06 209.13,148.10 218.69,140.29 228.25,132.29 237.80,122.90 247.36,120.93 256.92,124.19 266.47,129.76 276.03,136.99 285.59,145.92 295.14,156.58 304.70,167.96 ' style='stroke-width: 1.60; stroke: #DF253A; stroke-linecap: butt;' />
+<polyline points='75.34,232.89 84.89,265.11 94.45,293.95 104.01,319.58 113.56,341.69 123.12,362.88 132.68,365.61 142.23,363.23 151.79,361.93 161.35,367.39 170.90,373.86 180.46,379.34 190.02,382.13 199.58,381.11 209.13,384.38 218.69,390.01 228.25,396.29 237.80,403.64 247.36,404.69 256.92,401.24 266.47,396.20 276.03,390.36 285.59,383.24 295.14,374.87 304.70,366.30 ' style='stroke-width: 1.60; stroke: #3F9BDB; stroke-linecap: butt;' />
 <line x1='820.77' y1='521.31' x2='820.77' y2='5.48' style='stroke-width: 1.60; stroke: #56595C; stroke-opacity: 0.50; stroke-linecap: butt;' />
 <line x1='65.78' y1='521.31' x2='65.78' y2='5.48' style='stroke-width: 1.60; stroke: #56595C; stroke-opacity: 0.50; stroke-linecap: butt;' />
 <polygon points='60.09,272.19 65.78,266.50 71.47,272.19 65.78,277.88 ' style='stroke-width: 0.71; stroke: none; fill: #DF253A; fill-opacity: 0.50;' />
