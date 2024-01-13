@@ -18,10 +18,10 @@ d = {}
 for i in range(4):
   if i ==0:
     headers.append('FW')
-    # headers.append('BSW')
-  # elif i == 1:
+    headers.append('BSW')
+  elif i == 1:
     # headers.remove('FW')
-    # headers.remove('BSW')
+    headers.remove('BSW')
   elif i == 2:
     headers.remove('FW')
   d[i]=pd.DataFrame(df[i])
@@ -29,7 +29,7 @@ for i in range(4):
   d[i].columns = headers
   if i == 0:
       d[i]=d[i].drop(['FW'], axis=1)
-      # d[i]=d[i].drop(['BSW'], axis=1)
+      d[i]=d[i].drop(['BSW'], axis=1)
   if i == 1:
       d[i]=d[i].drop(['FW'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
