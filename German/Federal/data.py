@@ -29,7 +29,7 @@ for i in range(4):
   d[i].columns = headers
   if i == 0:
       d[i]=d[i].drop(['FW'], axis=1)
-      d[i]=d[i].drop(['BSW'], axis=1)
+      # d[i]=d[i].drop(['BSW'], axis=1)
   if i == 1:
       d[i]=d[i].drop(['FW'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -47,7 +47,7 @@ for i in range(2):
 D = pd.concat(d.values(), ignore_index=True)
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
-parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
+# parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
     D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
     D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
@@ -56,7 +56,7 @@ D[parties] = D[parties].astype(float)
 # D=D.drop('BSW', axis=1)
 
 D.to_csv('German/Federal/poll.csv', index=False)
-
+D=D.drop('BSW', axis=1)
 
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
@@ -74,6 +74,7 @@ D.to_csv('German/Federal/poll2.csv', index=False)
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D=D.drop('BSW', axis=1)
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke']

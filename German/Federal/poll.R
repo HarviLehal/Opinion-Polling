@@ -24,14 +24,17 @@ h <- formattable::percent(0.05)
 election<-as.Date("26 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-
+new<-d[d$variable!='BSW',]
+new2<-d[d$variable=='BSW',]
+new2<-new2[!is.na(new2$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
-                                "#FBBE00","#AA692F","#B43377"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+                                "#FBBE00","#AA692F","#B43377","#792350"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -44,8 +47,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+plot1
 
-
+d<-d[d$variable!='BSW',]
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
@@ -55,7 +59,7 @@ d <- d %>%
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
-                                "#FBBE00","#AA692F","#B43377"))+
+                                "#FBBE00","#AA692F","#B43377","#792350"))+
   # geom_ma(data=d,n=7,linetype="solid")+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   # bbplot::bbc_style()+
@@ -78,7 +82,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-7),]
-d1 <- colMeans(poll[-1])
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
@@ -103,7 +107,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
 scale_fill_manual(values = c("#f08490","#DD1529","#6686ad","#10305B",
                              "#9bcca1","#509A3A","#fadc7d","#FBBE00",
-                             "#d6b49f","#AA692F","#dba2b6","#B43377"))+
+                             "#d6b49f","#AA692F","#dba2b6","#B43377",
+                             "#af7b96","#792350"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
