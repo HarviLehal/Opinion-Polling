@@ -19,7 +19,7 @@ data22.columns = headers
 data22 = data22.drop(['1','2','3','4','5','6','7','8','9'], axis=1)
 
 d = {}
-for i in range(2):
+for i in range(3):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(['1','2','3','4','5','6','7','8','9'], axis=1)
@@ -33,7 +33,8 @@ for i in range(2):
   for z in parties:
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-d[0].drop(d[0].index[[-1]],inplace=True)
+  if i != 2:
+    d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 D.loc[len(D.index)-1,['Date']] = '2022-11-01'
