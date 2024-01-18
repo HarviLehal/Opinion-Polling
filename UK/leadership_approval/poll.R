@@ -73,7 +73,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(truss,f,label = "Truss", vjust = -0.5, angle=-90),colour="#0087DC")+
   geom_text(aes(starm,f,label = "Starmer", vjust = -0.5, angle=-90),colour="#e4003b")+
   xlim(min(d$Date), max(d$Date))+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==sunak|d$Date==truss|d$Date==boris,],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==sunak|d$Date==truss|d$Date==boris,],size=5.25, shape=5, alpha=1)
 plot1
