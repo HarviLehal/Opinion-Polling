@@ -49,8 +49,4 @@ for z in parties:
 D.drop(D.index[[-2]],inplace=True)
 D.loc[len(D.index),['Date']] = '12 Dec 2019'
 
-new_row = pd.DataFrame({'Date': '18 Jan 2024', 'Con':20 , 'Lab':47 , 'Lib Dem':np.NaN , 'SNP':np.NaN,'Green':np.NaN,'Reform':12}, index=[0])
-new_row.Date=new_row.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-D = pd.concat([new_row,D]).reset_index(drop=True)
-
 D.to_csv('UK/general_polling/poll.csv', index=False)
