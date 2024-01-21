@@ -34,7 +34,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
                                 "#FBBE00","#AA692F","#B43377","#792350"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method='lm', formula= y~x,data=new2[new2$Date!=old,], se = FALSE)+
+  # geom_line(linewidth=0.75,data=new2[new2$Date!=old,]) +
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
