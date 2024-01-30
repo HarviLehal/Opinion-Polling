@@ -13,10 +13,11 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 data22=pd.DataFrame(df[0])
-data22 = data22.drop(['Polling firm','Sample size','Others','Lead','Gov.','Opp.'],axis=1)
-headers = ['Date','KOK','PS','SDP','KESK','VAS','VIHR','SFP','KD','LIIK']
+headers = ['Date','1','2','KOK','PS','SDP','KESK','VAS','VIHR','SFP','KD','LIIK','3','4','5','6']
 parties = ['KOK','PS','SDP','KESK','VAS','VIHR','SFP','KD','LIIK']
 data22.columns = headers
+data22 = data22.drop(['1','2','3','4','5','6'],axis=1)
+
 
 
 data22['Date2'] = data22['Date'].str.split('–').str[1]

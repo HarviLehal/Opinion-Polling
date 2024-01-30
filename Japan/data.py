@@ -12,13 +12,13 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','SJ48','None']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','SJ48','None']
+headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
 d = {}
 
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Sample size","Polling firm","Others", "Und./ no ans.", "Lead"], axis=1)
+  d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Others", "Und./ no ans.", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -47,7 +47,7 @@ D['total']=D[parties].sum(axis=1)
 D['decided']=D['total']-D['None']
 
 print(D)
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','SJ48']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP']
 D[parties] = D[parties].div(D['decided'], axis=0)*100
 
 D = D.drop(["decided","total","None"], axis=1)

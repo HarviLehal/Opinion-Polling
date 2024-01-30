@@ -29,7 +29,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
-                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#e289b6",
+                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf",
                                 "#666666"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
@@ -52,7 +52,7 @@ d <- d %>%
 plot1a<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
-                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#e289b6",
+                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf",
                                 "#666666"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
@@ -93,7 +93,7 @@ scale_fill_manual(values = c("#77bf66","#3ca324","#748fb8","#184589",
                              "#d4e28e","#b8ce43","#fb99b3","#f95580",
                              "#e96677","#db001c","#ffd666","#ffba00",
                              "#f466ba","#ed008c","#f4ab67","#ed7301",
-                             "#77cbf2","#1ca9e9","#eeb8d3","#e289b6",
+                             "#77cbf2","#1ca9e9","#a0d7cf","#60bcaf",
                              "#a3a3a3","#666666"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
