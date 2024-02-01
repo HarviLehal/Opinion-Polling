@@ -16,14 +16,14 @@ headers = ['Date','NDP','BCU','Green','Con']
 parties = ['NDP','BCU','Green','Con']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[i+1])
+  d[i]=pd.DataFrame(df[2])
   d[i]=d[i].drop(["Polling firm","Client","Source","Others","Margin of error","Sample size","Polling method","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   for j in range(len(d[i])):
     if d[i].Date2[j][0].isdigit():
-      d[i]['Date2'][j] = d[i]['Date'][j][:4] + d[i]['Date2'][j]
+      d[i]['Date2'][j] = d[i]['Date'][j][:3] + d[i]['Date2'][j]
   # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
@@ -32,6 +32,8 @@ for i in range(1):
   
 for i in range(1):
   d[i].drop(d[i].index[[-1,-2]],inplace=True)
+
+# d[0]['Date'].replace({pd.NaT: "0 days"}, inplace=True)
 
 
 
