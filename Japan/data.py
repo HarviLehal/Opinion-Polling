@@ -16,9 +16,9 @@ headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','N
 parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
 d = {}
 
-for i in range(1):
+for i in range(2):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Others", "Und./ no ans.", "Lead"], axis=1)
+  d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Oth./ Und./ no ans.", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -32,9 +32,11 @@ for i in range(1):
   for z in parties:
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    
   for z in parties:
     d[i][z] = d[i][z].astype('float')
+
+for i in range(1):
+  d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Japan/poll.csv', index=False)
