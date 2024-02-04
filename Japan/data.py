@@ -16,9 +16,15 @@ headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','N
 parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
 d = {}
 
-for i in range(2):
+for i in range(4):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Oth./ Und./ no ans.", "Lead"], axis=1)
+  if i < 2:
+    d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Oth./ Und./ no ans.", "Lead"], axis=1)
+  else:
+    d[i]=d[i].drop(["Sample size","Polling firm","Oth./ Und./ no ans.", "Lead"], axis=1)
+  if i==3:
+    headers.remove('DIY')
+    parties.remove('DIY')
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -35,13 +41,14 @@ for i in range(2):
   for z in parties:
     d[i][z] = d[i][z].astype('float')
 
-for i in range(1):
+for i in range(3):
   d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Japan/poll.csv', index=False)
 
-
+headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
 
 D['None'].fillna(0, inplace=True)
 D['total']=D[parties].sum(axis=1)
