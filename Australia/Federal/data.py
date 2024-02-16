@@ -33,11 +33,11 @@ for i in range(3):
 D = pd.concat(d.values(), ignore_index=True)
 PP = ['Labor2', 'Coalition2']
 E = D.drop(PP, axis=1)
-E.to_csv('Australia/poll.csv', index=False)
+E.to_csv('Australia/Federal/poll.csv', index=False)
 
 
 parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other']
 D = D.drop(parties2, axis=1)
 headers = ['Date', 'Labor', 'Coalition']
 D.columns = headers
-D.to_csv('Australia/poll2.csv', index=False)
+D.to_csv('Australia/Federal/poll2.csv', index=False)

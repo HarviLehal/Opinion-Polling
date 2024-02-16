@@ -13,37 +13,41 @@ library(ggpubr)
 library(zoo)
 library(tidyverse)
 library(data.table)
-
-py_run_file("Estonian/data.py")
-poll <- read_csv("Estonian/poll.csv")
+library(hrbrthemes)
+py_run_file("Spain/Galicia/data.py")
+poll <- read_csv("Spain/Galicia/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
+election<-as.Date("18 02 2024", "%d %m %Y")
 old <-min(d$Date)
-# election<-as.Date("07 03 2027", "%d %m %Y")
-election <-max(d$Date)+32
-# MAIN GRAPH
+start<-as.Date("01 01 2024", "%d %m %Y")
+d<-d[d$Date>start,]
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#f5d41b","#2862AF","#287556","#332995","#D41715","#3F9BE2"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
+  scale_color_manual(values = c("#1d84ce","#adcfef","#ef1c27",
+                                "#9369f5","#63be21","#ec640c",
+                                "#ef4b91","#ffc926"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  xlim(min(d$Date), election)+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date)-0.725, election)+
+  geom_vline(xintercept=old,
+             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election,
+             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 plot1
 
-poll <- read_csv("Estonian/poll.csv")
+poll <- read_csv("Spain/Galicia/poll.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -71,12 +75,14 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#fae789","#f5d41b",
-                               "#86a9d9","#2862AF",
-                               "#7dbaa2","#287556",
-                               "#8781c9","#332995",
-                               "#e88080","#D41715",
-                               "#9bcef2","#3F9BE2"))+
+  scale_fill_manual(values = c("#61a9dd","#1d84ce",
+                               "#cee2f5","#adcfef",
+                               "#f46068","#ef1c27",
+                               "#bea5f9","#9369f5",
+                               "#92d264","#63be21",
+                               "#f29355","#ec640c",
+                               "#f481b2","#ef4b91",
+                               "#ffdf7d","#ffc926"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -88,12 +94,13 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2023 Election)')+
+  ggtitle('14 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+
+plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
-ggsave(plot=plot, file="Estonian/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Spain/Galicia/plot.png",width = 15, height = 7.5, type="cairo-png")

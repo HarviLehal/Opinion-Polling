@@ -14,15 +14,44 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
+# 2023 part 1
 
-# 2023
-
-data23=pd.DataFrame(df[0])
-data23=data23.drop(['Polling firm/Link','Sample size','Agreement','Kukiz\'15','AGROunia','Others / Don\'t know','Lead'],axis=1)
+data24=pd.DataFrame(df[0])
+data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Gov. Activists','There is One Poland'],axis=1)
 
 headers = ['Date','PiS','KO','Lewica','Koalicja','PL2050','Konfederacja']
 parties = ['PiS','KO','Lewica','Koalicja','PL2050','Konfederacja']
+data24.columns = headers
+data24['Date'] = [p.sub('', x) for x in data24['Date']]
+data24['Date2'] = data24['Date'].str.split('–').str[1]
+data24.Date2.fillna(data24['Date'].str.split('-').str[1], inplace=True)
+data24.Date2.fillna(data24.Date, inplace=True)
+data24.Date = data24.Date2
+data24 = data24.drop(['Date2'],axis=1)
+data24.Date = data24['Date'].astype(str)
+data24['Date'] = [x+' 2023' for x in data24['Date']]
+data24.Date = data24.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+data24 = data24[data24['PiS'] != data24['Lewica']]
+for z in parties:
+  data24[z] = [p.sub('', x) for x in data24[z].astype(str)]
+  data24[z] = data24[z].astype('float').astype(str)
+data24[parties] = data24[parties].astype(float)
+data24['Trzecia Droga']=np.where(data24['Koalicja']==data24['PL2050'],data24['PL2050'],data24['PL2050']+data24['Koalicja'])
+threeway = ['Koalicja','PL2050']
+data24=data24.drop(threeway, axis=1)
+data24.drop(data24.index[[0,2,]],inplace=True)
+
+
+# 2023
+
+data23=pd.DataFrame(df[1])
+data23=data23.drop(['Polling firm/Link','Sample size','Kukiz\'15','AGROunia','Others / Don\'t know','Lead','Independents & Local Gov. Activists'],axis=1)
+
+headers = ['Date','PiS','KO','Agreement','Koalicja','PL2050','Konfederacja','Lewica']
+parties = ['PiS','KO','Agreement','Koalicja','PL2050','Konfederacja','Lewica']
 data23.columns = headers
+data23=data23.drop(['Agreement'],axis=1)
+parties = ['PiS','KO','Koalicja','PL2050','Konfederacja','Lewica']
 data23['Date'] = [p.sub('', x) for x in data23['Date']]
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23['Date'].str.split('-').str[1], inplace=True)
@@ -44,9 +73,12 @@ threeway = ['Polish Coalition','Poland 2050']
 data23['Koalicja'][data23['Koalicja']==data23['Trzecia Droga']]=np.nan
 data23['PL2050'][data23['Trzecia Droga']==data23['PL2050']]=np.nan
 
+
+
+
 # 2022
 
-data22=pd.DataFrame(df[1])
+data22=pd.DataFrame(df[2])
 data22=data22.drop(['Polling firm/Link','Sample size','Agreement','Kukiz\'15','AGROunia','Others / Don\'t know','Lead'],axis=1)
 
 headers = ['Date','PiS','KO','Lewica','Koalicja','Konfederacja','PL2050']
@@ -66,9 +98,12 @@ for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
   data22[z] = data22[z].astype('float').astype(str)
 
+
+
+
 # 2021
 
-data21=pd.DataFrame(df[2])
+data21=pd.DataFrame(df[3])
 data21=data21.drop(['Polling firm/Link','Sample size','Agreement','Kukiz\'15','Others / Don\'t know','Lead','Unnamed: 13_level_0'],axis=1)
 
 headers = ['Date','PiS','KO','Lewica','Koalicja','Konfederacja','PL2050']
@@ -90,9 +125,12 @@ for z in parties:
   data21[z] = data21[z].astype('float').astype(str)
 
 
+
+
+
 # 2020
 
-data20=pd.DataFrame(df[3])
+data20=pd.DataFrame(df[4])
 data20=data20.drop(['Polling firm/Link','Sample size','Kukiz\'15','Others / Don\'t know','Lead'],axis=1)
 
 headers = ['Date','PiS','KO1','KO2','Lewica','Koalicja','Konfederacja','PL2050']
@@ -123,9 +161,12 @@ data20['KO'] = np.where(data20['KO1'] == data20['KO2'],data20['KO2'],data20[KO].
 data20 = data20.drop(KO, axis=1)
 
 
+
+
+
 # 2019
 
-data19=pd.DataFrame(df[4])
+data19=pd.DataFrame(df[5])
 data19=data19.drop(['Polling firm/Link','Sample size','Others / Don\'t know','Lead','Unnamed: 10_level_0','Unnamed: 11_level_0','Unnamed: 12_level_0','Unnamed: 13_level_0'],axis=1)
 
 headers = ['Date','PiS','KO','Lewica','Koalicja','Konfederacja']
@@ -147,7 +188,11 @@ for z in parties:
   data19[z] = data19[z].astype('float').astype(str)
 
 
-data = pd.concat([data23,data22,data21,data20,data19])
+
+
+
+
+data = pd.concat([data24,data23,data22,data21,data20,data19])
 data = data[data['PiS'] != data['Lewica']]
 
 

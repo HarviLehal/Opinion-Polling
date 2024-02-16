@@ -19,7 +19,7 @@ d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 g <- formattable::percent(0.08)
 
-election<-as.Date("11 11 2023", "%d %m %Y")
+election<-as.Date("15 10 2023", "%d %m %Y")
 old <-min(d$Date)
 new<-d[d$variable!='Trzecia Droga',]
 new2<-d[d$variable=='Trzecia Droga',]
