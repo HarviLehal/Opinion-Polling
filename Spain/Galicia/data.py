@@ -42,6 +42,11 @@ parties = ['PP','BNG','PSOE','Podemos','VOX','CS','Sumar','DO']
 D[parties] = D[parties].astype(float)
 D = D[['Date','PP','BNG','PSOE','Podemos','VOX','CS','Sumar','DO']]
 D.drop(D.index[[-1,-3]],inplace=True)
+D.drop(D.index[[0,2]],inplace=True)
 
+# D.drop(D.index[[0]],inplace=True)
+# new_row = pd.DataFrame({'Date': '18 Feb 2024','PP':47.35,'BNG':31.58,'PSOE':14.04,'Podemos':0.26, 'VOX':2.19, 'CS':np.NaN, 'Sumar':1.90,'DO':1.03}, index=[0])
+# D = pd.concat([new_row,D]).reset_index(drop=True)
+# D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('Spain/Galicia/poll.csv', index=False)

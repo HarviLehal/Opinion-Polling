@@ -16,7 +16,7 @@ p = re.compile(r'\[[a-z]+\]')
 
 # 2023 part 1
 
-data24=pd.DataFrame(df[0])
+data24=pd.DataFrame(df[1])
 data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
@@ -43,7 +43,7 @@ data24=data24.drop(threeway, axis=1)
 
 # 2023
 
-data23=pd.DataFrame(df[1])
+data23=pd.DataFrame(df[2])
 data23=data23.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
