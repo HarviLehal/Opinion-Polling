@@ -52,11 +52,14 @@ for z in parties:
     D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
     D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-# D=D.drop(D[D['BSW'] > 0].index)
+
+''' REMOVE WEIRD POLL!!!!'''
+
+D=D.drop(D[D['BSW'] ==14].index)
 # D=D.drop('BSW', axis=1)
 
 D.to_csv('German/Federal/poll.csv', index=False)
-D=D.drop('BSW', axis=1)
+# D=D.drop('BSW', axis=1)
 
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke']

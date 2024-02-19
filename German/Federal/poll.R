@@ -33,11 +33,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
                                 "#FBBE00","#AA692F","#B43377","#792350"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
-  geom_smooth(method='lm', formula= y~x,data=new2[new2$Date!=old,], se = FALSE)+
-  # geom_line(linewidth=0.75,data=new2[new2$Date!=old,]) +
-  # bbplot::bbc_style()+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=new2[new2$Date!=old,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
@@ -51,11 +49,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
 plot1
 
-d<-d[d$variable!='BSW',]
+
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = zoo::rollmean(value, k = 7, fill = NA, align = "right"))
+  mutate(Moving_Average = zoo::rollmean(value, k = 7, fill = NA, align = "left"))
 
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
