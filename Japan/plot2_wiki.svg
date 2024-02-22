@@ -1940,6 +1940,9 @@
 <rect x='901.23' y='294.13' width='25.96' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #DB001C;' />
 <rect x='901.23' y='247.07' width='17.94' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFBA00;' />
 <rect x='901.23' y='200.01' width='22.85' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #ED008C;' />
+<rect x='901.23' y='152.95' width='5.95' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #ED7301;' />
+<rect x='901.23' y='105.90' width='2.66' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #1CA9E9;' />
+<rect x='901.23' y='58.84' width='1.86' height='42.35' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #60BCAF;' />
 <text x='901.23' y='507.11' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='40.38px' lengthAdjust='spacingAndGlyphs'>( 43.1% )</text>
 <text x='901.23' y='460.05' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='40.38px' lengthAdjust='spacingAndGlyphs'>( 16.5% )</text>
 <text x='901.23' y='412.99' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='40.38px' lengthAdjust='spacingAndGlyphs'>( 13.7% )</text>
@@ -1947,9 +1950,9 @@
 <text x='901.23' y='318.87' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 6.8% )</text>
 <text x='901.23' y='271.81' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 4.7% )</text>
 <text x='901.23' y='224.75' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 6.0% )</text>
-<text x='901.23' y='177.70' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='25.43px' lengthAdjust='spacingAndGlyphs'>( NA )</text>
-<text x='901.23' y='130.64' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='25.43px' lengthAdjust='spacingAndGlyphs'>( NA )</text>
-<text x='901.23' y='83.58' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='25.43px' lengthAdjust='spacingAndGlyphs'>( NA )</text>
+<text x='901.23' y='177.70' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 1.6% )</text>
+<text x='901.23' y='130.64' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 0.7% )</text>
+<text x='901.23' y='83.58' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 0.5% )</text>
 </g>
 <g clip-path='url(#cpMC4wMHwxMDgwLjAwfDAuMDB8NTQwLjAw)'>
 <text x='888.05' y='506.70' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='17.11px' lengthAdjust='spacingAndGlyphs'>LDP</text>
