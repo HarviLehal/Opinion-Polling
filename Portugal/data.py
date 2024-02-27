@@ -20,9 +20,10 @@ p = re.compile(r'\[[a-z]+\]')
 data23=pd.DataFrame(df[0])
 data23=data23.drop(['Polling firm/Link','Sample size','Turnout','O','Lead'],axis=1)
 
-headers = ['Date','PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE']
+headers = ['Date','PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE','useless']
 parties = ['PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE']
 data23.columns = headers
+data23=data23.drop(['useless'],axis=1)
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23['Date'].str.split('-').str[1], inplace=True)
 data23.Date2.fillna(data23.Date, inplace=True)
@@ -59,9 +60,10 @@ data23.to_csv('Portugal/poll.csv', index=False)
 data23=pd.DataFrame(df[0])
 data23=data23.drop(['Polling firm/Link','Sample size','Turnout','O','Lead'],axis=1)
 
-headers = ['Date','PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE']
+headers = ['Date','PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE','useless']
 parties = ['PS','PSD','CDS-PP','Chega','IL','BE','CDU','PAN','LIVRE']
 data23.columns = headers
+data23=data23.drop(['useless'],axis=1)
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23['Date'].str.split('-').str[1], inplace=True)
 data23.Date2.fillna(data23.Date, inplace=True)
