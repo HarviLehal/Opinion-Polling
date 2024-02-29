@@ -23,14 +23,18 @@ d$value<-formattable::percent(d$value)
 election<-as.Date("01 05 2024", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-
+new<-d[d$variable!='JLN',]
+new2<-d[d$variable=='JLN',]
+new2<-new2[!is.na(new2$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#2031CC","#D23A38",
                                 "#3AA54F","#F8CC10","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
