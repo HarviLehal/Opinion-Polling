@@ -54,7 +54,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=sunak|d$Date!=truss|d$Date!=boris,],alpha=0.25)+
   scale_color_manual(values = c("#e4003b","#005184","#999999",
                                 "#66b7ea","#0087dc","#890023"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.9,linewidth=0.75, data=d_sunak[d_sunak$Date!=sunak,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.65,linewidth=0.75, data=d_sunak[d_sunak$Date!=sunak,])+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=d_truss[d_truss$Date!=truss,])+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d_boris[d_boris$Date!=boris,])+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d_corbyn[d_corbyn$Date!=boris,])+

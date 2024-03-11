@@ -30,6 +30,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
