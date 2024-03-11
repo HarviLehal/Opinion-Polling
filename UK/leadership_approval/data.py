@@ -19,13 +19,13 @@ print(df[26])
 headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
 parties = ['Starmer', 'Sunak', 'Unsure']
 d = {}
-for i in range(2):
-  d[i]=pd.DataFrame(df[i+26])
+for i in range(3):
+  d[i]=pd.DataFrame(df[i+28])
   d[i]=d[i].drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
@@ -42,12 +42,12 @@ D[parties] = D[parties].astype(float)
 
 # LIZ TRUSS
 
-print(df[30])
+print(df[32])
 e = {}
 headers = ['Date', 'Truss', 'Starmer', 'Unsure']
 parties = ['Truss', 'Starmer', 'Unsure']
 for i in range(1):
-  e[i]=pd.DataFrame(df[30])
+  e[i]=pd.DataFrame(df[33])
   e[i]=e[i].drop(["Pollster/client", "Area", "Sample size","None of these", "Lead"], axis=1)
   e[i].columns = headers
   e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
@@ -70,12 +70,12 @@ E[parties] = E[parties].astype(float)
 
 # BORIS JOHNSON
 
-print(df[31])
+print(df[34])
 f = {}
 headers = ['Date', 'Boris', 'Starmer', 'Unsure']
 parties = ['Boris', 'Starmer', 'Unsure']
 for i in range(3):
-  f[i]=pd.DataFrame(df[i+31])
+  f[i]=pd.DataFrame(df[i+34])
   f[i]=f[i].drop(["Pollster/client", "Area", "Sample size","None of these","Refused","Lead"], axis=1)
   f[i].columns = headers
   f[i]['Date2'] = f[i]['Date'].str.split('–').str[1]
