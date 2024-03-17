@@ -12,11 +12,12 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-df0=pd.DataFrame(df[2])
-data22 = df0.drop(["Pollster","Sample size","Lead"], axis=1)
-headers = ['Date', 'TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL']
-parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL']
+data22=pd.DataFrame(df[2])
+headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA','3']
+parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
 data22.columns = headers
+data22 = data22.drop(["1","2","3"], axis=1)
+headers = ['Date','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
 
 for z in headers:
     data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
@@ -34,6 +35,7 @@ data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
 data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+data22.drop(data22.index[[0,1]],inplace=True)
 
 # for z in parties:
 #   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
