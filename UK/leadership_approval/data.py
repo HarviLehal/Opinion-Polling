@@ -20,7 +20,7 @@ headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
 parties = ['Starmer', 'Sunak', 'Unsure']
 d = {}
 for i in range(3):
-  d[i]=pd.DataFrame(df[i+28])
+  d[i]=pd.DataFrame(df[i+27])
   d[i]=d[i].drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
