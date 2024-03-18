@@ -36,24 +36,17 @@ for z in parties:
 data22['Centar']=np.where(data22['Centar1'] != data22['Centar2'], data22['Centar1']+data22['Centar2'], data22['Centar1'])
 data22 = data22.drop(["Centar1","Centar2"], axis=1)
 
+
+headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
+parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
+data22=data22.reindex(columns=headers)
 data22.loc[len(data22.index)-1,['RF']] = np.NaN
 data22.loc[len(data22.index)-2,['RF']] = np.NaN
 data22.loc[len(data22.index)-1,['Fokus']] = np.NaN
 
-# Restart = ['SDP','HSS','IDS','HSU']
-Restart = ['SDP','HSS','IDS','HSU','Centar','RF','Fokus']
+data22.to_csv('Croatia/alternative/poll.csv', index=False)
 
-data22['Restart']=data22[Restart].sum(axis=1)
-data22 = data22.drop(Restart, axis=1)
 
-# headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
-# parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
-
-headers = ['Date','HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
-parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
-data22=data22.reindex(columns=headers)
-
-data22.to_csv('Croatia/poll.csv', index=False)
 
 data22['Undecided'].fillna(0, inplace=True)
 data22['total']=data22[parties].sum(axis=1)
@@ -61,13 +54,9 @@ data22['total']=data22[parties].sum(axis=1)
 data22['decided']=data22['total']-data22['Undecided']
 
 print(data22)
-# parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others']
-parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others']
+parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others']
 data22[parties] = data22[parties].div(data22['decided'], axis=0)*100
 
 data22 = data22.drop(["decided","total","Undecided"], axis=1)
 
-data22.to_csv('Croatia/poll2.csv', index=False)
-
-
-
+data22.to_csv('Croatia/alternative/poll2.csv', index=False)
