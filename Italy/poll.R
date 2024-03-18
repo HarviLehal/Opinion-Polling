@@ -26,9 +26,11 @@ old <-min(d$Date)
 # MAIN GRAPH
 # LOESS GRAPH
 
+# TRUE M5S COLOURS
+# "#fdf48c","#fcec3f"
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#03386a","#ef1c27","#fcec3f",
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
+  scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a",
                                 "#048404","#0484dc","#0039aa",
                                 "#d4448c","#bc3454","#fcd404",
                                 "#346c9c","#0039aa"))+
@@ -55,8 +57,8 @@ d <- d %>%
 
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#03386a","#ef1c27","#fcec3f",
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
+  scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a",
                                 "#048404","#0484dc","#0039aa",
                                 "#d4448c","#bc3454","#fcd404",
                                 "#346c9c","#0039aa"))+
@@ -104,7 +106,7 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#6888a6","#03386a","#f5777d","#ef1c27","#fdf48c","#fcec3f",
+scale_fill_manual(values = c("#6888a6","#03386a","#f5777d","#ef1c27","#f8d976","#f4c01a",
                              "#68b568","#048404","#68b5ea","#0484dc","#6688cc","#0039aa",
                              "#e58fba","#d4448c","#d78598","#bc3454","#fde568","#fcd404",
                              "#85a7c4","#346c9c","#6688cc","#0039aa"))+

@@ -25,12 +25,19 @@ old <-min(d$Date)
 # start<-as.Date("01 01 2024", "%d %m %Y")
 # d<-d[d$Date>start,]
 
+new<-d[d$variable!='AC',]
+new2<-d[d$variable=='AC',]
+new2<-new2[!is.na(new2$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = c("#ef1c27","#ffb232","#00c7ae","#63be21","#ad275c","#ffde4b","#ec640c","#1d84ce"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = c("#ef1c27","#ffb232","#00c7ae",
+                                "#63be21","#ad275c","#ffde4b",
+                                "#ec640c","#1d84ce","#054a81"))+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -80,7 +87,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#ad275c","#ce7d9d",
                                "#ffde4b","#ffeb93",
                                "#f29355","#ec640c",
-                               "#61a9dd","#1d84ce"))+
+                               "#61a9dd","#1d84ce",
+                               "#6992b3","#054a81"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
