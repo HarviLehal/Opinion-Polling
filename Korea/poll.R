@@ -62,7 +62,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1])
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -99,7 +99,7 @@ theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('14 day average \n (2020 Result)')+
+ggtitle('7 day average \n (2020 Result)')+
 coord_flip()
 plot2
 
@@ -160,7 +160,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1])
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -197,7 +197,7 @@ plot2<-ggplot(data=d3, aes(x=forcats::fct_rev(variable), y=value,fill=interactio
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average \n (2020 Result)')+
+  ggtitle('7 day average \n (2020 Result)')+
   coord_flip()
 plot2
 
