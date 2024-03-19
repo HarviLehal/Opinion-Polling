@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
 
-wikiurl="https://en.wikipedia.org/wiki/Next_Thuringian_state_election"
+wikiurl="https://en.wikipedia.org/wiki/2024_Thuringian_state_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -26,8 +26,8 @@ for z in parties:
 data22=data22[~data22.Others.str.contains(".mw-parser-output")]
 data22[parties] = data22[parties].astype(float)
 
-data22=data22.drop(data22[data22['BSW'] > 0].index)
-data22=data22.drop('BSW', axis=1)
+data22=data22.drop(data22[data22['BSW'] > 20].index)
+# data22=data22.drop('BSW', axis=1)
 
 
 print(data22)
