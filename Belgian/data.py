@@ -45,7 +45,7 @@ data.to_csv('Belgian/poll_vlaanderen.csv', index=False)
 
 # WALLONIE
 
-data=pd.DataFrame(df[3])
+data=pd.DataFrame(df[2])
 headers = ['Date','drop1','drop2','drop3','PS','MR','Ecolo','PTB','LE','DéFI','drop4','drop5','drop6','drop7']
 parties = ['PS','MR','Ecolo','PTB','LE','DéFI']
 drop = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7']
@@ -74,7 +74,7 @@ data.to_csv('Belgian/poll_wallonie.csv', index=False)
 
 # BRUSSEL
 
-data=pd.DataFrame(df[5])
+data=pd.DataFrame(df[3])
 headers = ['Date','drop1','drop2','drop3','Ecolo','PS','MR','PVDA-PTB','DéFI','LE','N-VA','Open vld','VB','cd&v','Groen','Vooruit','drop4','drop5','drop6','drop7']
 parties = ['Ecolo','PS','MR','PVDA-PTB','DéFI','LE','N-VA','Open vld','VB','cd&v','Groen','Vooruit']
 drop = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7']
@@ -104,7 +104,7 @@ data.to_csv('Belgian/poll_brussel.csv', index=False)
 
 # SEATS BY PARTY
 
-data=pd.DataFrame(df[6])
+data=pd.DataFrame(df[4])
 headers = ['Date','drop1','drop2','N-VA','PS','VB','MR','Ecolo','cd&v','Open vld','PVDA-PTB','Vooruit','Groen','LE','DéFI','drop4','drop5','drop6','drop7','drop8']
 parties = ['N-VA','PS','VB','MR','Ecolo','cd&v','Open vld','PVDA-PTB','Vooruit','Groen','LE','DéFI']
 drop = ['drop1','drop2','drop4','drop5','drop6','drop7','drop8']
