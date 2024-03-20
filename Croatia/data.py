@@ -41,7 +41,8 @@ data22.loc[len(data22.index)-2,['RF']] = np.NaN
 data22.loc[len(data22.index)-1,['Fokus']] = np.NaN
 
 # Restart = ['SDP','HSS','IDS','HSU']
-Restart = ['SDP','HSS','IDS','HSU','Centar','RF','Fokus']
+# Restart = ['SDP','HSS','IDS','HSU','Centar','RF','Fokus']
+Restart = ['SDP','HSS','HSU','Centar']
 
 data22['Restart']=data22[Restart].sum(axis=1)
 data22 = data22.drop(Restart, axis=1)
@@ -49,8 +50,10 @@ data22 = data22.drop(Restart, axis=1)
 # headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
 # parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others','Undecided']
 
-headers = ['Date','HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
-parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
+# headers = ['Date','HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
+# parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others','Undecided']
+headers = ['Date','HDZ','Restart','DP','Most','Možemo!','RF','Fokus','KH','HNS','IDS','HS','SD','Others','Undecided']
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Fokus','KH','HNS','IDS','HS','SD','Others','Undecided']
 data22=data22.reindex(columns=headers)
 
 data22.to_csv('Croatia/poll.csv', index=False)
@@ -62,7 +65,8 @@ data22['decided']=data22['total']-data22['Undecided']
 
 print(data22)
 # parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','HS','SD','Others']
-parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others']
+# parties = ['HDZ','Restart','DP','Most','Možemo!','KH','HNS','HS','SD','Others']
+parties = ['HDZ','Restart','DP','Most','Možemo!','RF','Fokus','KH','HNS','IDS','HS','SD','Others']
 data22[parties] = data22[parties].div(data22['decided'], axis=0)*100
 
 data22 = data22.drop(["decided","total","Undecided"], axis=1)
