@@ -84,3 +84,6 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Japan/plot_wiki.svg",width = 15, height = 7.5)
+aaa=readLines("Japan/plot_wiki.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Japan/plot_wiki.svg")
