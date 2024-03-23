@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Japanese_general_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,6 +12,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[a-z]+\]')
 
 headers = ['Date','Approve','Disapprove','Undecided']
 parties = ['Approve','Disapprove','Undecided']
@@ -31,6 +33,7 @@ for i in range(3):
   for z in parties:
     d[i][z] = d[i][z].astype('string')
   for z in parties:
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
   for z in parties:

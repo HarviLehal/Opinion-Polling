@@ -17,7 +17,7 @@ headers=['Date','Firm','Liberal', 'Labor', 'Green', 'JLN', 'Other','1','2']
 parties = ['Liberal', 'Labor', 'Green', 'JLN', 'Other']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[3])
+  d[i]=pd.DataFrame(df[6])
   d[i].columns = headers
   d[i]=d[i].drop(['Firm','1','2'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -28,4 +28,15 @@ for i in range(1):
   d[i] = d[i][d[i]['Labor'] != d[i]['Other']]
 
 D = pd.concat(d.values(), ignore_index=True)
+
+Lib=36.76
+Lab=29.41
+Gre=13.37
+JL=6.75
+Oth=100-Lib-Lab-Gre-JL
+
+new_row = pd.DataFrame({'Date': '23 Mar 2024', 'Liberal':Lib, 'Labor':Lab, 'Green':Gre, 'JLN':JL, 'Other':Oth}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
 D.to_csv('Australia/State/Tasmania/poll.csv', index=False)
