@@ -14,7 +14,7 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 
-poll1 <- read_csv("Dutch/poll.csv")
+poll1 <- read_csv("Dutch/Old/poll.csv")
 poll2 <- read_csv("Dutch/poll_new.csv")
 poll<-dplyr::bind_rows(poll1,poll2)
 # poll <- rbind(poll1,poll2) 

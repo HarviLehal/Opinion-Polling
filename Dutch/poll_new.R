@@ -120,7 +120,7 @@ plotB
 
 
 
-ggsave(plot=plotA, file="Dutch/plot_new.png",width = 20, height = 10, type="cairo-png")
+ggsave(plot=plotA, file="Dutch/plot.png",width = 20, height = 10, type="cairo-png")
 
-ggsave(plot=plotB, file="Dutch/plot3_new.png",width = 20, height = 10, type="cairo-png")
+ggsave(plot=plotB, file="Dutch/plot_ma.png",width = 20, height = 10, type="cairo-png")
 
