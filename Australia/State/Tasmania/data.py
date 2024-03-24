@@ -17,7 +17,7 @@ headers=['Date','Firm','Liberal', 'Labor', 'Green', 'JLN', 'Other','1','2']
 parties = ['Liberal', 'Labor', 'Green', 'JLN', 'Other']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[6])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(['Firm','1','2'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
