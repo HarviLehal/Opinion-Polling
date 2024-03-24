@@ -14,20 +14,20 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-poll <- read_csv("Spain/poll2_new.csv")
+poll <- read_csv("Spain/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-old<-as.Date("24 07 2023", "%d %m %Y")
-election<-as.Date("22 07 2027", "%d %m %Y")
-
+# election<-as.Date("22 07 2027", "%d %m %Y")
+old <-min(d$Date)
+election <- max(d$Date)+30
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#00c7ae","#ef1c27","#1d84ce"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#ef1c27","#1d84ce"))+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -36,19 +36,47 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=election,
-             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
+  # geom_vline(xintercept=election,
+  #            linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+plot1
+
+# MA GRAPH
+
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = zoo::rollmean(value, k = 7, fill = NA, align = "right"))
 
 
-poll <- read_csv("Spain/poll2_new.csv")
+plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#ef1c27","#1d84ce"))+
+  # geom_ma(data=d,n=7,linetype="solid")+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  # bbplot::bbc_style()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+plot3
+
+
+# BAR CHART
+
+poll <- read_csv("Spain/poll2.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -68,10 +96,10 @@ d2$value<-formattable::percent(d2$value, digits = 1)
 d3<-rbind(d2,d1)
 
 
+
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#4dd8c6","#00c7ae",
-                               "#f46068","#ef1c27",
+  scale_fill_manual(values = c("#f46068","#ef1c27",
                                "#61a9dd","#1d84ce"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0),
@@ -84,7 +112,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('7 day Average \n (2023 Election)')+
+  ggtitle('14 day Average \n (2023 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 
@@ -93,6 +121,10 @@ plot2
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
-ggsave(plot=plot, file="Spain/bloc_new.png",width = 15, height = 7.5, type="cairo-png")
 
+ggsave(plot=plot, file="Spain/bloc.png",width = 15, height = 7.5, type="cairo-png")
 
+plot<-ggarrange(plot3, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
+plot
+
+ggsave(plot=plot, file="Spain/bloc_ma.png",width = 15, height = 7.5, type="cairo-png")

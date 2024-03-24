@@ -14,8 +14,8 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 
-poll1 <- read_csv("Spain/poll.csv")
-poll2 <- read_csv("Spain/poll_new.csv")
+poll1 <- read_csv("Spain/Old/poll.csv")
+poll2 <- read_csv("Spain/poll.csv")
 poll<-dplyr::bind_rows(poll1,poll2)
 # poll <- rbind(poll1,poll2) 
 d <- reshape2::melt(poll, id.vars="Date")
@@ -53,8 +53,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old_election|d$Date==election,],size=5.25, shape=5, alpha=1)
 plot1
 
-poll1 <- read_csv("Spain/poll.csv")
-poll2 <- read_csv("Spain/poll_new.csv")
+poll1 <- read_csv("Spain/Old/poll.csv")
+poll2 <- read_csv("Spain/poll.csv")
 poll<-dplyr::bind_rows(poll1,poll2)
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
