@@ -24,7 +24,7 @@ old<-min(d$Date)
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#255AAA","#DF262D","#082464","#DC5A2D","#CBE264","#cc0000","#05accc",
-                                "#e4bc42","#ff931e","#0cb14b","#043c7c","#841116","#bbbdbe","#56595c"))+
+                                "#e4bc42","#ff931e","#0cb14b","#004b88","#043c7c","#841116","#bbbdbe","#56595c"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
@@ -55,7 +55,7 @@ old<-min(d$Date)
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#255AAA","#DF262D","#082464","#DC5A2D","#CBE264","#cc0000","#05accc",
-                                "#e4bc42","#ff931e","#0cb14b","#043c7c","#841116","#bbbdbe"))+
+                                "#e4bc42","#ff931e","#0cb14b","#004b88","#043c7c","#841116","#bbbdbe"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
@@ -107,7 +107,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#92add5","#255AAA","#ef9396","#DF262D","#8492b2","#082464",
                                "#eead96","#DC5A2D","#e5f1b2","#CBE264","#e06666","#cc0000",
                                "#69cde0","#05accc","#f2dea1","#e4bc42","#ffc98f","#ff931e",
-                               "#6dd093","#0cb14b","#829ebe","#043c7c","#c2888b","#841116","#dddedf","#bbbdbe"))+
+                               "#6dd093","#0cb14b","#6693b8","#004b88","#829ebe","#043c7c","#c2888b","#841116","#dddedf","#bbbdbe"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
