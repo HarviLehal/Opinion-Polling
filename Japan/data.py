@@ -28,9 +28,10 @@ for i in range(4):
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].loc[len(d[i].index)-1,['Date']] = '31 October 2021'
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['LDP'] != d[i]['KMT']]
   for z in parties:
@@ -43,6 +44,7 @@ for i in range(4):
 
 for i in range(3):
   d[i].drop(d[i].index[[-1]],inplace=True)
+
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Japan/poll.csv', index=False)
