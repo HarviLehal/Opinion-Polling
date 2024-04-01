@@ -19,7 +19,7 @@ parties = ['DPK','PPP','GJP','NRP','NFP','RKP','Other']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','Ind.','Und./ no ans.','Lead'], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -49,7 +49,7 @@ parties = ['DAK','PFP','GJP','NRP','NFP','RKP','Other']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[5])
+  d[i]=pd.DataFrame(df[6])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','LUP','Und./ no ans.','Lead'], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
