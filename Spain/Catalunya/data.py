@@ -82,3 +82,11 @@ D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
 
 D.to_csv('Spain/Catalunya/seats.csv', index=False)
+
+Ind = ['ERC','Junts','CUP','AC']
+Fed = ['PSC','VOX','ECP','Cs','PP']
+D['Pro-Independence (ERC + Junts + CUP + AC)'] = D[Ind].sum(axis=1)
+D['Rest (PSC + VOX + ECP + Cs + PP)'] = D[Fed].sum(axis=1)
+D = D.drop(Ind + Fed, axis=1)
+
+D.to_csv('Spain/Catalunya/seats2.csv', index=False)
