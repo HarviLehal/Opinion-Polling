@@ -39,7 +39,7 @@ e <- e %>%
 plot1<-ggplot(data=e,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#004ea2","#e61e2b","#007c36",
-                                "#ff7920","#45babd","#0073cf","#666666"))+
+                                "#ff7920","#45babd","#666666"))+
   # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   # bbplot::bbc_style()+
@@ -87,7 +87,7 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=forcats::fct_rev(variable), y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#6695c7","#004ea2","#f07880","#e61e2b","#66b086","#007c36",
-                               "#ffaf79","#ff7920","#8fd6d7","#45babd","#66abe2","#0073cf","#a3a3a3","#666666"))+
+                               "#ffaf79","#ff7920","#8fd6d7","#45babd","#a3a3a3","#666666"))+
 geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
               y = 0),
           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
