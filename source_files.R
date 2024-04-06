@@ -56,4 +56,3 @@ source("UK/Subnational/Wales/poll.R")
 source("UK/Subnational/Wales/poll_Senedd.R")
 source("US/Presidential/poll.R")
 source("US/Presidential/poll2.R")
-
