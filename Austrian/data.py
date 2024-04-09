@@ -48,6 +48,9 @@ d[4].drop(d[4].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 
+D = D[D.Date.notnull()]
+
+
 parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ','MFG','HC']
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]

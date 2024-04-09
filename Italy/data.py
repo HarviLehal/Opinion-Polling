@@ -12,15 +12,29 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit']
-parties = ['FdI','PD','M5S','Lega','FI','A','IV','+E','Italexit']
+
+headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','Italexit','PTD','DSP','NM','Libertà']
+e = {}
+for i in range(1):
+  e[i]=pd.DataFrame(df[i])
+  e[i]=e[i].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
+  e[i].columns = headers
+  e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
+  e[i].Date2.fillna(e[i].Date, inplace=True)
+  e[i]['Date2'] = [x+ str(2024-i) for x in e[i]['Date2'].astype(str)]
+  e[i]['Date'] = e[i]['Date2']
+  e[i] = e[i].drop(['Date2'], axis=1)
+  e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  e[i] = e[i][e[i]['FdI'] != e[i]['AVS']]
+
+headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
 d = {}
 for i in range(2):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   if i==0:
-    d[i]=d[i].drop(["Polling firm","Sample size","PTD[b]","DSP","NM","Others","Lead"], axis=1)
+    d[i]=d[i].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   else:
-      d[i]=d[i].drop(["Polling firm","Sample size","UP","DSP","NM","Others","Lead"], axis=1)
+      d[i]=d[i].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -35,24 +49,24 @@ split_date = '15 Apr 2023'
 split_date=dateparser.parse(split_date)
 
 c={}
-c[0]=d[0]
-c[1]=d[1][(pd.to_datetime(d[1]["Date"]) > split_date)]
-c[2]=d[1][(pd.to_datetime(d[1]["Date"]) < split_date)]
+c[0]=e[0]
+c[1]=d[0]
+c[2]=d[1][(pd.to_datetime(d[1]["Date"]) > split_date)]
+c[3]=d[1][(pd.to_datetime(d[1]["Date"]) < split_date)]
 
-c[2]['A-IV']=np.where(c[2]['A']==c[2]['IV'],c[2]['A'],c[2]['A']+c[2]['IV'])
+c[3]['A-IV']=np.where(c[3]['A']==c[3]['IV'],c[3]['A'],c[3]['A']+c[3]['IV'])
 threeway = ['A','IV']
-c[2] = c[2].drop(threeway, axis=1)
+c[3] = c[3].drop(threeway, axis=1)
 
-headers = ['Date','FdI','PD','M5S','Lega','FI','A-IV','AVS','+E','Italexit']
-parties = ['FdI','PD','M5S','Lega','FI','A-IV','+E','Italexit']
+headers = ['Date','FdI','PD','M5S','Lega','FI','A-IV','AVS','+E','Italexit','PTD','DSP','NM']
 for j in range(1):
-  i = j+2
+  i = j+3
   c[i+2]=pd.DataFrame(df[i])
-  c[i+2]=c[i+2].drop(["Polling firm","Sample size","UP","ISP","NM","Others","Lead"], axis=1)
+  c[i+2]=c[i+2].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   c[i+2].columns = headers
   c[i+2]['Date2'] = c[i+2]['Date'].str.split('–').str[1]
   c[i+2].Date2.fillna(c[i+2].Date, inplace=True)
-  c[i+2]['Date2'] = [x+ str(2024-i) for x in c[i+2]['Date2'].astype(str)]
+  c[i+2]['Date2'] = [x+ str(2022) for x in c[i+2]['Date2'].astype(str)]
   c[i+2]['Date'] = c[i+2]['Date2']
   c[i+2] = c[i+2].drop(['Date2'], axis=1)
   c[i+2].Date=c[i+2].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))

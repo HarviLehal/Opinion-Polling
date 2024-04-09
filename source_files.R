@@ -1,5 +1,5 @@
 # IN TERMINAL TYPE THE FOLLOWING:  Rscript source_files.R
-
+pdf(NULL)
 source("Austrian/poll.R")
 source("Austrian/poll_coalition.R")
 source("Australia/Federal/poll.R")

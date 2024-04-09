@@ -30,7 +30,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
-  d[i] = d[i][d[i]['Date'] != '28 May 2023']
+  d[i] = d[i][d[i]['Date'] != '28 de mayo de 2023']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
@@ -69,7 +69,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
-  d[i] = d[i][d[i]['Date'] != '28 May 2023']
+  d[i] = d[i][d[i]['Date'] != '28 de mayo de 2023']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
@@ -138,7 +138,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
-  d[i] = d[i][d[i]['Date'] != '28 May 2023']
+  d[i] = d[i][d[i]['Date'] != '28 de mayo de 2023']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
@@ -212,7 +212,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
-  d[i] = d[i][d[i]['Date'] != '28 May 2023']
+  d[i] = d[i][d[i]['Date'] != '28 de mayo de 2023']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
@@ -245,7 +245,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
-  d[i] = d[i][d[i]['Date'] != '28 May 2023']
+  d[i] = d[i][d[i]['Date'] != '28 de mayo de 2023']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
