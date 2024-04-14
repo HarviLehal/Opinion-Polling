@@ -13,7 +13,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 
-headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','Italexit','PTD','DSP','NM','Libertà']
+headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','NM','Libertà']
 e = {}
 for i in range(1):
   e[i]=pd.DataFrame(df[i])

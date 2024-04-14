@@ -26,7 +26,7 @@ new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#006600","#005ba6","#852a2a","#ff0000","#ec8713","#009ddf","#05b615","#56aa48"))+
+  scale_color_manual(values = c("#006600","#005ba6","#56aa48","#852a2a","#ff0000","#ec8713","#009ddf","#05b615"))+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
@@ -71,9 +71,9 @@ d3<-rbind(d2,d1)
 plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#66a366","#006600","#669dca","#005ba6",
-                               "#b67f7f","#852a2a","#ff6666","#ff0000",
-                               "#f4b771","#ec8713","#66c4ec","#009ddf",
-                               "#69d373","#05b615","#9acc91","#56aa48"))+
+                               "#9acc91","#56aa48","#b67f7f","#852a2a",
+                               "#ff6666","#ff0000","#f4b771","#ec8713",
+                               "#66c4ec","#009ddf","#69d373","#05b615"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.nan(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),

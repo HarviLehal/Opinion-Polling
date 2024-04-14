@@ -84,7 +84,7 @@ theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_
       panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
       panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
       plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('30 day average \n (2020 Result)')+
+ggtitle(' 30 day average \n (2020 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
