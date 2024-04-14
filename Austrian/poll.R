@@ -51,14 +51,40 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 plot1
 
-poll <- read_csv("Austrian/poll2.csv")
 
-# poll$Date <- as.Date(poll$Date, "%d %b %Y")
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="center"))
+
+
+plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#72c6d3","#ce000c","#0056a2",
+                                "#88b626","#e84188","#ab0000",
+                                "#ffd300","#555555","#274162"))+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
+  geom_text(aes(election,h,label = "4% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  xlim(min(d$Date), election)+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+
+plot1a
+
+
+poll <- read_csv("Austrian/poll2.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -103,3 +129,8 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Austrian/plot.png",width = 15, height = 7.5, type="cairo-png")
+
+plota<-ggarrange(plot1a, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plota
+
+ggsave(plot=plota, file="Austrian/plot_ma.png",width = 15, height = 7.5, type="cairo-png")
