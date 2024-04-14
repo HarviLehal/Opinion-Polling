@@ -15,6 +15,7 @@ library(tidyverse)
 library(data.table)
 library(hrbrthemes)
 poll <- read_csv("US/Presidential/poll2.csv")
+poll<-poll[poll$Date!=max(poll$Date),]
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -74,6 +75,7 @@ plot3
 # BAR CHART
 
 poll <- read_csv("US/Presidential/poll2.csv")
+poll<-poll[poll$Date!=max(poll$Date),]
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -90,11 +92,11 @@ d2 <- as.data.frame(d2)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
-d1$value<-formattable::percent(d1$value, digits = 1)
+d1$value<-formattable::percent(d1$value, digits = 2)
 
 d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
-d2$value<-formattable::percent(d2$value, digits = 1)
+d2$value<-formattable::percent(d2$value, digits = 2)
 
 d3<-rbind(d2,d1)
 
@@ -104,7 +106,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#668edf","#0042ca",
                                "#f1767b","#e81b23"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
+  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
