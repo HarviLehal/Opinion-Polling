@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Italian_general_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -14,9 +15,10 @@ df=pd.read_html(str(tables))
 
 
 headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','NM','Libertà']
+parties = ['FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','NM','Libertà']
 e = {}
 for i in range(1):
-  e[i]=pd.DataFrame(df[i])
+  e[i]=pd.DataFrame(df[i+1])
   e[i]=e[i].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   e[i].columns = headers
   e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
@@ -26,11 +28,13 @@ for i in range(1):
   e[i] = e[i].drop(['Date2'], axis=1)
   e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   e[i] = e[i][e[i]['FdI'] != e[i]['AVS']]
+  for z in parties: # replace any non-numeric values with NaN
+    e[i][z] = pd.to_numeric(e[i][z], errors='coerce')
 
 headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
 d = {}
 for i in range(2):
-  d[i]=pd.DataFrame(df[i+1])
+  d[i]=pd.DataFrame(df[i+2])
   if i==0:
     d[i]=d[i].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   else:
@@ -61,7 +65,7 @@ c[3] = c[3].drop(threeway, axis=1)
 headers = ['Date','FdI','PD','M5S','Lega','FI','A-IV','AVS','+E','Italexit','PTD','DSP','NM']
 for j in range(1):
   i = j+3
-  c[i+2]=pd.DataFrame(df[i])
+  c[i+2]=pd.DataFrame(df[i+1])
   c[i+2]=c[i+2].drop(["Polling firm","Sample size","Others","Lead"], axis=1)
   c[i+2].columns = headers
   c[i+2]['Date2'] = c[i+2]['Date'].str.split('–').str[1]

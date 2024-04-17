@@ -38,17 +38,17 @@ for i in range(2):
   d[i] = d[i].drop(['MP'], axis=1)
 d[1] = d[1].drop(['DEVA'], axis=1)
 
-
 d[0].loc[len(d[0].index)-4,['Date']] = ' 11 Mar 2024'
 d[0].loc[len(d[0].index)-3,['Date']] = ' 5 Mar 2024'
 d[1].loc[len(d[1].index)-1,['Date']] = '14 Mayıs 2023'
 
 d[0].drop(d[0].index[[-1]],inplace=True)
+d[0] = d[0][d[0]['Date'] != '31 Mart 2024']
 
 D = pd.concat(d.values(), ignore_index=True)
 
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 D['Date']= D['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
-
+D
 D.to_csv('Turkish/poll.csv', index=False)
 
