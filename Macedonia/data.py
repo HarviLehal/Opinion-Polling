@@ -14,10 +14,10 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-data=pd.DataFrame(df[1])
-headers = ['drop1','Date','drop2','SDSM','LDP','Besa','LD','A','ASh','BDI','drop3','VMRO-DPMNE','Levica','ZNAM','Other','drop4']
+data=pd.DataFrame(df[-2])
+headers = ['drop1','Date','drop2','SDSM','LDP','Besa','LD','A','drop5','ASh','BDI','drop3','VMRO-DPMNE','Levica','ZNAM','Other','drop4']
 parties = ['SDSM','LDP','Besa','LD','A','ASh','BDI','VMRO-DPMNE','Levica','ZNAM','Other']
-drops = ['drop1','drop2','drop3','drop4']
+drops = ['drop1','drop2','drop3','drop4','drop5']
 
 data.columns = headers
 data=data.drop(drops, axis=1)

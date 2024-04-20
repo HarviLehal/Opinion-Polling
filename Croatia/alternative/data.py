@@ -28,6 +28,7 @@ for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
   data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z]]
   data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z]]
+  data22[z] = data22[z].replace(r'^\s*$', str(np.NaN), regex=True)
   # data22[z] = [x.replace(-,str(np.NaN)) for x in data22[z]]
   
 for z in parties:

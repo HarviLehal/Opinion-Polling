@@ -34,7 +34,7 @@ d <- d %>%
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#528D6B","#FAA61A"))+
   # bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
@@ -55,7 +55,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#528D6B","#FAA61A"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
@@ -104,7 +104,7 @@ d3<-rbind(d2,d1)
 plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#ede480","#decb10","#77c0ed","#0087DC",
-                               "#f27999","#E4003B","#fcd38b","#FAA61A","#9dc7af","#528D6B"))+
+                               "#f27999","#E4003B","#9dc7af","#528D6B","#fcd38b","#FAA61A"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),

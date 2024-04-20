@@ -22,6 +22,8 @@ data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Le
 headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 parties = ['PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 data24.columns = headers
+data24.drop(data24.index[[-1,-3,]],inplace=True)
+data24=data24[data24['Date'] != '7 Apr']
 data24['Date'] = [p.sub('', x) for x in data24['Date']]
 data24['Date2'] = data24['Date'].str.split('–').str[1]
 data24.Date2.fillna(data24['Date'].str.split('-').str[1], inplace=True)
@@ -49,6 +51,7 @@ data23=data23.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Le
 headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 parties = ['PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 data23.columns = headers
+data23.drop(data23.index[[-1,-3,]],inplace=True)
 # data23['Date'] = [p.sub('', x) for x in data23['Date']]
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23['Date'].str.split('-').str[1], inplace=True)
@@ -66,7 +69,6 @@ data23[parties] = data23[parties].astype(float)
 data23['Trzecia Droga']=np.where(data23['Koalicja']==data23['PL2050'],data23['PL2050'],data23['Koalicja']+data23['PL2050'])
 threeway = ['Koalicja','PL2050']
 data23=data23.drop(threeway, axis=1)
-data23.drop(data23.index[[-1,-3,]],inplace=True)
 
 
 data = pd.concat([data24,data23])
