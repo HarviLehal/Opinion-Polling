@@ -48,7 +48,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 D.to_csv('Spain/Catalunya/poll.csv', index=False)
 
 Ind = ['ERC','Junts','CUP','AC']
@@ -88,7 +88,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 D.to_csv('Spain/Catalunya/seats.csv', index=False)
 
 Ind = ['ERC','Junts','CUP','AC']
@@ -105,6 +105,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
+D=D.dropna(subset=['PSC'])
 
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
@@ -119,7 +120,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
 D['Rest (PSC + VOX + ECP + Cs + PP)'] = D[Fed].sum(axis=1)
@@ -157,7 +158,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
 D['Pro-Independence (ERC + Junts + CUP + AC)'] = D[Ind].sum(axis=1)
@@ -173,7 +174,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
 D['Rest (PSC + VOX + ECP + Cs + PP)'] = D[Fed].sum(axis=1)
@@ -231,7 +232,7 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D.replace(r'^\s*$', np.NaN, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
-
+D=D.dropna(subset=['PSC'])
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
 D['Pro-Independence (ERC + Junts + CUP + AC)'] = D[Ind].sum(axis=1)
@@ -264,7 +265,7 @@ E = pd.concat(d.values(), ignore_index=True)
 E = E.replace(r'^\s*$', np.NaN, regex=True)
 E[parties] = E[parties].astype(float)
 E.drop(E.index[[-1,-3]],inplace=True)
-
+E=E.dropna(subset=['PSC'])
 Ind = ['ERC','Junts','CUP','AC']
 Fed = ['PSC','VOX','ECP','Cs','PP']
 E['Pro-Independence (ERC + Junts + CUP + AC)'] = E[Ind].sum(axis=1)
