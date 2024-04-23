@@ -12,17 +12,20 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-data22=pd.DataFrame(df[1])
-headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','Q','3','4','5','6','7','8','9']
-parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O','Q']
-data22.columns = headers
-data22 = data22.drop(['1','2','3','4','5','6','7','8','9'], axis=1)
+headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8','9','10','11']
+parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+drop = ['1','2','3','4','5','6','7','8','9','10','11']
 
 d = {}
 for i in range(3):
+  if i == 0:
+    pass
+  else:
+    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','12','3','4','5','6','7','8','9','10','11']
+    drop = ['1','2','3','4','5','6','7','8','9','10','11','12']
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
-  d[i]=d[i].drop(['1','2','3','4','5','6','7','8','9'], axis=1)
+  d[i]=d[i].drop(drop, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']

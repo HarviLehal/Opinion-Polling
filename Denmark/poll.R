@@ -29,8 +29,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#ea3d34","#003f8d","#7f1a8d",
                                 "#bb0002","#0365b2","#2eafbb",
                                 "#003c21","#d20047","#ec0088",
-                                "#00424b","#01ff00","#fcd034",
-                                "#e8ccc7"))+
+                                "#00424b","#01ff00","#fcd034"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -51,7 +50,7 @@ poll <- read_csv("Denmark/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -75,8 +74,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#f28b85","#ea3d34","#668cbb","#003f8d","#b276bb","#7f1a8d",
                                "#d66667","#bb0002","#68a3d1","#0365b2","#82cfd6","#2eafbb",
                                "#668a7a","#003c21","#e46691","#d20047","#f466b8","#ec0088",
-                               "#668e93","#00424b","#67ff66","#01ff00","#fde385","#fcd034",
-                               "#edd6d2","#e8ccc7"))+
+                               "#668e93","#00424b","#67ff66","#01ff00","#fde385","#fcd034"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),
@@ -86,7 +84,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('30 day average \n (2022 Result)')+
+  ggtitle(' 14 day average \n (2022 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 

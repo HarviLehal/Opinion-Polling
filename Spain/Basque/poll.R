@@ -20,7 +20,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("18 02 2024", "%d %m %Y")
+election<-as.Date("21 04 2024", "%d %m %Y")
 old <-min(d$Date)
 start<-as.Date("01 10 2023", "%d %m %Y")
 # d<-d[d$Date>start,]
@@ -77,9 +77,9 @@ poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-# d3 <- poll[poll$Date==max(poll$Date),]
+d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -87,7 +87,7 @@ d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
-# d3 <- as.data.frame(d3)
+d3 <- as.data.frame(d3)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
@@ -97,24 +97,24 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
-# d3 <- reshape2::melt(d3, id.vars="Date")
-# d3$value<-as.numeric(d3$value)/100
-# d3$value<-formattable::percent(d3$value, digits = 1)
+d3 <- reshape2::melt(d3, id.vars="Date")
+d3$value<-as.numeric(d3$value)/100
+d3$value<-formattable::percent(d3$value, digits = 1)
 
-# d4<-rbind(d1,d2,d3)
-d4<-rbind(d1,d2)
-d4<-droplevels(d4)
-d2<-droplevels(d2)
+d4<-rbind(d1,d2,d3)
+# d4<-rbind(d1,d2)
+# d4<-droplevels(d4)
+# d2<-droplevels(d2)
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#91cf92","#48af49",
-                               "#66cebc","#00ae8f",
-                               "#f46068","#ef1c27",
-                               "#bea5f9","#9369f5",
-                               "#92d264","#63be21",
-                               "#61a9dd","#1d84ce",
-                               "#f481b2","#ef4b91"))+
+  scale_fill_manual(values = c("#419e42","#91cf92","#48af49",
+                               "#009d81","#66cebc","#00ae8f",
+                               "#bf161f","#f46068","#ef1c27",
+                               "#845fdd","#bea5f9","#9369f5",
+                               "#59ab1e","#92d264","#63be21",
+                               "#1a77b9","#61a9dd","#1d84ce",
+                               "#d74483","#f481b2","#ef4b91"))+
   geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2),
                 y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
@@ -126,7 +126,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 day Average \n (2020 Election)')+
+  ggtitle(' Results \n 7 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 
