@@ -24,6 +24,8 @@ for i in range(4):
     headers.remove('BSW')
   elif i == 2:
     headers.remove('FW')
+  elif i == 3:
+    headers.append('FW')
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Abs.", "Others", "Lead"], axis=1)
   d[i].columns = headers
@@ -31,6 +33,8 @@ for i in range(4):
       d[i]=d[i].drop(['FW'], axis=1)
       # d[i]=d[i].drop(['BSW'], axis=1)
   if i == 1:
+      d[i]=d[i].drop(['FW'], axis=1)
+  if i == 3:
       d[i]=d[i].drop(['FW'], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)

@@ -7,6 +7,7 @@ library(Cairo)
 library(reshape2)
 library(readr)
 library(formattable)
+library(ggpubr)
 
 py_run_file("German/State/Thuringia/data.py")
 poll <- read_csv("German/State/Thuringia/poll.csv")
