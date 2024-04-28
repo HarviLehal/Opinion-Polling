@@ -22,6 +22,7 @@ drops = ['drop1','drop2','drop3','drop4','drop5']
 data.columns = headers
 data=data.drop(drops, axis=1)
 data = data[data['Date'] != '17 Oct 2021']
+data = data[data['Date'] != '24 Apr 2024	']
 data = data[data['Date'] != 'Mar 2023']
 
 for z in parties:

@@ -109,6 +109,7 @@ d3<-d3[d3$variable!='IV',]
 d3<-d3[d3$variable!='+E',]
 d3<-d3[d3$variable!='Italexit',]
 d3<-d3[d3$variable!='A-IV',]
+d3<-d3[d3$variable!='NM',]
 d3<-droplevels(d3)
 
 

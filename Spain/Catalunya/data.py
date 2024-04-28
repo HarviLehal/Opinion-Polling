@@ -26,7 +26,7 @@ drops = ['1','2','3','4','5']
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
@@ -65,7 +65,7 @@ D.to_csv('Spain/Catalunya/poll2.csv', index=False)
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
@@ -135,7 +135,7 @@ D.to_csv('Spain/Catalunya/seats_rest_best.csv', index=False)
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
@@ -209,7 +209,7 @@ D.to_csv('Spain/Catalunya/seats_rest_worst.csv', index=False)
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']
@@ -242,7 +242,7 @@ D = D.drop(Ind + Fed, axis=1)
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+  d[i]=pd.DataFrame(df[5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i][d[i]['Date'] != '23 Jul 2023']

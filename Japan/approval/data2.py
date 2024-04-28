@@ -19,7 +19,7 @@ parties = ['Approve','Disapprove','Undecided']
 d = {}
 
 for i in range(3):
-  d[i]=pd.DataFrame(df[i+5])
+  d[i]=pd.DataFrame(df[i-4])
   d[i]=d[i].drop(["Sample size","Polling firm","Prime Minister", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
