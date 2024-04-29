@@ -15,7 +15,7 @@ library(tidyverse)
 library(data.table)
 library(hrbrthemes)
 py_run_file("Austrian/data.py")
-poll <- read_csv("Austrian/poll2.csv")
+poll <- read_csv("Austrian/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -79,7 +79,7 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 plot1a
 
 
-poll <- read_csv("Austrian/poll2.csv")
+poll <- read_csv("Austrian/poll.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))

@@ -57,42 +57,19 @@ for z in parties:
   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
+D=D.drop(["MFG", "HC"], axis=1)
 
 D.to_csv('Austrian/poll.csv', index=False)
 
-D=D.drop(["MFG", "HC"], axis=1)
-D.to_csv('Austrian/poll2.csv', index=False)
 
-
-
-
-
-# 
-# parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ','MFG','HC']
-# RG    = ['SPÖ','Grüne']
-# GroKo = ['ÖVP','SPÖ']
-# Kenia = ['ÖVP','SPÖ','Grüne']
-# Kiwi  = ['ÖVP','Grüne']
-# Kiwip = ['ÖVP','Grüne','NEOS']
-# Ibiza = ['ÖVP','FPÖ']
-# Links = ['SPÖ','Grüne','NEOS','KPÖ','BIER']
-# Recht = ['ÖVP','FPÖ','MFG','HC']
-# 
-# D['Rot-Grün'] = D[RG].sum(axis=1)       # RG  (Maroon) #770004
-# D['GroKo'] = D[GroKo].sum(axis=1)       # RB  (Black) #10305B
-# D['Kenia'] = D[Kenia].sum(axis=1)       # RGY (Red) #DD1529
-# D['Kiwi'] = D[Kiwi].sum(axis=1)         # BGY (Green) #509A3A
-# D['Kiwi Plus'] = D[Kiwip].sum(axis=1)   # BRY (Yellow) #FBBE00
-# D['Ibiza'] = D[Ibiza].sum(axis=1)       # BRG (Orange) #E5963F
-# D['Links'] = D[Links].sum(axis=1)       # BG  (Kiwi Green) #8EE53F
-# D['Rechts'] = D[Recht].sum(axis=1)      # BBr (AfD blue) #0489DB
-# D = D.drop(parties, axis=1)
-# 
-# D.to_csv('Austrian/poll3.csv', index=False)
 
 
 
 parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ']
+
+for z in parties:
+  D[z] = D[z].apply(lambda x: x if x > 4 else 0)
+
 Ampel    = ['SPÖ','Grüne','NEOS']
 Ampelp   = ['SPÖ','Grüne','NEOS','BIER','KPÖ']
 Groko    = ['SPÖ','ÖVP']
@@ -110,4 +87,30 @@ D['Dirndl (ÖNG)'] = D[Dirndl].sum(axis=1)       # BRG (Orange) #E5963F
 D['Ibiza (ÖF)'] = D[Ibiza].sum(axis=1)       # BG  (Kiwi Green) #8EE53F
 D = D.drop(parties, axis=1)
 
+D.to_csv('Austrian/poll2.csv', index=False)
+
+
+
+D = pd.concat(d.values(), ignore_index=True)
+
+D = D[D.Date.notnull()]
+
+
+parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ','MFG','HC']
+for z in parties:
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+D=D.drop(["MFG", "HC"], axis=1)
+parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ']
+
+
+# take the sum of all parties with more than 5% in each poll to get the total percentage of valid votes
+for z in parties:
+  D[z] = D[z].apply(lambda x: x if x > 4 else 0)
+D['Mehrheit'] = D[parties].sum(axis=1)
+# divide by 2 to get the true majority required
+D['Mehrheit'] = D['Mehrheit']/2
+D.drop(parties, axis=1, inplace=True)
 D.to_csv('Austrian/poll3.csv', index=False)

@@ -35,8 +35,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
   scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a","#048404",
                                 "#0484dc","#f6d025","#0039aa","#bc3454",
-                                "#b41317","#b04e4e","#2149a7","#075271",
-                                "#d4448c","#fcd404","#346c9c","#0039aa"))+
+                                "#b41317","#b04e4e","#075271","#d4448c",
+                                "#fcd404","#346c9c","#2149a7","#0039aa"))+
   # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
   geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
@@ -65,8 +65,8 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
   scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a","#048404",
                                 "#0484dc","#f6d025","#0039aa","#bc3454",
-                                "#b41317","#b04e4e","#2149a7","#075271",
-                                "#d4448c","#fcd404","#346c9c","#0039aa"))+
+                                "#b41317","#b04e4e","#075271","#d4448c",
+                                "#fcd404","#346c9c","#2149a7","#0039aa"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -118,8 +118,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#6888a6","#03386a","#f5777d","#ef1c27","#f8d976","#f4c01a","#68b568","#048404",
                                "#68b5ea","#0484dc","#fae37c","#f6d025","#6688cc","#0039aa","#d78598","#bc3454",
-                               "#d27174","#b41317","#d09595","#b04e4e","#7a92ca","#2149a7","#6a97aa","#075271"))+
-                               # "#e58fba","#d4448c","#fde568","#fcd404","#85a7c4","#346c9c","#6688cc","#0039aa"))+
+                               "#d27174","#b41317","#d09595","#b04e4e","#6a97aa","#075271"))+
+                               #,"#7a92ca","#2149a7" "#e58fba","#d4448c","#fde568","#fcd404","#85a7c4","#346c9c","#6688cc","#0039aa"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
