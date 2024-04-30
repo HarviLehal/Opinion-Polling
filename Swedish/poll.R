@@ -178,7 +178,7 @@ writeLines(bbb,"Swedish/plot2.svg")
 
 poll <- read_csv("Swedish/seats.csv")
 d <- reshape2::melt(poll, id.vars="Date")
-
+d$value<-as.numeric(d$value)
 election<-as.Date("13 09 2026", "%d %m %Y")
 old <-min(d$Date)
 h <- 175
@@ -189,17 +189,18 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#DF253A","#3F9BDB"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
-  geom_hline(aes(yintercept=h))+
+  geom_hline(aes(yintercept=h), linetype="dashed",colour="#56595c")+
   geom_text(aes((election-5),h,label = "Majority (175 Seats)",hjust=1 ,vjust = -1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-
+plot1
 
 poll <- read_csv("Swedish/seats.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -236,7 +237,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('14 day average \n (2022 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
-  coord_flip()
+  coord_flip()+
+  geom_hline(aes(yintercept=h), linetype="dashed",colour="#56595c")
 
 
 plotC<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))

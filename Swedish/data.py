@@ -64,6 +64,7 @@ E = pd.concat(e.values(), ignore_index=True)
 E.loc[len(E.index)-1,['Date']] = '11 Sep 2022'
 E.Date = E.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 E.columns = ['Date','Opposition','Government']
+E = E.dropna(subset=['Opposition', 'Government'])
 E.to_csv('Swedish/seats.csv', index=False)
 
 # POLL PROJECTION OF COALITIONS
