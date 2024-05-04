@@ -9,6 +9,7 @@ library(readr)
 library(formattable)
 library(svglite)
 library(Rcpp)
+library(ggpubr)
 
 py_run_file("Finnish/data2.py")
 poll <- read_csv("Finnish/poll_new.csv")
