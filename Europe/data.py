@@ -11,29 +11,10 @@ response=requests.get(wikiurl)
 print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
-# Parse each table into a DataFrame
-# Parse each table into a DataFrame
-for table in tables:
-    # Initialize an empty list to hold the data for the rows
-    data = []
-    # Loop through each row in the table
-    for row in table.find_all('tr'):
-        # Extract the data from each cell in the row
-        row_data = []
-        for cell in row.find_all(['th', 'td']):
-            # Append the cell's text to the row data
-            row_data.append(cell.get_text(strip=True))
-        # Append the row data to the table data
-        data.append(row_data)
-    # Convert the table data to a DataFrame
-    df = pd.DataFrame(data[1:], columns=data[0])
-    break  # Exit the loop after parsing the first table
-
-# Now df contains the DataFrame for the first table on the page
-
+df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data2=pd.DataFrame(df)
+data2=pd.DataFrame(df[2])
 data2=data2.drop(["Organisation", "Area", "Lead"], axis=1)
 
 headers = ['Date','SEATS','Left','S&D','G/EFA','Renew','EPP','ECR','ID','NI','Other']
@@ -68,5 +49,10 @@ data2.Date = data2.Date.astype(str).apply(lambda x: dateparser.parse(x, settings
 
 
 data2.to_csv('Europe/poll.csv', index=False)
+
+
+
+
+
 
 

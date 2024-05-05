@@ -49,7 +49,7 @@ poll <- read_csv("Spain/Catalunya/seats_ind_best.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -74,7 +74,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot2
@@ -108,7 +108,7 @@ poll <- read_csv("Spain/Catalunya/seats_ind_worst.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -133,7 +133,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot4
@@ -167,7 +167,7 @@ poll <- read_csv("Spain/Catalunya/seats_rest_best.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -192,7 +192,7 @@ plot6<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot6
@@ -226,7 +226,7 @@ poll <- read_csv("Spain/Catalunya/seats_rest_worst.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -251,7 +251,7 @@ plot8<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot8
@@ -315,7 +315,7 @@ poll <- read_csv("Spain/Catalunya/seats2.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -340,7 +340,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot2
@@ -396,7 +396,7 @@ poll <- read_csv("Spain/Catalunya/seats_avg.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -421,7 +421,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2021 Election)')+
+  ggtitle(' 7 day Average \n (2021 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 plot2
