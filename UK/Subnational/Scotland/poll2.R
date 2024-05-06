@@ -19,10 +19,9 @@ d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("06 05 2021", "%d %m %Y")
 
-Yousaf2<-as.Date("29 04 2024", "%d %m %Y")
-Yousaf<-as.Date("29 03 2023", "%d %m %Y")
 Alex<-as.Date("20 08 2021", "%d %m %Y")
-Sturgeon<-as.Date("15 02 2023", "%d %m %Y")
+Yousaf<-as.Date("29 03 2023", "%d %m %Y")
+Swinney<-as.Date("06 05 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 
@@ -40,13 +39,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
-  geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
-  geom_vline(xintercept=Yousaf2, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
+  geom_vline(xintercept=Swinney, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
-  geom_text(aes(Sturgeon,f,label = "Sturgeon announces resignation", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Yousaf,f,label = "Yousaf", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
-  geom_text(aes(Yousaf2,f,label = "Yousaf announces resignation", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
+  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
@@ -63,13 +60,11 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
-  geom_vline(xintercept=Sturgeon, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
-  geom_vline(xintercept=Yousaf2, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
+  geom_vline(xintercept=Swinney, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
-  geom_text(aes(Sturgeon,f,label = "Sturgeon announces resignation", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Yousaf,f,label = "Yousaf", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
-  geom_text(aes(Yousaf2,f,label = "Yousaf announces resignation", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
+  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
