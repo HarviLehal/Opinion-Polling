@@ -31,9 +31,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_line()+
   scale_color_manual(values = c("#0884dc"))+
   geom_hline(aes(yintercept=h))+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election-45),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old-11,election-45),guide = guide_axis(angle = -90))+
   ylim(0,100)+
   scale_y_continuous(breaks=seq(0,100,5))+
+  geom_text(data=d[d$Date==max(d$Date),], aes(label = value), hjust=0, vjust=0, nudge_x = 4, nudge_y = -3, size=3.5, fontface="bold")+
+  geom_text(data=d[d$Date==min(d$Date),], aes(label = value), hjust=0, vjust=0, nudge_x = -4, nudge_y = -3, size=3.5, fontface="bold")+
   bbplot::bbc_style()
 plot1
 

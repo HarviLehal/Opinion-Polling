@@ -48,6 +48,8 @@ D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype('float')
 
+D = D.drop_duplicates(subset=['Date'], keep='last')
+
 D.to_csv('UK/Seats/poll2.csv', index=False)
 
 
@@ -81,6 +83,8 @@ D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype('float')
 D=D.dropna(subset=['Working Majority'])
+
+D = D.drop_duplicates(subset=['Date'], keep='last')
 
 D.to_csv('UK/Seats/poll3.csv', index=False)
 
