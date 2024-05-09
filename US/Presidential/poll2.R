@@ -46,10 +46,16 @@ plot1
 
 # MA GRAPH
 
-d <- d %>%
+# d <- d %>%
+#   group_by(variable) %>%
+#   arrange(Date) %>%
+#   mutate(Moving_Average = zoo::rollmean(value, k = 14, fill = NA, align = "left"))
+
+d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = zoo::rollmean(value, k = 14, fill = NA, align = "center"))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean))
+
 
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -117,7 +123,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day Average \n (2020 Election)')+
+  ggtitle(' 14 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 

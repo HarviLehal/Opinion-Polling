@@ -2439,17 +2439,17 @@
 <rect x='903.59' y='176.53' width='2.65' height='39.72' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #ED7301;' />
 <rect x='903.59' y='132.40' width='0.81' height='39.72' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #1CA9E9;' />
 <rect x='903.59' y='44.14' width='162.79' height='39.72' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #999999;' />
-<text x='903.59' y='508.87' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='40.38px' lengthAdjust='spacingAndGlyphs'>( 26.2% )</text>
-<text x='903.59' y='464.74' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='39.64px' lengthAdjust='spacingAndGlyphs'>( 11.6% )</text>
-<text x='903.59' y='420.61' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 6.3% )</text>
-<text x='903.59' y='376.48' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 3.4% )</text>
-<text x='903.59' y='332.35' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 3.4% )</text>
-<text x='903.59' y='288.22' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 2.1% )</text>
-<text x='903.59' y='244.08' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 2.4% )</text>
-<text x='903.59' y='199.95' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 0.6% )</text>
-<text x='903.59' y='155.82' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='34.84px' lengthAdjust='spacingAndGlyphs'>( 0.2% )</text>
-<text x='903.59' y='111.69' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='32.06px' lengthAdjust='spacingAndGlyphs'>( NaN )</text>
-<text x='903.59' y='67.56' style='font-size: 9.96px;fill: #404040; font-family: "Arial";' textLength='40.38px' lengthAdjust='spacingAndGlyphs'>( 40.0% )</text>
+<text x='903.59' y='508.87' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='28.22px' lengthAdjust='spacingAndGlyphs'>26.2%</text>
+<text x='903.59' y='464.74' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='27.48px' lengthAdjust='spacingAndGlyphs'>11.6%</text>
+<text x='903.59' y='420.61' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>6.3%</text>
+<text x='903.59' y='376.48' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>3.4%</text>
+<text x='903.59' y='332.35' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>3.4%</text>
+<text x='903.59' y='288.22' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>2.1%</text>
+<text x='903.59' y='244.08' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>2.4%</text>
+<text x='903.59' y='199.95' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>0.6%</text>
+<text x='903.59' y='155.82' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='22.69px' lengthAdjust='spacingAndGlyphs'>0.2%</text>
+<text x='903.59' y='111.69' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='19.91px' lengthAdjust='spacingAndGlyphs'>NaN</text>
+<text x='903.59' y='67.56' style='font-size: 9.96px;fill: #333333; font-family: "Arial";' textLength='28.22px' lengthAdjust='spacingAndGlyphs'>40.0%</text>
 </g>
 <g clip-path='url(#cpMC4wMHwxMDgwLjAwfDAuMDB8NTQwLjAw)'>
 <text x='890.52' y='508.45' text-anchor='end' style='font-size: 8.80px;fill: #4D4D4D; font-family: "Arial";' textLength='17.11px' lengthAdjust='spacingAndGlyphs'>LDP</text>

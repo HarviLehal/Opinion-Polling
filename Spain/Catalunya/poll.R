@@ -25,9 +25,6 @@ old <-min(d$Date)
 # start<-as.Date("01 01 2024", "%d %m %Y")
 # d<-d[d$Date>start,]
 
-new<-d[d$variable!='AC',]
-new2<-d[d$variable=='AC',]
-new2<-new2[!is.na(new2$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -35,9 +32,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#ef1c27","#ffb232","#00c7ae",
                                 "#63be21","#ad275c","#ffde4b",
                                 "#ec640c","#1d84ce","#054a81"))+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -51,6 +48,37 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
 plot1
+
+
+start<-as.Date("13 03 2024", "%d %m %Y")
+d<-d[d$Date>start,]
+
+d<- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean,na.rm=TRUE))
+
+
+
+plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.25)+
+  scale_color_manual(values = c("#ef1c27","#ffb232","#00c7ae",
+                                "#63be21","#ad275c","#ffde4b",
+                                "#ec640c","#1d84ce","#054a81"))+
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  xlim(min(d$Date)-0.725, election)+
+  geom_vline(xintercept=old,
+             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election,
+             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
+plot1a
+
 
 poll <- read_csv("Spain/Catalunya/poll.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -110,7 +138,10 @@ plot
 
 ggsave(plot=plot, file="Spain/Catalunya/plot.png",width = 15, height = 7.5, type="cairo-png")
 
+plot<-ggarrange(plot1a, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
+plot
 
+ggsave(plot=plot, file="Spain/Catalunya/plot_ma.png",width = 15, height = 7.5, type="cairo-png")
 
 # BLOC POLLS
 
