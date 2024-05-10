@@ -23,6 +23,7 @@ for i in range(1):
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
