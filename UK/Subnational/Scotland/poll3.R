@@ -10,31 +10,25 @@ library(formattable)
 library(ggpubr)
 library(dplyr)
 
-py_run_file("UK/Subnational/Scotland/data.py")
-poll <- read_csv("UK/Subnational/Scotland/poll.csv")
+poll <- read_csv("UK/Subnational/Scotland/poll3.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value<-as.numeric(sub("%","",d$value))/100
-d$value[is.nan(d$value)] <- 0
+d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-old<-as.Date("12 12 2019", "%d %m %Y")
+old<-as.Date("06 05 2021", "%d %m %Y")
 
-Carlaw<-as.Date("14 02 2020", "%d %m %Y")
-Ross<-as.Date("05 08 2020", "%d %m %Y")
-Sarwar<-as.Date("27 02 2021", "%d %m %Y")
 Alex<-as.Date("20 08 2021", "%d %m %Y")
 Yousaf<-as.Date("29 03 2023", "%d %m %Y")
 Swinney<-as.Date("06 05 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 
-# MAIN GRAPH (SCOTTISH WESTMINSTER)
+# MAIN GRAPH (SCOTTISH HOLYROOD)
 
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
-
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
@@ -42,60 +36,48 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
-  geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Swinney, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
-  geom_vline(xintercept=Carlaw, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_vline(xintercept=Ross, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_text(aes(Sarwar,f,label = "Sarwar", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
-  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Yousaf,f,label = "Yousaf", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
-  geom_text(aes(Carlaw,f,label = "Carlaw", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_text(aes(Ross,f,label = "Ross", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333")+
-  ggtitle("Scottish Westminster Polling")
+  ggtitle("Scottish Parliamentary Polling - Constituency Vote")
 
 
 # LOESS GRAPH
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
-  geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
   geom_vline(xintercept=Yousaf, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
   geom_vline(xintercept=Swinney, linetype="dashed", color = "#decb10", alpha=0.5, size=1)+
-  geom_vline(xintercept=Carlaw, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_vline(xintercept=Ross, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_text(aes(Sarwar,f,label = "Sarwar", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
   geom_text(aes(Alex,f,label = "Cole-Hamilton", vjust = -1, hjust=0, angle=-90),colour="#FAA61A")+
-  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_text(aes(Yousaf,f,label = "Yousaf", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
-  geom_text(aes(Carlaw,f,label = "Carlaw", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_text(aes(Ross,f,label = "Ross", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(Swinney,f,label = "Swinney", vjust = -1, hjust=0, angle=-90),colour="#decb10")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333")+
-  ggtitle("Scottish Westminster Polling")
+  ggtitle("Scottish Parliamentary Polling - Constituency Vote")
 
 
 
 # BAR CHART!!
-poll <- read_csv("UK/Subnational/Scotland/poll.csv")
+poll <- read_csv("UK/Subnational/Scotland/poll2.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
+  as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
@@ -129,12 +111,12 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 day average \n (2019 Result)')+
+  ggtitle(' 14 day average \n (2021 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
 
 plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1_Westminster.png",width = 15, height = 7.5, type = "cairo-png")
-ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2_Westminster.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1_Holyrood_Constituency .png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2_Holyrood_Constituency .png",width = 15, height = 7.5, type = "cairo-png")

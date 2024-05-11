@@ -14,8 +14,7 @@ py_run_file("UK/Subnational/Scotland/data2.py")
 poll <- read_csv("UK/Subnational/Scotland/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value<-as.numeric(sub("%","",d$value))/100
-d$value[is.nan(d$value)] <- 0
+d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 old<-as.Date("06 05 2021", "%d %m %Y")
 
@@ -35,7 +34,7 @@ d <- d %>%
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#528D6B","#FAA61A"))+
-  # bbplot::bbc_style()+
+  bbplot::bbc_style()+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
@@ -48,7 +47,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_hline(yintercept = 0, size = 1, colour="#333333")
+  geom_hline(yintercept = 0, size = 1, colour="#333333")+
+  ggtitle("Scottish Parliamentary Polling - Regional Vote")
 
 
 # LOESS GRAPH
@@ -68,7 +68,8 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_hline(yintercept = 0, size = 1, colour="#333333")
+  geom_hline(yintercept = 0, size = 1, colour="#333333")+
+  ggtitle("Scottish Parliamentary Polling - Regional Vote")
 
 
 
@@ -77,7 +78,7 @@ poll <- read_csv("UK/Subnational/Scotland/poll2.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
+  as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
@@ -111,12 +112,12 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average \n (2021 Result)')+
+  ggtitle(' 14 day average \n (2021 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 
 
 plot1a<-ggarrange(plot1, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1_Holyrood.png",width = 15, height = 7.5, type = "cairo-png")
-ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2_Holyrood.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1a, file="UK/Subnational/Scotland/plot1_Holyrood_Regional.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK/Subnational/Scotland/plot2_Holyrood_Regional.png",width = 15, height = 7.5, type = "cairo-png")
