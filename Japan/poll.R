@@ -36,7 +36,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.8,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
   # xlim(min(d$Date), election)
   # geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
@@ -54,7 +54,7 @@ plot1a<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=v
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf",
                                 "#666666"))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.8,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

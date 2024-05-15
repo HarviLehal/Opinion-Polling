@@ -22,6 +22,7 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("29 10 2025", "%d %m %Y")
 old <-min(d$Date)
+now <-max(d$Date)
 # MAIN GRAPH
 
 # LOESS GRAPH
@@ -33,16 +34,18 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
                                 "#999999"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.8,0.05))+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
-# xlim(min(d$Date), election)
-# geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)
-# geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-# geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
-# plot1<- plot1 + labs(color='Party \nIdentification') 
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,now+14),guide = guide_axis(angle = -45))+
+  ggtitle('Japanese Party Identification Polling Since 2022')
+plot1
 
 poll <- read_csv("Japan/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -65,14 +68,16 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#3ca324","#184589","#b8ce43","#f95580",
                                "#db001c","#ffba00","#ed008c","#ed7301",
                                "#1ca9e9","#60bcaf","#999999"))+
-  geom_text(aes(label = ifelse(d1$Date == min(d1$Date),paste(d1$value),""),y = 0),
-            hjust=0, color="#333333", position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('Party Identification \n7 day average')+
+  ggtitle('7 day average')+
   coord_flip()
 plot2
 

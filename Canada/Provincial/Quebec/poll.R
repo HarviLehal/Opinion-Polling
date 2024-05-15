@@ -40,7 +40,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))
 
 plot1
 
