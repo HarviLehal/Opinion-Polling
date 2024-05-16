@@ -22,7 +22,7 @@ data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Le
 headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 parties = ['PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
 data24.columns = headers
-data24.drop(data24.index[[-1,-3,]],inplace=True)
+data24.drop(data24.index[[-1,-2,-3,]],inplace=True)
 data24=data24[data24['Date'] != '7 Apr']
 data24['Date'] = [p.sub('', x) for x in data24['Date']]
 data24['Date2'] = data24['Date'].str.split('–').str[1]
