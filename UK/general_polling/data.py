@@ -46,7 +46,7 @@ for z in parties:
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
   
-D.drop(D.index[[-2]],inplace=True)
-D.loc[len(D.index),['Date']] = '12 Dec 2019'
+D.drop(D.index[[-1]],inplace=True)
+D.loc[len(D.index)-1,['Date']] = '12 Dec 2019'
 
 D.to_csv('UK/general_polling/poll.csv', index=False)
