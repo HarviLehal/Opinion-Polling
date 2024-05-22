@@ -34,7 +34,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   geom_vline(xintercept=abe, linetype="dashed", color = "#3ca324", alpha=0.5, size=1)+
   geom_vline(xintercept=slush, linetype="dashed", color = "#3ca324", alpha=0.5, size=1)+
   geom_text(aes(abe,f,label = "Abe Assassinated", vjust = -1, hjust=0, angle=-90),colour="#3ca324")+
@@ -53,7 +53,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,now+14),guide = guide_axis(angle = -45))+
   ggtitle('Japanese Party Identification Polling Since 2022 (Excluding None)')
-
+plot1
 poll <- read_csv("Japan/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))

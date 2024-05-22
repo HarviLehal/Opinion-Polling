@@ -45,3 +45,18 @@ D = pd.concat(d.values(), ignore_index=True)
 
 
 D.to_csv('Japan/leadership/poll.csv', index=False)
+
+
+
+D['Undecided'].fillna(0, inplace=True)
+D['total']=D[parties].sum(axis=1)
+
+D['decided']=D['total']-D['Undecided']
+
+print(D)
+parties = ['Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida','Noda','Motegi','Other']
+D[parties] = D[parties].div(D['decided'], axis=0)*100
+
+D = D.drop(["decided","total","Undecided"], axis=1)
+
+D.to_csv('Japan/leadership/poll2.csv', index=False)

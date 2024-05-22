@@ -19,12 +19,10 @@ d$value<-as.numeric(d$value)/100
 # d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
-election<-as.Date("28 01 2025", "%d %m %Y")
-starm<-as.Date("04 04 2020", "%d %m %Y")-5
-davey<-as.Date("27 08 2020", "%d %m %Y")-5
-green<-as.Date("01 10 2021", "%d %m %Y")-5
-truss<-as.Date("06 09 2022", "%d %m %Y")-5
-sunak<-as.Date("25 10 2022", "%d %m %Y")-5
+election<-as.Date("04 06 2024", "%d %m %Y")
+starm<-as.Date("04 04 2020", "%d %m %Y")
+truss<-as.Date("06 09 2022", "%d %m %Y")
+sunak<-as.Date("25 10 2022", "%d %m %Y")
 f<-formattable::percent(0.6)
 g<-formattable::percent(0.55)
 
@@ -58,15 +56,15 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=starm, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=truss, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_vline(xintercept=sunak, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_text(aes(starm,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
-  geom_text(aes(truss,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_text(aes(sunak,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(starm-5,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
+  geom_text(aes(truss-5,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(sunak-5,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
-  ggtitle('Opinion Polling for the Next United Kingdom General Election')
+  ggtitle('Opinion Polling for the 2024 United Kingdom General Election')
 
 
 plot1
@@ -93,15 +91,15 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=starm, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=truss, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
   geom_vline(xintercept=sunak, linetype="dashed", color = "#0087DC", alpha=0.5, size=1)+
-  geom_text(aes(starm,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
-  geom_text(aes(truss,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_text(aes(sunak,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(starm-5,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
+  geom_text(aes(truss-5,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
+  geom_text(aes(sunak-5,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
-  ggtitle('Opinion Polling for the Next United Kingdom General Election')
+  ggtitle('Opinion Polling for the 2024 United Kingdom General Election')
 
 
 plot2

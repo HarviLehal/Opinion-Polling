@@ -56,6 +56,7 @@ plotwiki<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group
         legend.position = "none")+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -45))+
   ggtitle('Kishida Cabinet Approval')
 plotwiki
 ggsave(plot=plotwiki, file="Japan/approval/plot_wiki.svg",width = 15, height = 7.5)

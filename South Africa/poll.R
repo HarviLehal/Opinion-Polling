@@ -16,7 +16,7 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(sub("%","",d$value))/100
 # d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
-election<-as.Date("08 05 2024", "%d %m %Y")
+election<-as.Date("29 05 2024", "%d %m %Y")
 old <-min(d$Date)
 new<-d[d$variable!='MKP',]
 new2<-d[d$variable=='MKP',]
