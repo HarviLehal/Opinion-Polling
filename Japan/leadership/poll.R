@@ -31,7 +31,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   scale_color_manual(values = c("#224192","#b61b28","#43b3ae","#1e90ff","#ff7538",
                                 "#ff69b4","#228b22","#9370db","#f2ba42","#444444",
                                 "#999999"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+
