@@ -19,10 +19,11 @@ d$value<-as.numeric(d$value)/100
 # d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
-election<-as.Date("04 06 2024", "%d %m %Y")
+election<-as.Date("04 07 2024", "%d %m %Y")
 starm<-as.Date("04 04 2020", "%d %m %Y")
 truss<-as.Date("06 09 2022", "%d %m %Y")
 sunak<-as.Date("25 10 2022", "%d %m %Y")
+calls<-as.Date("22 05 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
 g<-formattable::percent(0.55)
 
@@ -59,11 +60,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(starm-5,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
   geom_text(aes(truss-5,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_text(aes(sunak-5,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=calls, linetype="dashed", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 United Kingdom General Election')
 
 
@@ -76,7 +78,7 @@ plot1
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=TRUE,span=0.075,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -94,11 +96,12 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(starm-5,f,label = "Starmer", vjust = -1, hjust=0, angle=-90),colour="#E4003B")+
   geom_text(aes(truss-5,f,label = "Truss", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_text(aes(sunak-5,f,label = "Sunak", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=calls, linetype="dashed", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 United Kingdom General Election')
 
 

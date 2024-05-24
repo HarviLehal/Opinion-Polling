@@ -18,7 +18,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 h <- 0
 
-election<-as.Date("31 12 2024", "%d %m %Y")
+election<-as.Date("04 07 2024", "%d %m %Y")
 # election<-max(d$Date)+14
 old <-min(d$Date)
 # MAIN GRAPH

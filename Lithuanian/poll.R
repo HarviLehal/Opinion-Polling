@@ -15,7 +15,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 # d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
-election<-as.Date("06 10 2024", "%d %m %Y")
+election<-as.Date("13 10 2024", "%d %m %Y")
 old<-min(d$Date)
 g<-formattable::percent(0.05)
 h<-formattable::percent(0.07)
@@ -30,9 +30,9 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#3DA49A","#319032","#2D568C","#D41720",
                                 "#D6136E","#E98313","#711625","#C2312F",
                                 "#369C3A","#F3BB0C","#221DC1","#f25d23"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

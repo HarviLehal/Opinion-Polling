@@ -22,7 +22,7 @@ start<-as.Date("01 05 2024", "%d %m %Y")
 LE24<-as.Date("02 05 2024", "%d %m %Y")
 start2<-as.Date("22 05 2024", "%d %m %Y")
 old<-as.Date("12 12 2019", "%d %m %Y")
-election<-as.Date("04 06 2024", "%d %m %Y")
+election<-as.Date("04 07 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 d<-d[d$Date>start|d$Date==old,]

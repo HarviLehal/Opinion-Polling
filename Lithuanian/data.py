@@ -13,10 +13,10 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 data22=pd.DataFrame(df[2])
-headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA','3']
+headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA','3','4']
 parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
 data22.columns = headers
-data22 = data22.drop(["1","2","3"], axis=1)
+data22 = data22.drop(["1","2","3","4"], axis=1)
 headers = ['Date','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
 
 for z in headers:
@@ -27,6 +27,8 @@ for z in headers:
 # data22['Date'] = [x.replace('[d]','') for x in data22['Date'].astype(str)]
 # data22['Date'] = [x.replace('[e]','') for x in data22['Date'].astype(str)]
 # data22['Date'] = [x.replace('[f]','') for x in data22['Date'].astype(str)]
+data22 = data22[data22['Date'] != '5 March 2023	']
+
 data22['Date2'] = data22['Date'].str.split('–').str[1]
 data22.Date2.fillna(data22['Date'].str.split('-').str[1], inplace=True)
 data22.Date2.fillna(data22.Date, inplace=True)
@@ -35,11 +37,12 @@ data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
 data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-data22.drop(data22.index[[0,1]],inplace=True)
+# data22.drop(data22.index[[0,1]],inplace=True)
 
-# for z in parties:
-#   data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
-
+for z in parties:
+  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('−',str(np.NaN)) for x in data22[z].astype(str)]
+data22[parties] = data22[parties].astype(float)
 
 
 print(data22)

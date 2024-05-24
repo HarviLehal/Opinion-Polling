@@ -19,7 +19,7 @@ d$value<-as.numeric(d$value)
 h <- 325
 
 # election<-as.Date("15 10 2024", "%d %m %Y")
-election<-as.Date("31 12 2024", "%d %m %Y")
+election<-as.Date("04 07 2024", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
