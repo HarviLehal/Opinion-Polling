@@ -13,8 +13,8 @@ df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[10])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
-parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
+headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
+parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)

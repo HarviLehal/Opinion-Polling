@@ -18,6 +18,7 @@ d$value<-as.numeric(sub("%","",d$value))/100
 d$value[is.nan(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("12 12 2019", "%d %m %Y")
+election<-as.Date("04 07 2024", "%d %m %Y")
 
 Carlaw<-as.Date("14 02 2020", "%d %m %Y")
 Ross<-as.Date("05 08 2020", "%d %m %Y")
@@ -37,9 +38,20 @@ d <- d %>%
 
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
-  bbplot::bbc_style()+
+  geom_point(size=0.75, data=d[d$Date!=old,]) +
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF"))+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
@@ -55,20 +67,33 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(Carlaw,f,label = "Carlaw", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_text(aes(Ross,f,label = "Ross", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333")+
-  ggtitle("Scottish Westminster Polling")
-
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle("Opinion Polling for the 2024 United Kingdom General Election In Scotland")
+plot1
 
 # LOESS GRAPH
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
-  bbplot::bbc_style()+
+  geom_point(size=0.75, data=d[d$Date!=old,],alpha=0.5) +
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=Sarwar, linetype="dashed", color = "#E4003B", alpha=0.5, size=1)+
   geom_vline(xintercept=Alex, linetype="dashed", color = "#FAA61A", alpha=0.5, size=1)+
@@ -83,10 +108,14 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(Carlaw,f,label = "Carlaw", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_text(aes(Ross,f,label = "Ross", vjust = -1, hjust=0, angle=-90),colour="#0087DC")+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333")+
-  ggtitle("Scottish Westminster Polling")
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle("Opinion Polling for the 2024 United Kingdom General Election In Scotland")
+plot2
 
 
 
@@ -118,8 +147,8 @@ d3<-rbind(d2,d1)
 
 plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#ede480","#decb10","#77c0ed","#0087DC",
-                               "#f27999","#E4003B","#fcd38b","#FAA61A","#9dc7af","#528D6B"))+
+  scale_fill_manual(values = c("#ede480","#decb10","#77c0ed","#0087DC","#f27999","#E4003B",
+                               "#fcd38b","#FAA61A","#9dc7af","#528D6B","#80dae8","#12B6CF"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
