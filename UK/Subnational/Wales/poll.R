@@ -82,4 +82,4 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 
 
 plot2a<-ggarrange(plot2, plot4,ncol = 2, nrow = 1,widths=c(2,0.5))
-ggsave(plot=plot2a, file="UK/Subnational/Wales/plot2.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot2a, file="UK/Subnational/Wales/plot.png",width = 15, height = 7.5, type = "cairo-png")
