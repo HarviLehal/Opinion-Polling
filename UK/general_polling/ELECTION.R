@@ -57,6 +57,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(start2,f,label = "Election Called", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_vline(xintercept=LE24, linetype="dashed", color = "#000000", alpha=0.25, size=1)+
   geom_text(aes(LE24,f,label = "Local Elections", vjust = -1, hjust=0, angle=-90),colour="#000000")+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_break(c(old+0.5, start+1))+

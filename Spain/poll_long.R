@@ -39,8 +39,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91",
                                 "#63be21","#ffb232","#00c7ae",
                                 "#4aae4a","#b5cf18","#ec640c","#9369f5"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d_old[d_old$Date!=election,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d_old[d_old$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none")+

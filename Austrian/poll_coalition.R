@@ -36,8 +36,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#509a3a","#dd1529","#e84188","#10305b",
                                 "#aa692f","#8ee53f","#ee8d23","#000000"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=1.2, data=h, alpha=0.5, linetype="longdash")+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=1.2, data=h, alpha=0.5, linetype="longdash")+
   # geom_line(aes(x=Date,y=value),data=h[h$Date!=old,], size=0.75, alpha=0.25)+
   # bbplot::bbc_style()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
