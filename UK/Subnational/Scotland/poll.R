@@ -34,7 +34,11 @@ f<-formattable::percent(0.6)
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+# d<- d %>%
+#   group_by(variable) %>%
+#   arrange(Date) %>%
+#   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 30, Date), mean,na.rm=TRUE))
 
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
