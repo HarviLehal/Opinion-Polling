@@ -13,6 +13,7 @@ library(dplyr)
 library(ggbreak)
 
 poll <- read_csv("UK/general_polling/poll.csv")
+py_run_file("UK/general_polling/distribution.py")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
@@ -33,8 +34,10 @@ d <- d %>%
   mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B", "#12B6CF"))+
+  geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.5) +
+  # scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B","#12B6CF"))+
+  scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
+                                # "#33a22b","#13bece"))+
   # bbplot::bbc_style()+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
@@ -94,9 +97,14 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#77c0ed","#0087DC","#f27999","#E4003B",
-                               "#fcd38b","#FAA61A","#fcf7c5","#FDF38E",
+  # scale_fill_manual(values = c("#77c0ed","#0087DC","#f27999","#E4003B",
+                               # "#fcd38b","#FAA61A","#fcf7c5","#FDF38E",
+                               # "#9dc7af","#528D6B","#80dae8","#12B6CF"))+
+  scale_fill_manual(values = c("#66add3","#0077b6","#dd6666","#c70000",
+                               "#ec9e66","#e05e00","#f9ea66","#f5dc00",
+                               # "#85c780","#33a22b","#71d8e2","#13bece"))+
                                "#9dc7af","#528D6B","#80dae8","#12B6CF"))+
+  
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),

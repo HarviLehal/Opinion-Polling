@@ -48,5 +48,7 @@ for z in parties:
   
 D.drop(D.index[[-1]],inplace=True)
 D.loc[len(D.index)-1,['Date']] = '12 Dec 2019'
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
 
 D.to_csv('UK/general_polling/poll.csv', index=False)
