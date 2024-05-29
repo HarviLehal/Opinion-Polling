@@ -5,6 +5,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 from scipy.stats import poisson
+import seaborn as sns
 import numpy as np
 import dateparser
 
@@ -21,7 +22,7 @@ data['Date'] = data['Date'].astype(str).apply(lambda x: pd.to_datetime(dateparse
 # Get the most recent date by getting the maximum date in the Date column
 most_recent_date = data['Date'].max()
 
-fourteen_days_ago = pd.to_datetime(most_recent_date) - pd.DateOffset(days=14)
+fourteen_days_ago = pd.to_datetime(most_recent_date) - pd.DateOffset(days=7)
 
 
 
@@ -38,7 +39,7 @@ reform = data['Reform'].values
 
 # Plot the gaussian distribution for each party
 plt.figure(figsize=(20, 12))
-plt.title('Gaussian Distributions of the UK General Election Polling Data for the Last 14 Days (90% Confidence Interval)')
+plt.title('Gaussian Distributions of the UK General Election Polling Data for the Last 7 Days (90% Confidence Interval)')
 plt.xlabel('Percentage')
 plt.ylabel('Density')
 
@@ -130,3 +131,32 @@ plt.tight_layout()
 plt.ylim(0, 1)
 plt.xlim(0, 60)
 plt.savefig('UK/general_polling/distribution.png')
+
+# Plot the gaussian distribution for each party using seaborn
+plt.figure(figsize=(20, 12))
+plt.title('Density Plot of Party Polling for the UK General Election from the Last 14 Days (90% Confidence Interval)')
+sns.kdeplot(conservative, color= "#0077b6", label='Conservative', fill=True)
+sns.kdeplot(labour, color= "#c70000", label='Labour', fill=True)
+sns.kdeplot(lib_dem, color= "#e05e00", label='Liberal Democrats', fill=True)
+sns.kdeplot(snp, color= "#000000", label='Scottish National Party', fill=True)
+sns.kdeplot(green, color= "#528D6B", label='Green Party', fill=True)
+sns.kdeplot(reform, color= "#12B6CF", label='Reform Party', fill=True)
+plt.grid()
+# show x ticks in percentage for every 1% and rotate 90 degrees
+plt.xticks(np.arange(0, 61, 1))
+plt.yticks(np.arange(0, 1, 0.1))
+plt.gca().set_yticklabels(['{:.0f}%'.format(x*100) for x in plt.gca().get_yticks()])
+plt.gca().set_xticklabels(['{:.0f}%'.format(x) for x in plt.gca().get_xticks()])
+plt.gca().yaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: '{:.0f}%'.format(x*100)))
+plt.gca().xaxis.set_major_formatter(plt.FuncFormatter(lambda x, _: '{:.0f}%'.format(x)))
+plt.gca().tick_params(axis='x', rotation=-90)
+plt.gca().tick_params(axis='y', rotation=0)
+
+# plot the mean value of each party as a label at the top of each gaussian distribution with the 95% confidence interval in brackets below it
+
+plt.legend()
+# tight layout but make sure axis ticks start at 0 and 0
+plt.tight_layout()
+plt.ylim(0, 1)
+plt.xlim(0, 60)
+plt.savefig('UK/general_polling/distribution2.png')
