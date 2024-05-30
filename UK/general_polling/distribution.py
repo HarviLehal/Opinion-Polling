@@ -134,7 +134,7 @@ plt.savefig('UK/general_polling/distribution.png')
 
 # Plot the gaussian distribution for each party using seaborn
 plt.figure(figsize=(20, 12))
-plt.title('Density Plot of Party Polling for the UK General Election from the Last 14 Days (90% Confidence Interval)')
+plt.title('Density Plot of Party Polling for the UK General Election from the Last 7 Days (90% Confidence Interval)')
 sns.kdeplot(conservative, color= "#0077b6", label='Conservative', fill=True)
 sns.kdeplot(labour, color= "#c70000", label='Labour', fill=True)
 sns.kdeplot(lib_dem, color= "#e05e00", label='Liberal Democrats', fill=True)
