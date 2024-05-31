@@ -16,11 +16,24 @@ d$value<-formattable::percent(d$value)
 
 plot<-ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
   geom_point(size=2)+
-  scale_color_manual(values = c("#0087DC", "#E4003B", "#FAA61A", "#528D6B", "#6D3177", "#DCDCDC"))+
+  scale_color_manual(values = c("#0087DC", "#E4003B", "#FAA61A", "#528D6B", "#6D3177", "#999999"))+
   geom_line(size=1)+
   scale_x_date(name="Date of Election", breaks = unique(d$year), guide = guide_axis(check.overlap = TRUE))+
-  theme(axis.text.x=element_text(angle=90,vjust=0.5,hjust=1),panel.grid.minor.x = element_blank())+
-  scale_y_continuous(name="Vote", labels = scales::percent_format(accuracy = 1))+
-  labs(title="Election Results in Harborough Constituency Between 1885 and 2019")
-
-ggsave(plot=plot, file="UK/constituency_results/harborough_results/plot.png",width = 15, height = 7.5, type = "cairo-png")
+  theme_minimal()+
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
+        legend.key.size = unit(0.45,'lines'),
+        legend.box.margin = margin(t = 0, r = 0, b = 0, l = -15, unit = "pt"),
+        axis.text.x = element_text(angle=90,vjust=0.5,hjust=1,size=7,face="bold"),
+        axis.text.y = element_text(size=7,face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        panel.grid.minor.x = element_blank(),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
+  labs(title="Election Results in Harborough Constituency Between 1885 and 2019 (With 2024 Projections)")
+plot
+ggsave(plot=plot, file="UK/constituency_results/harborough_results/plot.png",width = 20, height = 7.5, type = "cairo-png")

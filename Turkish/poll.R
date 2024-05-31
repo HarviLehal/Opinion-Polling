@@ -30,7 +30,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#FFCC00","#ed1c24","#870000","#3db5e6","#951b88","#007d60","#404040","#b61f23"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

@@ -28,18 +28,22 @@ f<-formattable::percent(0.6)
 
 d<-d[d$Date>start|d$Date==old,]
 
-d <- d %>%
+# d <- d %>%
+#   group_by(variable) %>%
+#   arrange(Date) %>%
+#   mutate(Moving_Average = rollapply(value, width=3, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.5) +
+  geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.75) +
   # scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B","#12B6CF"))+
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
                                 # "#33a22b","#13bece"))+
   # bbplot::bbc_style()+
-  # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  geom_line(aes(y = Moving_Average), linetype = "dashed", size=1, alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
