@@ -48,4 +48,6 @@ E = pd.concat(e.values(), ignore_index=True)
 E = E[E.PS<19]
 E = E[E.LFI!=12]
 
+E = E.dropna(subset=['Date'])
+
 E.to_csv('French/European/poll.csv', index=False)
