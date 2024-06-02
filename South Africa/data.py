@@ -19,7 +19,7 @@ parties = ['ANC', 'DA', 'MKP', 'EFF', 'IFP', 'VF Plus', 'ACDP', 'Action SA']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[1])
-  d[i]=d[i].drop(["Polling Organisation", "Don't Know[b]","Others", "Lead", "Sample Size"], axis=1)
+  d[i]=d[i].drop(["Polling Organisation", "Don't Know[d]","Others", "Lead", "Sample Size"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
@@ -35,5 +35,13 @@ for i in range(1):
   d[i] = d[i][d[i]['ANC'] != d[i]['VF Plus']]
   
 D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = D[z].str.strip('%')
+  D[z] = D[z].astype('float')
+
+new_row = pd.DataFrame({'Date': '29 May 2024','ANC':40.19,'DA':21.80,'MKP':14.59,'EFF':9.52,'IFP':3.85,'VF Plus':1.36,'ACDP':0.60,'Action SA':1.20}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('South Africa/poll.csv', index=False)
