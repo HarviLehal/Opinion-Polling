@@ -40,8 +40,8 @@ for z in parties:
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
 
-new_row = pd.DataFrame({'Date': '29 May 2024','ANC':40.19,'DA':21.80,'MKP':14.59,'EFF':9.52,'IFP':3.85,'VF Plus':1.36,'ACDP':0.60,'Action SA':1.20}, index=[0])
-D = pd.concat([new_row,D]).reset_index(drop=True)
-D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+# new_row = pd.DataFrame({'Date': '29 May 2024','ANC':40.19,'DA':21.80,'MKP':14.59,'EFF':9.52,'IFP':3.85,'VF Plus':1.36,'ACDP':0.60,'Action SA':1.20}, index=[0])
+# D = pd.concat([new_row,D]).reset_index(drop=True)
+# D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('South Africa/poll.csv', index=False)
