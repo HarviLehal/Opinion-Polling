@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date', 'Con', 'Lab', 'SNP', 'Lib Dem', 'Plaid Cymru', 'Green']
-parties = ['Con', 'Lab', 'SNP', 'Lib Dem', 'Plaid Cymru', 'Green']
+headers = ['Date', 'Con', 'Lab', 'SNP', 'Lib Dem', 'Plaid Cymru', 'Green', 'Reform']
+parties = ['Con', 'Lab', 'SNP', 'Lib Dem', 'Plaid Cymru', 'Green', 'Reform']
 d = {}
 for i in range(1):
   # i=j+1

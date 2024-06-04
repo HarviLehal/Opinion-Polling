@@ -29,8 +29,8 @@ d <- d[d$Date>start|d$Date==old,]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1.5, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#0087DC","#E4003B","#FDF38E","#FAA61A","#005b54","#528D6B"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#0087DC","#E4003B","#FDF38E","#FAA61A","#005b54","#528D6B","#12B6CF"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=1, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -63,7 +63,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -83,7 +83,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#77c0ed","#0087DC","#f27999","#E4003B",
                                "#fcf7c5","#FDF38E","#fcd38b","#FAA61A",
-                               "#669d98","#005b54","#9dc7af","#528D6B"))+
+                               "#669d98","#005b54","#9dc7af","#528D6B",
+                               "#80dae8","#12B6CF"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
@@ -93,7 +94,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average \n (2019 Result)')+
+  ggtitle(' 7 day average \n (2019 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()+
   geom_hline(aes(yintercept=h), linetype="dashed",colour="#000000")
