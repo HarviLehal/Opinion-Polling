@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_Queensland_state_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,6 +12,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[a-z]+\]')
 
 
 headers=['Date', 'Firm','Sample', 'Labor', 'LNP', 'Green', 'ONP', 'KAP', 'Other', 'Labor2', 'Coalition2']
@@ -29,10 +31,13 @@ for i in range(1):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Labor'] != d[i]['Other']]
   for z in parties:
-    d[i][z] = [x.replace('[a]','') for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('[b]','') for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('[c]','') for x in d[i][z].astype(str)]
-
+    d[i][z] = d[i][z].str.split('%').str[0]
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = d[i][z].astype('float')
+    
 D = pd.concat(d.values(), ignore_index=True)
 PP = ['Labor2', 'Coalition2']
 E = D.drop(PP, axis=1)

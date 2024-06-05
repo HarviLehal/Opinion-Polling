@@ -13,24 +13,29 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 
-df0=pd.DataFrame(df[1])
-data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead", "UKIP"], axis=1)
 headers = ['Date', 'Lab', 'Con', 'Plaid Cymru', 'Green', 'Lib Dem', 'AWA', 'Reform']
 parties = ['Lab', 'Con', 'Plaid Cymru', 'Green', 'Lib Dem', 'AWA', 'Reform']
-data23.columns = headers
-data23['Date2'] = data23['Date'].str.split('–').str[1]
-data23.Date2.fillna(data23.Date, inplace=True)
-# data23['Date2'] = [x+ str(2023-i) for x in data23['Date2'].astype(str)]
-data23['Date'] = data23['Date2']
-data23 = data23.drop(['Date2'], axis=1)
-data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-data23 = data23[data23['Lab'] != data23['Green']]
-for z in parties:
-    data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('-',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = data23[z].str.strip('%')
-    data23[z] = data23[z].astype('float')
-print(data23)
-data23.to_csv('UK/Subnational/Wales/poll_Senedd.csv', index=False)
+d = {}
+for i in range(2):
+  d[i]=pd.DataFrame(df[i+1])
+  d[i] = d[i].drop(["Pollster", "Client", "Sample size", "Others", "Lead", "UKIP"], axis=1)
+  d[i].columns = headers
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  d[i] = d[i][d[i]['Lab'] != d[i]['Green']]
+  for z in parties:
+      d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+      d[i][z] = d[i][z].str.strip('%')
+      d[i][z] = d[i][z].astype('float')
+    
+d[0].drop(d[0].index[[-1]],inplace=True)
+
+D = pd.concat(d.values(), ignore_index=True)
+D.to_csv('UK/Subnational/Wales/poll_Senedd.csv', index=False)

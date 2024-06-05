@@ -20,6 +20,7 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 old<-as.Date("06 05 2021", "%d %m %Y")
 election<-as.Date("07 05 2026", "%d %m %Y")
+reform<-as.Date("08 05 2024", "%d %m %Y")
 
 f<-formattable::percent(0.6)
 
@@ -45,11 +46,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-0.5,election),guide = guide_axis(angle = -90))+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=reform, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  geom_hline(yintercept = 0, size = 1, colour="#333333")+
+  geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Opinion Polling for the Next Senedd Election')
 plot1
 
