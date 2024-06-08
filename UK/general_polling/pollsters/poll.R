@@ -18,12 +18,12 @@ files <- list.files("UK/general_polling/pollsters", full.names = TRUE)
 # remove non csv files
 files <- files[grep(".csv", files)]
 # read all csv files into separate dataframes
-poll <- lapply(files, read_csv)
+polls <- lapply(files, read_csv)
 # rename eacc dataframe to the name of the file without the polls_ prefix
-# names(poll) <- gsub("UK/general_polling/pollsters/polls_", "", gsub(".csv", "", files))
+names(polls) <- gsub("UK/general_polling/pollsters/polls_", "", gsub(".csv", "", files))
 
 # reshape each dataframe into long format
-poll <- lapply(poll, function(x) {
+polls <- lapply(polls, function(x) {
   x$Date <- as.Date(x$Date, "%d %b %Y")
   x <- reshape2::melt(x, id.vars="Date")
 })
@@ -41,10 +41,30 @@ f<-formattable::percent(0.6)
 plots <- list()
 # loop through each dataframe in the list and create a LOESS regression line for each
 
-lapply(poll, function(x) {
+# lapply(polls, function(x) {
+#   print(paste("ITERATION", x))
+#   # if (x == "Savanta"){
+#   #   plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1, alpha=0.5, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+#   # }
+#   # else{
+#     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, alpha=0.25, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+#   # }
+#     # make Savanta polls more visible
+#     plots <<- c(plots, list(plot))
+# })
+
+# create function loop through each dataframe in the list and create a LOESS regression line for each without using lapply
+for (i in 1:length(polls)) {
+  x <- polls[[i]]
+  if (names(polls)[i] == "INSERT POLLSTER NAME HERE"){
+    plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1.25, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+  }
+  else{
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, alpha=0.25, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
-    plots <<- c(plots, list(plot))
-})
+  }
+    # make Savanta polls more visible
+    plots <- c(plots, list(plot))
+}
 
 # plot all regressions on the same plot
 
