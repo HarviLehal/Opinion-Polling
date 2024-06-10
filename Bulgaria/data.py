@@ -19,7 +19,7 @@ parties = ['GERB','PP-DB','V','DPS','BSP','ITN','BV','Levitsata','Other']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

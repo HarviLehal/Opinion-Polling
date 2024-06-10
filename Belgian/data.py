@@ -69,6 +69,10 @@ for z in parties:
   
 print(data)
 
+# new_row = pd.DataFrame({'Date': '09 June 2024','PS':21.5,'MR':20.7,'Ecolo':9.0,'PTB':24.0,'LE':13.0,'DéFI':4.2}, index=[0])
+# data = pd.concat([new_row,data]).reset_index(drop=True)
+# data.Date=data.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
 data.to_csv('Belgian/poll_wallonie.csv', index=False)
 
 

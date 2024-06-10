@@ -18,7 +18,7 @@ headers = ['drop1','Date','drop2','Smer','PS','Hlas','OĽaNOap','DROP5','DROP6',
 parties = ['Smer','PS','Hlas','OĽaNOap','KDH','SASKA','SNS','Republika','Alliance','Democrats','SR','ĽSNS']
 drops = ['drop1','drop2','drop3','drop4','DROP5','DROP6']
 d = {}
-for i in range(2):
+for i in range(1):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -36,7 +36,7 @@ for i in range(2):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
-d[0].drop(d[0].index[[-1]],inplace=True)
+# d[0].drop(d[0].index[[-1]],inplace=True)
 
 
 D = pd.concat(d.values(), ignore_index=True)

@@ -16,12 +16,12 @@ p = re.compile(r'\[[a-z]+\]'  )
 
 
 
-headers = ['Date','Lega','PD','M5S','FI','FdI','SVP','1','2','3','4','5','6','7','8']
-parties = ['Lega','PD','M5S','FI','FdI','SVP']
-drop = ['1','2','3','4','5','6','7','8']
+headers = ['Date','Lega','PD','M5S','FI','FdI','SVP','+E','IV','3','AVS','5','6','7','8']
+parties = ['Lega','PD','M5S','FI','FdI','SVP','+E','IV','AVS']
+drop = ['3','5','6','7','8']
 e = {}
 for i in range(1):
-  e[i]=pd.DataFrame(df[-1])
+  e[i]=pd.DataFrame(df[-2])
   e[i]=e[i].drop(["Polling firm"], axis=1)
   e[i].columns = headers
   e[i]=e[i].drop(drop, axis=1)
@@ -36,9 +36,21 @@ for i in range(1):
     e[i][z] = [p.sub('', x) for x in e[i][z].astype(str)]
     e[i][z] = pd.to_numeric(e[i][z], errors='coerce')
 
+e[0]['SUE']=np.where(e[0]['+E']==e[0]['IV'],e[0]['+E'],e[0]['+E']+e[0]['IV'])
+threeway = ['+E','IV']
+e[0] = e[0].drop(threeway, axis=1)
 E = pd.concat(e.values(), ignore_index=True)
 
+parties = ['Lega','PD','M5S','FI','FdI','SVP','AVS', 'SUE']
+
+
+new_row = pd.DataFrame({'Date':'09 June 2024','Lega':8,'PD':22,'M5S':8,'FI':7,'FdI':24,'SVP':1,'AVS':6,'SUE':0}, index=[0])
+E = pd.concat([new_row,E]).reset_index(drop=True)
+E.Date=E.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 E['Other']=76-E[parties].sum(axis=1)
+
+E=E[E['Other']>-1]
+
 E.to_csv('Italy/European/poll.csv', index=False)
 
 
@@ -49,7 +61,7 @@ drop = ['1','2','3','4','5','6','7']
 
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-2])
+  d[i]=pd.DataFrame(df[-3])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -75,5 +87,10 @@ threeway = ['+E','IV']
 c[0] = c[0].drop(threeway, axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)
+
+new_row = pd.DataFrame({'Date':'09 June 2024','Lega':8.7,'PD':25.8,'M5S':9.6,'FI':8.6,'FdI':28.5,'AVS':6.9,'PTD':2.3,'A':3.2,'Libertà':1.1,'SUE':3.5}, index=[0])
+C = pd.concat([new_row,C]).reset_index(drop=True)
+C.Date=C.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
 
 C.to_csv('Italy/European/poll2.csv', index=False)
