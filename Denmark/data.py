@@ -52,17 +52,17 @@ D.to_csv('Denmark/poll.csv', index=False)
 
 
 
-headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7']
-parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
-drop = ['1','2','3','4','5','6','7']
+headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','3','4','5','6']
+parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
+drop = ['1','2','3','4','5','6']
 
 d = {}
 for i in range(3):
   if i == 0:
     pass
   else:
-    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8']
-    drop = ['1','2','3','4','5','6','7','8']
+    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7']
+    drop = ['1','2','3','4','5','6','7']
   d[i]=pd.DataFrame(df[i+4])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
@@ -86,6 +86,6 @@ D[parties] = D[parties].astype(float)
 
 print(D)
 
-
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
 
 D.to_csv('Denmark/poll2.csv', index=False)

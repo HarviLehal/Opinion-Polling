@@ -97,6 +97,8 @@ print(snp.std())
 
 # Plot the gaussian distribution for the Green Party
 mu, std = norm.fit(green)
+if std == 0:
+  std=1
 # xmin, xmax = plt.xlim()
 p_g_o = norm.pdf(x, mu, std)
 p_g = p_g_o[p_g_o > 0.0001]
