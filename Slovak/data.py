@@ -22,6 +22,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
+  d[i] = d[i][d[i]['Date'] != '08 Jun 2024']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]

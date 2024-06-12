@@ -56,7 +56,7 @@ plots <- list()
 # create function loop through each dataframe in the list and create a LOESS regression line for each without using lapply
 for (i in 1:length(polls)) {
   x <- polls[[i]]
-  if (names(polls)[i] == "INSERT POLLSTER NAME HERE"){
+  if (names(polls)[i] == "INSERTPOLLSTERHERE"){
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1.25, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
   else{

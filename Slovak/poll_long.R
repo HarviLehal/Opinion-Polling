@@ -52,8 +52,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#BED62F","#FFE17C","#78fc04",
                                 "#173A70","#e4010a","#f48c1f",
                                 "#4D0E90","#034B9F","#005222","#FDBB12"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d_old[d_old$Date!=election&d_old$Date!=old_election,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.8,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d_old[d_old$Date!=election&d_old$Date!=old_election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_new[d_new$Date!=election,])+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
