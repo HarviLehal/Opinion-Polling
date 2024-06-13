@@ -86,6 +86,7 @@ d<-d[d$Date>start|d$Date==old,]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.6, data=d[d$Date!=old,],alpha=1) +
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
+  plots+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=1.5, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -111,8 +112,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_break(c(old+0.5, start+1))+
   scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old-0.5,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 United Kingdom General Election (Since Local Elections)')+
-  plots
+  ggtitle('Opinion Polling for the 2024 United Kingdom General Election (Since Local Elections)')
 plot1
   
 
@@ -172,3 +172,4 @@ plot2
 plot<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 
 ggsave(plot=plot, file="UK/general_polling/pollsters/plot_election.png",width = 20, height = 7.5, type = "cairo-png")
+

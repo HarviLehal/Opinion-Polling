@@ -22,7 +22,7 @@ data['Date'] = data['Date'].astype(str).apply(lambda x: pd.to_datetime(dateparse
 # Get the most recent date by getting the maximum date in the Date column
 most_recent_date = data['Date'].max()
 
-fourteen_days_ago = pd.to_datetime(most_recent_date) - pd.DateOffset(days=3)
+fourteen_days_ago = pd.to_datetime(most_recent_date) - pd.DateOffset(days=2)
 
 
 
