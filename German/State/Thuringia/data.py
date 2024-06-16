@@ -20,6 +20,7 @@ data22.columns = headers
 data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
 data22=data22[~data22.Date.str.contains("26 Sep 2021")]
+data22=data22[~data22.Date.str.contains("9 Jun 2024")]
 for z in parties:
     data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]
     data22[z] = [x.replace('—',str(np.NaN)) for x in data22[z].astype(str)]
@@ -28,7 +29,7 @@ data22[parties] = data22[parties].astype(float)
 
 data22=data22.drop(data22[data22['BSW'] > 20].index)
 # data22=data22.drop('BSW', axis=1)
-
+data22
 
 print(data22)
 data22.to_csv('German/State/Thuringia/poll.csv', index=False)

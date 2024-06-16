@@ -38,6 +38,7 @@ d<- d %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  annotate(geom = "rect",xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6,fill = "palegreen", colour = NA, alpha = 0.5)+
   geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.75) +
   # scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B","#12B6CF"))+
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
@@ -57,6 +58,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
+  # geom_rect(aes(xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6),fill = "palegreen", colour = NA, alpha = 0.5)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -70,6 +72,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_break(c(old+0.5, start+1))+
   scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old-0.5,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 United Kingdom General Election (Since Local Elections)')
+  # shade region between 31st May and 13 June
 plot1
 
 

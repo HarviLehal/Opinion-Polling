@@ -26,9 +26,9 @@ EU<-as.Date("09 06 2024", "%d %m %Y")
 old <-min(d$Date)
 # LOESS GRAPH
 
-# new<-d[d$variable!='Libertà'&d$variable!='SUE',]
-# new2<-d[d$variable=='Libertà'|d$variable=='SUE',]
-# new2<-new2[!is.na(new2$value),]
+new<-d[d$variable!='Libertà'&d$variable!='SUE',]
+new2<-d[d$variable=='Libertà'|d$variable=='SUE',]
+new2<-new2[!is.na(new2$value),]
 
 # TRUE M5S COLOURS
 # "#fdf48c","#fcec3f"
@@ -38,8 +38,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#0484dc","#f6d025","#0039aa","#bc3454",
                                 "#b41317","#b04e4e","#075271","#d4448c",
                                 "#fcd404","#346c9c","#2149a7","#0039aa"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=new2[new2$Date!=old,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
