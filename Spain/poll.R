@@ -20,8 +20,12 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-old<-as.Date("24 07 2023", "%d %m %Y")
+old<-as.Date("23 07 2023", "%d %m %Y")
 election<-as.Date("22 07 2027", "%d %m %Y")
+
+new<-d[d$variable!='SALF',]
+new2<-d[d$variable=='SALF',]
+new2<-new2[!is.na(new2$value),]
 
 # LOESS GRAPH
 
@@ -29,12 +33,22 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91","#9369f5",
                                 "#63be21","#ffb232","#00c7ae",
-                                "#4aae4a","#b5cf18","#ec640c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  # bbplot::bbc_style()+
+                                "#4aae4a","#b5cf18","#795a44"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method = "lm",formula=y ~ I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old,
@@ -42,7 +56,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Spanish General Election')
+
 plot1
 
 poll <- read_csv("Spain/poll.csv")
@@ -82,15 +99,18 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#4dd8c6","#00c7ae",
                                "#80c680","#4aae4a",
                                "#cbdd5d","#b5cf18",
-                               "#f29355","#ec640c"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
-                y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+                               "#af9c8f","#795a44"))+
+  geom_text(aes(label = ifelse(d3$Date != min(d3$Date),
+                               paste(formattable::percent(d3$value)), ""),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),
+                               ifelse(is.na(d3$value)==TRUE,"(New)",
+                                      (paste("(",formattable::percent(d3$value),")"))),""),y = 0),
+            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+

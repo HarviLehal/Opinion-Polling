@@ -12,7 +12,8 @@ library(zoo)
 library(dplyr)
 library(ggbreak)
 
-poll <- read_csv("UK/general_polling/poll.csv")
+# poll <- read_csv("UK/general_polling/poll.csv")
+poll <- read_csv("UK/general_polling/pollsters/polls.csv")
 py_run_file("UK/general_polling/distribution.py")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
@@ -38,7 +39,7 @@ d<- d %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  annotate(geom = "rect",xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6,fill = "palegreen", colour = NA, alpha = 0.5)+
+  # annotate(geom = "rect",xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6,fill = "palegreen", colour = NA, alpha = 0.5)+
   geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.75) +
   # scale_color_manual(values = c("#0087DC","#E4003B","#FAA61A","#FDF38E","#528D6B","#12B6CF"))+
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
@@ -77,7 +78,8 @@ plot1
 
 
 
-poll <- read_csv("UK/general_polling/poll.csv")
+# poll <- read_csv("UK/general_polling/poll.csv")
+poll <- read_csv("UK/general_polling/pollsters/polls.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 

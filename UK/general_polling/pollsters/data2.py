@@ -77,3 +77,12 @@ for pollster in pollsters:
 # Save each pollster's dataframe as a csv file
 for pollster in pollsters:
     dfs[pollster].to_csv(f'UK/general_polling/pollsters/polls_{pollster}.csv', index=False)
+
+# Merge all pollsters into a single dataframe, but remove PeoplePolling as it is biased
+D = D[D['Pollster'] != 'PeoplePolling']
+
+# remove pollster column
+
+D = D.drop(['Pollster'], axis=1)
+
+D.to_csv('UK/general_polling/pollsters/polls.csv', index=False)

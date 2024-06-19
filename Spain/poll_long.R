@@ -32,25 +32,43 @@ d_new <- reshape2::melt(poll2, id.vars="Date")
 d_new$value<-as.numeric(d_new$value)/100
 d_new$value<-formattable::percent(d_new$value)
 
+new<-d_new[d_new$variable!='SALF',]
+new2<-d_new[d_new$variable=='SALF',]
+new2<-new2[!is.na(new2$value),]
+
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91",
                                 "#63be21","#ffb232","#00c7ae",
-                                "#4aae4a","#b5cf18","#ec640c","#9369f5"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d_old[d_old$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+                                "#4aae4a","#b5cf18","#ec640c",
+                                "#9369f5","#795a44"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d_old[d_old$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method = "lm",formula=y ~ I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=old_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), next_election)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=next_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old_election|d$Date==election,],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old_election|d$Date==election,],size=5.25, shape=5, alpha=1)
+  geom_point(data=d[d$Date==old_election|d$Date==election,],size=5.25, shape=5, alpha=1)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old_election,next_election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling since the 2019 Spanish General Election')
 plot1
 
 poll1 <- read_csv("Spain/Old/poll.csv")
@@ -92,16 +110,22 @@ scale_fill_manual(values = c("#f46068","#ef1c27",
                              "#80c680","#4aae4a",
                              "#cbdd5d","#b5cf18",
                              "#f29355","#ec640c",
-                             "#bea5f9","#9369f5"))+
-geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-          hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
-          hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
-theme_minimal()+
-theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-      panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-      panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
-      plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+                             "#bea5f9","#9369f5",
+                             "#af9c8f","#795a44"))+
+  geom_text(aes(label = ifelse(d3$Date != min(d3$Date),
+                               paste(formattable::percent(d3$value)), ""),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),
+                               ifelse(is.na(d3$value)==TRUE,"(New)",
+                                      (paste("(",formattable::percent(d3$value),")"))),""),y = 0),
+            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
+  theme_minimal()+
+  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
 ggtitle(' 7 day average \n (2023 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
@@ -110,4 +134,4 @@ coord_flip()
 plotA<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotA
 
-ggsave(plot=plotA, file="Spain/plot_long.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plotA, file="Spain/plot_long.png",width = 20, height = 7.5, type="cairo-png")

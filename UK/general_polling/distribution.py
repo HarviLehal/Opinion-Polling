@@ -11,7 +11,8 @@ import dateparser
 
 
 # Read the csv file
-data = pd.read_csv('UK/general_polling/poll.csv')
+# data = pd.read_csv('UK/general_polling/poll.csv')
+data = pd.read_csv('UK/general_polling/pollsters/polls.csv')
 
 
 
