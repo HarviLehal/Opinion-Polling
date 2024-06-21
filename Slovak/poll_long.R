@@ -34,11 +34,11 @@ d_new$value<-as.numeric(d_new$value)/100
 d_new$value<-formattable::percent(d_new$value)
 
 d <- d %>%
-  mutate(variable = recode(variable, OĽaNO  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OĽaNO'  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
 d_new <- d_new %>%
-  mutate(variable = recode(variable, OĽaNO  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OĽaNO'  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
 d_old <- d_old %>%
-  mutate(variable = recode(variable, OĽaNO  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OĽaNO'  = 'OĽaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
 
 
 

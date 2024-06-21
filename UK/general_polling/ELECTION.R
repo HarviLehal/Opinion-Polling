@@ -13,7 +13,7 @@ library(dplyr)
 library(ggbreak)
 
 # poll <- read_csv("UK/general_polling/poll.csv")
-poll <- read_csv("UK/general_polling/pollsters/polls.csv")
+poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 py_run_file("UK/general_polling/distribution.py")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
@@ -79,7 +79,7 @@ plot1
 
 
 # poll <- read_csv("UK/general_polling/poll.csv")
-poll <- read_csv("UK/general_polling/pollsters/polls.csv")
+poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 

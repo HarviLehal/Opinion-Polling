@@ -38,21 +38,29 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#173A70","#e4010a","#f48c1f",
                                 "#4D0E90","#034B9F","#005222"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^0.5),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'))+
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_hline(aes(yintercept=g), alpha=0.75, linetype="dashed", colour="#000000")+
   geom_hline(aes(yintercept=f), alpha=0.75, linetype="dotted", colour="#000000")+
-  geom_text(aes(election,f,label = "10% Coalition Threshold", vjust = -1, hjust=1),colour="#56595c")+
-  geom_text(aes(election,g,label = "7% Coalition Threshold", vjust = -1, hjust=1),colour="#56595c")+
-  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_text(aes(election-1,f,label = "10% Coalition Threshold", vjust = -1, hjust=1),colour="#000000", alpha=0.5)+
+  geom_text(aes(election-1,g,label = "7% Coalition Threshold", vjust = -1, hjust=1),colour="#000000", alpha=0.5)+
+  geom_text(aes(election-1,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#000000", alpha=0.5)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Slovak Parliamentary Election')
 plot
 
 # ggsave(plot=plot, file="Slovak/plot_new.png",width = 15, height = 7.5, type="cairo-png")
@@ -99,14 +107,14 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#946ebc","#4D0E90",
                                "#6893c5","#034B9F",
                                "#66977a","#005222"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
-                y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+            hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
+            hjust=-0.1, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
@@ -114,10 +122,10 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 
-plot<-plot+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'),
-        legend.position = "none")
+plot
+  # theme(axis.title=element_blank(),legend.title = element_blank(),
+  #       legend.key.size = unit(2, 'lines'),
+  #       legend.position = "none")
 plotA<-ggarrange(plot, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plotA
 

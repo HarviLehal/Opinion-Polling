@@ -85,4 +85,8 @@ D = D[D['Pollster'] != 'PeoplePolling']
 
 D = D.drop(['Pollster'], axis=1)
 
-D.to_csv('UK/general_polling/pollsters/polls.csv', index=False)
+new_row = pd.DataFrame({'Date': '12 Dec 2019','Con':44.7, 'Lab':33.0, 'Lib Dem':11.8, 'SNP':4.0, 'Green':2.8, 'Reform':2.1}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+D.to_csv('UK/general_polling/unbiased_polls.csv', index=False)
