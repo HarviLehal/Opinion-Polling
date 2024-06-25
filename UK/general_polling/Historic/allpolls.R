@@ -300,3 +300,24 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 plot1
 
 ggsave(plot=plot1, file="UK/general_polling/Historic/PLOT_MA.png",width = 50, height = 10, type = "cairo-png",limitsize=FALSE)
+
+
+
+
+histplot<-ggplot(poll, aes(x=Date))+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_histogram(color="#887cac", fill="#ffac94",binwidth=60)+
+  theme_minimal()+
+  theme(legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_x_date(date_breaks = "2 year", date_labels =  "%Y",limits = c(mindate,election),guide = guide_axis(angle = -90))+
+  ggtitle('Number of Polls Conducted Every 60 Days Since June 1943')
+
+histplot
+ggsave(plot=histplot, file="UK/general_polling/Historic/Hist_Plot.png",width = 50, height = 10, type = "cairo-png",limitsize=FALSE)

@@ -33,10 +33,10 @@ d<-d[d$Date>start|d$Date==old,]
 #   group_by(variable) %>%
 #   arrange(Date) %>%
 #   mutate(Moving_Average = rollapply(value, width=3, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
-d<- d %>%
-  group_by(variable) %>%
-  arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
+# d<- d %>%
+#   group_by(variable) %>%
+#   arrange(Date) %>%
+#   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 5, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # annotate(geom = "rect",xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6,fill = "palegreen", colour = NA, alpha = 0.5)+
@@ -45,8 +45,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#528D6B","#12B6CF"))+
                                 # "#33a22b","#13bece"))+
   # bbplot::bbc_style()+
-  geom_line(aes(y = Moving_Average), linetype = "dashed", size=1, alpha=0.5)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_line(aes(y = Moving_Average), linetype = "dashed", size=1, alpha=0.5)+
+  geom_smooth(method="loess",fullrange=FALSE,se=TRUE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

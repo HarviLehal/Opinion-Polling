@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','drop4','MKP/Alliance','drop6','drop7','drop8','SPOLU/Dem','SNS','drop9','Hlas','Rep','drop10']
-parties = ['OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SASKA','KDH','MKP/Alliance','SPOLU/Dem','SNS','Hlas','Rep']
+headers = ['drop1','Date','drop2','OLaNO','ZL','Smer','SR','LSNS','PS','SASKA','KDH','drop4','MKP/Alliance','drop6','drop7','drop8','SPOLU/Dem','SNS','drop9','Hlas','Rep','drop10']
+parties = ['OLaNO','ZL','Smer','SR','LSNS','PS','SASKA','KDH','MKP/Alliance','SPOLU/Dem','SNS','Hlas','Rep']
 drops = ['drop1','drop2','drop4','drop6','drop7','drop8','drop9','drop10']
 d = {}
 for i in range(1):
@@ -36,12 +36,12 @@ for i in range(1):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
 
-d[0]['OĽaNO-ZĽ']=np.where(d[0]['ZĽ']==d[0]['OĽaNO'], d[0]['ZĽ'], np.NaN)
-d[0]['OĽaNO']=np.where(d[0]['OĽaNO']==d[0]['OĽaNO-ZĽ'], np.NaN, d[0]['OĽaNO'])
-d[0]['ZĽ']=np.where(d[0]['ZĽ']==d[0]['OĽaNO-ZĽ'], np.NaN, d[0]['ZĽ'])
+d[0]['OLaNO-ZL']=np.where(d[0]['ZL']==d[0]['OLaNO'], d[0]['ZL'], np.NaN)
+d[0]['OLaNO']=np.where(d[0]['OLaNO']==d[0]['OLaNO-ZL'], np.NaN, d[0]['OLaNO'])
+d[0]['ZL']=np.where(d[0]['ZL']==d[0]['OLaNO-ZL'], np.NaN, d[0]['ZL'])
 
-headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
-parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','MKP/Alliance','SNS','Hlas','Rep']
+headers = ['drop1','Date','drop2','OLaNO','Smer','SR','LSNS','PS','SPOLU/Dem','SASKA','ZL','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
+parties = ['OLaNO','Smer','SR','LSNS','PS','SPOLU/Dem','SASKA','ZL','KDH','MKP/Alliance','SNS','Hlas','Rep']
 drops = ['drop1','drop2','drop3','drop5','drop6','drop7','drop8']
 
 for j in range(1):
@@ -63,8 +63,8 @@ for j in range(1):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
 
-headers = ['drop1','Date','drop2','OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
-parties = ['OĽaNO','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','ZĽ','KDH','MKP/Alliance','SNS','Hlas','Rep']
+headers = ['drop1','Date','drop2','OLaNO','Smer','SR','LSNS','PS','SPOLU/Dem','SASKA','ZL','KDH','drop3','MKP/Alliance','drop5','drop6','SNS','drop7','Hlas','Rep','drop8']
+parties = ['OLaNO','Smer','SR','LSNS','PS','SPOLU/Dem','SASKA','ZL','KDH','MKP/Alliance','SNS','Hlas','Rep']
 drops = ['drop1','drop2','drop3','drop5','drop6','drop7','drop8']
 
 for j in range(1):
@@ -96,11 +96,11 @@ D.drop(D.index[[-1,-2,-3,-4]],inplace=True)
 D.drop(D.index[[1,2]],inplace=True)
 
 D[parties] = D[parties].astype(float)
-D = D[['Date','OĽaNO-ZĽ','OĽaNO','ZĽ','Smer','SR','ĽSNS','PS','SPOLU/Dem','SASKA','KDH','SNS','Hlas','Rep','MKP/Alliance']]
-D['OĽaNO'].fillna(D['OĽaNO-ZĽ'], inplace=True)
-D = D.drop(['OĽaNO-ZĽ'],axis=1)
+D = D[['Date','OLaNO-ZL','OLaNO','ZL','Smer','SR','LSNS','PS','SPOLU/Dem','SASKA','KDH','SNS','Hlas','Rep','MKP/Alliance']]
+D['OLaNO'].fillna(D['OLaNO-ZL'], inplace=True)
+D = D.drop(['OLaNO-ZL'],axis=1)
 
-# new_row = pd.DataFrame({'Date': '30 September 2023','OĽaNO':9.09,'ZĽ':np.NaN,'Smer':23.44,'SR':2.26,'ĽSNS':0.86,'PS':16.67,'SPOLU/Dem':2.89,'SASKA':6.04,'KDH':6.94,'SNS':5.70,'Hlas':15.10,'Rep':4.84,'MKP/Alliance':4.49}, index=[0])
+# new_row = pd.DataFrame({'Date': '30 September 2023','OLaNO':9.09,'ZL':np.NaN,'Smer':23.44,'SR':2.26,'LSNS':0.86,'PS':16.67,'SPOLU/Dem':2.89,'SASKA':6.04,'KDH':6.94,'SNS':5.70,'Hlas':15.10,'Rep':4.84,'MKP/Alliance':4.49}, index=[0])
 # D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 

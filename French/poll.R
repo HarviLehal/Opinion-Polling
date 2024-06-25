@@ -37,7 +37,7 @@ d<- d %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.6, data=d[d$Date!=old,],alpha=0.75) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.25) +
   scale_color_manual(values = c("#bb0000","#e50241","#ffc0c0",
                                 "#ffd600","#0043b0","#adc1fd",
                                 "#254671",
@@ -130,3 +130,4 @@ plot<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 
 ggsave(plot=plot, file="French/plot.png",width = 20, height = 7.5, type = "cairo-png")
 Sys.setlocale("LC_ALL", "English")
+

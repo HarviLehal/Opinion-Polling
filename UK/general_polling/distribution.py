@@ -140,7 +140,35 @@ plt.legend()
 plt.tight_layout()
 plt.ylim(0, 1)
 plt.xlim(0, 60)
+
+
+from scipy.stats import norm
+
+# Extract the mean and standard deviation for both parties
+mu_con, std_con = norm.fit(conservative)
+mu_reform, std_reform = norm.fit(reform)
+
+# Calculate the Z-score
+z_score = (mu_reform - mu_con) / np.sqrt(std_con**2 + std_reform**2)
+
+# Find the probability
+probability = norm.cdf(z_score)*100
+
+threshold = 20
+probability_below_20 = norm.cdf(threshold, mu_con, std_con)*100
+
+print(f"The probability of the Conservative Party polling below 20% is {probability_below_20:.2f}%")
+
+plt.text(20, 0.4, f'Probability of \n 20% > Conservative %: \n {probability_below_20:.2f}%', fontsize=14, color='black', ha='center')
+
+plt.text(20, 0.3, f'Probability of \n Reform %  > Conservative %: \n {probability:.2f}%', fontsize=14, color='black', ha='center')
+
 plt.savefig('UK/general_polling/distribution.png')
+
+
+
+
+
 
 # Plot the gaussian distribution for each party using seaborn
 plt.figure(figsize=(20, 12))
@@ -170,3 +198,52 @@ plt.tight_layout()
 plt.ylim(0, 1)
 plt.xlim(0, 60)
 plt.savefig('UK/general_polling/distribution2.png')
+
+
+
+
+
+# Get the polling data for each party
+parties = ['Con', 'Lab', 'Lib Dem', 'SNP', 'Green', 'Reform']
+poll_data = {party: data[party].dropna().values for party in parties}
+
+# Fit a normal distribution to the polling data
+fit_params = {party: norm.fit(poll_data[party]) for party in parties}
+
+# Initialize a DataFrame to store the probabilities
+prob_matrix = pd.DataFrame(index=parties, columns=parties)
+
+# Calculate the probability for each pairwise comparison
+for party1 in parties:
+    for party2 in parties:
+        if party1 == party2:
+            prob_matrix.loc[party1, party2] = np.nan  # Set diagonal to NaN
+        else:
+            mu1, std1 = fit_params[party1]
+            mu2, std2 = fit_params[party2]
+            z_score = (mu1 - mu2) / np.sqrt(std1**2 + std2**2)
+            prob_matrix.loc[party1, party2] = norm.cdf(z_score)
+
+# nan if 1 or 0
+prob_matrix = prob_matrix.where((prob_matrix > 0.0001) & (prob_matrix < 1-0.0001), np.nan)
+            
+prob_matrix=prob_matrix*100
+
+from matplotlib.ticker import FuncFormatter
+fmt = lambda x,pos: '{:.0%}'.format(x/100)
+prob_matrix_str = prob_matrix.applymap(lambda x: f'{x:.2f}%' if pd.notnull(x) else '')
+
+# Plot the heatmap
+plt.figure(figsize=(10, 8))
+sns.heatmap(prob_matrix.astype(float), fmt="", annot=prob_matrix_str, cmap='viridis', vmin=0, vmax=100, cbar_kws={'label': 'Probability','format': FuncFormatter(fmt)}, mask=prob_matrix.isnull())
+
+plt.title('Probability of Party 1 Polling Higher than Party 2')
+plt.xlabel('Party 2')
+plt.ylabel('Party 1')
+plt.tight_layout()
+
+# Save the heatmap as a PNG file
+plt.savefig('UK/general_polling/probability_comparisons_heatmap.png')
+
+# Show the heatmap
+plt.show()

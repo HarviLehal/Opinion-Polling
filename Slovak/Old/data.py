@@ -15,8 +15,8 @@ df=pd.read_html(str(tables), decimal=',', thousands='.')
 df0=pd.DataFrame(df[0])
 data22 = df0.drop(["Sondeur", "Échantillon", 'SMK', 'Most-Híd', 'Autres'], axis=1)
 
-headers = ['Date', 'OĽaNO', 'ZĽ','SMER', 'SR', 'ĽSNS', 'PS', 'SPOLU/Dem', 'SASKA', 'KDH', 'SNS', 'HLAS', 'Rep']
-parties = ['OĽaNO', 'ZĽ','SMER', 'SR', 'ĽSNS', 'PS', 'SPOLU/Dem', 'SASKA', 'KDH', 'SNS', 'HLAS', 'Rep']
+headers = ['Date', 'OLaNO', 'ZL','SMER', 'SR', 'LSNS', 'PS', 'SPOLU/Dem', 'SASKA', 'KDH', 'SNS', 'HLAS', 'Rep']
+parties = ['OLaNO', 'ZL','SMER', 'SR', 'LSNS', 'PS', 'SPOLU/Dem', 'SASKA', 'KDH', 'SNS', 'HLAS', 'Rep']
 data22.columns = headers
 # data22['Date'] = [x.strip()[-11:] for x in data22['Date'].astype(str)]
 # data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
@@ -33,9 +33,9 @@ for z in parties:
   data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z].astype(str)]
 
 data22[parties] = data22[parties].astype(float)
-data22['OĽaNO-ZĽ']=np.where(data22['ZĽ']==data22['OĽaNO'], data22['ZĽ'], np.NaN)
-data22['OĽaNO']=np.where(data22['OĽaNO']==data22['OĽaNO-ZĽ'], np.NaN, data22['OĽaNO'])
-data22['ZĽ']=np.where(data22['ZĽ']==data22['OĽaNO-ZĽ'], np.NaN, data22['ZĽ'])
+data22['OLaNO-ZL']=np.where(data22['ZL']==data22['OLaNO'], data22['ZL'], np.NaN)
+data22['OLaNO']=np.where(data22['OLaNO']==data22['OLaNO-ZL'], np.NaN, data22['OLaNO'])
+data22['ZL']=np.where(data22['ZL']==data22['OLaNO-ZL'], np.NaN, data22['ZL'])
 
 for i in range(len(data22)):
   if data22['SPOLU/Dem'][i]==data22['PS'][i]:

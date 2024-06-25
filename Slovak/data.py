@@ -14,15 +14,15 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','Smer','PS','Hlas','OĽaNOap','DROP5','DROP6','KDH','SASKA','SNS','Republika','Alliance','Democrats','SR','ĽSNS','drop3','drop4']
-parties = ['Smer','PS','Hlas','OĽaNOap','KDH','SASKA','SNS','Republika','Alliance','Democrats','SR','ĽSNS']
+headers = ['drop1','Date','drop2','Smer','PS','Hlas','OLaNOap','DROP5','DROP6','KDH','SASKA','SNS','Republika','Alliance','Democrats','SR','LSNS','drop3','drop4']
+parties = ['Smer','PS','Hlas','OLaNOap','KDH','SASKA','SNS','Republika','Alliance','Democrats','SR','LSNS']
 drops = ['drop1','drop2','drop3','drop4','DROP5','DROP6']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
-  d[i] = d[i][d[i]['Date'] != '08 Jun 2024']
+  d[i] = d[i][d[i]['Date'] != '8 Jun 2024']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]

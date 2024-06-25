@@ -20,8 +20,8 @@ g <- formattable::percent(0.07)
 f <- formattable::percent(0.10)
 election<-as.Date("30 09 2023", "%d %m %Y")
 old <-as.Date("29 02 2020", "%d %m %Y")
-new<-d[d$variable!='OĽaNO-ZĽ',]
-new2<-d[d$variable=='OĽaNO-ZĽ',]
+new<-d[d$variable!='OLaNO-ZL',]
+new2<-d[d$variable=='OLaNO-ZL',]
 new2<-new2[!is.na(new2$value),]
 
 # MAIN GRAPH
