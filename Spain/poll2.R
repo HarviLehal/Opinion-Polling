@@ -21,25 +21,40 @@ d$value<-formattable::percent(d$value)
 
 # election<-as.Date("22 07 2027", "%d %m %Y")
 old <-min(d$Date)
-election <- max(d$Date)+30
+election<-as.Date("22 07 2027", "%d %m %Y")
 # LOESS GRAPH
+new<-d[d$variable!='SALF',]
+new2<-d[d$variable=='SALF',]
+new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#ef1c27","#1d84ce"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
-  # bbplot::bbc_style()+
+  scale_color_manual(values = c("#795a44","#ef1c27","#1d84ce"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method = "lm",formula=y ~ I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  # geom_vline(xintercept=election,
-  #            linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_vline(xintercept=election,
+             linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Spanish General Election (By Bloc)')
 plot1
 
 # MA GRAPH
@@ -56,19 +71,28 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#ef1c27","#1d84ce"))+
-  # geom_ma(data=d,n=7,linetype="solid")+
+  scale_color_manual(values = c("#795a44","#ef1c27","#1d84ce"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
-  # bbplot::bbc_style()+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Spanish General Election (By Bloc)')
 plot3
 
 
@@ -103,7 +127,8 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#f46068","#ef1c27",
+  scale_fill_manual(values = c("#af9c8f","#795a44",
+                               "#f46068","#ef1c27",
                                "#61a9dd","#1d84ce"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0),

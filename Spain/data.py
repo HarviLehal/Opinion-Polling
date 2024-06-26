@@ -54,10 +54,10 @@ Right = ['PP','VOX']
 D['Govt (PSOE + Sumar + EHB + ERC + PNV + JxCat + Podemos)'] = D[Left].sum(axis=1)
 D['Right (PP + VOX)'] = D[Right].sum(axis=1)
 D = D.drop(Left + Right, axis=1)
-D = D.drop('SALF', axis=1)
+# D = D.drop('SALF', axis=1)
 
 
-D=D.drop(D[D['Govt (PSOE + Sumar + EHB + ERC + PNV + JxCat + Podemos)'] < 25].index)
-D=D.drop(D[D['Right (PP + VOX)'] < 25].index)
+D=D.drop(D[D['Govt (PSOE + Sumar + EHB + ERC + PNV + JxCat + Podemos)'] < 20].index)
+D=D.drop(D[D['Right (PP + VOX)'] < 20].index)
 
 D.to_csv('Spain/poll2.csv', index=False)

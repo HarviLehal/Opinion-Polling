@@ -26,6 +26,7 @@ for i in range(3):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
+  d[0] = d[0][d[0]['Date'] != '2024 EU election result']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
