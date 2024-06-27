@@ -16,8 +16,8 @@ p = re.compile(r'\[[a-z]+\]'  )
 
 
 
-headers = ['1','Date','2','EXG','NFP','3','4','5','DVG','6','ENS','7','DVD','LR','8','9','RN','REC','10','DIV']
-parties = ['EXG','NFP','DVG','ENS','DVD','LR','RN','REC','DIV']
+headers = ['1','Date','2','3','EXG','NFP','4','5','6','DVG','7','ENS','8','9','LR1','LR2','10','RN','REC','10','DIV']
+parties = ['EXG','NFP','DVG','ENS','LR1','LR2','RN','REC','DIV']
 drop = ['1','2','3','4','5','6','7','8','9','10']
 e = {}
 for i in range(1):
@@ -30,7 +30,7 @@ for i in range(1):
   e[i]['Date'] = e[i]['Date2']
   e[i] = e[i].drop(['Date2'], axis=1)
   e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  e[i] = e[i][e[i]['ENS'] != e[i]['DVD']]
+  e[i] = e[i][e[i]['ENS'] != e[i]['REC']]
   for z in parties: # replace any non-numeric values with NaN
     e[i][z] = [p.sub('', x) for x in e[i][z].astype(str)]
     e[i][z] = e[i][z].str.strip('%')
@@ -41,9 +41,9 @@ E = pd.concat(e.values(), ignore_index=True)
 E=E[E['NFP']>11]
 
 
-# E['LR']=np.where(E['LR1']==E['LR1'],E['LR1'],E['LR1']+E['LR2'])
+E['LR']=np.where(E['LR1']==E['LR2'],E['LR1'],E['LR1']+E['LR2'])
 
-# E=E.drop(['LR1','LR2'], axis=1)
+E=E.drop(['LR1','LR2'], axis=1)
 
 
 
@@ -58,9 +58,9 @@ split_date=dateparser.parse(split_date)
 
 E=E[(pd.to_datetime(E["Date"]) > split_date)]
 
-E=E[['Date','EXG','NFP','DVG','ENS','LR','DVD','RN','REC','DIV']]
+E=E[['Date','EXG','NFP','DVG','ENS','LR','RN','REC','DIV']]
 
-new_row = pd.DataFrame({'Date':'19 June 2022','EXG':1.19,'NFP':26.16,'DVG':3.3,'ENS':25.8,'LR':11.3,'DVD':1.92,'RN':18.68,'REC':4.25,'DIV':3.8}, index=[0])
+new_row = pd.DataFrame({'Date':'19 June 2022','EXG':1.19,'NFP':26.16,'DVG':3.3,'ENS':25.8,'LR':11.3+1.92,'RN':18.68,'REC':4.25,'DIV':3.8}, index=[0])
 E = pd.concat([E,new_row]).reset_index(drop=True)
 E.Date=E.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 

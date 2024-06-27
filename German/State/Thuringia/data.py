@@ -27,9 +27,19 @@ for z in parties:
 data22=data22[~data22.Others.str.contains(".mw-parser-output")]
 data22[parties] = data22[parties].astype(float)
 
-data22=data22.drop(data22[data22['BSW'] > 20].index)
-# data22=data22.drop('BSW', axis=1)
+
 data22
+split_date = '01 Jan 2024'
+
+split_date=dateparser.parse(split_date)
+
+d={}
+d[0]=data22[(pd.to_datetime(data22["Date"]) > split_date)]
+d[1]=data22[(pd.to_datetime(data22["Date"]) < split_date)]
+
+d[1]=d[1].drop(d[1][d[1]['BSW']>0].index)
+
+data22 = pd.concat(d.values(), ignore_index=True)
 
 print(data22)
 data22.to_csv('German/State/Thuringia/poll.csv', index=False)

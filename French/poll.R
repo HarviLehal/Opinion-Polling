@@ -39,7 +39,8 @@ d<- d %>%
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.25) +
   scale_color_manual(values = c("#bb0000","#e50241","#ffc0c0",
-                                "#ffd600","#0043b0","#adc1fd",
+                                "#ffd600","#0043b0",
+                                # "#adc1fd",
                                 "#254671",
                                 # "#170066",
                                 "#393683",
@@ -102,7 +103,8 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#d66666","#bb0000","#ef678d","#e50241","#ffd9d9","#ffc0c0",
-                               "#ffe666","#ffd600","#668ed0","#0043b0","#cedafe","#adc1fd",
+                               "#ffe666","#ffd600","#668ed0","#0043b0",
+                               # "#cedafe","#adc1fd",
                                "#7c90aa","#254671",
                                # "#7466a3","#170066",
                                # "#8c8c8c","#404040",
@@ -127,7 +129,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 plot2
 
 plot<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
-
+plot
 ggsave(plot=plot, file="French/plot.png",width = 20, height = 7.5, type = "cairo-png")
 Sys.setlocale("LC_ALL", "English")
 
