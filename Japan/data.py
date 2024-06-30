@@ -12,8 +12,8 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
+headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
 d = {}
 
 for i in range(4):
@@ -49,8 +49,8 @@ for i in range(3):
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Japan/poll.csv', index=False)
 
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP','None']
+headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
 
 D['None'].fillna(0, inplace=True)
 D['total']=D[parties].sum(axis=1)
@@ -58,7 +58,7 @@ D['total']=D[parties].sum(axis=1)
 D['decided']=D['total']-D['None']
 
 print(D)
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','TCP']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK']
 D[parties] = D[parties].div(D['decided'], axis=0)*100
 
 D = D.drop(["decided","total","None"], axis=1)

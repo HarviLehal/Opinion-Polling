@@ -15,7 +15,7 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z 0-9]+\]')
 
 data22=pd.DataFrame(df[2])
-data22=data22.drop(['Sample size','Polling firm / Commissioner','O/I[nb 1]'],axis=1)
+data22=data22.drop(['Sample size','Polling firm / Commissioner','O/I[nb 1]','II'],axis=1)
 headers = ['Date','SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
 parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
 data22.columns = headers

@@ -60,8 +60,19 @@ E=E[(pd.to_datetime(E["Date"]) > split_date)]
 
 E=E[['Date','EXG','NFP','DVG','ENS','LR','RN','REC','DIV']]
 
+split_date = '30 June 2024'
+
+split_date=dateparser.parse(split_date)
+
+E=E[(pd.to_datetime(E["Date"]) < split_date)]
+
 new_row = pd.DataFrame({'Date':'19 June 2022','EXG':1.19,'NFP':26.16,'DVG':3.3,'ENS':25.8,'LR':11.3+1.92,'RN':18.68,'REC':4.25,'DIV':3.8}, index=[0])
+
+new_row2 = pd.DataFrame({'Date':'30 June 2024','EXG':1.33,'NFP':23.27,'DVG':1.54,'ENS':19.63,'LR':6.66,'RN':38.07,'REC':0.66,'DIV':100-0.66-38.07-6.66-19.63-1.54-23.27-1.33}, index=[0])
+
 E = pd.concat([E,new_row]).reset_index(drop=True)
+E = pd.concat([new_row2,E]).reset_index(drop=True)
+
 E.Date=E.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 E.to_csv('French/poll.csv', index=False)

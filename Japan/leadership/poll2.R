@@ -25,26 +25,33 @@ old <-min(d$Date)
 
 # LOESS GRAPH
 
-plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+plot1<-ggplot(data=d[d$Date!=election,],aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#224192","#b61b28","#43b3ae","#1e90ff","#ff7538",
                                 "#ff69b4","#228b22","#9370db","#f2ba42","#444444"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=election,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  ggtitle('Preferred Prime Minister of Japan (Excluding None)')
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the 2024 Liberal Democratic Party Election (Excluding None)')
 # bbplot::bbc_style()
 plot1
 
 poll <- read_csv("Japan/leadership/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
-poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
+poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date==max(poll$Date),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -60,13 +67,18 @@ plot2<-ggplot(data=d1, aes(x=forcats::fct_rev(variable), y=value,fill=interactio
   scale_fill_manual(values = c("#224192","#b61b28","#43b3ae","#1e90ff","#ff7538",
                                "#ff69b4","#228b22","#9370db","#f2ba42","#444444"))+
   geom_text(aes(label = ifelse(d1$Date == min(d1$Date),paste(d1$value),""),y = 0),
-            hjust=0, color="#000000", position = position_dodge(1), size=3.5)+
+            hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        plot.caption = element_text(hjust = 0,face="italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  coord_flip()
+  coord_flip()+
+  ggtitle('7 day average')+
+  labs(caption = "* Incumbent")
 plot2
 
 
@@ -74,4 +86,3 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Japan/leadership/plot2.png",width = 15, height = 7.5, type = "cairo-png")
-

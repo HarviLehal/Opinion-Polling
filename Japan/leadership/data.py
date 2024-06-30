@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Japanese_general_election"
+wikiurl="https://en.wikipedia.org/wiki/2024_Liberal_Democratic_Party_(Japan)_leadership_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,13 +14,13 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida','Noda','Motegi','Other','Undecided']
-parties = ['Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida','Noda','Motegi','Other','Undecided']
+headers = ['Date','Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida*','Noda','Motegi','Other','Undecided']
+parties = ['Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida*','Noda','Motegi','Other','Undecided']
 d = {}
 
-for i in range(3):
-  d[i]=pd.DataFrame(df[-5])
-  d[i]=d[i].drop(["Sample size","Polling firm"], axis=1)
+for i in range(1):
+  d[i]=pd.DataFrame(df[-2])
+  d[i]=d[i].drop(["Sample size[vague]","Polling firm"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -28,7 +28,7 @@ for i in range(3):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Kishida'] != d[i]['Undecided']]
+  d[i] = d[i][d[i]['Kishida*'] != d[i]['Undecided']]
   # d[i] = d[i][d[i]['Approve'] == d[i]['Undecided']]
   for z in parties:
     d[i][z] = d[i][z].astype('string')
@@ -54,7 +54,7 @@ D['total']=D[parties].sum(axis=1)
 D['decided']=D['total']-D['Undecided']
 
 print(D)
-parties = ['Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida','Noda','Motegi','Other']
+parties = ['Ishiba','Koizumi','Kono','Takaichi','Suga','Kamikawa','Kishida*','Noda','Motegi','Other']
 D[parties] = D[parties].div(D['decided'], axis=0)*100
 
 D = D.drop(["decided","total","Undecided"], axis=1)

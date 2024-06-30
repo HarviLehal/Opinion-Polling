@@ -17,18 +17,24 @@ d <- reshape2::melt(poll, id.vars="Date")
 
 election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
-d$value[is.na(d$value)]<-0
+# d$value[is.na(d$value)]<-0
+new<-d[d$variable!='The Democrats',]
+new2<-d[d$variable=='The Democrats',]
+new2<-new2[!is.na(new2$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#1c5a9f","#1a3581","#00bce0",
-                                "#0082b3","#032470","#003066",
-                                "#9bc1e3","#0d7a3a","#d51f33",
-                                "#ef1520","#1be263","#f66004","#ff4300"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#1c5a9f","#1a3581","#ff4300",
+                                "#00bce0","#0082b3","#032470",
+                                "#003066","#9bc1e3","#0d7a3a",
+                                "#d51f33","#ef1520","#1be263",
+                                "#2d38cf","#f66004"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -36,6 +42,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
+        plot.caption = element_text(hjust = 0,face="italic"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
@@ -45,8 +52,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
-  ggtitle('Israeli General Election Seat Projection Since 2022')
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Israeli General Election Seat Projection Since 2022') + 
+  labs(caption = "Labor-Meretz seats combined since 28 May 2024 for simplicity")
 
 plot1
 
@@ -72,14 +80,16 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#779cc5","#1c5a9f","#7686b3","#1a3581","#66d7ec","#00bce0",
-                               "#66b4d1","#0082b3","#687ca9","#032470","#6683a3","#003066",
-                               "#c3daee","#9bc1e3","#6eaf89","#0d7a3a","#e67985","#d51f33",
-                               "#f57379","#ef1520","#76eea1","#1be263","#faa068","#f66004","#ff8e66","#ff4300"))+
+  scale_fill_manual(values = c("#779cc5","#1c5a9f","#7686b3","#1a3581","#ff8e66","#ff4300","#66d7ec","#00bce0",
+                               "#66b4d1","#0082b3","#687ca9","#032470","#6683a3","#003066","#c3daee","#9bc1e3",
+                               "#6eaf89","#0d7a3a","#e67985","#d51f33","#f57379","#ef1520","#76eea1","#1be263",
+                               "#8188e2","#2d38cf","#faa068","#f66004"))+
   geom_text(aes(label = ifelse(d3$Date == max(d3$Date),
-                               ifelse(is.na(d3$value)==FALSE,paste(d3$value),"Below Threshold"),
+                               ifelse(is.na(d3$value)==FALSE,paste(d3$value),
+                                      ifelse(d3$variable=='Meretz'|d3$variable=='Labor','Merged into The Democrats',"Below Threshold")),
                                ifelse(is.na(d3$value)==FALSE,paste("(",d3$value,")"),
-                                      ifelse(d3$variable=='New Hope','(Part of National Unity)',"(Below Threshold)"))),y = 0),
+                                      ifelse(d3$variable=='New Hope','(Part of National Unity)',
+                                             ifelse(d3$variable=='The Democrats',"Labor-Meretz Merger","(Below Threshold)")))),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
   #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+

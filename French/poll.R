@@ -37,7 +37,7 @@ d<- d %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 3, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.25) +
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,,],alpha=0.25) +
   scale_color_manual(values = c("#bb0000","#e50241","#ffc0c0",
                                 "#ffd600","#0043b0",
                                 # "#adc1fd",
@@ -46,7 +46,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#393683",
                                 # "#404040",
                                 "#aaaaaa"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -62,8 +62,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_rect(aes(xmin = as.Date("31 05 2024", "%d %m %Y"), xmax = as.Date("13 06 2024", "%d %m %Y"), ymin = 0, ymax = 0.6),fill = "palegreen", colour = NA, alpha = 0.5)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=0), alpha=0)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.75)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.75)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.75)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.75)+
   scale_x_break(c(old+0.5, start+1))+
   scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old-0.5,election),guide = guide_axis(angle = -90))+
   # ggtitle('Opinion Polling for the 2024 French Legislative Elections')
