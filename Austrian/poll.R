@@ -34,28 +34,35 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#72c6d3","#ce000c","#0056a2",
                                 "#88b626","#e84188","#ab0000",
                                 "#ffd300","#555555","#274162"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=new[new$Date!=old,])+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.65,linewidth=0.75, data=new2[new2$Date!=old,])+
-  # bbplot::bbc_style()+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new2[new2$Date!=old,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
-  geom_text(aes(election,h,label = "4% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
+  geom_text(aes(old+2,h,label = "4% Party Threshold", vjust = -1, hjust=0),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the 2024 Austrian Legeslative Election')
 
 plot1
 
 
-d <- d %>%
+d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="center"))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 
 
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -109,12 +116,14 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#aadde5","#72c6d3","#e2666d","#ce000c","#669ac7","#0056a2",
                                "#b8d37d","#88b626","#f18db8","#e84188","#cd6666","#ab0000",
                                "#ffe566","#ffd300","#999999","#555555","#7d8da1","#274162"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
-                y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+  # geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
+  #               y = 0),
+  #           hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
+  # geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
+  #               y = 0),
+  #           hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+  geom_text(aes(label = ifelse(d3$Date == max(d3$Date), ifelse(is.nan(d3$value)==FALSE,paste(formattable::percent(d3$value, digits = 1)),""), paste("(",formattable::percent(d3$value, digits = 1),")")),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),

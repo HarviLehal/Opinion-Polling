@@ -16,55 +16,44 @@ library(data.table)
 library(hrbrthemes)
 
 py_run_file("Thailand/data.py")
-poll1 <- read_csv("Thailand/poll.csv")
-poll2 <- read_csv("Thailand/poll_new.csv")
-poll<-dplyr::bind_rows(poll1,poll2)
+poll <- read_csv("Thailand/poll_new.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-next_election<-max(d$Date)
 old <-min(d$Date)
 
-d_old <- reshape2::melt(poll1, id.vars="Date")
-d_old$value<-as.numeric(d_old$value)/100
-d_old$value<-formattable::percent(d_old$value)
-d_new <- reshape2::melt(poll2, id.vars="Date")
-d_new$value<-as.numeric(d_new$value)/100
-d_new$value<-formattable::percent(d_new$value)
+election<-max(d$Date)+45
+election<-as.Date("27 06 2027", "%d %m %Y")
 
-election<-max(d_old$Date)
 
-new<-d_old[d_old$variable!='UTN',]
-new2<-d_old[d_old$variable=='UTN',]
-new2<-new2[!is.na(new2$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = c("#4061a6","#e30613","#f47933","#00a1f1","#0f1599",
-                                "#d8b720","#002eff","#273082"))+
+  scale_color_manual(values = c("#f47933","#e30613","#273082",
+                                "#0f1599","#00a1f1","#4061a6"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_new)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
-  # bbplot::bbc_style()+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"))+
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   # xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(old,next_election+45),guide = guide_axis(angle = -45))+
-  ggtitle('Thai General Election Polling Since 2019')
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Polling for the Next Thai General Election (Excluding Undecided and Others)')
 # guides(color = guide_legend(override.aes = list(fill = c("white", "white"), shape = c(NA, NA))))+
 plot1
 
@@ -117,7 +106,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Current Polls \n (2023 Result)')+
+  ggtitle(' Latest Poll \n (2023 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 plot2
