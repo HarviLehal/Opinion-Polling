@@ -159,9 +159,9 @@ probability_below_20 = norm.cdf(threshold, mu_con, std_con)*100
 
 print(f"The probability of the Conservative Party polling below 20% is {probability_below_20:.2f}%")
 
-plt.text(20, 0.4, f'Probability of \n 20% > Conservative %: \n {probability_below_20:.2f}%', fontsize=14, color='black', ha='center')
+plt.text(20, 0.5, f'Probability of \n 20% > Conservative %: \n {probability_below_20:.2f}%', fontsize=14, color='black', ha='center')
 
-plt.text(20, 0.3, f'Probability of \n Reform %  > Conservative %: \n {probability:.2f}%', fontsize=14, color='black', ha='center')
+plt.text(20, 0.4, f'Probability of \n Reform %  > Conservative %: \n {probability:.2f}%', fontsize=14, color='black', ha='center')
 
 plt.savefig('UK/general_polling/distribution.png')
 
