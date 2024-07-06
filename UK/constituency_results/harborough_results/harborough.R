@@ -16,7 +16,7 @@ d$value<-formattable::percent(d$value)
 
 plot<-ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
   geom_point(size=2)+
-  scale_color_manual(values = c("#0087DC", "#E4003B", "#FAA61A", "#528D6B", "#6D3177", "#999999"))+
+  scale_color_manual(values = c("#0087DC", "#E4003B", "#FAA61A", "#528D6B", "#6D3177", "#12B6CF", "#999999"))+
   geom_line(size=1)+
   scale_x_date(name="Date of Election", breaks = unique(d$year), guide = guide_axis(check.overlap = TRUE))+
   theme_minimal()+
@@ -34,6 +34,6 @@ plot<-ggplot(data=d,aes(x=year,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
-  labs(title="Election Results in Harborough Constituency Between 1885 and 2019 (With 2024 Projections)")
+  labs(title="Election Results in Harborough Constituency Between 1885 and 2024")
 plot
 ggsave(plot=plot, file="UK/constituency_results/harborough_results/plot.png",width = 20, height = 7.5, type = "cairo-png")

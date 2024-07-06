@@ -11,7 +11,7 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-df0=pd.DataFrame(df[10])
+df0=pd.DataFrame(df[11])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
 headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
 parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
@@ -23,9 +23,13 @@ data23['Date'] = data23['Date2']
 data23 = data23.drop(['Date2'], axis=1)
 data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
-    data23[z] = [x.replace('–','-') for x in data23[z]]
-    data23[z] = [x.replace('TBA','-') for x in data23[z]]
-    data23[z] = [x.replace('?','-') for x in data23[z]]
+  data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
+  data23[z] = [x.replace('-',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('—',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('TBC',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z]]
 data23 = data23[data23['Green'] != data23['Con']]
 print(data23)
 data23.to_csv('UK/Subnational/Scotland/poll.csv', index=False)

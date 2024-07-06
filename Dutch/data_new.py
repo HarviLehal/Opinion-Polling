@@ -14,59 +14,46 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data2=pd.DataFrame(df[1])
-data2=data2.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
+D=pd.DataFrame(df[1])
+D=D.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
 
 headers = ['Date','PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
 parties = ['PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
-data2.columns = headers
+D.columns = headers
 
-data2['Date2'] = data2['Date'].str.split('–').str[1]
-data2.Date2.fillna(data2['Date'].str.split('-').str[1], inplace=True)
-data2.Date2.fillna(data2.Date, inplace=True)
-data2.Date = data2.Date2
-data2 = data2.drop(['Date2'],axis=1)
-data2.Date = data2['Date'].astype(str)
-data2.Date = data2.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-data2 = data2[data2['PVV'] != data2['SGP']]
+D['Date2'] = D['Date'].str.split('–').str[1]
+D.Date2.fillna(D['Date'].str.split('-').str[1], inplace=True)
+D.Date2.fillna(D.Date, inplace=True)
+D.Date = D.Date2
+D = D.drop(['Date2'],axis=1)
+D.Date = D['Date'].astype(str)
+D.Date = D.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+D = D[D['PVV'] != D['SGP']]
 for z in parties:
-  data2[z] = [p.sub('', x) for x in data2[z].astype(str)]
-  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
-  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
-data2[parties] = data2[parties].astype(float)
-data2['PvdA']=np.where(data2['PvdA']==data2['GL'], 0, data2['PvdA'])
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+D['PvdA']=np.where(D['PvdA']==D['GL'], 0, D['PvdA'])
 Fusie=['PvdA','GL']
-data2[Fusie] = data2[Fusie].astype(float)
-data2['PvdA-GL'] = data2[Fusie].sum(axis=1)
-data2 = data2.drop(Fusie, axis=1)
+D[Fusie] = D[Fusie].astype(float)
+D['PvdA-GL'] = D[Fusie].sum(axis=1)
+D = D.drop(Fusie, axis=1)
 
-data2 = data2[['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']]
+D = D[['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']]
 
-
-
-# '''CORRECTION'''
-# headers = ['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
-# parties = ['PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
-# data2.columns = headers
-# 
-# data2['Date2'] = data2['Date'].str.split('–').str[1]
-# data2.Date2.fillna(data2['Date'].str.split('-').str[1], inplace=True)
-# data2.Date2.fillna(data2.Date, inplace=True)
-# data2.Date = data2.Date2
-# data2 = data2.drop(['Date2'],axis=1)
-# data2.Date = data2['Date'].astype(str)
-# data2.Date = data2.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-# data2 = data2[data2['PVV'] != data2['SGP']]
-# for z in parties:
-#   data2[z] = [p.sub('', x) for x in data2[z].astype(str)]
-#   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
-#   data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
-# data2[parties] = data2[parties].astype(float)
-# 
-# data2 = data2[['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']]
-# 
+D.to_csv('Dutch/poll_new.csv', index=False)
 
 
-data2.to_csv('Dutch/poll_new.csv', index=False)
 
+parties= ['PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
 
+govt = ['PVV','VVD','NSC','BBB']
+
+D[parties] = D[parties].astype(float)
+D['Government'] = D[govt].sum(axis=1)
+D['Opposition'] = 150- D['Government']
+
+D = D.drop(parties, axis=1)
+
+D.to_csv('Dutch/poll_govt.csv', index=False)
