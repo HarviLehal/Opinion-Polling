@@ -45,8 +45,31 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.75)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election-50),guide = guide_axis(angle = -45))+
-  ggtitle('US Presidential Polling (Excluding Undecided/Other)')
+  ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)')
 plot1
+
+old2<-as.Date("01 01 2024", "%d %m %Y")
+plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old2,],alpha=0.5)+
+  scale_color_manual(values = c("#0042ca","#e81b23"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old2,])+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
+  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old2,election),guide = guide_axis(angle = -45))+
+  ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)')
+plot1a
 
 # MA GRAPH
 
@@ -83,7 +106,7 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.75)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election-50),guide = guide_axis(angle = -45))+
-  ggtitle('US Presidential Polling (Excluding Undecided/Other)')
+  ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)')
 plot3
 
 
@@ -143,6 +166,9 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
 ggsave(plot=plot, file="US/Presidential/plot_decided.png",width = 15, height = 7.5, type="cairo-png")
+
+
+ggsave(plot=plot1a, file="US/Presidential/plot_decided_comparison.png",width = 15, height = 7.5, type="cairo-png")
 
 plot<-ggarrange(plot3, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot

@@ -86,7 +86,6 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#79799a","#202056","#66cef5","#00adef",
                                "#b96666","#8b0000","#ff6666","#ff0000",
                                "#dae473","#c2d216","#66b3b3","#008080"))+
-  
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
