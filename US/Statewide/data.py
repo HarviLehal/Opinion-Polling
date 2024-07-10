@@ -41,10 +41,13 @@ def get_state_polls(state):
     d = {}
     for i in range(len(df)):
         if 'Poll source' in df[i].columns:
+            # skip first accepted table for Florida as it is not polling data
+            if state == "Florida" and i == 1:
+                i += 1
             d[i] = pd.DataFrame(df[i])
             if state == "Delaware":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "North Carolina":
+            elif state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "North Carolina" or state == "Florida":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
             elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
@@ -73,7 +76,11 @@ def get_state_polls(state):
             d[i] = d[i].drop(['Date2'], axis=1)
             d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
             d[i] = d[i][d[i]['Biden'] != d[i]['Trump']]
+            # stop loop once we have found the first polling table
+            if len(d[i]) > 0:
+                break
     D = pd.concat(d.values(), ignore_index=True)
+    # only keep the first table of the dictionary, which might not be 0
     for z in parties:
         D[z] = D[z].astype(str)
         D[z] = D[z].str.strip('%')
