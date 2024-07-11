@@ -14,7 +14,6 @@ from bs4 import BeautifulSoup
 states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
 
-
 def get_state_polls(state):
     print("Getting polls for " + state)
     if state == "Washington":
@@ -43,11 +42,11 @@ def get_state_polls(state):
         if 'Poll source' in df[i].columns:
             # skip first accepted table for Florida as it is not polling data
             if state == "Florida" and i == 1:
-                i += 1
+                i += 2
             d[i] = pd.DataFrame(df[i])
             if state == "Delaware":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "North Carolina" or state == "Florida":
+            elif state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "North Carolina" or state == "Florida":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
             elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
@@ -75,7 +74,7 @@ def get_state_polls(state):
             d[i]['Date'] = d[i]['Date2']
             d[i] = d[i].drop(['Date2'], axis=1)
             d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-            d[i] = d[i][d[i]['Biden'] != d[i]['Trump']]
+            # d[i] = d[i][d[i]['Biden'] != d[i]['Trump']]
             # stop loop once we have found the first polling table
             if len(d[i]) > 0:
                 break
@@ -113,6 +112,8 @@ for state in states:
     averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Biden': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Biden'].mean()], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()]})])    
     if averages[averages['State'] == state]['Biden'].values[0] > averages[averages['State'] == state]['Trump'].values[0]:
         averages.loc[averages['State'] == state, 'Winner'] = 'Biden'
+    elif averages[averages['State'] == state]['Biden'].values[0] == averages[averages['State'] == state]['Trump'].values[0]:
+        averages.loc[averages['State'] == state, 'Winner'] = 'Tie'
     else:
         averages.loc[averages['State'] == state, 'Winner'] = 'Trump'
 
@@ -131,12 +132,14 @@ averages = averages.merge(electoral_votes, left_on='State', right_on='State')
 # create a map of the US with the states colored by the winner of the most recent poll
 import geopandas as gpd
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 from shapely.geometry import Point
 import os
 
 # take total number of electoral votes for each candidate
 biden_votes = averages[averages['Winner'] == 'Biden']['votes'].sum()
 trump_votes = averages[averages['Winner'] == 'Trump']['votes'].sum()
+tie_votes = averages[averages['Winner'] == 'Tie']['votes'].sum()
 
 # I have added the cb_2018_us_state_500k files into the same folder as this file
 usa = gpd.read_file(os.path.join(os.path.dirname(__file__), 'cb_2018_us_state_500k.shp'))
@@ -160,7 +163,7 @@ usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geo
 usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].scale(xfact=1.5, yfact=1.5)
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-# reverse Winner column order so that Trump is red and Biden is blue
+
 usa.plot(column='Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 plt.title('2024 US Presidential Election Polling taking the 14 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
@@ -168,7 +171,10 @@ usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
 plt.xlim(-150, -55)
 plt.ylim(20, 50)
-plt.text(-135, 45, f'Biden: {biden_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold')
-plt.text(-135, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold')
+plt.text(-135, 45, f'Biden: {biden_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
+plt.text(-135, 42.5, f'Tie: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
+plt.text(-135, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
 plt.legend().remove()
+# change background color to grey
+fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map.png'), bbox_inches='tight', dpi= 1000)
