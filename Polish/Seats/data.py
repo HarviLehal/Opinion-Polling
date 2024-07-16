@@ -39,3 +39,14 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 
 data.to_csv('Polish/Seats/poll.csv', index=False)
 
+parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga']
+UO = ['KO', 'Lewica', 'Trzecia Droga']
+R = ['PiS', 'Konfederacja']
+data[parties] = data[parties].astype(float)
+data['Government (KO + Lewica + Trzecia Droga)'] = data[UO].sum(axis=1)
+data['Opposition (PiS + Konfederacja)'] = data[R].sum(axis=1)
+data = data.drop(UO + R, axis=1)
+
+data.to_csv('Polish/Seats/poll2.csv', index=False)
+
+

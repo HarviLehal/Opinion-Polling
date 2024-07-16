@@ -8,8 +8,7 @@ library(reshape2)
 library(readr)
 library(formattable)
 
-py_run_file("Polish/Seats/data.py")
-poll <- read_csv("Polish/Seats/poll.csv")
+poll <- read_csv("Polish/Seats/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 # d$value[d$value=='-'] <- NULL
@@ -20,8 +19,8 @@ old<-min(d$Date)
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#122746"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = c("#20B2AA","#263778"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -42,9 +41,9 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Seat Projection for the Next Polish Parliamentary Election')
+  ggtitle('Seat Projection for the Next Polish Parliamentary Election by Coalition')
 plot
 
 
-ggsave(plot=plot, file="Polish/Seats/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Polish/Seats/plot2.png",width = 15, height = 7.5, type = "cairo-png")
 

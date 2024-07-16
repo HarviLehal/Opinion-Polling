@@ -33,6 +33,9 @@ print(data22)
 data22.to_csv('Icelandic/poll.csv', index=False)
 data22[parties] = data22[parties].astype(float)
 
+for z in parties:
+  data22[z] = data22[z].apply(lambda x: x if x > 5 else 0)
+
 Left = ['V','S','P','F','J']
 Right = ['D','B','M']
 
