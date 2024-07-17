@@ -19,11 +19,12 @@ p = re.compile(r'\[[a-z]+\]')
 data24=pd.DataFrame(df[1])
 data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
-headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
-parties = ['PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
+headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
+parties = ['PiS','KO','Trzecia Droga','Lewica','Konfederacja']
 data24.columns = headers
 data24.drop(data24.index[[-1,-2,-3,]],inplace=True)
 data24=data24[data24['Date'] != '7 Apr']
+data24=data24[data24['Date'] != '9 Jun	']
 data24['Date'] = [p.sub('', x) for x in data24['Date']]
 data24['Date2'] = data24['Date'].str.split('–').str[1]
 data24.Date2.fillna(data24['Date'].str.split('-').str[1], inplace=True)
@@ -38,9 +39,9 @@ for z in parties:
   data24[z] = [p.sub('', x) for x in data24[z].astype(str)]
   data24[z] = data24[z].astype('float').astype(str)
 data24[parties] = data24[parties].astype(float)
-data24['Trzecia Droga']=np.where(data24['Koalicja']==data24['PL2050'],data24['PL2050'],np.nan)
-threeway = ['Koalicja','PL2050']
-data24=data24.drop(threeway, axis=1)
+# data24['Trzecia Droga']=np.where(data24['Koalicja']==data24['PL2050'],data24['PL2050'],np.nan)
+# threeway = ['Koalicja','PL2050']
+# data24=data24.drop(threeway, axis=1)
 
 
 # 2023
@@ -48,8 +49,8 @@ data24=data24.drop(threeway, axis=1)
 data23=pd.DataFrame(df[2])
 data23=data23.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
-headers = ['Date','PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
-parties = ['PiS','KO','Koalicja','PL2050','Lewica','Konfederacja']
+headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
+parties = ['PiS','KO','Trzecia Droga','Lewica','Konfederacja']
 data23.columns = headers
 data23.drop(data23.index[[-1,-3,]],inplace=True)
 # data23['Date'] = [p.sub('', x) for x in data23['Date']]
@@ -66,9 +67,9 @@ for z in parties:
   data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
   data23[z] = data23[z].astype('float').astype(str)
 data23[parties] = data23[parties].astype(float)
-data23['Trzecia Droga']=np.where(data23['Koalicja']==data23['PL2050'],data23['PL2050'],data23['Koalicja']+data23['PL2050'])
-threeway = ['Koalicja','PL2050']
-data23=data23.drop(threeway, axis=1)
+# data23['Trzecia Droga']=np.where(data23['Koalicja']==data23['PL2050'],data23['PL2050'],data23['Koalicja']+data23['PL2050'])
+# threeway = ['Koalicja','PL2050']
+# data23=data23.drop(threeway, axis=1)
 
 
 data = pd.concat([data24,data23])
