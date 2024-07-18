@@ -1,4 +1,5 @@
 import pandas as pd # library for data analysis
+import numpy as np
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
@@ -12,7 +13,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-data22=pd.DataFrame(df[2])
+data22=pd.DataFrame(df[-1])
 headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA','3','4']
 parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
 data22.columns = headers
