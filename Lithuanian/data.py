@@ -37,9 +37,11 @@ data22.Date2.fillna(data22.Date, inplace=True)
 data22.Date = data22.Date2
 data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
-data22.loc[len(data22.index)+1,['Date']] = '11 October 2020'
+data22=data22.reset_index(drop=True)
+data22.drop(data22.index[[-1]],inplace=True)
+data22=data22.reset_index(drop=True)
+data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-# data22.drop(data22.index[[0,1]],inplace=True)
 
 for z in parties:
   data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]

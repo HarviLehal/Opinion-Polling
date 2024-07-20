@@ -22,14 +22,14 @@ d$value<-formattable::percent(d$value)
 
 old <-min(d$Date)
 election<-as.Date("07 03 2027", "%d %m %Y")
-# election <-max(d$Date)+32
+h <- formattable::percent(0.05)
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#f5d41b","#2862AF","#287556","#332995","#D41715","#3F9BE2"))+
+  scale_color_manual(values = c("#f5d41b","#2862AF","#287556","#332995","#D41715","#3F9BE2","#fa6100"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -47,6 +47,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  geom_hline(aes(yintercept=h), alpha=0.75,linetype="dashed",colour="#000000")+
+  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#000000", alpha=0.75)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2027 Estonian Parliamentary Election')
 plot1
@@ -84,7 +86,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#7dbaa2","#287556",
                                "#8781c9","#332995",
                                "#e88080","#D41715",
-                               "#9bcef2","#3F9BE2"))+
+                               "#9bcef2","#3F9BE2",
+                               "#fca066","#fa6100"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),

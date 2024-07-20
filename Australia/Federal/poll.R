@@ -141,7 +141,6 @@ ggsave(plot=plot, file="Australia/Federal/plot_ma.png",width = 15, height = 7.5,
 poll <- read_csv("Australia/Federal/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(sub("%","",d$value))/100
-h <- formattable::percent(0.05)
 
 old <-min(d$Date)
 # MAIN GRAPH
