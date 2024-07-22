@@ -66,7 +66,12 @@ D.to_csv('German/Federal/poll.csv', index=False)
 # D=D.drop('BSW', axis=1)
 
 
-parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
+parties = ['SPD','Union','Grüne','FDP','AfD']
+D[parties] = D[parties].astype(float)
+for z in parties:
+  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
+
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 
 Gov = ['SPD','Grüne','FDP']
 Right = ['Union', 'AfD']
@@ -91,6 +96,9 @@ for z in parties:
 D[parties] = D[parties].astype(float)
 # D=D.drop(D[D['BSW'] > 0].index)
 # D=D.drop('BSW', axis=1)
+
+for z in parties:
+  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
 
 RG              = ['SPD','Grüne']
 GroKo           = ['Union','SPD']
