@@ -15,7 +15,7 @@ library(tidyverse)
 library(data.table)
 library(hrbrthemes)
 py_run_file("US/Presidential/data.py")
-poll<-poll[poll$Date!=max(poll$Date),]
+# poll<-poll[poll$Date!=max(poll$Date),]
 poll <- read_csv("US/Presidential/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
@@ -28,7 +28,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.225,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

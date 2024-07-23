@@ -14,14 +14,17 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
+library(ggbreak)
+
 poll <- read_csv("US/Presidential/poll2.csv")
-poll<-poll[poll$Date!=max(poll$Date),]
+# poll<-poll[poll$Date!=max(poll$Date),]
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
 election<-as.Date("05 11 2024", "%d %m %Y")
 old <-min(d$Date)
+
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -48,11 +51,22 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)')
 plot1
 
-old2<-as.Date("01 01 2024", "%d %m %Y")
-plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old2,],alpha=0.5)+
+old2<-as.Date("28 06 2024", "%d %m %Y")
+d2<-d[d$Date>old2|d$Date==old,]
+f<-formattable::percent(0.55)
+
+d2<- d2 %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean))
+
+begin<-as.Date("21 07 2024", "%d %m %Y")
+plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d2[d2$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old2,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=1, data=d2[d2$Date!=old,])+
+  
+  geom_line(aes(y = Moving_Average), linetype = "dashed",linewidth=1.5,alpha=0.35)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -60,15 +74,22 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
+        plot.caption = element_text(hjust = 0,face="italic"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=begin, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_text(aes(begin,f,label = "Biden Drops Out", vjust = -1, hjust=0, angle=-90),colour="#000000")+
+  geom_point(data=d2[d2$Date==old,],size=5, shape=18, alpha=0.75)+
+  geom_point(data=d2[d2$Date==old,],size=5.25, shape=5, alpha=0.75)+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old2,election),guide = guide_axis(angle = -45))+
-  ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)')
+  scale_x_break(c(old+1.5, old2))+
+  scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old-1.5,election),guide = guide_axis(angle = -90))+
+  ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)*')+
+  labs(caption = "*LOESS regression solid line, 7-day Moving average dashed line")
 plot1a
 
 # MA GRAPH
