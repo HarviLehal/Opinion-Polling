@@ -23,12 +23,15 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("05 11 2024", "%d %m %Y")
 old <-min(d$Date)
+f<-formattable::percent(0.65)
+begin<-as.Date("21 07 2024", "%d %m %Y")
+
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.225,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -41,14 +44,18 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=begin, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_text(aes(begin,f,label = "Biden Drops Out", vjust = -1, hjust=0, angle=-90),colour="#000000")+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.65,0.05))+
   geom_hline(aes(yintercept=0), alpha=0)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.75)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election-50),guide = guide_axis(angle = -45))+
-  ggtitle('US Presidential Polling')
-plot1
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election-50),guide = guide_axis(angle = -90))+
+  ggtitle('2024 US Presidential Polling')
+
+  plot1
 
 
 # BAR CHART
@@ -83,23 +90,26 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#668edf","#0042ca",
-                               "#f1767b","#e81b23",
-                               "#999999","#666666"))+
+  scale_fill_manual(values = c("#b0ceff","#0042ca",
+                               "#ffb6b6","#e81b23",
+                               "#CCCCCC","#666666"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(d3$variable=='Harris',paste("(",d3$value,")*"),paste("(",d3$value,")")),""),y = 0),
             hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
+        plot.caption = element_text(hjust = 0,face="italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 7 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
-  coord_flip()
+  coord_flip()+
+  labs(caption = "*Result for Biden in 2020")
+
 
 
 plot2

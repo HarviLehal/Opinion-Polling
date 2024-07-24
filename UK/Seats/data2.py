@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/List_of_MPs_elected_in_the_2019_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/List_of_MPs_elected_in_the_2024_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -16,13 +16,13 @@ p = re.compile(r'\[[a-z]+\]')
 p2 = re.compile(r'\*')
 
 
-headers = ['Date','Con','Lab','SNP','Lib Dem','DUP','Plaid Cymru','SDLP','Green','APNI','Alba','Reclaim','WPB','Reform UK','Ind.','Sinn Féin']
-parties = ['Con','Lab','SNP','Lib Dem','DUP','Plaid Cymru','SDLP','Green','APNI','Alba','Reclaim','WPB','Reform UK','Ind.','Sinn Féin']
+headers = ['Date','Lab','Con','Lib Dem','SNP','DUP','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
+parties = ['Lab','Con','Lib Dem','SNP','DUP','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
 d = {}
 for i in range(1):
   # i=j+1
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i].drop(["Event", "Working majority", "Spkr", "Working majority", "Vacant","SF","Unnamed: 18","Unnamed: 21"], axis=1)
+  d[i]=d[i].drop(["Event", "Working Majority", "Spkr", "Vacant","SF","Unnamed: 17","Unnamed: 20"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
@@ -60,7 +60,7 @@ parties = ["Working Majority"]
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i][["Date","Working majority"]]
+  d[i]=d[i][["Date","Working Majority"]]
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]

@@ -58,7 +58,9 @@
 <polyline points='688.58,521.31 688.58,5.48 ' style='stroke-width: 1.07; stroke: #FFFFFF; stroke-linecap: butt;' />
 <circle cx='401.67' cy='83.74' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='396.50' cy='156.82' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
+<circle cx='393.91' cy='120.28' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='387.69' cy='108.10' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
+<circle cx='379.41' cy='126.37' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='374.74' cy='120.28' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='368.01' cy='144.64' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='367.49' cy='120.28' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
@@ -144,7 +146,9 @@
 <circle cx='70.23' cy='248.17' r='1.42' style='stroke-width: 0.71; stroke: #DF253A; stroke-opacity: 0.50; fill: #DF253A; fill-opacity: 0.50;' />
 <circle cx='401.67' cy='443.05' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='396.50' cy='369.97' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
+<circle cx='393.91' cy='406.51' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='387.69' cy='418.69' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
+<circle cx='379.41' cy='400.42' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='374.74' cy='406.51' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='368.01' cy='382.15' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='367.49' cy='406.51' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
@@ -230,9 +234,13 @@
 <circle cx='74.89' cy='217.72' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='73.86' cy='260.35' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
 <circle cx='70.23' cy='278.62' r='1.42' style='stroke-width: 0.71; stroke: #3F9BDB; stroke-opacity: 0.50; fill: #3F9BDB; fill-opacity: 0.50;' />
-<polyline points='72.57,287.30 82.16,256.87 91.75,230.62 101.34,208.07 110.93,189.12 120.53,174.04 130.12,163.90 139.71,155.87 149.30,152.05 158.89,143.22 168.48,131.57 178.07,122.47 187.66,113.02 197.25,101.76 206.84,96.36 216.43,94.62 226.02,95.38 235.61,99.06 245.20,107.13 254.79,114.38 264.38,120.82 273.97,127.78 283.57,132.32 293.16,136.39 302.75,138.32 312.34,138.76 321.93,138.68 331.52,137.83 341.11,136.44 350.70,134.24 360.29,131.28 369.88,127.72 379.47,123.56 389.06,118.76 398.65,113.26 ' style='stroke-width: 1.60; stroke: #DF253A; stroke-linecap: butt;' />
-<polyline points='72.57,239.89 82.16,270.00 91.75,295.98 101.34,318.34 110.93,337.17 120.53,352.32 130.12,362.78 139.71,371.47 149.30,376.93 158.89,385.10 168.48,395.11 178.07,398.65 187.66,401.93 197.25,408.52 206.84,413.17 216.43,415.42 226.02,415.96 235.61,415.46 245.20,414.14 254.79,411.90 264.38,406.37 273.97,400.87 283.57,395.59 293.16,390.91 302.75,389.13 312.34,388.28 321.93,388.11 331.52,388.95 341.11,390.33 350.70,392.56 360.29,395.51 369.88,399.07 379.47,403.23 389.06,408.03 398.65,413.53 ' style='stroke-width: 1.60; stroke: #3F9BDB; stroke-linecap: butt;' />
+<polyline points='72.57,285.38 82.16,256.47 91.75,231.46 101.34,209.75 110.93,191.35 120.53,176.00 130.12,164.55 139.71,155.08 149.30,150.15 158.89,141.74 168.48,131.79 178.07,122.19 187.66,112.89 197.25,103.00 206.84,94.50 216.43,93.51 226.02,96.99 235.61,101.61 245.20,106.76 254.79,114.69 264.38,120.72 273.97,127.45 283.57,132.66 293.16,136.65 302.75,138.98 312.34,139.10 321.93,138.51 331.52,137.89 341.11,136.45 350.70,134.48 360.29,131.71 369.88,128.26 379.47,124.25 389.06,119.67 398.65,114.44 ' style='stroke-width: 1.60; stroke: #DF253A; stroke-linecap: butt;' />
+<polyline points='72.57,241.38 82.16,270.32 91.75,295.34 101.34,317.00 110.93,335.59 120.53,351.24 130.12,361.82 139.71,369.41 149.30,378.38 158.89,386.19 168.48,393.62 178.07,398.69 187.66,401.96 197.25,408.21 206.84,413.82 216.43,415.64 226.02,415.22 235.61,414.18 245.20,412.08 254.79,409.41 264.38,406.63 273.97,400.82 283.57,396.18 293.16,390.80 302.75,387.96 312.34,387.78 321.93,388.29 331.52,388.91 341.11,390.34 350.70,392.32 360.29,395.08 369.88,398.53 379.47,402.54 389.06,407.12 398.65,412.35 ' style='stroke-width: 1.60; stroke: #3F9BDB; stroke-linecap: butt;' />
 <line x1='25.10' y1='260.35' x2='858.52' y2='260.35' style='stroke-width: 1.07; stroke: #56595C; stroke-dasharray: 5.69,5.69; stroke-linecap: butt;' />
+<text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
+<text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
+<text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
+<text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
 <text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
 <text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>
 <text x='818.05' y='252.45' text-anchor='end' style='font-size: 11.04px;fill: #56595C; font-family: "Arial";' textLength='98.70px' lengthAdjust='spacingAndGlyphs'>Majority (175 Seats)</text>

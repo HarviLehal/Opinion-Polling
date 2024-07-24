@@ -80,8 +80,9 @@ plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=begin, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_text(aes(begin,f,label = "Biden Drops Out", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_point(data=d2[d2$Date==old,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d2[d2$Date==old,],size=5.25, shape=5, alpha=0.75)+
@@ -134,7 +135,7 @@ plot3
 # BAR CHART
 
 poll <- read_csv("US/Presidential/poll2.csv")
-poll<-poll[poll$Date!=max(poll$Date),]
+# poll<-poll[poll$Date!=max(poll$Date),]
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
