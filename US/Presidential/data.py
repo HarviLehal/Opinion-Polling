@@ -17,7 +17,7 @@ p = re.compile(r'\[[a-z]+\]')
 headers = ['Date', 'Harris', 'Trump', 'Other']
 parties = ['Harris', 'Trump', 'Other']
 d = {}
-for i in range(1):
+for i in range(4):
   # i=j+1
   d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Poll source","Sample size[b]","Margin of error"], axis=1)
@@ -30,11 +30,13 @@ for i in range(1):
     d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
-  d[i]['Date2'] = d[i]['Date'].str.split('–').str[0]
-  d[i]['Date2'] = d[i]['Date2'].str.split(',').str[0]
+  d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
+  d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
+  # d[i]['Date2'] = d[i]['Date'].str.split('–').str[0]
+  # d[i]['Date2'] = d[i]['Date2'].str.split(',').str[0]
   # d[i]['Date2'] = (d[i]['Date2']+' ' + d[i]['Date'].str.split(',')[1]).astype(str)
   # d[i]['Date2'] = [x.split(',')[1] if len(x.split(',')) > 0 else '' for x in d[i]['Date'].astype(str)]
-  d[i]['Date2'] = (d[i]['Date2']+[x.split(',')[1] if len(x.split(',')) > 0 else '' for x in d[i]['Date'].astype(str)]).astype(str)
+  # d[i]['Date2'] = (d[i]['Date2']+[x.split(',')[1] if len(x.split(',')) > 0 else '' for x in d[i]['Date'].astype(str)]).astype(str)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
