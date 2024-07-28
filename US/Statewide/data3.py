@@ -63,8 +63,10 @@ def get_state_polls(state):
                 d[i][z] = [x.replace('TBC', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('TBA', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('?', str(np.NaN)) for x in d[i][z]]
-            d[i]['Date2'] = d[i]['Date'].str.split('–').str[0] + ' ' + d[i]['Date'].str.split(',').str[1]
-            d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
+            d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
+            d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
+            # d[i]['Date2'] = d[i]['Date'].str.split('–').str[0] + ' ' + d[i]['Date'].str.split(',').str[1]
+            # d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
             # add the year to end of the date using the second part of the split of ,
             # for x in d[i]['Date2']:
                 # d[i]['Date2'] = d[i]['Date'] + ' ' + d[i]['Date'].str.split(',')[1]
@@ -103,6 +105,10 @@ def get_all_polls():
 
 polls = get_all_polls()
 
+# drop all polls before Biden's withdrawal on July 21, 2024
+dropout = dateparser.parse('July 01, 2024', settings={'PREFER_DAY_OF_MONTH': 'first'})
+polls = polls[polls['Date'] >= dropout]
+
 states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware','District of Columbia', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
 
@@ -112,7 +118,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=7)
+fourteen_days_before = dates - pd.Timedelta(days=0)
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
@@ -127,11 +133,12 @@ for state in states:
         averages.loc[averages['State'] == state, 'Winner'] = 'Tie'
     else:
         averages.loc[averages['State'] == state, 'Winner'] = 'Trump'
+poll_averages = averages
 
 Red_States = ['Alabama', 'Arkansas', 'Idaho', 'Indiana','Kansas','Kentucky','Louisiana','Mississippi','Missouri','Montana','Nebraska','North Dakota','Oklahoma','South Carolina','South Dakota','Tennessee','Utah','West Virginia','Wyoming']
-
+# Red_States.extend(['Alaska','Texas','Florida','Ohio','Iowa','North Carolina'])
 Blue_States = ['California','Connecticut','Delaware','District of Columbia','Hawaii','Illinois','Maryland','Massachusetts','New York','Rhode Island','Vermont','Washington']
-
+# Blue_States.extend(['Colorado','New Jersey','New Mexico','Oregon','Virginia','Minnesota','New Hampshire'])
 Swing_States = []
 
 for state in states:
@@ -147,7 +154,8 @@ for state in states:
         elif state in Red_States:
             averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['Trump']})])
         else:
-            averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['Tie']})])
+            # averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['Tie']})])
+            averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['No Polling Data']})])
 
 
 # add the number of electoral voters for each state
@@ -166,6 +174,7 @@ import os
 Harris_votes = averages[averages['Winner'] == 'Harris']['votes'].sum()
 trump_votes = averages[averages['Winner'] == 'Trump']['votes'].sum()
 tie_votes = averages[averages['Winner'] == 'Tie']['votes'].sum()
+no_data = averages[averages['Winner'] == 'No Polling Data']['votes'].sum()
 
 # I have added the cb_2018_us_state_500k files into the same folder as this file
 usa = gpd.read_file(os.path.join(os.path.dirname(__file__), 'cb_2018_us_state_500k.shp'))
@@ -191,16 +200,30 @@ usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geo
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
+# plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
 plt.xlim(-150, -55)
 plt.ylim(20, 50)
-plt.text(-135, 45, f'Harris: {Harris_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
-plt.text(-135, 42.5, f'Tie: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
-plt.text(-135, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
+plt.text(-137, 45, f'Harris: {Harris_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
+plt.text(-137, 42.5, f'Tied: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
+plt.text(-137, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
+plt.text(-137, 37.5, f'No Polling: {no_data}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
 plt.legend().remove()
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version.png'), bbox_inches='tight', dpi= 1000)
+
+# print the range of dates for the polling data from the dates and fourteen_days_before dataframes, in %B %d, %Y format
+
+state_abbr = {}
+
+for state in states:
+    state_abbr[state] = usa[usa['NAME'] == state]['STUSPS'].values[0]
+
+for state in states:
+    if state not in polls['State'].unique():
+        continue
+    print(f'{state_abbr[state]}: {fourteen_days_before[state].strftime("%d")}-{dates[state].strftime("%d %b %Y")}')

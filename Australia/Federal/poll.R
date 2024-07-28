@@ -17,7 +17,7 @@ library(hrbrthemes)
 py_run_file("Australia/Federal/data.py")
 poll <- read_csv("Australia/Federal/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
-d$value<-as.numeric(sub("%","",d$value))/100
+d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
 election<-as.Date("27 09 2025", "%d %m %Y")
@@ -82,8 +82,6 @@ plot1ma
 poll <- read_csv("Australia/Federal/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
-poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
@@ -95,11 +93,11 @@ d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
-d1$value<-as.numeric(sub("%","",d1$value))/100
+d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
 d2 <- reshape2::melt(d2, id.vars="Date")
-d2$value<-as.numeric(sub("%","",d2$value))/100
+d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
@@ -140,7 +138,7 @@ ggsave(plot=plot, file="Australia/Federal/plot_ma.png",width = 15, height = 7.5,
 
 poll <- read_csv("Australia/Federal/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
-d$value<-as.numeric(sub("%","",d$value))/100
+d$value<-as.numeric(d$value)/100
 
 old <-min(d$Date)
 # MAIN GRAPH
@@ -201,8 +199,6 @@ plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 poll <- read_csv("Australia/Federal/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
-poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
-  as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
