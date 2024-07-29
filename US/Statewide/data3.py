@@ -226,4 +226,5 @@ for state in states:
 for state in states:
     if state not in polls['State'].unique():
         continue
-    print(f'{state_abbr[state]}: {fourteen_days_before[state].strftime("%d")}-{dates[state].strftime("%d %b %Y")}')
+    # print(f'{state_abbr[state]}: {fourteen_days_before[state].strftime("%d")}-{dates[state].strftime("%d %b %Y")}')
+    print(f'{state_abbr[state]}: {dates[state].strftime("%d %b %Y")}')
