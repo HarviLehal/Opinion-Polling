@@ -141,7 +141,7 @@ scale_fill_manual(values = c("#f08490","#DD1529","#6686ad","#10305B",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle('7 day average \n (2021 Result)')+
+ggtitle(' 7 day average \n (2021 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 

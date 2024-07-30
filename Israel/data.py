@@ -17,14 +17,19 @@ parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unit
 drop = ['1','2','3','4']
 
 d = {}
-for i in range(3):
+for i in range(4):
+  print(i)
   if i == 0:
-    pass
+    headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Democrats','Balad','3','4']
+    parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Democrats','Balad']
+  elif i == 1:
+    headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
+    parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
   else:
     headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
     parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
     drop = ['1','2','3','4']
-  d[i]=pd.DataFrame(df[i+1])
+  d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -34,6 +39,8 @@ for i in range(3):
   if i == 1:
     d[i]['Date2'] = [x+ str(2024) for x in d[i]['Date2'].astype(str)]
   if i == 2:
+    d[i]['Date2'] = [x+ str(2024) for x in d[i]['Date2'].astype(str)]
+  if i == 3:
     d[i]['Date2'] = [x+ str(2023) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
@@ -44,7 +51,11 @@ for i in range(3):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
   if i ==0:
     d[i].drop(d[i].index[[-1]],inplace=True)
-  if i ==2:
+  if i ==1:
+    d[i].drop(d[i].index[[-1]],inplace=True)
+  if i ==3:
+    d[i].drop(d[i].index[[-1]],inplace=True)
+  if i ==3:
     d[i].drop(d[i].index[[-2]],inplace=True)
   for z in parties: # replace any non-numeric values with NaN
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
@@ -55,14 +66,15 @@ split_date = '29 May 2024'
 split_date=dateparser.parse(split_date)
 
 c={}
-c[0]=d[0][(pd.to_datetime(d[0]["Date"]) > split_date)]
-c[1]=d[0][(pd.to_datetime(d[0]["Date"]) < split_date)]
-c[2]=d[1]
+c[0]=d[0]
+c[1]=d[1][(pd.to_datetime(d[1]["Date"]) > split_date)]
+c[2]=d[1][(pd.to_datetime(d[1]["Date"]) < split_date)]
 c[3]=d[2]
+c[4]=d[3]
 
-c[0]['The Democrats']=np.where(c[0]['Labor']+c[0]['Meretz']>12,c[0]['Labor'],c[0]['Labor']+c[0]['Meretz'])
+c[1]['Democrats']=np.where(c[1]['Labor']+c[1]['Meretz']>12,c[1]['Labor'],c[1]['Labor']+c[1]['Meretz'])
 threeway = ['Labor','Meretz']
-c[0] = c[0].drop(threeway, axis=1)
+c[1] = c[1].drop(threeway, axis=1)
 
 
 D = pd.concat(c.values(), ignore_index=True)
@@ -70,7 +82,7 @@ D.loc[len(D.index)-1,['Date']] = '2022-11-01'
 D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 
-parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','The Democrats','Balad']
+parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Democrats','Balad']
 
 D[parties] = D[parties].astype(float)
 fascist = ['Mafdal-RZ','Otzma Yehudit','Noam']
@@ -79,7 +91,7 @@ D = D.drop(fascist, axis=1)
 
 print(D)
 
-D=D[['Date','Likud','Yesh Atid','RZP-OY-Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','The Democrats','Balad']]
+D=D[['Date','Likud','Yesh Atid','RZP-OY-Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Democrats','Balad']]
 
 D.to_csv('Israel/poll.csv', index=False)
 

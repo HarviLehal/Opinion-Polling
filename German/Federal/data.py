@@ -126,3 +126,18 @@ D['Kemmerich'] = D[Kemmerich].sum(axis=1)       # BBr (Brown) #AA692F
 D = D.drop(parties, axis=1)
 
 D.to_csv('German/Federal/poll3.csv', index=False)
+
+
+D = pd.concat(d.values(), ignore_index=True)
+parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+for z in parties:
+    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+for z in parties:
+  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
+D['Mehrheit'] = D[parties].sum(axis=1)
+# divide by 2 to get the true majority required
+D['Mehrheit'] = D['Mehrheit']/2
+D.drop(parties, axis=1, inplace=True)
+D.to_csv('German/Federal/poll4.csv', index=False)
