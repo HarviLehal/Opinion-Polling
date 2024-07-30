@@ -39,7 +39,11 @@ def get_state_polls(state):
         parties = ['Trump', 'Harris']
     d = {}
     for i in range(len(df)):
-        if 'Kamala Harris Democratic' in df[i].columns:
+        if state == "Minnesota":
+            z = 'Kamala Harris DFL'
+        else:
+            z = 'Kamala Harris Democratic'
+        if z in df[i].columns:
             # skip first accepted table for Florida as it is not polling data
             if state == "Florida" and i == 1:
                 i += 2
@@ -157,6 +161,9 @@ for state in states:
             # averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['Tie']})])
             averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Winner': ['No Polling Data']})])
 
+# Add winner 2 where Tie and No Polling Data are the same for the map
+averages['Winner2'] = averages['Winner']
+averages.loc[averages['Winner'] == 'No Polling Data', 'Winner2'] = 'Tie'
 
 # add the number of electoral voters for each state
 electoral_votes = pd.read_csv(os.path.join(os.path.dirname(__file__), 'electoral_votes.csv'))
@@ -199,7 +206,7 @@ usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geo
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
-usa.plot(column='Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
+usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 plt.title('2024 US Presidential Election Polling taking the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
