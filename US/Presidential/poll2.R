@@ -61,14 +61,13 @@ d2<-d[d$Date>old2|d$Date==old,]
 d2<- d2 %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 5, Date), mean))
 
 begin<-as.Date("21 07 2024", "%d %m %Y")
 plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d2[d2$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=1, data=d2[d2$Date!=old,])+
-  
   geom_line(aes(y = Moving_Average), linetype = "dashed",linewidth=1.5,alpha=0.35)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -106,7 +105,7 @@ plot1a
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 5, Date), mean))
 
 
 
@@ -144,7 +143,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-5),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -181,7 +180,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 7 day Average \n (2020 Election)')+
+  ggtitle(' 5 day Average \n (2020 Election)')+
   scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()+
   labs(caption = "*Result for Biden in 2020")
@@ -194,6 +193,7 @@ plot
 
 ggsave(plot=plot, file="US/Presidential/plot_decided.png",width = 15, height = 7.5, type="cairo-png")
 
+plot1a<-aplot::plot_list(plot1a,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 
 ggsave(plot=plot1a, file="US/Presidential/plot_decided_comparison.png",width = 15, height = 7.5, type="cairo-png")
 
