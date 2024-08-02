@@ -93,7 +93,11 @@ def get_state_polls(state):
     for z in parties:
         D[z] = D[z].astype(str)
         D[z] = D[z].str.strip('%')
-        D[z] = D[z].astype('float')
+        # D[z] = D[z].astype('float')
+        D[z] = pd.to_numeric(D[z], errors='coerce')
+    
+    # drop rows where both Harris and Trump are NaN
+    D = D.dropna(subset=['Harris', 'Trump'], how='all')
     D['total']=D[parties].sum(axis=1)
     D['Harris'] = D['Harris']/D['total']
     D['Trump'] = D['Trump']/D['total']
@@ -108,6 +112,7 @@ def get_all_polls():
     return polls
 
 polls = get_all_polls()
+
 
 
 
@@ -242,11 +247,72 @@ for state in states:
     if state not in polls['State'].unique():
         continue
     print(f'{state_abbr[state]}: {dates[state].strftime("%d %b %Y")}')
-    
+
 for state in states:
     if state not in polls['State'].unique():
         continue
     print(f'{state_abbr[state]}: {fourteen_days_before[state].strftime("%d")}-{dates[state].strftime("%d %b %Y")}')
+
+# Calculate Harris lead in each state
+averages['Lead'] = averages['Harris'] - averages['Trump']
+
+# find largest lead for scaling
+
+max = np.max(np.abs(averages['Lead']))
+
+# Change to 1 for Blue States, -1 for Red States, 0 for Swing States if there is a NaN value
+
+for state in states:
+    if pd.isna(averages[averages['State'] == state]['Lead'].values[0]) == False:
+        pass
+    elif state in Blue_States:
+        averages.loc[averages['State'] == state, 'Lead'] = max+0.1
+    elif state in Red_States:
+        averages.loc[averages['State'] == state, 'Lead'] = -max-0.1
+    else:
+        averages.loc[averages['State'] == state, 'Lead'] = 0
+
+
+
+# Create Map of Harris Lead
+import geopandas as gpd
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+from shapely.geometry import Point
+import os
+
+usa = gpd.read_file(os.path.join(os.path.dirname(__file__), 'cb_2018_us_state_500k.shp'))
+usa.loc[usa['NAME'] == 'Hawai‘i', 'NAME'] = 'Hawaii'
+usa.loc[usa['NAME'] == 'Alaska', 'NAME'] = 'Alaska'
+
+states.append('District of Columbia')
+states.append('Hawaii')
+
+usa = usa[usa.NAME.isin(states)]
+usa = usa.merge(averages, left_on='NAME', right_on='State')
+
+usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].translate(xoff=40, yoff=7.5)
+usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].translate(xoff=-50, yoff=-35)
+usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].scale(xfact=0.5, yfact=0.5)
+usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].scale(xfact=1.5, yfact=1.5)
+
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+usa.plot(column='Lead', ax=ax, legend=True, cmap='bwr_r', edgecolor='black')
+plt.title('2024 US Presidential Election Polling Harris Lead', fontsize=16, fontname='Times New Roman', fontweight='bold')
+# make state outlines black
+usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
+plt.axis('off')
+plt.xlim(-150, -55)
+plt.ylim(20, 50)
+plt.legend().remove()
+# remove the colorbar legend
+cax = fig.get_axes()[1]
+cax.remove()
+
+# change background color to grey
+fig.patch.set_facecolor('darkgrey')
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
+
 
 
 
@@ -369,3 +435,7 @@ plt.legend().remove()
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
+
+
+
+
