@@ -3,133 +3,79 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
-wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_2024_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[a-z]+\]'  )
 
+data2=pd.DataFrame(df[1])
+data2=data2.drop(["Pollster", "Sample size"], axis=1)
 
-# RISHI SUNAK
+headers = ['Date','s1','s2','s3','r1','r2','r3','f1','f2','f3','d1','d2','d3','c1','c2','c3','a1','a2','a3']
+parties = ['s1','s2','r1','r2','f1','f2','d1','d2','c1','c2','a1','a2']
+drops = ['s3','r3','f3','d3','c3','a3']
 
-print(df[26])
-headers = ['Date', 'Starmer', 'Sunak', 'Unsure']
-parties = ['Starmer', 'Sunak', 'Unsure']
-d = {}
-for i in range(3):
-  d[i]=pd.DataFrame(df[i+28])
-  d[i]=d[i].drop(["Pollster/client", "Area", "Sample size", "Lead"], axis=1)
-  d[i].columns = headers
-  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
-  d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
-  d[i]['Date'] = d[i]['Date2']
-  d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  
-D = pd.concat(d.values(), ignore_index=True)
-D = D[~(D['Date'] < '2022-10-25')]
+data2.columns = headers
+data2=data2.drop(drops, axis=1)
 
+data2['Date2'] = data2['Date'].str.split('–').str[1]
+data2.Date2.fillna(data2['Date'].str.split('-').str[1], inplace=True)
+data2.Date2.fillna(data2.Date, inplace=True)
+# data2['Date2'] = [x+ str(2024-i) for x in data2['Date2'].astype(str)]
+data2['Date'] = data2['Date2']
+data2 = data2.drop(['Date2'], axis=1)
+data2.Date=data2.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = D[z].str.strip('%')
-D[parties] = D[parties].astype(float)
+  data2[z] = [x.replace('-',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('—',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('TBC',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('TBA',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('?',str(np.NaN)) for x in data2[z]]
+  data2[z] = data2[z].astype(str)
+  data2[z] = data2[z].str.strip('%')
+  data2[z] = data2[z].astype('float')
 
-D.to_csv('UK/leadership_approval/sunak.csv', index=False)
+data2
 
-# 
-# # LIZ TRUSS
-# 
-# print(df[32])
-# e = {}
-# headers = ['Date', 'Truss', 'Starmer', 'Unsure']
-# parties = ['Truss', 'Starmer', 'Unsure']
-# for i in range(1):
-#   e[i]=pd.DataFrame(df[33])
-#   e[i]=e[i].drop(["Pollster/client", "Area", "Sample size","None of these", "Lead"], axis=1)
-#   e[i].columns = headers
-#   e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
-#   e[i].Date2.fillna(e[i].Date, inplace=True)
-#   e[i]['Date2'] = [x+ str(2022-i) for x in e[i]['Date2'].astype(str)]
-#   e[i]['Date'] = e[i]['Date2']
-#   e[i] = e[i].drop(['Date2'], axis=1)
-#   e[i] = e[i][e[i]['Truss'] != e[i]['Starmer']]
-#   e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-#     
-# E = pd.concat(e.values(), ignore_index=True)
-# E = E[~(E['Date'] < '2022-09-06')]
-# 
-# for z in parties:
-#   E[z] = [x.replace('–',str(np.NaN)) for x in E[z].astype(str)]
-#   E[z] = [x.replace('—',str(np.NaN)) for x in E[z].astype(str)]
-#   E[z] = E[z].str.strip('%')
-# E[parties] = E[parties].astype(float)
-# 
-# 
-# # BORIS JOHNSON
-# 
-# print(df[34])
-# f = {}
-# headers = ['Date', 'Boris', 'Starmer', 'Unsure']
-# parties = ['Boris', 'Starmer', 'Unsure']
-# for i in range(3):
-#   f[i]=pd.DataFrame(df[i+34])
-#   f[i]=f[i].drop(["Pollster/client", "Area", "Sample size","None of these","Refused","Lead"], axis=1)
-#   f[i].columns = headers
-#   f[i]['Date2'] = f[i]['Date'].str.split('–').str[1]
-#   f[i].Date2.fillna(f[i].Date, inplace=True)
-#   f[i]['Date2'] = [x+ str(2022-i) for x in f[i]['Date2'].astype(str)]
-#   f[i]['Date'] = f[i]['Date2']
-#   f[i] = f[i].drop(['Date2'], axis=1)
-#   f[i].Date=f[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-#     
-# F = pd.concat(f.values(), ignore_index=True)
-# 
-# for z in parties:
-#   F[z] = [x.replace('–',str(np.NaN)) for x in F[z].astype(str)]
-#   F[z] = [x.replace('—',str(np.NaN)) for x in F[z].astype(str)]
-#   F[z] = F[z].str.strip('%')
-# F[parties] = F[parties].astype(float)
-# 
-# 
-# # JEREMY CORBYN
-# wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_2019_United_Kingdom_general_election"
-# table_class="wikitable sortable jquery-tablesorter"
-# response=requests.get(wikiurl)
-# print(response.status_code)
-# soup = BeautifulSoup(response.text, 'html.parser')
-# tables = soup.find_all('table',class_="wikitable")
-# df=pd.read_html(str(tables))
-# 
-# 
-# print(df[32])
-# g = {}
-# headers = ['Date', 'Boris', 'Corbyn', 'Unsure']
-# parties = ['Boris', 'Corbyn', 'Unsure']
-# for i in range(1):
-#   g[i]=pd.DataFrame(df[32])
-#   g[i]=g[i].drop(["Polling organisation/client","Area","Sample size","None of these","Refused","Refused","Lead"], axis=1)
-#   g[i].columns = headers
-#   g[i]['Date2'] = g[i]['Date'].str.split('–').str[1]
-#   g[i].Date2.fillna(g[i].Date, inplace=True)
-#   g[i]['Date2'] = [x+ str(2019-i) for x in g[i]['Date2'].astype(str)]
-#   g[i]['Date'] = g[i]['Date2']
-#   g[i] = g[i].drop(['Date2'], axis=1)
-#   g[i].Date=g[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-#     
-# G = pd.concat(g.values(), ignore_index=True)
-# 
-# for z in parties:
-#   G[z] = [x.replace('–',str(np.NaN)) for x in G[z].astype(str)]
-#   G[z] = [x.replace('—',str(np.NaN)) for x in G[z].astype(str)]
-#   G[z] = G[z].str.strip('%')
-# G[parties] = G[parties].astype(float)
+# Separate approval-disapproval ratings by leader into separate tables
 
+data_starmer = data2[['Date','s1','s2']]
+data_sunak = data2[['Date','r1','r2']]
+data_farage = data2[['Date','f1','f2']]
+data_davey = data2[['Date','d1','d2']]
+data_denyer = data2[['Date','c1','c2']]
+data_adams = data2[['Date','a1','a2']]
 
-# E.to_csv('UK/leadership_approval/truss.csv', index=False)
-# F.to_csv('UK/leadership_approval/boris.csv', index=False)
-# G.to_csv('UK/leadership_approval/corbyn.csv',index=False)
+# Rename columns
+data_starmer.columns = ['Date','Approval','Disapproval']
+data_sunak.columns = ['Date','Approval','Disapproval']
+data_farage.columns = ['Date','Approval','Disapproval']
+data_davey.columns = ['Date','Approval','Disapproval']
+data_denyer.columns = ['Date','Approval','Disapproval']
+data_adams.columns = ['Date','Approval','Disapproval']
+
+# Calculate net approval in data2 and remove approval-disapproval columns
+data= data2[['Date']]
+data['Starmer'] = data_starmer['Approval'] - data_starmer['Disapproval']
+data['Sunak'] = data_sunak['Approval'] - data_sunak['Disapproval']
+data['Farage'] = data_farage['Approval'] - data_farage['Disapproval']
+data['Davey'] = data_davey['Approval'] - data_davey['Disapproval']
+data['Denyer'] = data_denyer['Approval'] - data_denyer['Disapproval']
+data['Adams'] = data_adams['Approval'] - data_adams['Disapproval']
+
+data
+
+data.to_csv('UK/leadership_approval/net_approval.csv', index=False)
+data_starmer.to_csv('UK/leadership_approval/starmer_approval.csv', index=False)
+data_sunak.to_csv('UK/leadership_approval/sunak_approval.csv', index=False)
+data_farage.to_csv('UK/leadership_approval/farage_approval.csv', index=False)
+data_davey.to_csv('UK/leadership_approval/davey_approval.csv', index=False)
+data_denyer.to_csv('UK/leadership_approval/denyer_approval.csv', index=False)
+data_adams.to_csv('UK/leadership_approval/adams_approval.csv', index=False)

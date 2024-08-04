@@ -19,7 +19,7 @@ parties = ['Harris', 'Trump', 'Other']
 d = {}
 for i in range(4):
   # i=j+1
-  d[i]=pd.DataFrame(df[i+2])
+  d[i]=pd.DataFrame(df[i+3])
   d[i]=d[i].drop(["Poll source","Sample size[b]","Margin of error"], axis=1)
   d[i].columns = headers
   for z in parties:
