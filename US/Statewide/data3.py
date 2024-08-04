@@ -272,7 +272,10 @@ for state in states:
     else:
         averages.loc[averages['State'] == state, 'Lead'] = 0
 
-
+#set limits to be the rounding up of the max value to nearest 0.01
+lim = np.round(max+0.1, 2)
+if max+0.1 > lim:
+    lim += 0.01
 
 # Create Map of Harris Lead
 import geopandas as gpd
@@ -305,13 +308,22 @@ plt.axis('off')
 plt.xlim(-150, -55)
 plt.ylim(20, 50)
 plt.legend().remove()
+# change colorbar axis ticks to be in percentage format and have ticks at ever 1% interval and in Times New Roman font
+cbar = ax.get_figure().get_axes()[1]
+cbar.set_yticks(np.arange(-lim,lim,0.02))
+cbar.set_yticklabels([f'{x*100:.0f}%' for x in np.arange(-lim,lim,0.02)], fontname='Times New Roman')
+# resize colorbar to quarter the height
+cbar.set_position([0.7, 0.25, 0.03, 0.5])
+
+
+
 # remove the colorbar legend
-cax = fig.get_axes()[1]
-cax.remove()
+# cax = fig.get_axes()[1]
+# cax.remove()
 
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Harris_Lead.png'), bbox_inches='tight', dpi= 1000)
 
 
 
@@ -435,7 +447,3 @@ plt.legend().remove()
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
-
-
-
-
