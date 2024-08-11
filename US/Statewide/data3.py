@@ -41,6 +41,8 @@ def get_state_polls(state):
     for i in range(len(df)):
         if state == "Minnesota":
             z = 'Kamala Harris DFL'
+        # elif state == "Nevada":
+        #     z = 'Kamala Harris .mw-parser-output .nobold{font-weight:normal}Democratic'
         else:
             z = 'Kamala Harris Democratic'
         if z in df[i].columns:
@@ -50,7 +52,7 @@ def get_state_polls(state):
             d[i] = pd.DataFrame(df[i])
             if state == "Delaware":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "North Carolina" or state == "Florida":
+            elif state == "California" or state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Michigan" or state == "North Carolina" or state == "Nevada":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
             elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
@@ -136,6 +138,9 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 dates = polls.groupby('State')['Date'].max()
 dates
 fourteen_days_before = dates - pd.Timedelta(days=3)
+
+# check polls for Nevada
+# polls[polls['State'] == 'Nevada']
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
@@ -230,9 +235,13 @@ plt.ylim(20, 50)
 plt.text(-137, 45, f'Harris: {Harris_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
 plt.text(-137, 42.5, f'Tied: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
 plt.text(-137, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
-plt.text(-137, 37.5, f'No Polling: {no_data}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
+plt.text(-137, 37.5, f'No Polling: {no_data}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='#333333')
+
 plt.legend().remove()
 # change background color to grey
+
+usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
+
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version.png'), bbox_inches='tight', dpi= 1000)
 
@@ -314,6 +323,9 @@ cbar.set_yticks(np.arange(-lim,lim,0.02))
 cbar.set_yticklabels([f'{x*100:.0f}%' for x in np.arange(-lim,lim,0.02)], fontname='Times New Roman')
 # resize colorbar to quarter the height
 cbar.set_position([0.7, 0.25, 0.03, 0.5])
+
+# Fill in states with no polling data with dark grey
+usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
 
 
 
@@ -447,3 +459,5 @@ plt.legend().remove()
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
+
+# print(polls[polls['State'] == 'Georgia'])

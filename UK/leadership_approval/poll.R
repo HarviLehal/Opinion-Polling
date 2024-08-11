@@ -44,7 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.6,0.6,0.05))+
   geom_hline(aes(yintercept=0), alpha=1, linewidth=1, linetype="solid", colour="#000000")+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   scale_x_date(date_breaks = "2 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Net Leadership Approval for British Party Leaders')
@@ -88,7 +88,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 7 day average')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = rev(levels(d1$variable)))+
   coord_flip()
 plot2
 

@@ -40,6 +40,7 @@ for z in parties:
   data2[z] = [x.replace('?',str(np.NaN)) for x in data2[z]]
   data2[z] = data2[z].astype(str)
   data2[z] = data2[z].str.strip('%')
+  data2[z] = pd.to_numeric(data2[z], errors='coerce')
   data2[z] = data2[z].astype('float')
 
 data2

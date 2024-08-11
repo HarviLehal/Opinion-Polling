@@ -14,6 +14,8 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
+library(ggbreak)
+
 py_run_file("Japan/vote/data.py")
 poll <- read_csv("Japan/vote/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
