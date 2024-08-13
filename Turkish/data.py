@@ -34,6 +34,7 @@ for i in range(2):
   for z in parties:
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
   d[i][parties] = d[i][parties].astype(float)
 d[1] = d[1].drop(['MP'], axis=1)
 # d[1] = d[1].drop(['DEVA'], axis=1)
