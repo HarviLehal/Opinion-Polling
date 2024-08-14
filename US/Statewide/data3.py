@@ -11,9 +11,28 @@ import numpy as np
 import requests
 from bs4 import BeautifulSoup
 
+def extract_latest_date(date_range):
+    # Split the date range into parts
+    parts = date_range.split('–')
+    
+    # Extract the start date (which includes the month)
+    start_date = parts[0].strip()
+    
+    # Extract the end date (which might only have the day)
+    end_date = parts[-1].strip()
+    
+    # If the end date does not contain a month, inherit it from the start date
+    if any(char.isdigit() for char in end_date) and not any(char.isalpha() for char in end_date):
+        # Extract the month from the start date
+        month = ''.join(filter(str.isalpha, start_date))
+        end_date = month + ' ' + end_date
+    
+    # Return the latest date with the correct format
+    return end_date
+
 states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
-
+# states = ['Georgia']
 def get_state_polls(state):
     print("Getting polls for " + state)
     if state == "Washington":
@@ -69,16 +88,9 @@ def get_state_polls(state):
                 d[i][z] = [x.replace('TBC', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('TBA', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('?', str(np.NaN)) for x in d[i][z]]
-            d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
-            d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
-            # d[i]['Date2'] = d[i]['Date'].str.split('–').str[0] + ' ' + d[i]['Date'].str.split(',').str[1]
-            # d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
-            # add the year to end of the date using the second part of the split of ,
-            # for x in d[i]['Date2']:
-                # d[i]['Date2'] = d[i]['Date'] + ' ' + d[i]['Date'].str.split(',')[1]
-            # d[i]['Date2'] = [x.split(',')[0] if len(x.split(',')) > 1 else x for x in d[i]['Date2'].astype(str)]
-            # d[i].Date2.fillna(d[i].Date, inplace=True)
-            # d[i]['Date2'] = [x + ' ' + str(2024) for x in d[i]['Date2'].astype(str)]
+            # d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
+            # d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
+            d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
             d[i]['Date'] = d[i]['Date2']
             d[i] = d[i].drop(['Date2'], axis=1)
             d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
