@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/2024_Bulgarian_parliamentary_election"
+wikiurl="https://en.wikipedia.org/wiki/June_2024_Bulgarian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -19,7 +19,7 @@ parties = ['GERB','PP-DB','V','DPS','BSP','ITN','BV','Levitsata','Other']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-2])
+  d[i]=pd.DataFrame(df[-5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

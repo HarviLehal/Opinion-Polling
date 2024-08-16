@@ -29,7 +29,8 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-next_election<-as.Date("09 06 2024", "%d %m %Y")
+next_election<-as.Date("20 10 2024", "%d %m %Y")
+election0<-as.Date("09 06 2024", "%d %m %Y")
 election1<-as.Date("02 04 2023", "%d %m %Y")
 election2<-as.Date("02 10 2022", "%d %m %Y")
 election3<-as.Date("14 11 2021", "%d %m %Y")
@@ -64,12 +65,12 @@ d_6$value<-formattable::percent(d_6$value)
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=next_election,])+
+  geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=election0,])+
   scale_color_manual(values = c("#0054a6","#4200ff","#c09f62",
                                 "#0066b7","#db0f28","#4bb9de",
                                 "#197032","#ba1034","#999999",
                                 "#ffc300","#004a80","#ba1034","#009b75"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_1[d_1$Date!=election1&d_1$Date!=next_election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_1[d_1$Date!=election1&d_1$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_2[d_2$Date!=election2&d_2$Date!=election1,])+
   geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_2[d_2$Date!=election2&d_2$Date!=election1,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_3[d_3$Date!=election3&d_3$Date!=election2,])+
@@ -92,6 +93,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   xlim(min(d$Date)-30, next_election)+
+  geom_vline(xintercept=election0, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election1, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election2, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election3, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -99,26 +101,29 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election5, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election6, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=next_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==next_election|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==next_election|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5.25, shape=5, alpha=1)+
   scale_x_break(c(election6+25, as.Date("01 05 2019", "%d %m %Y")))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(election6-25,next_election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling since the Mar 2017, Apr 2021, Jul 2021, Nov 2021, Oct 2022, Apr 2023 until the June 2024 Bulgarian Parliamentary Election')
+  ggtitle('Opinion Polling since the Mar 2017, Apr 2021, Jul 2021, Nov 2021, Oct 2022, Apr 2023, Jun 2024 until the Oct 2024 Bulgarian Parliamentary Election')
   # bbc_style()
 plot1
 
 ggsave(plot=plot1, file="Bulgaria/plot.png",width = 15, height = 7.5, type="cairo-png")
 
 # 14 day average of latest polls for d0
-d0<-poll1[poll1$Date>=max(poll1$Date)-14,]
-d0 <- colMeans(d0[-1],na.rm = TRUE)
-d0<- as.data.frame(d0)
-d0 <- t(d0)
-Date<-as.Date("15 04 2024", "%d %m %Y")
-d0 <- cbind(Date, d0)
-d0 <- as.data.frame(d0)
-d0$Date <- as.Date(d0$Date)
+# d0<-poll1[poll1$Date>=max(poll1$Date)-14,]
+# d0 <- colMeans(d0[-1],na.rm = TRUE)
+# d0<- as.data.frame(d0)
+# d0 <- t(d0)
+# Date<-as.Date("15 04 2024", "%d %m %Y")
+# d0 <- cbind(Date, d0)
+# d0 <- as.data.frame(d0)
+# d0$Date <- as.Date(d0$Date)
 
+
+d0 <- poll1[poll1$Date==max(poll1$Date),]
+d0 <- as.data.frame(d0)
 d1 <- poll1[poll1$Date==min(poll1$Date),]
 d1 <- as.data.frame(d1)
 d2 <- poll2[poll2$Date==min(poll2$Date),]
@@ -165,7 +170,7 @@ plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         plot.title = element_text(face="bold",size=10),
         axis.text.y = element_text(face="bold",size=10))+
-  ggtitle(' 14 DAY AVERAGE \n Apr 2023 Result \n Oct 2022 Result \n Nov 2021 Result \n Jul 2021 Result \n Apr 2021 Result \n Mar 2017 Result')+
+  ggtitle(' Jun 2024 Result \n Apr 2023 Result \n Oct 2022 Result \n Nov 2021 Result \n Jul 2021 Result \n Apr 2021 Result \n Mar 2017 Result ')+
   scale_x_discrete(limits = rev(levels(d7$variable)))+
   coord_flip()
 plot2
@@ -173,5 +178,5 @@ plot2
 plotA<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plotA
 
-ggsave(plot=plotA, file="Bulgaria/plot_long.png",width = 30, height = 15, type="cairo-png")
+ggsave(plot=plotA, file="Bulgaria/plot_long.png",width = 35, height = 15, type="cairo-png")
 

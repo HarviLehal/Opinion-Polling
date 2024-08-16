@@ -66,12 +66,18 @@ def get_state_polls(state):
             z = 'Kamala Harris Democratic'
         if z in df[i].columns:
             # skip first accepted table for Florida as it is not polling data
-            if state == "Florida" and i == 1:
-                i += 2
+            # if state == "Florida":
+                # i += 2
+            if state == "Michigan":
+                i += 1
+            elif state == "Pennsylvania":
+                i += 1
+            elif state == "Wisconsin":
+                i += 1
             d[i] = pd.DataFrame(df[i])
-            if state == "Delaware":
+            if state == "Delaware" or state == "Michigan" or state == "Nevada" or state == "North Carolina":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "California" or state == "Florida" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Michigan" or state == "North Carolina" or state == "Nevada":
+            elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts"or state == "New Hampshire" or state == "Pennsylvania" or state == "Wisconsin":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
             elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
