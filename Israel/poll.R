@@ -89,7 +89,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                       ifelse(d3$variable=='Meretz'|d3$variable=='Labor','Merged into The Democrats',"Below Threshold")),
                                ifelse(is.na(d3$value)==FALSE,paste("(",d3$value,")"),
                                       ifelse(d3$variable=='New Hope','(Part of National Unity)',
-                                             ifelse(d3$variable=='The Democrats',"Labor-Meretz Merger","(Below Threshold)")))),y = 0),
+                                             ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)","(Below Threshold)")))),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
   #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+

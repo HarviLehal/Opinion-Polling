@@ -22,6 +22,8 @@ for i in range(4):
   if i == 0:
     headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Democrats','Balad','3','4']
     parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Democrats','Balad']
+    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','3','Yesh Atid','National Unity','New Hope','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
+    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','Yesh Atid','National Unity','New Hope','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 1:
     headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
     parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
