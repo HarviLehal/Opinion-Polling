@@ -92,7 +92,7 @@ plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_break(c(old+1.5, old2))+
   scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old-1.5,election),guide = guide_axis(angle = -90))+
   ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)*')+
-  labs(caption = "*LOESS regression solid line, 7-day Moving average dashed line")
+  labs(caption = "*LOESS regression solid line, 5-day Moving average dashed line")
 plot1a
 
 # MA GRAPH

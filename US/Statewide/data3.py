@@ -68,11 +68,7 @@ def get_state_polls(state):
             # skip first accepted table for Florida as it is not polling data
             # if state == "Florida":
                 # i += 2
-            if state == "Michigan":
-                i += 1
-            elif state == "Pennsylvania":
-                i += 1
-            elif state == "Wisconsin":
+            if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona":
                 i += 1
             d[i] = pd.DataFrame(df[i])
             if state == "Delaware" or state == "Michigan" or state == "Nevada" or state == "North Carolina":
