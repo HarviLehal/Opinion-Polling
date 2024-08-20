@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/June_2024_Bulgarian_parliamentary_election"
+wikiurl="https://en.wikipedia.org/wiki/October_2024_Bulgarian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,12 +14,12 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','GERB','PP-DB','V','DPS','BSP','ITN','BV','Levitsata','drop7','drop8','Other','drop3','drop4','drop5','drop6']
-parties = ['GERB','PP-DB','V','DPS','BSP','ITN','BV','Levitsata','Other']
-drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7','drop8']
+headers = ['drop1','Date','drop2','GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other','drop3','drop4']
+parties = ['GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other']
+drops = ['drop1','drop2','drop3','drop4']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-5])
+  d[i]=pd.DataFrame(df[-1])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -29,7 +29,7 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['GERB'] != d[i]['Levitsata']]
+  d[i] = d[i][d[i]['GERB'] != d[i]['Velichie']]
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
@@ -40,4 +40,4 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
 
-D.to_csv('Bulgaria/poll1.csv', index=False)
+D.to_csv('Bulgaria/poll.csv', index=False)
