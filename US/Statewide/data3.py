@@ -68,8 +68,11 @@ def get_state_polls(state):
             # skip first accepted table for Florida as it is not polling data
             # if state == "Florida":
                 # i += 2
-            if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona":
-                i += 1
+            y = 'Dates updated'
+            if y in df[i].columns:
+                i +=1
+            # if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona" or state
+                # i += 1
             d[i] = pd.DataFrame(df[i])
             if state == "Delaware" or state == "Michigan" or state == "Nevada" or state == "North Carolina":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
