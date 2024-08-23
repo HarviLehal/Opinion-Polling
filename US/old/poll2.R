@@ -14,22 +14,21 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-poll <- read_csv("US/old/poll2.csv")
-poll<-poll[poll$Date!=max(poll$Date),]
-start<-as.Date("01 07 2020", "%d %m %Y")
+poll <- read_csv("US/old/poll3.csv")
+start<-as.Date("01 07 2016", "%d %m %Y")
 poll<-poll[poll$Date>start,]
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("03 11 2020", "%d %m %Y")
+election<-as.Date("08 11 2016", "%d %m %Y")
 old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -46,10 +45,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=0.75)+
-  # scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -45))+
   scale_x_date(date_breaks = "4 days", date_labels =  "%m %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('2020 US Presidential Polling (Excluding Undecided/Other)')
+  ggtitle('2016 US Presidential Polling (Excluding Undecided/Other)')
 plot1
 
-ggsave(plot=plot1, file="US/old/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot1, file="US/old/plot2.png",width = 15, height = 7.5, type="cairo-png")
 
