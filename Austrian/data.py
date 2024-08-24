@@ -17,24 +17,31 @@ p = re.compile(r'\[[a-z]+\]'  )
 headers = ['Date','ÖVP','SPÖ','FPÖ','Grüne','NEOS']
 parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS']
 d = {}
-for i in range(5):
+for i in range(6):
   if i == 0:
       headers.append('KPÖ')
+      headers.append('KEINE')
       headers.append('BIER')
-  elif i == 1:
+      headers.append('LMP')
+  if i == 1:
+      headers.remove('LMP')
+      headers.remove('KEINE')
+  elif i == 2:
       headers.remove('BIER')
       headers.remove('KPÖ')
       headers.append('MFG')
       headers.append('BIER')
-  elif i == 2:
-      headers.remove('BIER')
   elif i == 3:
-      headers.remove('MFG')
+      headers.remove('BIER')
   elif i == 4:
+      headers.remove('MFG')
+  elif i == 5:
       headers.append('HC')
   d[i]=pd.DataFrame(df[i])
   print(d[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Method", "Others", "Lead"], axis=1)
+  # if i==0:
+    # d[i]=d[i].drop(["KEINE", "LMP"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -42,22 +49,21 @@ for i in range(5):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['ÖVP'] != d[i]['NEOS']]
-
-d[4].drop(d[4].index[[-1]],inplace=True)
-  
+  if i != 5:
+    d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 
 D = D[D.Date.notnull()]
 
 
-parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ','MFG','HC']
+parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','KEINE','BIER','LMP','MFG','HC']
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]
   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-D=D.drop(["MFG", "HC"], axis=1)
+D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
 
 D.to_csv('Austrian/poll.csv', index=False)
 
@@ -65,7 +71,7 @@ D.to_csv('Austrian/poll.csv', index=False)
 
 
 
-parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ']
+parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','BIER']
 
 for z in parties:
   D[z] = D[z].apply(lambda x: x if x > 4 else 0)
@@ -96,14 +102,14 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D[D.Date.notnull()]
 
 
-parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ','MFG','HC']
+parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','KEINE','BIER','LMP','MFG','HC']
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]
   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-D=D.drop(["MFG", "HC"], axis=1)
-parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','BIER','KPÖ']
+D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
+parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','BIER']
 
 
 # take the sum of all parties with more than 5% in each poll to get the total percentage of valid votes
