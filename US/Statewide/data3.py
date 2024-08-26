@@ -285,23 +285,39 @@ averages['Lead'] = averages['Harris'] - averages['Trump']
 # find largest lead for scaling
 
 max = np.max(np.abs(averages['Lead']))
+max = np.max(averages['Lead'])
+min = np.min(averages['Lead'])
+# round max up to nearest even number and min down to nearest even number
+max = np.ceil(max*100)/100
+min = np.floor(min*100)/100
+if min%2 != 0:
+    min -= 0.01
+
 
 # Change to 1 for Blue States, -1 for Red States, 0 for Swing States if there is a NaN value
 
+# for state in states:
+#     if pd.isna(averages[averages['State'] == state]['Lead'].values[0]) == False:
+#         pass
+#     elif state in Blue_States:
+#         averages.loc[averages['State'] == state, 'Lead'] = max+0.1
+#     elif state in Red_States:
+#         averages.loc[averages['State'] == state, 'Lead'] = -max-0.1
+#     else:
+#         averages.loc[averages['State'] == state, 'Lead'] = 0
+
+#set limits to be the rounding up of the max value to nearest 0.01
+# lim = np.round(max+0.1, 2)
+# if max+0.1 > lim:
+#     lim += 0.01
+
+# all states without polling data will be classes as No Polling Data
 for state in states:
     if pd.isna(averages[averages['State'] == state]['Lead'].values[0]) == False:
         pass
-    elif state in Blue_States:
-        averages.loc[averages['State'] == state, 'Lead'] = max+0.1
-    elif state in Red_States:
-        averages.loc[averages['State'] == state, 'Lead'] = -max-0.1
     else:
-        averages.loc[averages['State'] == state, 'Lead'] = 0
+        averages.loc[averages['State'] == state, 'Winner'] = 'No Polling Data'
 
-#set limits to be the rounding up of the max value to nearest 0.01
-lim = np.round(max+0.1, 2)
-if max+0.1 > lim:
-    lim += 0.01
 
 # Create Map of Harris Lead
 import geopandas as gpd
@@ -336,8 +352,8 @@ plt.ylim(20, 50)
 plt.legend().remove()
 # change colorbar axis ticks to be in percentage format and have ticks at ever 1% interval and in Times New Roman font
 cbar = ax.get_figure().get_axes()[1]
-cbar.set_yticks(np.arange(-lim,lim,0.02))
-cbar.set_yticklabels([f'{x*100:.0f}%' for x in np.arange(-lim,lim,0.02)], fontname='Times New Roman')
+cbar.set_yticks(np.arange(min,max,0.02))
+cbar.set_yticklabels([f'{x*100:.0f}%' for x in np.arange(min,max,0.02)], fontname='Times New Roman')
 # resize colorbar to quarter the height
 cbar.set_position([0.7, 0.25, 0.03, 0.5])
 
