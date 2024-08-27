@@ -74,9 +74,9 @@ def get_state_polls(state):
             # if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona" or state
                 # i += 1
             d[i] = pd.DataFrame(df[i])
-            if state == "Delaware" or state == "Nevada" or state == "North Carolina":
+            if state == "Delaware" or state == "Nevada" or state == "Michigan" or state == "North Carolina":
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Michigan" or state == "New Hampshire" or state == "Pennsylvania" or state == "Wisconsin":
+            elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "New Hampshire" or state == "Pennsylvania" or state == "Wisconsin":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
             elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
@@ -318,6 +318,8 @@ for state in states:
     else:
         averages.loc[averages['State'] == state, 'Winner'] = 'No Polling Data'
 
+# save averages to a pickle file
+averages.to_pickle(os.path.join(os.path.dirname(__file__), 'polling_averages.pkl'))
 
 # Create Map of Harris Lead
 import geopandas as gpd

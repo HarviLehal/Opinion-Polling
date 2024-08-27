@@ -13,12 +13,15 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 headers = ['Date','NDP','BCU','Green','Con']
+headers = ['1','2','Date','3','NDP','BCU','Green','Con','4','5','6','7','8']
 parties = ['NDP','BCU','Green','Con']
+drops = ['1','2','3','4','5','6','7','8']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i].drop(["Polling firm","Client","Source","Others","Margin of error","Sample size","Polling method","Lead"], axis=1)
+  # d[i]=d[i].drop(["Polling firm","Client","Source","Others","Margin of error","Sample size","Polling method","Lead"], axis=1)
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   for j in range(len(d[i])):
