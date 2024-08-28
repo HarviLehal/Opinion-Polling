@@ -285,13 +285,15 @@ averages['Lead'] = averages['Harris'] - averages['Trump']
 # find largest lead for scaling
 
 max = np.max(np.abs(averages['Lead']))
-max = np.max(averages['Lead'])
-min = np.min(averages['Lead'])
+# max = np.max(averages['Lead'])
+# min = np.min(averages['Lead'])
 # round max up to nearest even number and min down to nearest even number
 max = np.ceil(max*100)/100
-min = np.floor(min*100)/100
-if min%2 != 0:
-    min -= 0.01
+min = -max
+
+
+from matplotlib.colors import TwoSlopeNorm
+norm = TwoSlopeNorm(vmin=min, vcenter=0, vmax=max)
 
 
 # Change to 1 for Blue States, -1 for Red States, 0 for Swing States if there is a NaN value
@@ -344,7 +346,7 @@ usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geo
 usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].scale(xfact=1.5, yfact=1.5)
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-usa.plot(column='Lead', ax=ax, legend=True, cmap='bwr_r', edgecolor='black')
+usa.plot(column='Lead', ax=ax, legend=True, cmap='bwr_r', edgecolor='black', norm=norm)
 plt.title('2024 US Presidential Election Polling Harris Lead', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
