@@ -18,9 +18,10 @@ d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
 # d$value[is.na(d$value)]<-0
-new<-d[d$variable!='Democrats',]
-new2<-d[d$variable=='Democrats',]
+new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
+new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
 new2<-new2[!is.na(new2$value),]
+h<-3.25
 # MAIN GRAPH
 
 # LOESS GRAPH
@@ -32,9 +33,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#003066","#9bc1e3","#0d7a3a",
                                 "#d51f33","#ef1520","#1be263",
                                 "#2d38cf","#f66004"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -48,14 +49,17 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
+  geom_hline(aes(yintercept=h), alpha=0.75,linetype="dashed",colour="#000000")+
+  geom_text(aes(election-2,h,label = "Party Threshold*", vjust = -1, hjust=1),colour="#000000", alpha=0.75,fontface="italic")+
   ylim(0,45)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Israeli General Election Seat Projection Since 2022') + 
-  labs(caption = "Labor-Meretz seats combined since 28 May 2024 for simplicity")
-
+  # labs(caption = "Labor-Meretz seats combined since 28 May 2024 for simplicity")
+  labs(caption = "* Below 3.25% is represented as N%, above 3.25% is N Seats")
+  
 plot1
 
 poll <- read_csv("Israel/poll.csv")

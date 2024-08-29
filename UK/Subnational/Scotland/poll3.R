@@ -73,7 +73,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 
 
 # BAR CHART!!
-poll <- read_csv("UK/Subnational/Scotland/poll2.csv")
+poll <- read_csv("UK/Subnational/Scotland/poll3.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 

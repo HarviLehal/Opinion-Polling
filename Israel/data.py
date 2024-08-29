@@ -59,6 +59,12 @@ for i in range(4):
     d[i].drop(d[i].index[[-1]],inplace=True)
   if i ==3:
     d[i].drop(d[i].index[[-2]],inplace=True)
+
+  # convert values of the form (n.nn%) to n.nn
+  for z in parties:
+    d[i][z] = [x.replace('%','') for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('(','') for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace(')','') for x in d[i][z].astype(str)]
   for z in parties: # replace any non-numeric values with NaN
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
     
