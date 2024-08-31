@@ -23,6 +23,9 @@ for i in range(3):
   d[i]=d[i].drop(["Polling firm", "Sample size", "Other", "Lead1", "Lead2", "Lead3", "Opp", "Gov", "OppSeat","GovSeat"], axis=1)
   # if i == 0:
   #   d[i].drop(d[i].index[[-1]],inplace=True)
+  if i == 0:
+    d[i]=d[i][d[i]['Date'] != '9 Jun']
+
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)

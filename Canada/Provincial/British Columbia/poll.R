@@ -71,6 +71,9 @@ d2 <- as.data.frame(d2)
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
+d1
+# set BCU to NaN
+d1[d1$variable == 'BCU',]$value <- NaN
 
 d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
@@ -83,10 +86,12 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#EBA562","#EF7B00","#8cdfe9","#19bfd2",
                                "#9EC953","#3D9F3B","#6F94ED","#00529F"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date != min(d3$Date),ifelse(d3$variable=='BCU',paste('Campaign Suspended'),paste(d3$value)),""),y = 0),
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(0.7), size=3.5, fontface="bold")+
+  # geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date),ifelse(d3$variable == 'BCU', paste('Campaign Suspended'), d3$value), ""), digits = 1),y = 0),
+            # hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

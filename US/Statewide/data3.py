@@ -78,7 +78,7 @@ def get_state_polls(state):
                 d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
             elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "Pennsylvania" or state == "Wisconsin":
                 d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
-            elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "West Virginia" or state == "Wyoming":
+            elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "Wyoming":
                 d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
             else:
                 d[i] = d[i].drop(["Poll source", "Sample size[a]", "Margin of error"], axis=1)
