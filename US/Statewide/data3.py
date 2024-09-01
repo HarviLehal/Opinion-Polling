@@ -50,7 +50,7 @@ def get_state_polls(state):
     # some tables also show more than just Harris and Trump, so we need to remove them
     # also not every table is polling data, so we need to remove those as well, the first column of all polling tables is poll source, so we can use that to filter out the non polling tables
     # Also, Harris only comes first in the columns in states where he won the 2020 election, so use if statement to set headers accordingly
-    if state in ['Arizona','California','Colorado', 'Connecticut', 'Delaware', 'Georgia', 'Hawaii', 'Illinois', 'Maine', 'Maryland', 'Massachusetts','Michigan','Minnesota','Nevada','New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'Oregon','Pennsylvania', 'Rhode Island', 'Vermont', 'Virginia', 'Washington','Wisconsin']:
+    if state in ['Arizona','California','Colorado', 'Connecticut', 'Delaware', 'Georgia', 'Hawaii', 'Illinois', 'Maine', 'Maryland', 'Massachusetts','Michigan','Minnesota','Nebraska','Nevada','New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'Oregon','Pennsylvania', 'Rhode Island', 'Vermont', 'Virginia', 'Washington','Wisconsin']:
         headers = ['Date', 'Harris', 'Trump']
         parties = ['Harris', 'Trump']
     else:

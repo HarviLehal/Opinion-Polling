@@ -41,5 +41,21 @@ d[1]=d[1].drop(d[1][d[1]['BSW']>0].index)
 
 data22 = pd.concat(d.values(), ignore_index=True)
 
-print(data22)
-data22.to_csv('German/State/Saxony/poll.csv', index=False)
+data22.drop(data22.index[[0]],inplace=True)
+
+
+C=31.5
+A=30.4
+L=4.8
+G=5.5
+S=7.6
+F=1.0
+B=11.5
+O=100-L-A-C-S-G-F-B
+
+new_row = pd.DataFrame({'Date':'01 September 2024','CDU':C,'AfD':A,'Linke':L,'Grüne':G,'SPD':S,'FDP':F,'BSW':B,'Others':O}, index=[0])
+D = pd.concat([new_row,data22]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+print(D)
+D.to_csv('German/State/Saxony/poll.csv', index=False)
