@@ -8,6 +8,7 @@ library(reshape2)
 library(readr)
 library(formattable)
 library(ggpubr)
+library(ggtext)
 
 py_run_file("German/State/Saxony/data.py")
 poll <- read_csv("German/State/Saxony/poll.csv")
@@ -94,27 +95,31 @@ d4<-rbind(d1,d2,d3)
 
 
 
+
+
+
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#0d2649","#6686ad","#10305B","#007eb3","#66c5ec","#009EE0",
-                               "#90295f","#dba2b6","#B43377","#407b2e","#9bcca1","#509A3A",
-                               "#b11121","#f08490","#DD1529","#c99800","#fadc7d","#FBBE00",
-                               "#611c40","#af7b96","#792350","#6d6d6d","#b8b8b8","#888888"))+
+  scale_fill_manual(values = c("#859ebd","#70839d","#10305B","#85d1f0","#66c5ec","#009EE0",
+                               "#e2b5c5","#d285ad","#B43377","#afd6b4","#96c289","#509A3A",
+                               "#f39da6","#eb737f","#DD1529","#fbe397","#fdd866","#FBBE00",
+                               "#bf95ab","#af7b96","#792350","#c6c6c6","#b8b8b8","#888888"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                paste(formattable::percent(d4$value, digits = 1)), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
                                ifelse(is.na(d4$value)==TRUE,"(New)",
                                       (paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(0.8), size=3.5, fontface="bold")+
+            hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold"),
+        # plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Results (21:00 Projection) \n 7 day Average \n (2019 Election)')+
+  ggtitle(' Results <br> 7 day Average <br> *(2019 Election)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 plot2
