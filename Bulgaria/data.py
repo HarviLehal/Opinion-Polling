@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','GERB','DPS','drop5','PP-DB','V','BSP','ITN','Velichie','Other','drop3','drop4']
+headers = ['drop1','Date','drop2','GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other','drop3','drop4']
 parties = ['GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other']
-drops = ['drop1','drop2','drop3','drop4','drop5']
+drops = ['drop1','drop2','drop3','drop4']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])

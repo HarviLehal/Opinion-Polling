@@ -2,6 +2,7 @@ import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import dateparser
+import numpy as np
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Scottish_Parliament_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -13,8 +14,8 @@ df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[1])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Alba","Reform"]
-parties = ['SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Alba","Reform"]
+headers = ['Date', 'SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Alba"]
+parties = ['SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Alba"]
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)
