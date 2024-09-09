@@ -91,8 +91,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Other','Undecided']
-parties = ['Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Other','Undecided']
+headers = ['Date','Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Aoyama','Other','Undecided']
+parties = ['Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Aoyama','Other','Undecided']
 d = {}
 
 for i in range(1):
@@ -131,7 +131,7 @@ D['total']=D[parties].sum(axis=1)
 D['decided']=D['total']-D['Undecided']
 
 print(D)
-parties = ['Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Other']
+parties = ['Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Noda','Motegi','Hayashi','Kato','Aoyama','Other']
 D[parties] = D[parties].div(D['decided'], axis=0)*100
 
 D = D.drop(["decided","total","Undecided"], axis=1)

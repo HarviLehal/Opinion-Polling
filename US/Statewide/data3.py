@@ -74,14 +74,34 @@ def get_state_polls(state):
             # if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona" or state
                 # i += 1
             d[i] = pd.DataFrame(df[i])
-            if state == "Delaware" or state == "Michigan" or state == "North Carolina" or state == "Wisconsin":
-                d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "Pennsylvania":
-                d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
-            elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "Wyoming":
-                d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
-            else:
-                d[i] = d[i].drop(["Poll source", "Sample size[a]", "Margin of error"], axis=1)
+            # if state == "Delaware" or state == "Michigan" or state == "North Carolina" or state == "Wisconsin":
+            #     d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
+            # elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "Pennsylvania":
+            #     d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
+            # elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "Wyoming":
+            #     d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
+            # else:
+            #     d[i] = d[i].drop(["Poll source", "Sample size[a]", "Margin of error"], axis=1)
+            d[i] = d[i].drop(["Poll source", "Margin of error"], axis=1)
+            w = "Sample size"
+            w1 = "Sample size[a]"
+            w2 = "Sample size[b]"
+            w3 = "Sample size[c]"
+            w4 = "Sample size[d]"
+            w5 = "Sample size[e]"
+            if w in d[i].columns:
+                d[i] = d[i].drop([w], axis=1)
+            if w1 in d[i].columns:
+                d[i] = d[i].drop([w1], axis=1)
+            if w2 in d[i].columns:
+                d[i] = d[i].drop([w2], axis=1)
+            if w3 in d[i].columns:
+                d[i] = d[i].drop([w3], axis=1)
+            if w4 in d[i].columns:
+                d[i] = d[i].drop([w4], axis=1)
+            if w5 in d[i].columns:
+                d[i] = d[i].drop([w5], axis=1)
+
             # the remaining first 3 columns are the date, Harris and trump, so we can rename them but remove the other columns for other candidates by only keeping the first 3
             d[i] = d[i].iloc[:, :3]
             d[i].columns = headers

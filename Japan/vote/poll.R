@@ -62,7 +62,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_break(c(old+6, start+1))+
   scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old-6,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2025 Japanese General election (Excluding No Party)')
+  ggtitle('Opinion Polling for the 2025 Japanese General election (Excluding No Party and Undecided)')
 plot1 
 
 
