@@ -517,4 +517,17 @@ plt.legend().remove()
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
 
-# print(polls[polls['State'] == 'Georgia'])
+
+averages['Lead'] = averages['Harris'] - averages['Trump']
+averages = averages.sort_values('Lead', ascending=False)
+for state in averages['State']:
+    if state not in polls['State'].unique():
+        continue
+    # print up to 2 significant figures 
+    if round(averages[averages['State'] == state]['Lead'].values[0], 3) == 0:
+        print(f'{state_abbr[state]}: {100*averages[averages["State"] == state]["Lead"].values[0]:.4f}%')
+    elif round(averages[averages['State'] == state]['Lead'].values[0], 100) == 0:
+        print(f'{state_abbr[state]}: TIE')
+
+    else:
+        print(f'{state_abbr[state]}: {100*averages[averages["State"] == state]["Lead"].values[0]:.2f}%')
