@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_Queensland_state_election"
+wikiurl="https://en.wikipedia.org/wiki/2024_Queensland_state_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -19,7 +19,7 @@ headers=['Date', 'Firm','Sample', 'Labor', 'LNP', 'Green', 'ONP', 'KAP', 'Other'
 parties = ['Labor', 'LNP', 'Green', 'ONP', 'KAP', 'Other', 'Labor2', 'Coalition2']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[-3])
   d[i].columns = headers
   d[i]=d[i].drop(["Firm","Sample"], axis=1)
   d[0].loc[len(d[0].index)-1,['Date']] = '31 October 2020'

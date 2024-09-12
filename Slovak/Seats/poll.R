@@ -30,16 +30,17 @@ d<- d %>%
 d <- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapply(value, width=7, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="center"))
+  mutate(Moving_Average = rollapply(value, width=2, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=FALSE, fill=NA, align="right"))
 # LOESS GRAPH
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#D82222","#00BDFF","#81163B",
                                 "#BED62F","#FFE17C","#78fc04",
-                                "#173A70","#e4010a","#f48c1f"))+
-  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d[d$Date!=old,])+
+                                "#173A70","#e4010a","#f48c1f","#4D0E90"))+
+  # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  stat_smooth(fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -91,7 +92,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#aefd68","#78fc04",
                                "#7489a9","#173A70",
                                "#ef676c","#e4010a",
-                               "#f8ba79","#f48c1f"))+
+                               "#f8ba79","#f48c1f",
+                               "#946ebc","#4D0E90"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),

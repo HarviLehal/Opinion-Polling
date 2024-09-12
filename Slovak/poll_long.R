@@ -34,11 +34,11 @@ d_new$value<-as.numeric(d_new$value)/100
 d_new$value<-formattable::percent(d_new$value)
 
 d <- d %>%
-  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Aliancia','SPOLU/Dem'='Demokrati'))
 d_new <- d_new %>%
-  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Aliancia','SPOLU/Dem'='Demokrati'))
 d_old <- d_old %>%
-  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Alliance','SPOLU/Dem'='Democrats'))
+  mutate(variable = recode(variable, 'OLaNO'  = 'OLaNOap', Rep='Republika', 'MKP/Alliance'='Aliancia','SPOLU/Dem'='Demokrati'))
 
 d<-d[d$variable!='OLaNO',]
 d_new<-d_new[d_new$variable!='OLaNO',]
@@ -50,7 +50,7 @@ d_old<-droplevels(d_old)
 
 
 
-d$variable <- factor(d$variable, levels = c("Smer","PS","Hlas","OLaNOap","KDH","SASKA","SNS","Republika","Alliance","Democrats","SR","LSNS","ZL"))
+d$variable <- factor(d$variable, levels = c("Smer","PS","Hlas","OLaNOap","KDH","SASKA","SNS","Republika","Aliancia","Demokrati","SR","ĽSNS","ZL"))
 
 # MAIN GRAPH
 
@@ -76,7 +76,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
 plot1
 
 # poll1 <- read_csv("Slovak/poll2.csv")
-# poll1 %>% rename('OLaNOap'=OLaNO, 'Republika'=Rep, 'Alliance'='MKP/Alliance','Democrats'='SPOLU/Dem')
+# poll1 %>% rename('OLaNOap'=OLaNO, 'Republika'=Rep, 'Aliancia'='MKP/Aliancia','Demokrati'='SPOLU/Dem')
 poll <- read_csv("Slovak/poll.csv")
 # poll<-dplyr::bind_rows(poll1,poll2)
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
@@ -103,7 +103,7 @@ d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
 
-d3$variable <- factor(d3$variable, levels = c("Smer","PS","Hlas","OLaNOap","KDH","SASKA","SNS","Republika","Alliance","Democrats","SR","LSNS"))
+d3$variable <- factor(d3$variable, levels = c("Smer","PS","Hlas","OLaNOap","KDH","SASKA","SNS","Republika","Aliancia","Demokrati","SR","ĽSNS"))
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
