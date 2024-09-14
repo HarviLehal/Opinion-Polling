@@ -18,7 +18,7 @@ d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
   # d[i]=d[i].drop(["Polling organisation", "Sample size","Margin of error", "Lead"], axis=1)
-  d[i]=d[i].drop(["Polling organisation", "Sample size", "Lead"], axis=1)
+  d[i]=d[i].drop(["Polling organisation", "Sample size", "Lead","Others"], axis=1)
   d[i].columns = headers
   # d[i]['Date'] = [x.replace('2–7, 14–15 Mar 2022','15 Mar 2022') for x in d[i]['Date'].astype(str)]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

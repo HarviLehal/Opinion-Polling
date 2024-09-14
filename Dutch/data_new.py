@@ -19,6 +19,8 @@ D=D.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
 
 headers = ['Date','PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
 parties = ['PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
+headers = ['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
+parties = ['PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
 D.columns = headers
 
 D['Date2'] = D['Date'].str.split('–').str[1]
@@ -34,11 +36,11 @@ for z in parties:
   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
-D['PvdA']=np.where(D['PvdA']==D['GL'], 0, D['PvdA'])
-Fusie=['PvdA','GL']
-D[Fusie] = D[Fusie].astype(float)
-D['PvdA-GL'] = D[Fusie].sum(axis=1)
-D = D.drop(Fusie, axis=1)
+# D['PvdA']=np.where(D['PvdA']==D['GL'], 0, D['PvdA'])
+# Fusie=['PvdA','GL']
+# D[Fusie] = D[Fusie].astype(float)
+# D['PvdA-GL'] = D[Fusie].sum(axis=1)
+# D = D.drop(Fusie, axis=1)
 
 D = D[['Date','PVV','PvdA-GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']]
 
