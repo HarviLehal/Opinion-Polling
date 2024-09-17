@@ -67,7 +67,8 @@ begin<-as.Date("21 07 2024", "%d %m %Y")
 plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d2[d2$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=1, data=d2[d2$Date!=old,])+
+  geom_hline(yintercept = 0.5, linetype="dashed",alpha=0.5)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=1, data=d2[d2$Date!=old,])+
   geom_line(aes(y = Moving_Average), linetype = "dashed",linewidth=1.5,alpha=0.35)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -88,7 +89,7 @@ plot1a<-ggplot(data=d2,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(begin,f,label = "Biden Drops Out", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_point(data=d2[d2$Date==old,],size=5, shape=18, alpha=0.75)+
   geom_point(data=d2[d2$Date==old,],size=5.25, shape=5, alpha=0.75)+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(),breaks=seq(0,0.6,0.02))+
   scale_x_break(c(old+1.5, old2))+
   scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old-1.5,election),guide = guide_axis(angle = -90))+
   ggtitle('2024 US Presidential Polling (Excluding Undecided/Other)*')+
