@@ -109,16 +109,18 @@ for i in range(1):
   # d[i] = d[i][d[i]['Approve'] == d[i]['Undecided']]
   for z in parties:
     d[i][z] = d[i][z].astype('string')
+    d[i][z] = d[i][z].str.split(' ').str[0]
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-  for z in parties:
-    d[i][z] = d[i][z].astype('float')
+  for z in parties: # replace any non-numeric values with NaN
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
 
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D=D.dropna(subset=['Ishiba'])
 
 
 D.to_csv('Japan/leadership/poll_new.csv', index=False)

@@ -20,7 +20,7 @@ d = {}
 for i in range(4):
   # i=j+1
   d[i]=pd.DataFrame(df[i+2])
-  d[i]=d[i].drop(["Poll source","Sample size[b]","Margin of error"], axis=1)
+  d[i]=d[i].drop(["Poll source","Sample size[c]","Margin of error"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]

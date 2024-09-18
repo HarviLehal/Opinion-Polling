@@ -40,7 +40,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
-        plot.caption = element_text(hjust = 0,face="italic"),
+        plot.caption = element_text(hjust = 0,face="bold.italic"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
@@ -94,17 +94,21 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   ))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.35, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Nový"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Nový"),
+                                                              ifelse(d3$variable=='STAN'|d3$variable=='Piráti',paste("(",d3$value,") †"),
+                                                              (paste("(",formattable::percent(d3$value,digits=1),")")))),""),y = 0),
             hjust=-0.00, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
+        plot.caption = element_text(hjust = 0,face="bold.italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' Týdenní průměr \n (Výsledky 2022)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
+  labs(caption = '† Piráti a Starostové')+
   coord_flip()
 plot2
 
