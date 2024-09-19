@@ -5,7 +5,7 @@ import dateparser
 import re
 import numpy as np
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,10 +14,10 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-df0=pd.DataFrame(df[13])
+df0=pd.DataFrame(df[-5])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
-parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green','Reform']
+headers = ['Date', 'Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']
+parties = ['Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)
@@ -34,10 +34,11 @@ for z in parties:
   data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z]]
   data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z]]
 data23 = data23[data23['Green'] != data23['Con']]
+
 for z in parties:
   data23[z] = data23[z].astype(str)
   data23[z] = data23[z].str.strip('%')
   data23[z] = data23[z].astype('float')
-  
 print(data23)
-data23.to_csv('UK/Subnational/Scotland/poll.csv', index=False)
+
+data23.to_csv('UK/Subnational/Scotland/poll_new.csv', index=False)
