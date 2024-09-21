@@ -25,6 +25,7 @@ d$value<-formattable::percent(d$value)
 next_election<-as.Date("31 12 2028", "%d %m %Y")
 election<-as.Date("30 09 2023", "%d %m %Y")
 old_election <-min(d$Date)
+maxdate<-max(d$Date)+14
 
 d_old <- reshape2::melt(poll1, id.vars="Date")
 d_old$value<-as.numeric(d_old$value)/100
@@ -61,18 +62,26 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#173A70","#e4010a","#f48c1f",
                                 "#4D0E90","#034B9F","#005222","#FDBB12"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d_old[d_old$Date!=election&d_old$Date!=old_election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_new[d_new$Date!=election,])+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=old_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), max(d$Date)+30)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=next_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old_election|d$Date==election,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old_election|d$Date==election,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old_election|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old_election,maxdate),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Slovak Parliamentary Election')
 plot1
 
 # poll1 <- read_csv("Slovak/poll2.csv")
@@ -121,16 +130,18 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#6893c5","#034B9F",
                                "#66977a","#005222"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+            hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
+            hjust=-0.1, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average \n (2023 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  ggtitle('14 day Average \n (2023 Election)')+
+  scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
   coord_flip()
 
 

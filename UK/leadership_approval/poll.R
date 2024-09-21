@@ -22,16 +22,17 @@ old<-as.Date("04 07 2024", "%d %m %Y")
 # election<-as.Date("15 08 2029", "%d %m %Y")
 election<-max(d$Date)+14
 
-new<-d[d$variable!='Farage',]
-new2<-d[d$variable=='Farage',]
+new<-d[d$variable!='Denyer'|d$variable!='Adams',]
+new2<-d[d$variable=='Denyer'&d$variable=='Adams',]
 new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#528D6B"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.8,linewidth=0.75, data=d)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new)+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new2)+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

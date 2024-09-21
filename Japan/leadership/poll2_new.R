@@ -16,6 +16,8 @@ library(data.table)
 library(hrbrthemes)
 poll <- read_csv("Japan/leadership/poll2_new.csv")
 d <- reshape2::melt(poll, id.vars="Date")
+d<-d[d$variable!='Other',]
+
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
@@ -62,6 +64,8 @@ d1$Date <- as.Date(d1$Date)
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
+d1<-d1[d1$variable!='Other',]
+d1<-droplevels(d1)
 
 plot2<-ggplot(data=d1, aes(x=forcats::fct_rev(variable), y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
@@ -87,3 +91,7 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Japan/leadership/plot2_new.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Japan/leadership/plot_wiki2_new.svg",width = 15, height = 7.5)
+aaa=readLines("Japan/leadership/plot_wiki2_new.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Japan/leadership/plot_wiki2_new.svg")

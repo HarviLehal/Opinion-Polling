@@ -95,9 +95,9 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#f8ba79","#f48c1f",
                                "#946ebc","#4D0E90"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+            hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y=0),
+                hjust=-0.1, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
