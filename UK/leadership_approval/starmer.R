@@ -11,30 +11,21 @@ library(ggpubr)
 library(zoo)
 library(dplyr)
 
-py_run_file("UK/leadership_approval/data.py")
-poll <- read_csv("UK/leadership_approval/net_approval.csv")
+poll <- read_csv("UK/leadership_approval/starmer_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
-# d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("04 07 2024", "%d %m %Y")
-# election<-as.Date("15 08 2029", "%d %m %Y")
 election<-max(d$Date)+14
 
-# new<-d[d$variable!='Denyer'|d$variable!='Adams',]
-# new2<-d[d$variable=='Denyer'&d$variable=='Adams',]
-# new2<-new2[!is.na(new2$value),]
+
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
-  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00"
-                                # ,"#33a22b","#528D6B"
-                                ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new2)+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
+  scale_color_manual(values = c("#33a22b","#c70000"
+  ))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -49,15 +40,15 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   scale_x_date(date_breaks = "2 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
-  ggtitle('Net Leadership Approval for British Party Leaders')
+  # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  ggtitle('Keir Starmer Approval Rating')
 
 
 plot1
 
 # BAR CHART!!
 
-poll <- read_csv("UK/leadership_approval/net_approval.csv")
+poll <- read_csv("UK/leadership_approval/starmer_approval.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -76,10 +67,8 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#c70000","#0077b6","#12B6CF",
-                               "#e05e00"
-                               # ,"#33a22b","#528D6B"
-                               ))+
+  scale_fill_manual(values = c("#33a22b","#c70000"
+  ))+
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
@@ -99,4 +88,4 @@ plot2
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
-ggsave(plot=plot, file="UK/leadership_approval/plot.png",width = 20, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="UK/leadership_approval/plot_starmer.png",width = 20, height = 7.5, type = "cairo-png")

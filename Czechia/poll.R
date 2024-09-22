@@ -10,6 +10,7 @@ library(formattable)
 library(svglite)
 library(Rcpp)
 library(ggpubr)
+library(ggtext)
 
 py_run_file("Czechia/data.py")
 poll <- read_csv("Czechia/poll.csv")
@@ -89,9 +90,12 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c(
-    "#6694c8","#004da3","#977ed6","#5228ba","#e16fa5","#cd0f69","#999999","#555555","#69aed7","#0578bc",
-    "#6685ff","#0033ff","#ff9fa0","#ff5f61","#da696a","#c10506","#a0d294","#60b44c","#6dc4da","#0b9dc2"
-  ))+
+    "#6694c8","#004da3","#977ed6","#5228ba",
+    "#e16fa5","#cd0f69","#999999","#555555",
+    "#69aed7","#0578bc","#6685ff","#0033ff",
+    "#ff9fa0","#ff5f61","#da696a","#c10506",
+    "#a0d294","#60b44c","#6dc4da","#0b9dc2"
+    ))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.35, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Nový"),
@@ -101,12 +105,12 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold"),
         plot.caption = element_text(hjust = 0,face="bold.italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Týdenní průměr \n (Výsledky 2022)')+
+  ggtitle(' Týdenní průměr <br> *(Výsledky 2021)*')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   labs(caption = '† Piráti a Starostové')+
   coord_flip()

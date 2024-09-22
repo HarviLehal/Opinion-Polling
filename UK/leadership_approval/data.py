@@ -74,6 +74,8 @@ data['Adams'] = data_adams['Approval'] - data_adams['Disapproval']
 
 data
 
+data=data.drop(["Denyer", "Adams"], axis=1)
+
 data.to_csv('UK/leadership_approval/net_approval.csv', index=False)
 data_starmer.to_csv('UK/leadership_approval/starmer_approval.csv', index=False)
 data_sunak.to_csv('UK/leadership_approval/sunak_approval.csv', index=False)

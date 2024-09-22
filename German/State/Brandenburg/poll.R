@@ -28,8 +28,10 @@ new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
-  scale_color_manual(values = c("#DD1529","#009EE0","#10305B",
-                                "#509A3A","#B43377","#0559a6",
+  scale_color_manual(values = c("#DD1529","#009EE0",
+                                # "#10305B",
+                                "#50b6c2",
+                                "#509A3A","#B43377","#f28800",
                                 "#FBBE00","#792350","#888888"))+
   # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old,])+
@@ -63,9 +65,10 @@ plot1
 
 poll <- read_csv("German/State/Brandenburg/poll.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date))
+Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
+d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
@@ -75,6 +78,7 @@ d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
+d3 <- as.data.frame(d3)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
@@ -84,33 +88,43 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
-d3<-rbind(d2,d1)
+d3 <- reshape2::melt(d3, id.vars="Date")
+d3$value<-as.numeric(d3$value)/100
+d3$value<-formattable::percent(d3$value, digits = 1)
+
+d4<-rbind(d1,d2,d3)
 
 
 
 
-plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#eb737f","#DD1529","#66c5ec","#009EE0",
-                               "#70839d","#10305B","#96c289","#509A3A",
-                               "#d285ad","#B43377","#699bca","#0559a6",
-                               "#fdd866","#FBBE00","#af7b96","#792350","#b8b8b8","#888888"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+  scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529","#85d1f0","#66c5ec","#009EE0",
+                               # "#859ebd","#70839d","#10305B",
+                               "#b9e2e7","#96d3da","#50b6c2",
+                               "#afd6b4","#96c289","#509A3A",
+                               "#e2b5c5","#d285ad","#B43377","#facf99","#f7b866","#f28800",
+                               "#fbe397","#fdd866","#FBBE00","#bf95ab","#af7b96","#792350",
+                               "#c6c6c6","#b8b8b8","#888888"))+
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               paste(formattable::percent(d4$value, digits = 1)), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
+                               ifelse(is.na(d4$value)==TRUE,"(New)",
+                                      (paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
+            hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 7 day average \n (2021 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  ggtitle('Results <br> 7 day Average <br> *(2019 Election)*')+
+  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
-
 plot2
+# plot1<-plot1+theme(legend.position = "none")
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 

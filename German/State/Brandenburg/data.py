@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-df0=pd.DataFrame(df[-1])
+df0=pd.DataFrame(df[-2])
 data22 = df0.drop(["Polling firm", "Sample size","Lead"], axis=1)
 headers = ['Date','SPD','AfD','CDU','Grüne','Linke','BVB/FW','FDP','BSW','Others']
 parties = ['SPD','AfD','CDU','Grüne','Linke','BVB/FW','FDP','BSW','Others']
@@ -45,18 +45,20 @@ d[1]=d[1].drop(d[1][d[1]['BSW']>0].index)
 data22 = pd.concat(d.values(), ignore_index=True)
 
 print(data22)
-# 
-# L=12.9
-# A=32.8
-# C=23.8
-# S=6.1
-# G=3.3
-# F=1.2
-# B=15.5
-# O=100-L-A-C-S-G-F-B
-# 
-# new_row = pd.DataFrame({'Date':'01 September 2024','Linke':L,'AfD':A,'CDU':C,'SPD':S,'Grüne':G,'FDP':F,'BSW':B,'Others':O}, index=[0])
-# D = pd.concat([new_row,data22]).reset_index(drop=True)
-# D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+data22.drop(data22.index[[0]],inplace=True)
 
-data22.to_csv('German/State/Brandenburg/poll.csv', index=False)
+S=30.9
+A=29.2
+C=12.1
+G=4.1
+L=3.0
+BV=2.6
+F=0.8
+B=13.5
+O=100-L-A-C-S-G-F-B-BV
+
+new_row = pd.DataFrame({'Date':'22 September 2024','SPD':S,'AfD':A,'CDU':C,'Grüne':G,'Linke':L,'BVB/FW':BV,'FDP':F,'BSW':B,'Others':O}, index=[0])
+D = pd.concat([new_row,data22]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+D.to_csv('German/State/Brandenburg/poll.csv', index=False)
