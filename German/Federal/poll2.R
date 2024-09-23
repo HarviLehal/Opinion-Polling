@@ -28,8 +28,8 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#B43377","#792350","#DD1529","#10305B"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#B43377","#792350","#DD1529","#005974"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -59,7 +59,7 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#B43377","#792350","#DD1529","#10305B"))+
+  scale_color_manual(values = c("#B43377","#792350","#DD1529","#005974"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -117,7 +117,7 @@ geom_bar(stat="identity",width=0.9, position=position_dodge())+
 scale_fill_manual(values = c("#dba2b6","#B43377",
                              "#af7b96","#792350",
                              "#f08490","#DD1529",
-                             "#6686ad","#10305B"))+
+                             "#669bac","#005974"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),y = 0),

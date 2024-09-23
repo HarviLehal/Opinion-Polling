@@ -45,20 +45,20 @@ d[1]=d[1].drop(d[1][d[1]['BSW']>0].index)
 data22 = pd.concat(d.values(), ignore_index=True)
 
 print(data22)
-data22.drop(data22.index[[0]],inplace=True)
+# data22.drop(data22.index[[0]],inplace=True)
+# 
+# S=30.9
+# A=29.2
+# C=12.1
+# G=4.1
+# L=3.0
+# BV=2.6
+# F=0.8
+# B=13.5
+# O=100-L-A-C-S-G-F-B-BV
+# 
+# new_row = pd.DataFrame({'Date':'22 September 2024','SPD':S,'AfD':A,'CDU':C,'Grüne':G,'Linke':L,'BVB/FW':BV,'FDP':F,'BSW':B,'Others':O}, index=[0])
+# D = pd.concat([new_row,data22]).reset_index(drop=True)
+# D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
-S=30.9
-A=29.2
-C=12.1
-G=4.1
-L=3.0
-BV=2.6
-F=0.8
-B=13.5
-O=100-L-A-C-S-G-F-B-BV
-
-new_row = pd.DataFrame({'Date':'22 September 2024','SPD':S,'AfD':A,'CDU':C,'Grüne':G,'Linke':L,'BVB/FW':BV,'FDP':F,'BSW':B,'Others':O}, index=[0])
-D = pd.concat([new_row,data22]).reset_index(drop=True)
-D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-
-D.to_csv('German/State/Brandenburg/poll.csv', index=False)
+data22.to_csv('German/State/Brandenburg/poll.csv', index=False)

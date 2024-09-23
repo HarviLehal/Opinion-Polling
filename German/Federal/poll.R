@@ -27,9 +27,9 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
+  scale_color_manual(values = c("#DD1529","#005974","#509A3A",
                                 "#FBBE00","#AA692F","#B43377","#792350"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   # theme(axis.title=element_blank(),legend.title = element_blank(),
   #       legend.key.size = unit(2, 'lines'),
   #       legend.position = "none")+
@@ -70,7 +70,7 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#10305B","#509A3A",
+  scale_color_manual(values = c("#DD1529","#005974","#509A3A",
                                 "#FBBE00","#AA692F","#B43377","#792350"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
@@ -126,7 +126,7 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#f08490","#DD1529","#6686ad","#10305B",
+scale_fill_manual(values = c("#f08490","#DD1529","#669bac","#005974",
                              "#9bcca1","#509A3A","#fadc7d","#FBBE00",
                              "#d6b49f","#AA692F","#dba2b6","#B43377",
                              "#af7b96","#792350"))+

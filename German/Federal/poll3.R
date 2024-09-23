@@ -33,7 +33,7 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#FBBE00","#10305B",
+  scale_color_manual(values = c("#DD1529","#FBBE00","#005974",
                                 "#509A3A","#AA692F","#E5963F",
                                 "#8EE53F","#000000","#0489DB","#770004"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
@@ -68,7 +68,7 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#770004","#10305B","#DD1529",
+  scale_color_manual(values = c("#770004","#005974","#DD1529",
                                 "#509A3A","#FBBE00","#E5963F",
                                 "#8EE53F","#0489DB","#AA692F"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
@@ -129,7 +129,7 @@ hx$value<-formattable::percent(hx$value, digits = 1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#ad6668","#770004","#70839d","#10305B",
+scale_fill_manual(values = c("#ad6668","#770004","#669bac","#005974",
                              "#eb737f","#DD1529","#96c289","#509A3A",
                              "#fdd866","#FBBE00","#f5bb7b","#Ee8d23",
                              "#bbef8c","#8EE53F","#68b8e9","#0489DB",

@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','GERB','drop5','DPS','PP-DB','V','BSP','ITN','Velichie','Other','drop3','drop4']
+headers = ['drop1','Date','drop2','GERB','drop5','DPS','PP-DB','V','BSP','ITN','Velichie','Other','drop6','drop3','drop4']
 parties = ['GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other']
-drops = ['drop1','drop2','drop3','drop4','drop5']
+drops = ['drop1','drop2','drop3','drop4','drop5','drop6']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
@@ -35,6 +35,7 @@ for i in range(1):
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)

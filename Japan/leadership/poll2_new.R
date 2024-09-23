@@ -32,7 +32,7 @@ plot1<-ggplot(data=d[d$Date!=election,],aes(x=Date,y=value, colour=variable, gro
   scale_color_manual(values = c("#224192","#9370db","#f2ba42","#228b22",
                                 "#ff69b4","#ff7538","#43b3ae","#b61b28",
                                 "#679fd7","#444444"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.9,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -54,7 +54,7 @@ poll <- read_csv("Japan/leadership/poll2_new.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -83,7 +83,7 @@ plot2<-ggplot(data=d1, aes(x=forcats::fct_rev(variable), y=value,fill=interactio
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   coord_flip()+
-  ggtitle('7 day average')
+  ggtitle('14 day average')
 plot2
 
 

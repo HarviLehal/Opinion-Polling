@@ -30,7 +30,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c("#DD1529","#009EE0",
                                 # "#10305B",
-                                "#50b6c2",
+                                "#005974",
                                 "#509A3A","#B43377","#f28800",
                                 "#FBBE00","#792350","#888888"))+
   # geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
@@ -101,7 +101,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529","#85d1f0","#66c5ec","#009EE0",
                                # "#859ebd","#70839d","#10305B",
-                               "#b9e2e7","#96d3da","#50b6c2",
+                               "#99bdc7","#669bac","#005974",
                                "#afd6b4","#96c289","#509A3A",
                                "#e2b5c5","#d285ad","#B43377","#facf99","#f7b866","#f28800",
                                "#fbe397","#fdd866","#FBBE00","#bf95ab","#af7b96","#792350",
