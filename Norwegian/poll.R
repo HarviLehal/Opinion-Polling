@@ -30,7 +30,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#D82C3C","#AC347D","#6F9323","#CB182D","#2D843B",
                                 "#236666","#F9DA5A","#3064F1","#2760A7","#08b4cc"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -48,7 +48,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2025 Norwegian Parliamentary Election')
-
+plot1
 
 
 poll <- read_csv("Norwegian/poll.csv")
@@ -89,7 +89,7 @@ scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("(New)"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
+            hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

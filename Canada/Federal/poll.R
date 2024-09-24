@@ -24,23 +24,12 @@ election<-as.Date("20 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
-# LOESS GRAPH
-# d<- d %>%
-#   group_by(variable) %>%
-#   arrange(Date) %>%
-#   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 20, Date), mean,na.rm=TRUE))
-# 
-# d <- d %>%
-#   group_by(variable) %>%
-#   arrange(Date) %>%
-#   mutate(Moving_Average = rollapply(value, width=5, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="left"))
-
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#00529F","#D91920",
                                 "#EF7B00","#127C73",
                                 "#442D7B","#3D9F3B"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

@@ -23,11 +23,11 @@ old <-min(d$Date)
 max<-max(d$Date)
 
 z <- d[d$Date!=old,]
-z <- z %>%
+
+z<- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapply(value, width=14, FUN=function(x) mean(x, na.rm=TRUE), by=1, by.column=TRUE, partial=TRUE, fill=NA, align="right"))
-
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -37,10 +37,19 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#53C74A","#E81718","#45B6B1",
                                 "#226B26","#7C1B1C","#DD601C",
                                 "#43A6EB","#552C83","#262B57"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d)+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   xlim(min(d$Date), max)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
@@ -58,14 +67,23 @@ plot2<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#226B26","#7C1B1C","#DD601C",
                                 "#43A6EB","#552C83","#262B57"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
+  theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none")+
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
+        axis.text.x.top = element_blank(),
+        axis.ticks.x.top = element_blank(),
+        axis.line.x.top = element_blank())+
   xlim(min(d$Date), max)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,max))
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))
 plot2
 # BAR CHART
 
@@ -98,11 +116,13 @@ plot3<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#7aa67d","#226B26","#b07677","#7C1B1C","#eba077","#DD601C",
                                "#8ecaf3","#43A6EB","#9980b5","#552C83","#7d809a","#262B57"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5)+
+            hjust=ifelse(d3$value<10,-1.45,-0.45), color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
-                y = 0),hjust=0, color="#404040", position = position_dodge(1), size=3.5)+
+                y = 0),hjust=-0.1, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+

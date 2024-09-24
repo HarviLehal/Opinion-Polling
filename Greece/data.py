@@ -35,6 +35,7 @@ for i in range(1):
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].astype('float')
     
 d[0].drop(d[0].index[[-1,-3]],inplace=True)

@@ -40,8 +40,8 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf","#0f428e"
                                 # "#666666"
                                 ))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old,])+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.55,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

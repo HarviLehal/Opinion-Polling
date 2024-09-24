@@ -24,7 +24,7 @@ max<-max(d$Date)
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 30, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -126,7 +126,7 @@ plot3<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
   geom_bar(position="fill", stat="identity")+
   geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Government",paste("Government:",d3$value),paste("Opposition:",d3$value)),
                                                      ifelse(d3$variable=="Government",paste("Current Government:",d3$value),paste("Current Opposition:",d3$value))),
-                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Government",0.9,0.1)),
+                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Government",0.89,0.11)),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
