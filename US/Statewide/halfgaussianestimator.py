@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import scipy.stats as stats
-from scipy.stats import norm
+from scipy.stats import halfnorm
 from tqdm import tqdm
 
 Red_States = ['Alabama', 'Arkansas', 'Idaho', 'Indiana','Kansas','Kentucky','Louisiana','Mississippi','Missouri','Montana','Nebraska','North Dakota','Oklahoma','South Carolina','South Dakota','Tennessee','Utah','West Virginia','Wyoming']
@@ -21,8 +21,9 @@ df = pd.read_pickle('US/Statewide/polling_averages.pkl')
 # take the polls 
 
 # Function to simulate the election
+sigma = pd.read_csv('US/Statewide/2020_error2.csv')
 
-def simulate_election(df, n_simulations, sigma=0.1):
+def simulate_election(df, n_simulations):
     results = []
     # Initialize the number of electoral votes for each candidate
     electoral_votes = {'Harris': 0, 'Trump': 0}
@@ -44,8 +45,9 @@ def simulate_election(df, n_simulations, sigma=0.1):
                 harris_poll = df.iloc[i]['Harris']
                 trump_poll = df.iloc[i]['Trump']
                 # Simulate the election
-                harris_votes = np.random.normal(harris_poll, sigma)
-                trump_votes = np.random.normal(trump_poll, sigma)
+                harris_votes = np.random.normal(harris_poll, 2*np.abs(sigma.iloc[i]['Error']))
+                trump_votes = np.random.normal(trump_poll, 2*np.abs(sigma.iloc[i]['Error']))
+
                 # Update the electoral votes
                 if harris_votes > trump_votes:
                     electoral_votes['Harris'] += df.iloc[i]['votes']
@@ -59,9 +61,8 @@ def simulate_election(df, n_simulations, sigma=0.1):
 # margin of error in polls tends to be 5% so convert to standard deviation
 
 N = 100000
-sigma = 0.05
 # Run the simulation
-results = simulate_election(df, n_simulations=N, sigma=sigma)
+results = simulate_election(df, n_simulations=N)
 
 # Convert the results to a DataFrame
 results_df = pd.DataFrame(results)
@@ -88,11 +89,14 @@ sns.histplot(results_df['Trump'], kde=True, color='red', label='Trump', alpha=0.
 min = np.min(union)
 max = np.max(union)
 
-plt.text(max-80, 5000, f'P(Harris Wins) = {harris_wins:.2f}%', fontsize=12, color='blue') 
-plt.text(min+10, 5000, f'P(Trump Wins) = {trump_wins:.2f}%', fontsize=12, color='red')
+if harris_wins > trump_wins:
+    plt.text(max-80, 5500, f'P(Harris Wins) = {harris_wins:.2f}%', fontsize=12, color='blue') 
+    plt.text(min+10, 5500, f'P(Trump Wins) = {trump_wins:.2f}%', fontsize=12, color='red')
+else:
+    plt.text(max-80, 5500, f'P(Trump Wins) = {trump_wins:.2f}%', fontsize=12, color='red')
+    plt.text(min+10, 5500, f'P(Harris Wins) = {harris_wins:.2f}%', fontsize=12, color='blue')
 plt.xlabel('Electoral Votes')
 plt.ylabel('Frequency')
-plt.title(f'Simulated US Election Results using 7-day Polling Averages, $N=100,000$ & $\sigma=0.05$')
+plt.title(f'Simulated US Election Results using 7-day Polling Averages, $N=100,000$ & $\sigma$ is based on 2020 error')
 plt.legend()
 plt.show()  
-
