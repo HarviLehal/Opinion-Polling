@@ -30,7 +30,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#FFCC00","#ed1c24","#870000","#3db5e6","#951b88","#007d60","#404040","#b61f23"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # bbplot::bbc_style()+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -44,7 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  scale_x_date(date_breaks = "3 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   # xlim(min(d$Date), election)+
   geom_vline(xintercept=old,

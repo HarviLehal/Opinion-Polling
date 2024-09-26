@@ -32,7 +32,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf",
                                 "#999999"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   # bbplot::bbc_style()+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

@@ -32,7 +32,7 @@ plot1<-ggplot(data=d[d$Date!=election,],aes(x=Date,y=value, colour=variable, gro
   scale_color_manual(values = c("#224192","#9370db","#f2ba42","#228b22",
                                 "#ff69b4","#ff7538","#43b3ae","#b61b28",
                                 "#679fd7","#444444"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.9,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
