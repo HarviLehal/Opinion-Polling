@@ -21,7 +21,7 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.04)
 
-election<-as.Date("23 10 2024", "%d %m %Y")
+election<-as.Date("29 09 2024", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 new<-d[d$variable!='KPÖ'&d$variable!='BIER'&d$variable!='HC'&d$variable!='MFG',]

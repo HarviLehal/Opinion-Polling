@@ -26,7 +26,7 @@ hy<-formattable::percent(h$value[h$Date==min(h$Date)]-0.01)
 h$value<-formattable::percent(h$value)
 h$Date <- as.Date(h$Date, "%Y-%m-%d")
 
-election<-as.Date("23 10 2024", "%d %m %Y")
+election<-as.Date("29 09 2024", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 

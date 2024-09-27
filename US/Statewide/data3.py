@@ -46,10 +46,6 @@ def get_state_polls(state):
     tables = soup.find_all('table', class_="wikitable")
     df = pd.read_html(str(tables))
     p = re.compile(r'\[[a-z]+\]')
-    # some states have multiple tables, so we need to concatenate them
-    # some tables also show more than just Harris and Trump, so we need to remove them
-    # also not every table is polling data, so we need to remove those as well, the first column of all polling tables is poll source, so we can use that to filter out the non polling tables
-    # Also, Harris only comes first in the columns in states where he won the 2020 election, so use if statement to set headers accordingly
     if state in ['Arizona','California','Colorado', 'Connecticut', 'Delaware', 'Georgia', 'Hawaii', 'Illinois', 'Maine', 'Maryland', 'Massachusetts','Michigan','Minnesota','Nevada','New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'Oregon','Pennsylvania', 'Rhode Island', 'Vermont', 'Virginia', 'Washington','Wisconsin']:
         headers = ['Date', 'Harris', 'Trump']
         parties = ['Harris', 'Trump']
@@ -60,51 +56,40 @@ def get_state_polls(state):
     for i in range(len(df)):
         if state == "Minnesota":
             z = 'Kamala Harris DFL'
-        # elif state == "Nevada":
-        #     z = 'Kamala Harris .mw-parser-output .nobold{font-weight:normal}Democratic'
+        elif state == "North Dakota":
+            z = 'Kamala Harris Democratic-NPL'
         else:
             z = 'Kamala Harris Democratic'
         if z in df[i].columns:
-            # skip first accepted table for Florida as it is not polling data
-            # if state == "Florida":
-                # i += 2
+
             y = 'Dates updated'
             if y in df[i].columns:
                 i +=1
-            # if state == "Michigan" or state == "Pennsylvania" or state == "Wisconsin" or state == "Arizona" or state
-                # i += 1
             d[i] = pd.DataFrame(df[i])
-            # if state == "Delaware" or state == "Michigan" or state == "North Carolina" or state == "Wisconsin":
-            #     d[i] = d[i].drop(["Poll source", "Sample size[c]", "Margin of error"], axis=1)
-            # elif state == "Arizona" or state == "California" or state == "Florida" or state == "Georgia" or state == "Illinois" or state == "Iowa" or state == "Massachusetts" or state == "Nevada" or state == "New Hampshire" or state == "Pennsylvania":
-            #     d[i] = d[i].drop(["Poll source", "Sample size[b]", "Margin of error"], axis=1)
-            # elif state == "Idaho" or state == "Indiana" or state == "North Dakota" or state == "Wyoming":
-            #     d[i] = d[i].drop(["Poll source", "Sample size", "Margin of error"], axis=1)
-            # else:
-            #     d[i] = d[i].drop(["Poll source", "Sample size[a]", "Margin of error"], axis=1)
             d[i] = d[i].drop(["Poll source", "Margin of error"], axis=1)
-            w = "Sample size"
-            w1 = "Sample size[a]"
-            w2 = "Sample size[b]"
-            w3 = "Sample size[c]"
-            w4 = "Sample size[d]"
-            w5 = "Sample size[e]"
-            if w in d[i].columns:
-                d[i] = d[i].drop([w], axis=1)
-            if w1 in d[i].columns:
-                d[i] = d[i].drop([w1], axis=1)
-            if w2 in d[i].columns:
-                d[i] = d[i].drop([w2], axis=1)
-            if w3 in d[i].columns:
-                d[i] = d[i].drop([w3], axis=1)
-            if w4 in d[i].columns:
-                d[i] = d[i].drop([w4], axis=1)
-            if w5 in d[i].columns:
-                d[i] = d[i].drop([w5], axis=1)
-
-            # the remaining first 3 columns are the date, Harris and trump, so we can rename them but remove the other columns for other candidates by only keeping the first 3
+            # psub the column headers to remove the citation numbers
+            for z in d[i].columns:
+                d[i].rename(columns={z: p.sub('', z)}, inplace=True)
+            d[i] = d[i].drop("Sample size", axis=1)
             d[i] = d[i].iloc[:, :3]
-            d[i].columns = headers
+            # rename the columns to the headers we want
+            # if 
+            d[i].rename(columns={d[i].columns[0]: 'Date'}, inplace=True)
+            z = 'Kamala Harris Democratic'
+            z1 = 'Kamala Harris DFL'
+            z2 = 'Donald Trump Republican'
+            z3 = 'Donald J. Trump Republican'
+            z4 = 'Kamala Harris Democratic-NPL'
+            if z in d[i].columns:
+                d[i].rename(columns={z: 'Harris'}, inplace=True)
+            if z1 in d[i].columns:
+                d[i].rename(columns={z1: 'Harris'}, inplace=True)
+            if z2 in d[i].columns:
+                d[i].rename(columns={z2: 'Trump'}, inplace=True)
+            if z3 in d[i].columns:
+                d[i].rename(columns={z3: 'Trump'}, inplace=True)
+            if z4 in d[i].columns:
+                d[i].rename(columns={z4: 'Harris'}, inplace=True)
             for z in parties:
                 d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
                 d[i][z] = [x.replace('-', str(np.NaN)) for x in d[i][z]]
@@ -113,14 +98,10 @@ def get_state_polls(state):
                 d[i][z] = [x.replace('TBC', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('TBA', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('?', str(np.NaN)) for x in d[i][z]]
-            # d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
-            # d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
             d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
             d[i]['Date'] = d[i]['Date2']
             d[i] = d[i].drop(['Date2'], axis=1)
             d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-            # d[i] = d[i][d[i]['Harris'] != d[i]['Trump']]
-            # stop loop once we have found the first polling table
             if len(d[i]) > 0:
                 break
     if len(d) > 0:
@@ -137,6 +118,7 @@ def get_state_polls(state):
     
     # drop rows where both Harris and Trump are NaN
     D = D.dropna(subset=['Harris', 'Trump'], how='all')
+    D = D.dropna(subset=['Trump'], how='all')
     D['total']=D[parties].sum(axis=1)
     D['Harris'] = D['Harris']/D['total']
     D['Trump'] = D['Trump']/D['total']
@@ -183,8 +165,6 @@ averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
     if state not in polls['State'].unique():
         continue
-    # averages = averages.append({'State': state, 'Harris': polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean(), 'Trump': polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()}, ignore_index=True)
-    # causes error AttributeError: 'DataFrame' object has no attribute 'append' so replace with following line that works for pandas dataframes
     averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Harris': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean()], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()]})])    
     if averages[averages['State'] == state]['Harris'].values[0] > averages[averages['State'] == state]['Trump'].values[0]:
         averages.loc[averages['State'] == state, 'Winner'] = 'Harris'

@@ -96,7 +96,7 @@ parties = ['Ishiba','Koizumi','Kono','Takaichi','Kamikawa','Kobayashi','Motegi',
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[-3])
+  d[i]=pd.DataFrame(df[-4])
   d[i]=d[i].drop(["Sample size[vague]","Polling firm"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
