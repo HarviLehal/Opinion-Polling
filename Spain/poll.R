@@ -23,10 +23,6 @@ d$value<-formattable::percent(d$value)
 old<-as.Date("23 07 2023", "%d %m %Y")
 election<-as.Date("22 07 2027", "%d %m %Y")
 
-new<-d[d$variable!='SALF',]
-new2<-d[d$variable=='SALF',]
-new2<-new2[!is.na(new2$value),]
-
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -34,9 +30,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91","#9369f5",
                                 "#63be21","#ffb232","#00c7ae",
                                 "#4aae4a","#b5cf18","#795a44"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new[new$Date!=old,])+
-  geom_smooth(method = "lm",formula=y ~ I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -102,11 +96,11 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#af9c8f","#795a44"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date),
                                paste(formattable::percent(d3$value)), ""),y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+            hjust=-0.2, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),
                                ifelse(is.na(d3$value)==TRUE,"(New)",
                                       (paste("(",formattable::percent(d3$value),")"))),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
+            hjust=0, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

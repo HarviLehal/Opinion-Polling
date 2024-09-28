@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','GERB','drop5','DPS','PP-DB','V','BSP','ITN','Velichie','Other','drop6','drop3','drop4']
-parties = ['GERB','DPS','PP-DB','V','BSP','ITN','Velichie','Other']
+headers = ['drop1','Date','drop2','GERB','DPS1','DPS2','PP-DB','V','BSP','ITN','Velichie','drop3','Other','drop4','drop5','drop6']
+parties = ['GERB','DPS1','DPS2','PP-DB','V','BSP','ITN','Velichie','Other']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6']
 d = {}
 for i in range(1):
@@ -41,4 +41,22 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
 
-D.to_csv('Bulgaria/poll.csv', index=False)
+split_date = '11 September 2024'
+split_date=dateparser.parse(split_date)
+
+fix_date = '23 September 2024'
+fix_date=dateparser.parse(fix_date)
+
+c={}
+c[0]=D[(pd.to_datetime(D["Date"]) > split_date)]
+c[0].rename(columns={"DPS1": "APS"}, inplace=True)
+c[0].rename(columns={"DPS2": "DPS–NN"}, inplace=True)
+c[0].loc[len(c[0].index)-1,['Date']] = fix_date
+
+c[1]=D[(pd.to_datetime(D["Date"]) < split_date)]
+c[1].rename(columns={"DPS1": "DPS"}, inplace=True)
+c[1]=c[1].drop(["DPS2"], axis=1)
+
+C = pd.concat(c.values(), ignore_index=True)
+
+C.to_csv('Bulgaria/poll.csv', index=False)

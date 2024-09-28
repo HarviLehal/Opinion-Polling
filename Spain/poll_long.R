@@ -32,10 +32,6 @@ d_new <- reshape2::melt(poll2, id.vars="Date")
 d_new$value<-as.numeric(d_new$value)/100
 d_new$value<-formattable::percent(d_new$value)
 
-new<-d_new[d_new$variable!='SALF',]
-new2<-d_new[d_new$variable=='SALF',]
-new2<-new2[!is.na(new2$value),]
-
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
@@ -45,9 +41,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#4aae4a","#b5cf18","#ec640c",
                                 "#9369f5","#795a44"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d_old[d_old$Date!=election,])+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=old,])+
-  geom_smooth(method = "lm",formula=y ~ I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

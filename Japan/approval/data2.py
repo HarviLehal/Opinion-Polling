@@ -36,12 +36,15 @@ for i in range(4):
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-  for z in parties:
-    d[i][z] = d[i][z].astype('float')
 
 
 
 D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D=D.dropna(subset=['Approve'])
+
 D.to_csv('Japan/approval/poll_approval.csv', index=False)
 
 
@@ -62,6 +65,10 @@ D.to_csv('Japan/approval/poll_approval_net2.csv', index=False)
 
 
 D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D=D.dropna(subset=['Approve'])
 D['Net Approval']=D['Approve']-D['Disapprove']
 D = D.drop(["Approve","Disapprove"], axis=1)
 

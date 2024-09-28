@@ -66,16 +66,34 @@ d_5$value<-formattable::percent(d_5$value)
 d_6 <- reshape2::melt(poll6, id.vars="Date")
 d_6$value<-as.numeric(d_6$value)/100
 d_6$value<-formattable::percent(d_6$value)
+colss <-c("GERB"      ="#0054a6",
+          "DPS"       ="#0066b7",
+          "PP-DB"     ="#4200ff",
+          "V"         ="#c09f62",
+          "BSP"       ="#db0f28",
+          "ITN"       ="#4bb9de",
+          "Velichie"  ="#ad1c20",
+          "Other"     ="#999999",
+          "APS"       ="#6147aa",
+          "DPS-NN"    ="#0066b7",
+          "BV"        ="#197032",
+          "Levitsata" ="#ba1034",
+          "PP"        ="#ffc300",
+          "DB"        ="#004a80",
+          "ISMV"      ="#ba1034",
+          "OP"        ="#009b75")
 
 # MAIN GRAPH
+new<-d_0[d_0$variable!='DPS–NN'&d_0$variable!='APS',]
+new2<-d_0[d_0$variable=='DPS–NN'|d_0$variable=='APS',]
+new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=election0,])+
-  scale_color_manual(values = c("#0054a6","#0066b7","#4200ff","#c09f62",
-                                "#db0f28","#4bb9de","#ad1c20","#999999",
-                                "#197032","#ba1034",
-                                "#ffc300","#004a80","#ba1034","#009b75"))+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_0[d_0$Date!=next_election&d_0$Date!=election0,])+
+  scale_color_manual(values =colss)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election1&new$Date!=election0,])+
+  # geom_smooth(method = "lm",formula=y ~ I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=next_election&new2$Date!=election0,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_1[d_1$Date!=election1&d_1$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_2[d_2$Date!=election2&d_2$Date!=election1,])+
   geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_2[d_2$Date!=election2&d_2$Date!=election1,])+
@@ -160,6 +178,8 @@ plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#afe9ff","#a6e6ff","#87ddff","#78d4f9","#69cbf0","#5ac2e7","#4bb9de","#3c94b2",
                                "#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#8a161a",
                                "#dddddd","#d9d9d9","#c1c1c1","#b7b7b7","#adadad","#a3a3a3","#999999","#7a7a7a",
+                               "#6147aa","#000000","#000000","#000000","#000000","#000000","#000000","#000000",
+                               "#0066b7","#000000","#000000","#000000","#000000","#000000","#000000","#000000",
                                "#8bb37f","#7eaa71","#5d9556","#4c8c4d","#3b8344","#2a7a3b","#197032","#145a28",
                                "#f27ba4","#f16c9a","#e34c78","#d93d67","#cf2e56","#c51f45","#ba1034","#950d2a",
                                "#fff6a3","#fff599","#ffe866","#ffdf4d","#ffd533","#ffcc1a","#ffc300","#cc9c00",
