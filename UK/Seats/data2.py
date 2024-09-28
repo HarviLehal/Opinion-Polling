@@ -16,13 +16,13 @@ p = re.compile(r'\[[a-z]+\]')
 p2 = re.compile(r'\*')
 
 
-headers = ['Date','Lab','Con','Lib Dem','SNP','DUP','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
-parties = ['Lab','Con','Lib Dem','SNP','DUP','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
+headers = ['Date','Lab','Con','Lib Dem','SNP','DUP','IA','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
+parties = ['Lab','Con','Lib Dem','SNP','DUP','IA','Ref','Green','Plaid Cymru','SDLP','APNI','TUV','UUP','Ind','Sinn Féin']
 d = {}
 for i in range(1):
   # i=j+1
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i].drop(["Event", "Working Majority", "Spkr", "Vacant","SF","Unnamed: 17","Unnamed: 20"], axis=1)
+  d[i]=d[i].drop(["Event", "Working majority", "Spkr", "Vacant","Unnamed: 18","Unnamed: 21","SF"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
@@ -55,12 +55,12 @@ D.to_csv('UK/Seats/poll2.csv', index=False)
 
 
 
-headers = ["Date","Working Majority"]
-parties = ["Working Majority"]
+headers = ["Date","Working majority"]
+parties = ["Working majority"]
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i][["Date","Working Majority"]]
+  d[i]=d[i][["Date","Working majority"]]
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
@@ -82,7 +82,7 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype('float')
-D=D.dropna(subset=['Working Majority'])
+D=D.dropna(subset=['Working majority'])
 
 D = D.drop_duplicates(subset=['Date'], keep='last')
 
