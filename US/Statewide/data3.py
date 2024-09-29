@@ -165,14 +165,17 @@ averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
     if state not in polls['State'].unique():
         continue
-    averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Harris': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean()], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()]})])    
+    averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Harris': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean().round(10)], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean().round(10)]})])    
     if averages[averages['State'] == state]['Harris'].values[0] > averages[averages['State'] == state]['Trump'].values[0]:
         averages.loc[averages['State'] == state, 'Winner'] = 'Harris'
     elif averages[averages['State'] == state]['Harris'].values[0] == averages[averages['State'] == state]['Trump'].values[0]:
         averages.loc[averages['State'] == state, 'Winner'] = 'Tie'
     else:
         averages.loc[averages['State'] == state, 'Winner'] = 'Trump'
+
 poll_averages = averages
+# round the polling averages to 2 decimal places
+
 
 Red_States = ['Alabama', 'Arkansas', 'Idaho', 'Indiana','Kansas','Kentucky','Louisiana','Mississippi','Missouri','Montana','Nebraska','North Dakota','Oklahoma','South Carolina','South Dakota','Tennessee','Utah','West Virginia','Wyoming']
 # Red_States.extend(['Alaska','Texas','Florida','Ohio','Iowa','North Carolina'])
@@ -405,7 +408,7 @@ for state in states:
         continue
     # averages = averages.append({'State': state, 'Harris': polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean(), 'Trump': polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()}, ignore_index=True)
     # causes error AttributeError: 'DataFrame' object has no attribute 'append' so replace with following line that works for pandas dataframes
-    averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Harris': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean()], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean()]})])    
+    averages = pd.concat([averages, pd.DataFrame({'State': [state], 'Harris': [polls[(polls['State']== state) & (polls['Date'] >= fourteen_days_before[state])]['Harris'].mean().round(10)], 'Trump': [polls[(polls['State'] == state) & (polls['Date'] >= fourteen_days_before[state])]['Trump'].mean().round(10)]})])    
     if averages[averages['State'] == state]['Harris'].values[0] > averages[averages['State'] == state]['Trump'].values[0]:
         averages.loc[averages['State'] == state, 'Winner'] = 'Harris'
     elif averages[averages['State'] == state]['Harris'].values[0] == averages[averages['State'] == state]['Trump'].values[0]:

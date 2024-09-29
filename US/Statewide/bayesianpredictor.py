@@ -94,5 +94,4 @@ plt.xlabel('Electoral Votes')
 plt.ylabel('Frequency')
 plt.title(f'Simulated US Election Results using 7-day Polling Averages, $N=100,000$ & $\sigma=0.05$')
 plt.legend()
-plt.show()  
-
+plt.show()

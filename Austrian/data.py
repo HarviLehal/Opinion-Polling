@@ -53,6 +53,9 @@ for i in range(6):
     d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
+D.loc[len(D.index)-1,['KPÖ']] = 2.06
+D.loc[len(D.index)-1,['BIER']] = 0.1
+D.drop(D.index[[0,1]],inplace=True)
 
 D = D[D.Date.notnull()]
 
@@ -64,6 +67,20 @@ for z in parties:
   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
+
+
+V=26.3
+S=21.0
+F=28.8
+G=8.3
+N=9.2
+K=2.4
+B=2.0
+O=100-V-S-F-G-N-K-B
+
+new_row = pd.DataFrame({'Date':'29 September 2024','ÖVP':V,'SPÖ':S,'FPÖ':F,'Grüne':G,'NEOS':N,'KPÖ':K,'BIER':B}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('Austrian/poll.csv', index=False)
 
@@ -98,6 +115,9 @@ D.to_csv('Austrian/poll2.csv', index=False)
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D.loc[len(D.index)-1,['KPÖ']] = 2.06
+D.loc[len(D.index)-1,['BIER']] = 0.1
+D.drop(D.index[[0,1]],inplace=True)
 
 D = D[D.Date.notnull()]
 
@@ -111,6 +131,9 @@ D[parties] = D[parties].astype(float)
 D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
 parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','BIER']
 
+new_row = pd.DataFrame({'Date':'29 September 2024','ÖVP':V,'SPÖ':S,'FPÖ':F,'Grüne':G,'NEOS':N,'KPÖ':K,'BIER':B}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 # take the sum of all parties with more than 5% in each poll to get the total percentage of valid votes
 for z in parties:

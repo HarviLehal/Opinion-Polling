@@ -83,9 +83,9 @@ scale_fill_manual(values = c("#6F94ED","#00529F","#DF6F6C","#D91920",
                              "#EBA562","#EF7B00","#94CDFA","#127C73",
                              "#6E5D9A","#442D7B","#9EC953","#3D9F3B"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=-0.35, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+            hjust=-0.4, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=-0.1, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=-0.15, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

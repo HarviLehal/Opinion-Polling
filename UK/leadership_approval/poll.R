@@ -27,28 +27,25 @@ election<-max(d$Date)+14
 # new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00"
                                 # ,"#33a22b","#528D6B"
                                 ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new2)+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
+  geom_hline(aes(yintercept=0), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = element_text(face="bold.italic"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.6,0.6,0.05))+
-  geom_hline(aes(yintercept=0), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Net Leadership Approval for British Party Leaders')
 
@@ -83,17 +80,17 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
-            hjust=ifelse(d1$value<0,1.1,-0.1), color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+            hjust=ifelse(d1$value<0,1.8,-0.8), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   geom_hline(aes(yintercept=0), alpha=1, linewidth=1, linetype="solid", colour="#000000")+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-        axis.text.y = element_text(face="bold", hjust = 0),
-        plot.title = element_text(face="bold"),
+        axis.text.y = element_text(face="bold.italic", hjust = 0, colour="#000000"),
+        plot.title = element_text(face="bold.italic", colour="#000000"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 day average')+
-  scale_x_discrete(limits = rev(levels(d1$variable)))+
+  ggtitle(' 14 Day Average')+
+  scale_x_discrete(limits = d1$variable[order(d1$value)])+
   coord_flip()
 plot2
 
