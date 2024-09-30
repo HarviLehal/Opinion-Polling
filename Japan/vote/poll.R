@@ -23,9 +23,9 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 # d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
-start<-as.Date("01 042024", "%d %m %Y")
+start<-as.Date("01 04 2024", "%d %m %Y")
 old<-min(d$Date)
-election<-as.Date("29 10 2025", "%d %m %Y")
+election<-as.Date("27 10 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
 
 # d<-d[d$Date>start|d$Date==old,]
