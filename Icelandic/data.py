@@ -29,6 +29,8 @@ data22.Date = data22['Date'].astype(str)
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 print(data22)
+data22 = data22.dropna(subset=['Date'])
+
 
 data22.to_csv('Icelandic/poll.csv', index=False)
 data22[parties] = data22[parties].astype(float)
