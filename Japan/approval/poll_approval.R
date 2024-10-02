@@ -20,42 +20,18 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("29 10 2025", "%d %m %Y")
 old <-min(d$Date)
-slush<-as.Date("08 12 2023", "%d %m %Y")
-abe<-as.Date("08 07 2022", "%d %m %Y")
 f<-formattable::percent(0.9)
 # MAIN GRAPH
 
 # LOESS GRAPH
 
-plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#3ca324","#db001c","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
-  theme_minimal()+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'),
-        legend.position = "none",
-        axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
-        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
-        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.1))+
-  geom_vline(xintercept=slush, linetype="dashed", color = "#56595c", alpha=0.5, size=1)+
-  geom_vline(xintercept=abe, linetype="dashed", color = "#56595c", alpha=0.5, size=1)+
-  geom_text(aes(slush,f,label = "Slush Fund Scandal", vjust = -1,hjust="left", angle=-90),colour="#56595c")+
-  geom_text(aes(abe,f,label = "Abe Assassination", vjust = -1,hjust="left", angle=-90),colour="#56595c")+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
-  ggtitle('Kishida Cabinet Approval')
-plot1 
+
 
 plotwiki<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#db001c","#666666"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -66,9 +42,8 @@ plotwiki<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
-  ggtitle('Kishida Cabinet Approval')
+  scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-10,max(d$Date)+10),guide = guide_axis(angle = -90))+
+  ggtitle('Ishiba Cabinet Approval')
 plotwiki
 ggsave(plot=plotwiki, file="Japan/approval/plot_wiki.svg",width = 15, height = 7.5)
 aaa=readLines("Japan/approval/plot_wiki.svg",-1)
@@ -127,6 +102,7 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("29 10 2025", "%d %m %Y")
 old <-min(d$Date)
+
 # MAIN GRAPH
 
 # LOESS GRAPH
@@ -147,7 +123,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.9,0.9,0.1))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
-  ggtitle('Kishida Cabinet Net Approval')
+  ggtitle('Ishiba Cabinet Net Approval')
 plot1 
 
 

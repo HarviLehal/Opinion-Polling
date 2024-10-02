@@ -22,7 +22,7 @@ for i in range(4):
   d[i]=pd.DataFrame(df[-4+i])
   d[i]=d[i].drop(["Sample size","Polling firm", "Lead"], axis=1)
   d[i].columns = headers
-  d[i] = d[i][d[i]['PM'] != 'Fumio Kishida']
+  d[i] = d[i][d[i]['PM'] != 'Shigeru Ishiba']
   d[i]=d[i].drop(["PM"], axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
