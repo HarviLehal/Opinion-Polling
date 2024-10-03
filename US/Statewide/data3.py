@@ -260,7 +260,7 @@ plt.text(-137, 37.5, f'No Polling: {no_data}', fontsize=12, fontname='Times New 
 plt.legend().remove()
 # change background color to grey
 
-usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
+# usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
 
 fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version.png'), bbox_inches='tight', dpi= 1000)
