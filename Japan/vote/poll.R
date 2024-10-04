@@ -40,7 +40,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf","#0f428e"
                                 # "#666666"
                                 ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -60,8 +60,8 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_hline(aes(yintercept=0), alpha=0)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_break(c(old+6, start+1))+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old-6,election),guide = guide_axis(angle = -90))+
+  # scale_x_break(c(old+6, start+1))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2025 Japanese General election (Excluding No Party and Undecided)')
 plot1 
 

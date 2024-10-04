@@ -16,9 +16,15 @@ headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','F
 parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','FEFA','None']
 d = {}
 
-for i in range(1):
-  d[i]=pd.DataFrame(df[4])
+for i in range(4):
+  d[i]=pd.DataFrame(df[4+i])
   d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
+  if i == 2:
+    headers.remove('FEFA')
+    parties.remove('FEFA')
+  elif i==3:
+    headers.remove('DIY')
+    parties.remove('DIY')
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -30,16 +36,14 @@ for i in range(1):
   for z in parties:
     d[i][z] = d[i][z].astype('string')
   for z in parties:
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-  for z in parties:
-    d[i][z] = d[i][z].astype('float')
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
 
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D.drop(D.index[[-1]],inplace=True)
 
-new_row = pd.DataFrame({'Date':'31 OCtober 2021','LDP':34.66,'CDP':20.00,'NIK':14.01,'KMT':12.38,'JCP':7.25,'DPP':4.51,'REI':3.86,'DIY':np.nan,'SDP':1.77,'NHK':1.39,'FEFA':np.nan}, index=[0])
+new_row = pd.DataFrame({'Date':'31 October 2021','LDP':34.66,'CDP':20.00,'NIK':14.01,'KMT':12.38,'JCP':7.25,'DPP':4.51,'REI':3.86,'DIY':np.nan,'SDP':1.77,'NHK':1.39,'FEFA':np.nan}, index=[0])
 D = pd.concat([D,new_row]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 

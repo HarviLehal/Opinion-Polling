@@ -115,14 +115,11 @@ def get_state_polls(state):
         D[z] = D[z].str.strip('%')
         # D[z] = D[z].astype('float')
         D[z] = pd.to_numeric(D[z], errors='coerce')
+        D[z] = D[z]/100
     
     # drop rows where both Harris and Trump are NaN
     D = D.dropna(subset=['Harris', 'Trump'], how='all')
     D = D.dropna(subset=['Trump'], how='all')
-    D['total']=D[parties].sum(axis=1)
-    D['Harris'] = D['Harris']/D['total']
-    D['Trump'] = D['Trump']/D['total']
-    D = D.drop(['total'], axis=1)
     D['State'] = state
     return D
 
@@ -263,7 +260,7 @@ plt.legend().remove()
 # usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
 
 fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version.png'), bbox_inches='tight', dpi= 1000)
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_unnorm.png'), bbox_inches='tight', dpi= 1000)
 
 # print the range of dates for the polling data from the dates and fourteen_days_before dataframes, in %B %d, %Y format
 
@@ -324,7 +321,7 @@ for state in states:
         averages.loc[averages['State'] == state, 'Winner'] = 'No Polling Data'
 
 # save averages to a pickle file
-averages.to_pickle(os.path.join(os.path.dirname(__file__), 'polling_averages.pkl'))
+averages.to_pickle(os.path.join(os.path.dirname(__file__), 'polling_averages_unnorm.pkl'))
 
 # Create Map of Harris Lead
 import geopandas as gpd
@@ -375,7 +372,7 @@ usa[usa['Winner'] == 'No Polling Data'].plot(ax=ax, color='#333333')
 
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Harris_Lead.png'), bbox_inches='tight', dpi= 1000)
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Harris_Lead_unnorm.png'), bbox_inches='tight', dpi= 1000)
 
 
 
@@ -446,59 +443,6 @@ averages.loc[averages['Winner'] == 'No Polling Data', 'Winner2'] = 'Tie'
 # add the number of electoral voters for each state
 electoral_votes = pd.read_csv(os.path.join(os.path.dirname(__file__), 'electoral_votes.csv'))
 averages = averages.merge(electoral_votes, left_on='State', right_on='State')
-
-
-# create a map of the US with the states colored by the winner of the most recent poll
-import geopandas as gpd
-import matplotlib.pyplot as plt
-import matplotlib as mpl
-from shapely.geometry import Point
-import os
-
-# take total number of electoral votes for each candidate
-Harris_votes = averages[averages['Winner'] == 'Harris']['votes'].sum()
-trump_votes = averages[averages['Winner'] == 'Trump']['votes'].sum()
-tie_votes = averages[averages['Winner'] == 'Tie']['votes'].sum()
-no_data = averages[averages['Winner'] == 'No Polling Data']['votes'].sum()
-
-# I have added the cb_2018_us_state_500k files into the same folder as this file
-usa = gpd.read_file(os.path.join(os.path.dirname(__file__), 'cb_2018_us_state_500k.shp'))
-# AttributeError: The geopandas.dataset has been deprecated and was removed in GeoPandas 1.0. You can get the original 'naturalearth_lowres' data from https://www.naturalearthdata.com/downloads/110m-cultural-vectors/.
-# so we will load
-usa.loc[usa['NAME'] == 'Hawai‘i', 'NAME'] = 'Hawaii'
-usa.loc[usa['NAME'] == 'Alaska', 'NAME'] = 'Alaska'
-
-states.append('District of Columbia')
-states.append('Hawaii')
-
-usa = usa[usa.NAME.isin(states)]
-usa = usa.merge(averages, left_on='NAME', right_on='State')
-# this is not merging properly so we need to see which states are not merging properly
-
-# rename Hawaii to Hawaii so it works
-# move Hawaii and Alaska to the bottom left
-usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].translate(xoff=40, yoff=7.5)
-usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].translate(xoff=-50, yoff=-35)
-usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].scale(xfact=0.5, yfact=0.5)
-usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].scale(xfact=1.5, yfact=1.5)
-
-fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-
-usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
-# plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-# make state outlines black
-usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
-plt.axis('off')
-plt.xlim(-150, -55)
-plt.ylim(20, 50)
-plt.text(-137, 45, f'Harris: {Harris_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
-plt.text(-137, 42.5, f'Tied: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
-plt.text(-137, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
-plt.legend().remove()
-# change background color to grey
-fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2.png'), bbox_inches='tight', dpi= 1000)
 
 
 averages['Lead'] = averages['Harris'] - averages['Trump']
@@ -588,7 +532,7 @@ plt.legend().remove()
 
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Adjusted_Winner2.png'), bbox_inches='tight', dpi= 1000)
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Adjusted_Winner2_unnorm.png'), bbox_inches='tight', dpi= 1000)
 
 
 
@@ -688,5 +632,5 @@ plt.text(-137, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Rom
 plt.legend().remove()
 # change background color to grey
 fig.patch.set_facecolor('darkgrey')
-plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2(rounded).png'), bbox_inches='tight', dpi= 1000)
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_New_Version_2(rounded)_unnorm.png'), bbox_inches='tight', dpi= 1000)
 
