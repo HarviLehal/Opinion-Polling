@@ -117,6 +117,7 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("29 10 2025", "%d %m %Y")
 old <-min(d$Date)
+f<-0.6
 # MAIN GRAPH
 
 # LOESS GRAPH
@@ -126,9 +127,12 @@ d<- d %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 10, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_hline(yintercept = 0, size=1.25,colour="#000000",alpha=0.25)+
+  geom_text(aes(Ishiba,f,label = "Ishiba Elected", vjust = -1,hjust="left", angle=-90),colour="#000000", size=4, alpha=0.5,fontface="italic")+
+  geom_vline(xintercept=Ishiba, linetype="dashed", color = "#000000", alpha=0.25, size=1.5)+
   geom_point(size=1.25, data=d[d$Date!=old,],alpha=0.5)+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75,alpha=1)+
-  scale_color_manual(values = c("#0f4062"))+
+  scale_color_manual(values = c("#5f3976"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

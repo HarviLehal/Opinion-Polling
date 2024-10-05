@@ -14,13 +14,12 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-py_run_file("Japan/approval/data2.py")
-poll <- read_csv("Japan/approval/poll_approval.csv")
+poll <- read_csv("Japan/approval/Kishida/poll_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-# old <-min(d$Date)
+old <-min(d$Date)
 f<-formattable::percent(0.9)
 # MAIN GRAPH
 
@@ -28,29 +27,30 @@ f<-formattable::percent(0.9)
 
 
 
-plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d,alpha=0.5)+
+plotwiki<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#db001c","#666666"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'),
-        legend.position = "none",
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
+        # legend.key.size = unit(2, 'lines'),
+        # legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
-  scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
-  ggtitle('Ishiba Cabinet Approval')
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
+  ggtitle('Kishida Cabinet Approval')
 plotwiki
-ggsave(plot=plotwiki, file="Japan/approval/plot_wiki.svg",width = 15, height = 7.5)
-aaa=readLines("Japan/approval/plot_wiki.svg",-1)
+ggsave(plot=plotwiki, file="Japan/approval/Kishida/plot_wiki.svg",width = 15, height = 7.5)
+aaa=readLines("Japan/approval/Kishida/plot_wiki.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
-writeLines(bbb,"Japan/approval/plot_wiki.svg")
+writeLines(bbb,"Japan/approval/Kishida/plot_wiki.svg")
 
-poll <- read_csv("Japan/approval/poll_approval.csv")
+poll <- read_csv("Japan/approval/Kishida/poll_approval.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -85,17 +85,17 @@ plot2<-ggplot(data=d1, aes(x=forcats::fct_rev(variable), y=value,fill=interactio
 plot2
 
 
-plot<-ggarrange(plotwiki, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
-ggsave(plot=plot, file="Japan/approval/plot_approval.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Japan/approval/Kishida/plot_approval.png",width = 15, height = 7.5, type = "cairo-png")
 
 
 
 
 # NET APPROVAL
 
-poll <- read_csv("Japan/approval/poll_approval_net.csv")
+poll <- read_csv("Japan/approval/Kishida/poll_approval_net.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -107,15 +107,15 @@ old <-min(d$Date)
 
 # LOESS GRAPH
 
-plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_hline(yintercept = 0, size=1.25,colour="#000000",alpha=0.25)+
-  geom_point(size=2, data=d,alpha=1)+
-  scale_color_manual(values = c("#999999","#5f3976"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
+plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#666666","#0f4062"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
-  theme(axis.title=element_blank(),legend.title = element_blank(),
-        legend.key.size = unit(2, 'lines'),
-        legend.position = "none",
+  theme(axis.title=element_blank(),
+        legend.title = element_blank(),
+        # legend.key.size = unit(2, 'lines'),
+        # legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
@@ -123,9 +123,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.9,0.9,0.1))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
-  ggtitle('Ishiba Cabinet Net Approval')
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
+  ggtitle('Kishida Cabinet Net Approval')
 plot1 
 
 
-ggsave(plot=plot1, file="Japan/approval/plot_approval_net.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot1, file="Japan/approval/Kishida/plot_approval_net.png",width = 15, height = 7.5, type = "cairo-png")
