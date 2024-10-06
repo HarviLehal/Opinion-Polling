@@ -82,7 +82,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5) +
   scale_color_manual(values = c("#ef476f","#f78c6b","#ffd166","#06d6a0",
                                 "#118ab2","#073b4c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d,alpha=0.75)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d,alpha=0.75)+
   theme_minimal()+
   theme(
         legend.title = element_blank(),
@@ -97,7 +97,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-1,1,0.05))+
-  scale_x_continuous(name="Days",breaks=seq(min(poll$Date), max(poll$Date),5),limits=c(min(poll$Date), max(poll$Date)))+
+  scale_x_continuous(name="Days",breaks=seq(0,400,10),limits=c(0,400),guide = guide_axis(angle = -90))+
   ggtitle('Net Approval After Becoming Prime Minister')
 
 plot1
