@@ -98,7 +98,8 @@ scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('14 day average \n (2021 Result)')+
-  scale_x_discrete(limits = (levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d2$value,na.last = FALSE)])+
+  # scale_x_discrete(limits = (levels(d3$variable)))+
   coord_flip()
 
 

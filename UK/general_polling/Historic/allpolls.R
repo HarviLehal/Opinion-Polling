@@ -34,24 +34,29 @@ poll15 <- read_csv("UK/general_polling/Historic/poll15.csv")
 poll17 <- read_csv("UK/general_polling/Historic/poll17.csv")
 poll19 <- read_csv("UK/general_polling/Historic/poll19.csv")
 poll24 <- read.csv("UK/general_polling/2024 election/poll.csv")
+poll29 <- read.csv("UK/general_polling/poll.csv")
 # convert poll24 to a tibble
 poll24 <- as_tibble(poll24)
+poll29 <- as_tibble(poll29)
 poll24$Date <- as.Date(poll24$Date, "%Y-%m-%d")
+poll29$Date <- as.Date(poll29$Date, "%Y-%m-%d")
 # correct poll24 column name for Lib Dem which is currently "Lib.Dem"
 names(poll24)[names(poll24) == "Lib.Dem"] <- "Lib Dem"
+names(poll29)[names(poll29) == "Lib.Dem"] <- "Lib Dem"
 
-poll<-dplyr::bind_rows(poll45,poll50,poll51,poll55,poll59,poll64,poll66,poll70,poll74,poll74_2,poll79,poll83,poll87,poll92,poll97,poll01,poll05,poll10,poll15,poll17,poll19,poll24)
+poll<-dplyr::bind_rows(poll45,poll50,poll51,poll55,poll59,poll64,poll66,poll70,poll74,poll74_2,poll79,poll83,poll87,poll92,poll97,poll01,poll05,poll10,poll15,poll17,poll19,poll24,poll29)
 
 # create list of all polls
-polls<-c("poll45","poll50","poll51","poll55","poll59","poll64","poll66","poll70","poll74","poll74_2","poll79","poll83","poll87","poll92","poll97","poll01","poll05","poll10","poll15","poll17","poll19","poll24")
+polls<-c("poll45","poll50","poll51","poll55","poll59","poll64","poll66","poll70","poll74","poll74_2","poll79","poll83","poll87","poll92","poll97","poll01","poll05","poll10","poll15","poll17","poll19","poll24","poll29")
 
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-election<-as.Date("04 07 2024", "%d %m %Y")
+election<-as.Date("01 07 2029", "%d %m %Y")
 mindate<-min(d$Date)
-old<-c(as.Date("12 12 2019", "%d %m %Y"),
+old<-c(as.Date("04 07 2024", "%d %m %Y"),
+       as.Date("12 12 2019", "%d %m %Y"),
        as.Date("08 06 2017", "%d %m %Y"),
        as.Date("07 05 2015", "%d %m %Y"),
        as.Date("06 05 2010", "%d %m %Y"),
@@ -92,10 +97,14 @@ h4$value<-formattable::percent(h4$value)
 h5<-melt(poll45[1,],id.vars="Date")
 h5$value<-as.numeric(h5$value)/100
 h5$value<-formattable::percent(h5$value)
+
+h6<-melt(poll17[1,],id.vars="Date")
+h6$value<-as.numeric(h6$value)/100
+h6$value<-formattable::percent(h6$value)
 # GRAPH
 
 #Reshape every poll individually using a for loop
-for (i in 1:22){
+for (i in 1:23){
   assign(paste0("d_",i),reshape2::melt(get(paste0(polls[i])), id.vars="Date"))
   assign(paste0("d_",i),get(paste0("d_",i)) %>% mutate(value=as.numeric(value)/100))
   assign(paste0("d_",i),get(paste0("d_",i)) %>% mutate(value=formattable::percent(value)))
@@ -105,7 +114,7 @@ for (i in 1:22){
 
 spans <- c()
   
-for (i in 1:22){
+for (i in 1:23){
   spans[i]<-min(1,1000/as.numeric(max(get(paste0("d_",i))$Date)-min(get(paste0("d_",i))$Date)))
   if (spans[i]<1){
     spans[i]<-spans[i]/2
@@ -147,7 +156,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=spans[20],linewidth=0.75, data=d_20[d_20$Date!=old,],alpha=0.75)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=spans[21],linewidth=0.75, data=d_21[d_21$Date!=old,],alpha=0.75)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=spans[22],linewidth=0.75, data=d_22[d_22$Date!=old,],alpha=0.75)+
-# plot1
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=spans[23],linewidth=0.75, data=d_23[d_23$Date!=old,],alpha=0.75)+
+  # plot1
   # geom_line(aes(y = Moving_Average), size=0.75, alpha=1)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -158,22 +168,27 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   # geom_point(data=d[d$Date==old[1],],size=5, shape=18, alpha=1)+
   # geom_point(data=d[d$Date==old[1],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[1],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[1],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h4,size=5, shape=18, alpha=1)+
   geom_point(data=h4,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[2],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[2],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[2],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[2],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=h6,size=5, shape=18, alpha=1)+
+  geom_point(data=h6,size=5.25, shape=5, alpha=1)+
   # geom_point(data=d[d$Date==old[3],],size=5, shape=18, alpha=1)+
   # geom_point(data=d[d$Date==old[3],],size=5.25, shape=5, alpha=1)+
+
   geom_point(data=h3,size=5, shape=18, alpha=1)+
   geom_point(data=h3,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[4],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[4],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[4],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[4],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[5],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[5],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[6],],size=5, shape=18, alpha=1)+
@@ -190,12 +205,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old[11],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[12],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[12],],size=5.25, shape=5, alpha=1)+
-  # geom_point(data=d[d$Date==old[13],],size=5, shape=18, alpha=1)+
-  # geom_point(data=d[d$Date==old[13],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[13],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[13],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h2,size=5, shape=18, alpha=1)+
   geom_point(data=h2,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[14],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[14],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[14],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[14],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[15],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[15],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[16],],size=5, shape=18, alpha=1)+
@@ -206,8 +221,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old[18],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[19],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[19],],size=5.25, shape=5, alpha=1)+
-  # geom_point(data=d[d$Date==old[20],],size=5, shape=18, alpha=1)+
-  # geom_point(data=d[d$Date==old[20],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[20],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[20],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h,size=5, shape=18, alpha=1)+
   geom_point(data=h,size=5.25, shape=5, alpha=1)+
   # geom_point(data=d[d$Date==old[21],],size=5, shape=18, alpha=1)+
@@ -223,7 +238,7 @@ plot1
 
 
 ggsave(plot=plot1, file="UK/general_polling/Historic/PLOT.png",width = 50, height = 10, type = "cairo-png",limitsize=FALSE)
-state<-d[d$Date==election,]
+state<-d[d$Date==max(d$Date),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(yintercept=state$value, linetype="solid",
              color = c("#0077b6","#c70000","#e05e00","#6D3177",
@@ -240,22 +255,26 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   # geom_point(data=d[d$Date==old[1],],size=5, shape=18, alpha=1)+
   # geom_point(data=d[d$Date==old[1],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[1],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[1],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h4,size=5, shape=18, alpha=1)+
   geom_point(data=h4,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[2],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[2],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[2],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[2],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=h6,size=5, shape=18, alpha=1)+
+  geom_point(data=h6,size=5.25, shape=5, alpha=1)+
   # geom_point(data=d[d$Date==old[3],],size=5, shape=18, alpha=1)+
   # geom_point(data=d[d$Date==old[3],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h3,size=5, shape=18, alpha=1)+
   geom_point(data=h3,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[4],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[4],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[4],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[4],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[5],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[5],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[6],],size=5, shape=18, alpha=1)+
@@ -272,12 +291,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old[11],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[12],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[12],],size=5.25, shape=5, alpha=1)+
-  # geom_point(data=d[d$Date==old[13],],size=5, shape=18, alpha=1)+
-  # geom_point(data=d[d$Date==old[13],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[13],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[13],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h2,size=5, shape=18, alpha=1)+
   geom_point(data=h2,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[14],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[14],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[14],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[14],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[15],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[15],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[16],],size=5, shape=18, alpha=1)+
@@ -288,12 +307,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old[18],],size=5.25, shape=5, alpha=1)+
   geom_point(data=d[d$Date==old[19],],size=5, shape=18, alpha=1)+
   geom_point(data=d[d$Date==old[19],],size=5.25, shape=5, alpha=1)+
-  # geom_point(data=d[d$Date==old[20],],size=5, shape=18, alpha=1)+
-  # geom_point(data=d[d$Date==old[20],],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==old[20],],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==old[20],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h,size=5, shape=18, alpha=1)+
   geom_point(data=h,size=5.25, shape=5, alpha=1)+
-  geom_point(data=d[d$Date==old[21],],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==old[21],],size=5.25, shape=5, alpha=1)+
+  # geom_point(data=d[d$Date==old[21],],size=5, shape=18, alpha=1)+
+  # geom_point(data=d[d$Date==old[21],],size=5.25, shape=5, alpha=1)+
   geom_point(data=h5,size=5, shape=18, alpha=1)+
   geom_point(data=h5,size=5.25, shape=5, alpha=1)+
   geom_line(aes(y = Moving_Average), size=0.75, alpha=0.5)+
