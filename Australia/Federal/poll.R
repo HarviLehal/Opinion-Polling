@@ -28,10 +28,10 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#2031CC","#D23A38",
+  scale_color_manual(values = c("#00557c","#de3533",
                                 "#3AA54F","#E76E29",
                                 "#F8CC10","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -49,6 +49,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Opinion Polling for the Next Australian Federal Election')
+plot1
 
 d<- d %>%
   group_by(variable) %>%
@@ -57,7 +58,7 @@ d<- d %>%
 
 plot1ma<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#2031CC","#D23A38","#3AA54F","#E76E29","#F8CC10","#a2aab3"))+
+  scale_color_manual(values = c("#00557c","#de3533","#3AA54F","#E76E29","#F8CC10","#a2aab3"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -107,7 +108,7 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#B5CEFF","#2031CC","#F7B7B7","#D23A38",
+scale_fill_manual(values = c("#6699b0","#00557c","#eb8685","#de3533",
                              "#9EED8E","#3AA54F","#f7b792","#E76E29",
                              "#fadc7d","#F8CC10","#d0d4d9","#a2aab3"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
@@ -147,7 +148,7 @@ old <-min(d$Date)
 
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#D23A38","#2031CC"))+
+  scale_color_manual(values = c("#de3533","#00557c"))+
   geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -165,7 +166,7 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
-  ggtitle('Opinion Polling for the Next Australian Federal Election')
+  ggtitle('Two Party Preference Polling for the Next Australian Federal Election')
 
 d<- d %>%
   group_by(variable) %>%
@@ -174,7 +175,7 @@ d<- d %>%
 
 plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#D23A38","#2031CC"))+
+  scale_color_manual(values = c("#de3533","#00557c"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -192,7 +193,7 @@ plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
-  ggtitle('Opinion Polling for the Next Australian Federal Election')
+  ggtitle('Two Party Preference Polling for the Next Australian Federal Election')
 
 
 
@@ -223,7 +224,7 @@ d3<-rbind(d2,d1)
 
 plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#F7B7B7","#D23A38","#B5CEFF","#2031CC"))+
+  scale_fill_manual(values = c("#eb8685","#de3533","#6699b0","#00557c"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.5, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),

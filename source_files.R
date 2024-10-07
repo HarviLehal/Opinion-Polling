@@ -1,7 +1,9 @@
 # IN TERMINAL TYPE THE FOLLOWING:  Rscript source_files.R
 pdf(NULL)
 source("Australia/Federal/poll.R")
+source("Australia/State/New South Wales/poll.R")
 source("Australia/State/Queensland/poll.R")
+source("Australia/State/Victoria/poll.R")
 # source("Austrian/poll.R")
 # source("Austrian/poll_coalition.R")
 # source("Bulgaria/poll.R")

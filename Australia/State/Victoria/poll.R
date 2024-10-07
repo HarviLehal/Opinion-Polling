@@ -16,13 +16,13 @@ library(data.table)
 library(hrbrthemes)
 library(ggbreak)
 
-py_run_file("Australia/State/Queensland/data.py")
-poll <- read_csv("Australia/State/Queensland/poll.csv")
+py_run_file("Australia/State/Victoria/data.py")
+poll <- read_csv("Australia/State/Victoria/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(sub("%","",d$value))/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("26 10 2024", "%d %m %Y")
+election<-as.Date("28 11 2026", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -31,8 +31,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#de3533","#00557c",
-                                "#3AA54F","#E76E29",
-                                "#b50204","#999999"))+
+                                "#3AA54F","#999999"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -53,11 +52,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 Queensland State Election')
+  ggtitle('Opinion Polling for the 2026 Victoria State Election')
 
 plot1
 
-poll <- read_csv("Australia/State/Queensland/poll.csv")
+poll <- read_csv("Australia/State/Victoria/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -87,9 +86,8 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#6699b0","#00557c","#eb8685","#de3533",
-                               "#9EED8E","#3AA54F","#f7b792","#E76E29",
-                               "#d36768","#b50204","#d0d4d9","#a2aab3"))+
+  scale_fill_manual(values = c("#eb8685","#de3533","#6699b0","#00557c",
+                               "#89c995","#3AA54F","#c7ccd1","#a2aab3"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
@@ -109,13 +107,13 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
-ggsave(plot=plot, file="Australia/State/Queensland/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Australia/State/Victoria/plot.png",width = 15, height = 7.5, type="cairo-png")
 
 
 
 # COALITION
 
-poll <- read_csv("Australia/State/Queensland/poll2.csv")
+poll <- read_csv("Australia/State/Victoria/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(sub("%","",d$value))/100
 h <- formattable::percent(0.05)
@@ -128,7 +126,7 @@ old <-min(d$Date)
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#de3533","#00557c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -148,10 +146,10 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
-  ggtitle('Two Party Preference Polling for the 2024 Queensland State Election')
+  ggtitle('Two Party Preference Polling for the 2026 Victoria State Election')
 plot1a
 
-poll <- read_csv("Australia/State/Queensland/poll2.csv")
+poll <- read_csv("Australia/State/Victoria/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -198,5 +196,5 @@ plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable),
 
 plot2<-ggarrange(plot1a, plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2
-ggsave(plot=plot2, file="Australia/State/Queensland/plot2.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot2, file="Australia/State/Victoria/plot2.png",width = 15, height = 7.5, type="cairo-png")
 
