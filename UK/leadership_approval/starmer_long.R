@@ -44,7 +44,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(elect2,f,label = "Current Point", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_text(aes(elect,f,label = "Election", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  geom_hline(yintercept = 0.8, size = 1, colour="#333333",alpha=0)+
   ggtitle('Keir Starmer Approval Rating')
 
 ggsave(plot=plot1, file="UK/leadership_approval/plot_starmer_long_v1.png",width = 20, height = 7.5, type = "cairo-png")

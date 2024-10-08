@@ -11,6 +11,7 @@ library(ggpubr)
 library(zoo)
 library(dplyr)
 
+py_run_file("UK/leadership_approval/starmer.py")
 poll <- read_csv("UK/leadership_approval/starmer_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
