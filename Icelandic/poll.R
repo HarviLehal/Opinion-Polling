@@ -26,7 +26,9 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#41A4DB","#A2D150","#6D9B3F","#EC3E48", "#F8CB3C", "#790581","#EDA823","#3B8F93", "#F13A52"))+
+  scale_color_manual(values = c("#41A4DB","#A2D150","#6D9B3F",
+                                "#EC3E48","#F8CB3C","#790581",
+                                "#EDA823","#3B8F93","#F13A52"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -42,6 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_text(aes(election-14,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#000000", fontface="italic", alpha=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+

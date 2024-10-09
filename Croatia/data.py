@@ -1,11 +1,11 @@
 import pandas as pd # library for data analysis
 import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
-import dateparser
 import numpy as np
+import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Croatian_parliamentary_election"
+wikiurl="https://en.wikipedia.org/wiki/Next_Croatian_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,67 +14,44 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-df0=pd.DataFrame(df[-2])
-data22 = df0.drop(["Polling firm","Votes","Lead"], axis=1)
-headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
-parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar1','Centar2','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
-data22.columns = headers
 
-data22 = data22[data22['HDZ'] != data22['Fokus']]
-data22=data22.reset_index(drop=True)
-data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+headers=['Date','1','2','HDZ', 'SDP', 'DP', '3', 'Možemo', 'Most', 'O1', 'O2', 'O3','O4','O5','O6','O7','O8','O9','O10','4','5']
+parties = ['HDZ', 'SDP', 'DP', 'Možemo', 'Most', 'O1', 'O2', 'O3','O4','O5','O6','O7','O8','O9','O10']
+drops = ['1','2','3','4','5']
+d = {}
+for i in range(1):
+  d[i]=pd.DataFrame(df[-1])
+  d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
+  # d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  # d[i].Date2.fillna(d[i].Date, inplace=True)
+  # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
+  # d[i]['Date'] = d[i]['Date2']
+  # d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  d[i] = d[i][d[i]['HDZ'] != d[i]['Most']]
+  for z in parties:
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
+
+D = pd.concat(d.values(), ignore_index=True)
 
 for z in parties:
-  data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z]]
-  data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z]]
-  data22[z] = data22[z].replace(r'^\s*$', str(np.NaN), regex=True)
-  # data22[z] = [x.replace(-,str(np.NaN)) for x in data22[z]]
-  
-for z in parties:
-  data22[z] = data22[z].astype('float')
+  D[z] = D[z].astype(str)
+  D[z] = D[z].str.strip('%')
+  D[z] = D[z].astype('float')
+Others =['O1', 'O2', 'O3','O4','O5','O6','O7','O8','O9','O10']
+D['O1']=np.where(D['O1']==D['Most'],np.nan,D['O1'])
+D['Others']=D[Others].sum(axis=1)
+D = D.drop(Others, axis=1)
 
-data22['Centar']=np.where(data22['Centar1'] != data22['Centar2'], data22['Centar1']+data22['Centar2'], data22['Centar1'])
-data22 = data22.drop(["Centar1","Centar2"], axis=1)
-
-data22.loc[len(data22.index)-1,['RF']] = np.NaN
-data22.loc[len(data22.index)-2,['RF']] = np.NaN
-data22.loc[len(data22.index)-1,['Fokus']] = np.NaN
-
-ROJ = ['SDP','HSS','Centar']
-MHS = ['Most','HS']
-OZ = ['SD','IDS']
-HDZZ = ['HDZ','HNS','HSU']
-OTH = ['Others','KH']
-
-data22['River Of Justice']=data22[ROJ].sum(axis=1)
-data22['Most-HS']=data22[MHS].sum(axis=1)
-data22['Ozbiljno']=data22[OZ].sum(axis=1)
-data22['HDZ Coalition']=data22[HDZZ].sum(axis=1)
-data22['Other']=data22[OTH].sum(axis=1)
-
-
-data22 = data22.drop(ROJ+MHS+OZ+HDZZ+OTH, axis=1)
+parties = ['HDZ', 'SDP', 'DP', 'Možemo', 'Most','Others']
+D['total']=D[parties].sum(axis=1)
+D[parties]=D[parties].div(D['total'], axis=0)
+D = D.drop(['total'], axis=1)
 
 
 
-
-headers = ['Date','HDZ Coalition','River Of Justice','DP','Most-HS','Možemo!','RF','Fokus','Ozbiljno','Other','Undecided']
-parties = ['HDZ Coalition','River Of Justice','DP','Most-HS','Možemo!','RF','Fokus','Ozbiljno','Other','Undecided']
-data22=data22.reindex(columns=headers)
-
-data22.to_csv('Croatia/poll.csv', index=False)
-
-data22['Undecided'].fillna(0, inplace=True)
-data22['total']=data22[parties].sum(axis=1)
-
-data22['decided']=data22['total']-data22['Undecided']
-
-print(data22)
-
-parties = ['HDZ Coalition','River Of Justice','DP','Most-HS','Možemo!','RF','Fokus','Ozbiljno','Other']
-data22[parties] = data22[parties].div(data22['decided'], axis=0)*100
-
-data22 = data22.drop(["decided","total","Undecided"], axis=1)
-
-data22.to_csv('Croatia/poll2.csv', index=False)
+D.to_csv('Croatia/poll.csv', index=False)
