@@ -33,8 +33,6 @@ for i in range(1):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['NDP'] != d[i]['Green']]
   
-for i in range(1):
-  d[i].drop(d[i].index[[-1,-2]],inplace=True)
 
 # d[0]['Date'].replace({pd.NaT: "0 days"}, inplace=True)
 
@@ -51,3 +49,12 @@ for z in parties:
 D = D.dropna(subset=['Date'])
 
 D.to_csv('Canada/Provincial/British Columbia/poll.csv', index=False)
+
+split_date = '21 September 2024'
+split_date=dateparser.parse(split_date)
+z=D.tail(1)
+D=D[(pd.to_datetime(D["Date"]) > split_date)]
+D = pd.concat([D,z], ignore_index=True)
+# D=D.drop(['BCU'], axis=1)
+
+D.to_csv('Canada/Provincial/British Columbia/poll2.csv', index=False)
