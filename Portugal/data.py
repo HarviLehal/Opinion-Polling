@@ -15,7 +15,7 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-# 2023
+# 2024
 
 headers = ['Date','AD','PS','Chega','IL','BE','CDU','LIVRE','PAN']
 parties = ['AD','PS','Chega','IL','BE','CDU','LIVRE','PAN']
@@ -46,10 +46,10 @@ for i in range(1):
   d[i]['Date']=d[i]['Date'].astype(str)
   # d[i]=d[i][~d[i].Date.str.contains("9 Jun 2024")]
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['AD'] != d[i]['CDU']]
+  d[i]=d[i].dropna(subset=['AD'])
+
 
 D = pd.concat(d.values(), ignore_index=True)
-D.drop(D.index[[-1,-3]],inplace=True)
 
 D.to_csv('Portugal/poll.csv', index=False)
 

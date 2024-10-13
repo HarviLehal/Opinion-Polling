@@ -27,7 +27,7 @@ election<-max(d$Date)+14
 # new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.55,linewidth=0.75, data=d)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00"
                                 # ,"#33a22b","#528D6B"
