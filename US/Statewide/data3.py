@@ -591,6 +591,96 @@ fig.patch.set_facecolor('darkgrey')
 plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Adjusted_Winner2.png'), bbox_inches='tight', dpi= 1000)
 
 
+# REVERSE
+
+averages['Lead'] = averages['Harris'] - averages['Trump']
+averages = averages.sort_values('Lead', ascending=False)
+for state in averages['State']:
+    if state not in polls['State'].unique():
+        continue
+    # print up to 2 significant figures 
+    if round(averages[averages['State'] == state]['Lead'].values[0], 3) == 0:
+        print(f'{state_abbr[state]}: {100*averages[averages["State"] == state]["Lead"].values[0]:.4f}%')
+    elif round(averages[averages['State'] == state]['Lead'].values[0], 100) == 0:
+        print(f'{state_abbr[state]}: TIE')
+
+    else:
+        print(f'{state_abbr[state]}: {100*averages[averages["State"] == state]["Lead"].values[0]:.2f}%')
+
+error = pd.read_csv(os.path.join(os.path.dirname(__file__), '2020_error2.csv'))
+
+# merge error with averages
+averages = averages.merge(error, left_on='State', right_on='State')
+
+# calculate the adjusted lead for each state unless the state has no polling data
+
+for state in states:
+    if state not in averages['State'].values:
+        continue
+    averages.loc[averages['State'] == state, 'Adjusted_Lead'] = averages[averages['State'] == state]['Lead'].values[0] - averages[averages['State'] == state]['Error'].values[0]
+
+# adjusted winners
+
+for state in states:
+    if state not in averages['State'].values:
+        continue
+    if averages[averages['State'] == state]['Adjusted_Lead'].values[0] > 0:
+        averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Harris'
+    elif averages[averages['State'] == state]['Adjusted_Lead'].values[0] == 0:
+        averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Tie'
+    elif averages[averages['State'] == state]['Adjusted_Lead'].values[0] < 0:
+        averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Trump'
+    else:
+        if state in Blue_States:
+            averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Harris'
+        elif state in Red_States:
+            averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Trump'
+        else:
+            averages.loc[averages['State'] == state, 'Adjusted_Winner'] = 'Tie'
+            
+# create map of adjusted winner
+
+Harris_votes = averages[averages['Adjusted_Winner'] == 'Harris']['votes'].sum()
+trump_votes = averages[averages['Adjusted_Winner'] == 'Trump']['votes'].sum()
+tie_votes = averages[averages['Adjusted_Winner'] == 'Tie']['votes'].sum()
+no_data = averages[averages['Adjusted_Winner'] == 'No Polling Data']['votes'].sum()
+
+usa = gpd.read_file(os.path.join(os.path.dirname(__file__), 'cb_2018_us_state_500k.shp'))
+usa.loc[usa['NAME'] == 'Hawai‘i', 'NAME'] = 'Hawaii'
+usa.loc[usa['NAME'] == 'Alaska', 'NAME'] = 'Alaska'
+
+states.append('District of Columbia')
+states.append('Hawaii')
+
+usa = usa[usa.NAME.isin(states)]
+usa = usa.merge(averages, left_on='NAME', right_on='State')
+
+usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].translate(xoff=40, yoff=7.5)
+usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].translate(xoff=-50, yoff=-35)
+usa.loc[usa['NAME'] == 'Alaska', 'geometry'] = usa[usa['NAME'] == 'Alaska']['geometry'].scale(xfact=0.5, yfact=0.5)
+usa.loc[usa['NAME'] == 'Hawaii', 'geometry'] = usa[usa['NAME'] == 'Hawaii']['geometry'].scale(xfact=1.5, yfact=1.5)
+
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+
+usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
+# plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Reverse Adjusted)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+# make state outlines black
+usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
+plt.axis('off')
+plt.xlim(-150, -55)
+plt.ylim(20, 50)
+plt.text(-137, 45, f'Harris: {Harris_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='blue')
+plt.text(-137, 42.5, f'Tied: {tie_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='white')
+plt.text(-137, 40, f'Trump: {trump_votes}', fontsize=12, fontname='Times New Roman', fontweight='bold', color='red')
+
+plt.legend().remove()
+
+# change background color to grey
+fig.patch.set_facecolor('darkgrey')
+plt.savefig(os.path.join(os.path.dirname(__file__), 'polling_map_Adjusted_Winner_REVERSE.png'), bbox_inches='tight', dpi= 1000)
+
+
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:

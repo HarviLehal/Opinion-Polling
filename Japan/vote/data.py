@@ -18,7 +18,7 @@ d = {}
 
 for i in range(4):
   d[i]=pd.DataFrame(df[4+i])
-  d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
+  d[i]=d[i].drop(["Sample size","Polling firm","Others","None/Und.", "Lead"], axis=1)
   if i == 2:
     headers.remove('FEFA')
     parties.remove('FEFA')

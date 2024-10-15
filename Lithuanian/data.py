@@ -13,12 +13,12 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-data22=pd.DataFrame(df[-1])
-headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA','3','4']
-parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
+data22=pd.DataFrame(df[-3])
+headers = ['1','Date','2','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LS', 'LLRA', 'LRP', 'TTS', 'LT', 'DSVL','NA','3','4']
+parties = ['TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LS', 'LLRA', 'LRP', 'TTS', 'LT', 'DSVL','NA']
 data22.columns = headers
 data22 = data22.drop(["1","2","3","4"], axis=1)
-headers = ['Date','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LRLS', 'LLRA', 'LRP', 'LCP', 'LT', 'DSVL','NA']
+headers = ['Date','TS–LKD', 'LVŽS', 'DP', 'LSDP', 'LP', 'LS', 'LLRA', 'LRP', 'TTS', 'LT', 'DSVL','NA']
 
 for z in headers:
     data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
@@ -49,6 +49,26 @@ for z in parties:
   # data22[z] = [x.replace('−',str(np.NaN)) for x in data22[z].astype(str)]
   data22[z] = pd.to_numeric(data22[z], errors='coerce')
 # data22[parties] = data22[parties].astype(float)
+
+LSD=19.36
+TS=17.96
+N=14.99
+DS=9.24
+LS=7.70
+LV=7.02
+LP=4.50
+LL=3.89
+DP=2.20
+LR=1.90
+TT=1.38
+LT=0.75
+O=100-TS-LV-DP-LSD-LP-LS-LL-LR-TT-LT-DS-N
+
+new_row = pd.DataFrame({'Date':'13 October 2024','TS–LKD':TS, 'LVŽS':LV, 'DP':DP, 'LSDP':LSD, 'LP':LP, 'LS':LS, 'LLRA':LL, 'LRP':LR, 'TTS':TT, 'LT':LT, 'DSVL':DS,'NA':N}, index=[0])
+data22 = pd.concat([new_row,data22]).reset_index(drop=True)
+data22.Date=data22.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+
 
 
 print(data22)
