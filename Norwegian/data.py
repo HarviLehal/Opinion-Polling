@@ -44,7 +44,7 @@ for j in range(2):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['KrF'] != d[i]['H']]
 
-for i in range(2):
+for i in range(3):
   d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)

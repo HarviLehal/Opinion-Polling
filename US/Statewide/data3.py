@@ -32,7 +32,7 @@ def extract_latest_date(date_range):
 
 states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
-# states = ['Georgia']
+# states = ['North Carolina']
 def get_state_polls(state):
     print("Getting polls for " + state)
     if state == "Washington":
@@ -66,7 +66,16 @@ def get_state_polls(state):
             if y in df[i].columns:
                 i +=1
             d[i] = pd.DataFrame(df[i])
-            d[i] = d[i].drop(["Poll source", "Margin of error"], axis=1)
+            d[i] = d[i].drop(["Margin of error"], axis=1)
+
+            # Drop Rows with Poll Sources that contain the word Rasmussen or Trafalgar
+            # d[i] = d[i][~d[i]['Poll source'].str.contains('Rasmussen' ,na=False)]
+            # d[i] = d[i][~d[i]['Poll source'].str.contains('Trafalgar' ,na=False)]
+            # d[i] = d[i][~d[i]['Poll source'].str.contains('McLaughlin ' ,na=False)]
+            d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+            d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+            d[i] = d[i].drop(["Poll source"], axis=1)
+
             # psub the column headers to remove the citation numbers
             for z in d[i].columns:
                 d[i].rename(columns={z: p.sub('', z)}, inplace=True)
@@ -607,10 +616,7 @@ for state in averages['State']:
     else:
         print(f'{state_abbr[state]}: {100*averages[averages["State"] == state]["Lead"].values[0]:.2f}%')
 
-error = pd.read_csv(os.path.join(os.path.dirname(__file__), '2020_error2.csv'))
 
-# merge error with averages
-averages = averages.merge(error, left_on='State', right_on='State')
 
 # calculate the adjusted lead for each state unless the state has no polling data
 
@@ -664,7 +670,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Reverse Adjusted)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')

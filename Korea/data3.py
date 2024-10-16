@@ -22,10 +22,15 @@ for i in range(3):
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Sample size","Polling firm",'Margin of error', "Net"], axis=1)
   d[i].columns = headers
+
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
-  d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
+  d[i].Date2.fillna(d[i]['Date'].str.split('-').str[0], inplace=True)
+  if d[i]['Date2'].str.contains('Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec').any():
+    pass
+  else:
+    d[i]['Date2'] = [x+' '+ d[i]['Date'].str[:3] for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+' '+ str( 2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
