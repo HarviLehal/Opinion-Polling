@@ -5,9 +5,9 @@ import numpy as np
 import dateparser
 import re
 p = re.compile(r'\[[a-z]+\]')
-headers = ['1','Date','2','3','Harris','Trump','4']
+headers = ['Date','2','3','Harris','Trump','4']
 parties = ['Harris','Trump']
-drops = ['1','2','3','4']
+drops = ['2','3','4']
 split_date = '21 July 2024'
 split_date=dateparser.parse(split_date)
 
@@ -31,6 +31,9 @@ df=pd.read_html(str(tables))
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[4])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -70,6 +73,9 @@ df=pd.read_html(str(tables))
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[5])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -109,6 +115,9 @@ df=pd.read_html(str(tables))
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[4])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -148,6 +157,9 @@ df=pd.read_html(str(tables))
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[5])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -187,6 +199,9 @@ df=pd.read_html(str(tables))
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[4])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -222,11 +237,14 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
-headers = ['1','Date','2','3','Trump','Harris','4']
+headers = ['Date','2','3','Trump','Harris','4']
 
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[5])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])

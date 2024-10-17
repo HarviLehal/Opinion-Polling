@@ -670,7 +670,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Reverse Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
