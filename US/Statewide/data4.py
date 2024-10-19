@@ -12,23 +12,16 @@ import requests
 from bs4 import BeautifulSoup
 
 def extract_latest_date(date_range):
-    # Split the date range into parts
-    parts = date_range.split('–')
-    
-    # Extract the start date (which includes the month)
-    start_date = parts[0].strip()
-    
-    # Extract the end date (which might only have the day)
-    end_date = parts[-1].strip()
-    
-    # If the end date does not contain a month, inherit it from the start date
-    if any(char.isdigit() for char in end_date) and not any(char.isalpha() for char in end_date):
-        # Extract the month from the start date
-        month = ''.join(filter(str.isalpha, start_date))
-        end_date = month + ' ' + end_date
-    
-    # Return the latest date with the correct format
-    return end_date
+    parts = date_range.split(' ')
+    parts2 = parts[1].split('–')
+    if len(parts2) == 1:
+        parts2 = parts[1].split('−')
+    if len(parts2) == 1:
+        parts2 = ['blank', parts[1]]
+    if len(parts) == 3:
+        return parts2[1] + ' ' + parts[0] + ' ' + parts[-1]
+    else:
+        return parts[4] + ' ' + parts[3] + ' ' + parts[-1]
 
 states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming']
 
@@ -66,7 +59,10 @@ def get_state_polls(state):
             if y in df[i].columns:
                 i +=1
             d[i] = pd.DataFrame(df[i])
-            d[i] = d[i].drop(["Poll source", "Margin of error"], axis=1)
+            d[i] = d[i].drop(["Margin of error"], axis=1)
+            d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+            d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+            d[i] = d[i].drop(["Poll source"], axis=1)
             # psub the column headers to remove the citation numbers
             for z in d[i].columns:
                 d[i].rename(columns={z: p.sub('', z)}, inplace=True)
@@ -99,6 +95,7 @@ def get_state_polls(state):
                 d[i][z] = [x.replace('TBA', str(np.NaN)) for x in d[i][z]]
                 d[i][z] = [x.replace('?', str(np.NaN)) for x in d[i][z]]
             d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
+            d[i]['Date2'] = [x.replace(',','') for x in d[i]['Date2']]
             d[i]['Date'] = d[i]['Date2']
             d[i] = d[i].drop(['Date2'], axis=1)
             d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
@@ -153,7 +150,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=7)
+fourteen_days_before = dates - pd.Timedelta(days=5)
 
 # check polls for Nevada
 # polls[polls['State'] == 'Nevada']
@@ -243,7 +240,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -397,7 +394,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=7)
+fourteen_days_before = dates - pd.Timedelta(days=5)
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
@@ -518,7 +515,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -620,7 +617,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 7 day average from the most recent poll for each state (Rounded to nearest %)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (Rounded to nearest %)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')

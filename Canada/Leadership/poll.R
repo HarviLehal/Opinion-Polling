@@ -72,7 +72,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#EF7B00","#127C73",
                                "#3D9F3B","#442D7B"))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
-            hjust=ifelse(d1$value<0,1.8,-0.8), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
+            hjust=-0.1, color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   geom_hline(aes(yintercept=0), alpha=1, linewidth=1, linetype="solid", colour="#000000")+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
