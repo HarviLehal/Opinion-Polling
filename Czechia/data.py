@@ -60,7 +60,7 @@ D = D.drop(SPOLU, axis=1)
 
 D= D[['Date','Spolu','ANO','STAN','Piráti','SPD','Přísaha','SOCDEM','KSČM','Zelení','PRO']]
 
-D.loc[D['Spolu'] > 70, 'Spolu'] = D['Spolu']/3
+D.loc[D['Spolu'] > 50, 'Spolu'] = D['Spolu']/3
 
 
 D.to_csv('Czechia/poll.csv', index=False)

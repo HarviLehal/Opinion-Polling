@@ -65,12 +65,12 @@ data_adams.columns = ['Date','Approval','Disapproval']
 
 # Calculate net approval in data2 and remove approval-disapproval columns
 data= data2[['Date']]
-data['Starmer'] = data_starmer['Approval'] - data_starmer['Disapproval']
-data['Sunak'] = data_sunak['Approval'] - data_sunak['Disapproval']
-data['Farage'] = data_farage['Approval'] - data_farage['Disapproval']
-data['Davey'] = data_davey['Approval'] - data_davey['Disapproval']
-data['Denyer'] = data_denyer['Approval'] - data_denyer['Disapproval']
-data['Adams'] = data_adams['Approval'] - data_adams['Disapproval']
+data['Starmer'] = (data_starmer['Approval'] - data_starmer['Disapproval'])/(data_starmer['Approval'] + data_starmer['Disapproval'])
+data['Sunak'] = (data_sunak['Approval'] - data_sunak['Disapproval'])/(data_sunak['Approval'] + data_sunak['Disapproval'])
+data['Farage'] = (data_farage['Approval'] - data_farage['Disapproval'])/(data_farage['Approval'] + data_farage['Disapproval'])
+data['Davey'] = (data_davey['Approval'] - data_davey['Disapproval'])/(data_davey['Approval'] + data_davey['Disapproval'])
+data['Denyer'] = (data_denyer['Approval'] - data_denyer['Disapproval'])/(data_denyer['Approval'] + data_denyer['Disapproval'])
+data['Adams'] = (data_adams['Approval'] - data_adams['Disapproval'])/(data_adams['Approval'] + data_adams['Disapproval'])
 
 data
 

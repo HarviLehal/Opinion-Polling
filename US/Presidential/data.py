@@ -14,6 +14,20 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
+def extract_latest_date(date_range):
+    parts = date_range.split(' ')
+    parts2 = parts[1].split('–')
+    if len(parts2) == 1:
+        parts2 = parts[1].split('−')
+    if len(parts2) == 1:
+        parts2 = ['blank', parts2[0]]
+    print(parts)
+    print(parts2)
+    if len(parts) == 3:
+        return parts2[1] + ' ' + parts[0] + ' ' + parts[-1]
+    else:
+        return parts[4] + ' ' + parts[3] + ' ' + parts[-1]
+
 headers = ['Date', 'Harris', 'Trump', 'Other']
 parties = ['Harris', 'Trump', 'Other']
 d = {}
@@ -32,25 +46,30 @@ for i in range(4):
     d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
-  d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
-  d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
+  d[i] = d[i].dropna(subset=['Date'])
+  d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
+  d[i]['Date2'] = [x.replace(',','') for x in d[i]['Date2']]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  # d[i]['Date2'] = (d[i]['Date'].str.split(' ').str[0] + ' ' + d[i]['Date'].str.split('–').str[1]).astype(str)
+  # d[i]['Date2'] = [x if d[i]['Date2'][j] != 'nan' else d[i]['Date'][j] for j, x in enumerate(d[i]['Date2'])]
   # d[i]['Date2'] = d[i]['Date'].str.split('–').str[0]
   # d[i]['Date2'] = d[i]['Date2'].str.split(',').str[0]
   # d[i]['Date2'] = (d[i]['Date2']+' ' + d[i]['Date'].str.split(',')[1]).astype(str)
   # d[i]['Date2'] = [x.split(',')[1] if len(x.split(',')) > 0 else '' for x in d[i]['Date'].astype(str)]
   # d[i]['Date2'] = (d[i]['Date2']+[x.split(',')[1] if len(x.split(',')) > 0 else '' for x in d[i]['Date'].astype(str)]).astype(str)
-  d[i]['Date'] = d[i]['Date2']
-  d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Harris'] != d[i]['Other']]
+  # d[i]['Date'] = d[i]['Date2']
+  # d[i] = d[i].drop(['Date2'], axis=1)
+  # d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D = pd.concat(d.values(), ignore_index=True)
 
 for z in parties:
   D[z] = D[z].astype(str)
   D[z] = D[z].str.strip('%')
-  D[z] = D[z].astype('float')
-  
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D=D.dropna(subset=['Harris'])
 new_row = pd.DataFrame({'Date': '03 November 2020', 'Harris':51.31 , 'Trump':46.85 , 'Other':1.84}, index=[0])
 D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))

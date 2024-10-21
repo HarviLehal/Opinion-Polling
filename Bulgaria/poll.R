@@ -68,14 +68,14 @@ d_6$value<-as.numeric(d_6$value)/100
 d_6$value<-formattable::percent(d_6$value)
 colss <-c("GERB"      ="#0054a6",
           "DPS"       ="#0066b7",
-          "PP-DB"     ="#4200ff",
+          `PP-DB`     ="#4200ff",
           "V"         ="#c09f62",
           "BSP"       ="#db0f28",
           "ITN"       ="#4bb9de",
           "Velichie"  ="#ad1c20",
           "Other"     ="#999999",
           "APS"       ="#6147aa",
-          "DPS-NN"    ="#0066b7",
+          `DPS–NN`    ="#0066b7",
           "BV"        ="#197032",
           "Levitsata" ="#ba1034",
           "PP"        ="#ffc300",
@@ -91,7 +91,8 @@ new2<-new2[!is.na(new2$value),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=election0,])+
   scale_color_manual(values =colss)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election1&new$Date!=election0,])+
   # geom_smooth(method = "lm",formula=y ~ I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=next_election&new2$Date!=election0,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_1[d_1$Date!=election1&d_1$Date!=election0,])+
@@ -140,7 +141,7 @@ d00<-poll0[poll0$Date>=max(poll0$Date)-14,]
 d00 <- colMeans(d00[-1],na.rm = TRUE)
 d00<- as.data.frame(d00)
 d00 <- t(d00)
-Date<-as.Date("15 04 2024", "%d %m %Y")
+Date<-as.Date("26 10 2024", "%d %m %Y")
 d00 <- cbind(Date, d00)
 d00 <- as.data.frame(d00)
 d00$Date <- as.Date(d00$Date)
@@ -171,15 +172,15 @@ d7$value<-formattable::percent(d7$value, digits = 2)
 plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#a3c2df","#99bbdb","#6698ca","#4d87c1","#3376b8","#1a65af","#0054a6","#004385",
-                               "#a3acef","#99a3ed","#668adc","#4d81d2","#3378c9","#1a6fc0","#0066b7","#005292",
+                               "#000000","#000000","#000000","#000000","#000000","#000000","#000000","#6147aa",
+                               "#000000","#000000","#000000","#000000","#000000","#000000","#000000","#0066b7",
                                "#aa8dff","#a180ff","#8e66ff","#7b4dff","#6833ff","#551aff","#4200ff","#3500cc",
                                "#f2d5a4","#f0d09a","#e4c386","#dbba7d","#d2b174","#c9a86b","#c09f62","#9a7f4e",
                                "#ff6078","#ff4e69","#ff3954","#f92f49","#f0243e","#e61a33","#db0f28","#af0c20",
                                "#afe9ff","#a6e6ff","#87ddff","#78d4f9","#69cbf0","#5ac2e7","#4bb9de","#3c94b2",
                                "#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#8a161a",
                                "#dddddd","#d9d9d9","#c1c1c1","#b7b7b7","#adadad","#a3a3a3","#999999","#7a7a7a",
-                               "#6147aa","#000000","#000000","#000000","#000000","#000000","#000000","#000000",
-                               "#0066b7","#000000","#000000","#000000","#000000","#000000","#000000","#000000",
+                               "#a3acef","#99a3ed","#668adc","#4d81d2","#3378c9","#1a6fc0","#0066b7","#005292",
                                "#8bb37f","#7eaa71","#5d9556","#4c8c4d","#3b8344","#2a7a3b","#197032","#145a28",
                                "#f27ba4","#f16c9a","#e34c78","#d93d67","#cf2e56","#c51f45","#ba1034","#950d2a",
                                "#fff6a3","#fff599","#ffe866","#ffdf4d","#ffd533","#ffcc1a","#ffc300","#cc9c00",
@@ -195,9 +196,9 @@ plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
-        plot.title = element_text(face="bold",size=10),
+        plot.title = ggtext::element_markdown(face="bold"),
         axis.text.y = element_text(face="bold",size=10))+
-  ggtitle(' 14 Day Average \n Jun 2024 Result \n Apr 2023 Result \n Oct 2022 Result \n Nov 2021 Result \n Jul 2021 Result \n Apr 2021 Result \n Mar 2017 Result ')+
+  ggtitle(' 14 Day Average <br> Jun 2024 Result <br> Apr 2023 Result <br> Oct 2022 Result <br> Nov 2021 Result <br> Jul 2021 Result <br> Apr 2021 Result <br> Mar 2017 Result  ')+
   scale_x_discrete(limits = rev(levels(d7$variable)))+
   coord_flip()
 plot2

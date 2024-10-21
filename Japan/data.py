@@ -18,10 +18,11 @@ d = {}
 
 for i in range(4):
   d[i]=pd.DataFrame(df[i])
-  if i < 2:
-    d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Others","Und./ no ans.", "Lead"], axis=1)
-  else:
-    d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
+  d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
+  # if i < 2:
+  #   d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Others","Und./ no ans.", "Lead"], axis=1)
+  # else:
+  #   d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
   if i==3:
     headers.remove('DIY')
     parties.remove('DIY')

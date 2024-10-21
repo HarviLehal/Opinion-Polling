@@ -15,7 +15,7 @@ py_run_file("UK/leadership_approval/data.py")
 poll <- read_csv("UK/leadership_approval/net_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-d$value<-as.numeric(d$value)/100
+# d$value<-as.numeric(d$value)/100
 # d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
 old<-as.Date("04 07 2024", "%d %m %Y")
@@ -27,7 +27,7 @@ election<-max(d$Date)+14
 # new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.55,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00"
                                 # ,"#33a22b","#528D6B"
@@ -59,7 +59,7 @@ poll <- read_csv("UK/leadership_approval/net_approval.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-10),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -67,7 +67,7 @@ d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d1 <- reshape2::melt(d1, id.vars="Date")
-d1$value<-as.numeric(d1$value)/100
+# d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
 
@@ -80,7 +80,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
-            hjust=ifelse(d1$value<0,1.8,-0.8), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
+            hjust=ifelse(d1$value<0,1.8,-0.1), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   geom_hline(aes(yintercept=0), alpha=1, linewidth=1, linetype="solid", colour="#000000")+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -89,7 +89,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 Day Average')+
+  ggtitle(' 10 Day Average')+
   scale_x_discrete(limits = d1$variable[order(d1$value)])+
   coord_flip()
 plot2

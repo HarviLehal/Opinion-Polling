@@ -15,6 +15,7 @@ library(tidyverse)
 library(data.table)
 library(hrbrthemes)
 library(ggbreak)
+library(ggbreak)
 
 py_run_file("Australia/State/Queensland/data.py")
 poll <- read_csv("Australia/State/Queensland/poll.csv")
@@ -23,6 +24,7 @@ d$value<-as.numeric(sub("%","",d$value))/100
 d$value<-formattable::percent(d$value)
 
 election<-as.Date("26 10 2024", "%d %m %Y")
+start <-as.Date("01 02 2022", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -52,7 +54,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
+  # scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
+  scale_x_break(c(old+8, start))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-29,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 Queensland State Election')
 
 plot1
@@ -87,13 +91,13 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#6699b0","#00557c","#eb8685","#de3533",
+  scale_fill_manual(values = c("#eb8685","#de3533","#6699b0","#00557c",
                                "#9EED8E","#3AA54F","#f7b792","#E76E29",
                                "#d36768","#b50204","#d0d4d9","#a2aab3"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
@@ -128,7 +132,7 @@ old <-min(d$Date)
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#de3533","#00557c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -147,7 +151,8 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
+  scale_x_break(c(old+8, start))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-29,election),guide = guide_axis(angle = -90))+
   ggtitle('Two Party Preference Polling for the 2024 Queensland State Election')
 plot1a
 
@@ -183,7 +188,7 @@ plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable),
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

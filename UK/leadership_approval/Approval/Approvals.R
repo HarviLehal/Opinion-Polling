@@ -82,7 +82,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5) +
   scale_color_manual(values = c("#ef476f","#f78c6b","#ffd166","#06d6a0",
                                 "#118ab2","#073b4c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d,alpha=0.75)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.31,linewidth=0.75, data=d,alpha=0.75)+
   theme_minimal()+
   theme(
         legend.title = element_blank(),

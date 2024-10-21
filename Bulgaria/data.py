@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','GERB','DPS1','DPS2','PP-DB','V','BSP','ITN','Velichie','drop3','Other','drop4','drop5','drop6']
+headers = ['1','Date','2','GERB','DPS1','DPS2','PP-DB','V','BSP','3','4','ITN','Velichie','5','6','Other','7','8']
 parties = ['GERB','DPS1','DPS2','PP-DB','V','BSP','ITN','Velichie','Other']
-drops = ['drop1','drop2','drop3','drop4','drop5','drop6']
+drops = ['1','2','3','4','5','6','7','8']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
@@ -44,14 +44,14 @@ D[parties] = D[parties].astype(float)
 split_date = '11 September 2024'
 split_date=dateparser.parse(split_date)
 
-fix_date = '23 September 2024'
-fix_date=dateparser.parse(fix_date)
+# fix_date = '23 September 2024'
+# fix_date=dateparser.parse(fix_date)
 
 c={}
 c[0]=D[(pd.to_datetime(D["Date"]) > split_date)]
-c[0].rename(columns={"DPS1": "APS"}, inplace=True)
-c[0].rename(columns={"DPS2": "DPS–NN"}, inplace=True)
-c[0].loc[len(c[0].index)-1,['Date']] = fix_date
+c[0].rename(columns={"DPS1": 'APS'}, inplace=True)
+c[0].rename(columns={"DPS2": 'DPS–NN'}, inplace=True)
+# c[0].loc[len(c[0].index)-1,['Date']] = fix_date
 
 c[1]=D[(pd.to_datetime(D["Date"]) < split_date)]
 c[1].rename(columns={"DPS1": "DPS"}, inplace=True)
