@@ -17,10 +17,12 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
+old<-min(d$Date)
 election<-as.Date("18 05 2025", "%d %m %Y")
 # election<-max(d$Date)+14
-new<-d[d$variable!='Mentzen',]
-new2<-d[d$variable=='Mentzen',]
+new<-d[d$variable!='Mentzen'&d$variable!='Nawrocki',]
+new2<-d[d$variable=='Nawrocki',]
+new3<-d[d$variable=='Mentzen',]
 new2<-new2[!is.na(new2$value),]
 # MAIN GRAPH
 
@@ -28,10 +30,11 @@ new2<-new2[!is.na(new2$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#F9C013","#122746"))+
+  scale_color_manual(values = c("#263778","#515f93","#F68F2D","#F9C013","#122746"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new[new$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new2[new2$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new3[new3$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -62,7 +65,7 @@ poll <- read_csv("Polish/President/poll.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-35),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -75,7 +78,7 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#263778","#F68F2D","#F9C013","#122746"))+
+  scale_fill_manual(values = c("#263778","#515f93","#F68F2D","#F9C013","#122746"))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
             hjust=-0.1, color="#FFFFFF",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+

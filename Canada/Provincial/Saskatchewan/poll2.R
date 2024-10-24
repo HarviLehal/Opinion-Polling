@@ -14,24 +14,28 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-py_run_file("Canada/Provincial/Quebec/data.py")
-poll <- read_csv("Canada/Provincial/Quebec/poll.csv")
-Sys.setlocale("LC_ALL", "French")
+library(ggbreak)
+
+poll <- read_csv("Canada/Provincial/Saskatchewan/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("05 10 2026", "%d %m %Y")
+election<-as.Date("28 10 2024", "%d %m %Y")
+start <- as.Date("25 Jul 2024", "%d %b %Y")
+
 old <-min(d$Date)
+
+d<-d[d$Date==old|d$Date>start,]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#1e90ff","#ff8040",
-                                "#87cefa","#ea6d6a","#313e6b"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
+  scale_color_manual(values = c("#00583f","#ff9900","#fdcc04",
+                                "#009155","#9999ff","#ea6d6a","#005d7d"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -46,16 +50,16 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Sondages sur les élections générales québécoises de 2026')
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_break(c(old+1, start))+
+  scale_x_date(date_breaks = "2 days", date_labels =  "%d %b %Y",limits = c(old-1,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the 2024 Saskatchewan general election')
 
 plot1
 
-poll <- read_csv("Canada/Provincial/Quebec/poll.csv")
+poll <- read_csv("Canada/Provincial/Saskatchewan/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
@@ -72,37 +76,39 @@ d2 <- as.data.frame(d2)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
-d1$value<-formattable::percent(d1$value, digits = 1, decimal.mark = ",")
+d1$value<-formattable::percent(d1$value, digits = 1)
+d1
+# set BCU to NaN
 
 d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
-d2$value<-formattable::percent(d2$value, digits = 1, decimal.mark = ",")
+d2$value<-formattable::percent(d2$value, digits = 1)
+
 
 d3<-rbind(d2,d1)
 
-plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
-geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#78bcff","#1e90ff","#ffb38c","#ff8040",
-                             "#b7e2fc","#87cefa","#f2a7a6","#ea6d6a",
-                             "#838ba6","#313e6b"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
+
+plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date ))+
+  geom_bar(stat="identity",width=0.9, position=position_dodge())+
+  scale_fill_manual(values = c("#669b8c","#00583f","#ffc266","#ff9900","#fee068","#fdcc04",
+                               "#66bd99","#009155","#c2c2ff","#9999ff","#f2a7a6","#ea6d6a","#669eb1","#005d7d"))+
+  geom_text(aes(label = ifelse(d3$Date == max(d3$Date),
+                               ifelse(is.nan(d3$value)==FALSE,paste(formattable::percent(d3$value, digits = 1)),""),
+                               ifelse(is.na(d3$value)==FALSE,paste("(",formattable::percent(d3$value, digits = 1),")"),"New")),y = 0),
+            hjust=0, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
+        plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle(' Moyenne sur 14 jours <br> *(Résultats 2022)*')+
-scale_x_discrete(limits = rev(levels(d3$variable)))+
-coord_flip()
+  ggtitle(' 14 Day Average \n 2020 Results')+
+  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  coord_flip()
 
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-aplot::plot_list(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
-ggsave(plot=plot, file="Canada/Provincial/Quebec/plot.png",width = 20, height = 7.5, type="cairo-png")
-Sys.setlocale("LC_ALL", "English")
+ggsave(plot=plot, file="Canada/Provincial/Saskatchewan/plot2.png",width = 15, height = 7.5, type="cairo-png")

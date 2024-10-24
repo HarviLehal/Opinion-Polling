@@ -43,9 +43,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank(),
         axis.text.x.bottom=element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Georgia')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
@@ -77,9 +78,10 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank(),
         axis.text.x.bottom=element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Michigan')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
@@ -110,9 +112,10 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank(),
         axis.text.x.bottom=element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('North Carolina')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
@@ -143,9 +146,10 @@ plot4<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank(),
         axis.text.x.bottom=element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Nevada')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
@@ -161,7 +165,7 @@ d$value<-formattable::percent(d$value)
 plot5<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -175,9 +179,10 @@ plot5<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Pennsylvania')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
@@ -193,7 +198,7 @@ d$value<-formattable::percent(d$value)
 plot6<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5)+
   scale_color_manual(values = c("#0042ca","#e81b23","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -207,9 +212,10 @@ plot6<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 1L),breaks=seq(0.44,0.56,0.02))+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0.44), alpha=0)+
   geom_hline(aes(yintercept=0.56), alpha=0)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Wisconsin')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
   theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))

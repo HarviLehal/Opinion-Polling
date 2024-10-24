@@ -55,7 +55,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   # scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
-  scale_x_break(c(old+8, start))+
+  scale_x_break(c(old+14, start))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-29,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 Queensland State Election')
 
@@ -110,7 +110,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   coord_flip()
 
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Australia/State/Queensland/plot.png",width = 15, height = 7.5, type="cairo-png")
@@ -151,7 +151,7 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_break(c(old+8, start))+
+  scale_x_break(c(old+14, start))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-29,election),guide = guide_axis(angle = -90))+
   ggtitle('Two Party Preference Polling for the 2024 Queensland State Election')
 plot1a
@@ -201,7 +201,7 @@ plot2a<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable),
   coord_flip()
 
 
-plot2<-ggarrange(plot1a, plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot2<-aplot::plot_list(plot1a,plot2a,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot2
 ggsave(plot=plot2, file="Australia/State/Queensland/plot2.png",width = 15, height = 7.5, type="cairo-png")
 

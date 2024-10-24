@@ -139,7 +139,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                ifelse(d3$value>=4,paste("(",d3$value,")"),
                                       ifelse(d3$variable=='New Hope','(Part of National Unity)',
                                              ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)",paste("(",d3$value,"%",")"))))),
-                y = 0),hjust=ifelse(d3$Date==max(d3$Date),ifelse(d3$value<10,ifelse(d3$value<4,-0.15,-1.1),-0.45),0), color="#000000",position = position_dodge(1), size=3.5, fontface=ifelse(d3$value<4,"bold.italic","bold"))+
+                y = 0),hjust=ifelse(is.na(d3$value)==TRUE,ifelse(d3$Date==max(d3$Date),ifelse(d3$value<10,ifelse(d3$value<4,-0.15,-1.1),-0.45),0),0), color="#000000",position = position_dodge(1), size=3.5, fontface=ifelse(d3$value<4,"bold.italic","bold"))+
   # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
   #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
@@ -155,13 +155,13 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 plot2
 
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
 
 ggsave(plot=plot, file="Israel/plot.png",width = 15, height = 7.5, type="cairo-png")
 
-plot<-ggarrange(plot1a, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-ggarrange(plot1a, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
 ggsave(plot=plot, file="Israel/plot2.png",width = 15, height = 7.5, type="cairo-png")
