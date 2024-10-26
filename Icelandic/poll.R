@@ -29,6 +29,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#41A4DB","#A2D150","#6D9B3F",
                                 "#EC3E48","#F8CB3C","#790581",
                                 "#EDA823","#3B8F93","#F13A52"))+
+  # scale_color_manual(values = c("#00adef","#87ff91","#00b878",
+  #                               "#ed1400","#ffca3e","#4a3e8f",
+  #                               "#ff7d14","#002169","#ef4839"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -87,10 +90,15 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#f7e199","#F8CB3C","#bc65c2","#790581",
                                "#f5d38e","#EDA823","#8dc3c9","#3B8F93",
                                "#f2a29b","#F13A52"))+
+  # scale_fill_manual(values = c("#66cef5","#00adef","#b7ffbd","#87ff91",
+  #                              "#66d4ae","#00b878","#f47266","#ed1400",
+  #                              "#ffdf8b","#ffca3e","#928bbc","#4a3e8f",
+  #                              "#ffb172","#ff7d14","#667aa5","#002169",
+  #                              "#f59188","#ef4839"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
             hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

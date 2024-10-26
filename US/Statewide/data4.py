@@ -150,7 +150,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=5)
+fourteen_days_before = dates - pd.Timedelta(days=4)
 
 # check polls for Nevada
 # polls[polls['State'] == 'Nevada']
@@ -394,7 +394,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=5)
+fourteen_days_before = dates - pd.Timedelta(days=4)
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:

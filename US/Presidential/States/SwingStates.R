@@ -49,7 +49,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Georgia')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 
 plot1
 
@@ -84,7 +84,7 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Michigan')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 plot2
 
 
@@ -118,7 +118,7 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('North Carolina')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 plot3
 
 
@@ -152,7 +152,7 @@ plot4<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Nevada')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 plot4
 
 
@@ -185,7 +185,7 @@ plot5<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Pennsylvania')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 plot5
 
 
@@ -218,7 +218,7 @@ plot6<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Wisconsin')+
   # if the 7 day average for Harris is higher than Trump, then change background to blue
-  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 4,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
+  theme(panel.background = element_rect(fill = ifelse(colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Harris"] > colMeans(poll[poll$Date > max(poll$Date) - 5,][-1])["Trump"], "#b0ceff", "#ffb6b6")))
 plot6
 
 

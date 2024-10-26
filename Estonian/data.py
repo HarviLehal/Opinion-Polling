@@ -21,7 +21,7 @@ for i in range(2):
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.", 'EÜVP','Koos','EER'], axis=1)
   if i == 0:
-    d[i]=d[i].drop(['VAP','ERK'], axis=1)
+    d[i]=d[i].drop(['ERK'], axis=1)
   d[i].columns = headers
   for z in headers:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]

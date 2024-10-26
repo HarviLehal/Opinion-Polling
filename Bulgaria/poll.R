@@ -30,7 +30,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-next_election<-as.Date("20 10 2024", "%d %m %Y")
+next_election<-as.Date("27 10 2024", "%d %m %Y")
 election0<-as.Date("09 06 2024", "%d %m %Y")
 election1<-as.Date("02 04 2023", "%d %m %Y")
 election2<-as.Date("02 10 2022", "%d %m %Y")
@@ -91,7 +91,8 @@ new2<-new2[!is.na(new2$value),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=election0,])+
   scale_color_manual(values =colss)+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election1&new$Date!=election0,])+
   # geom_smooth(method = "lm",formula=y ~ I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2[new2$Date!=next_election&new2$Date!=election0,])+
