@@ -16,7 +16,7 @@ library(data.table)
 library(hrbrthemes)
 library(ggbreak)
 
-py_run_file("Bulgaria/data.py")
+# py_run_file("Bulgaria/data.py")
 poll0 <- read_csv("Bulgaria/poll.csv")
 poll1 <- read_csv("Bulgaria/poll1.csv")
 poll2 <- read_csv("Bulgaria/poll2.csv")
@@ -127,8 +127,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election5, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election6, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=next_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5, shape=18, alpha=1)+
-  geom_point(data=d[d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5.25, shape=5, alpha=1)+
+  geom_point(data=d[d$Date==next_election|d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5, shape=18, alpha=1)+
+  geom_point(data=d[d$Date==next_election|d$Date==election0|d$Date==election1|d$Date==election2|d$Date==election3|d$Date==election4|d$Date==election5|d$Date==election6,],size=5.25, shape=5, alpha=1)+
   scale_x_break(c(election6+25, as.Date("01 05 2019", "%d %m %Y")))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(election6-25,next_election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling since the Mar 2017, Apr 2021, Jul 2021, Nov 2021, Oct 2022, Apr 2023, Jun 2024 until the Oct 2024 Bulgarian Parliamentary Election')
@@ -147,8 +147,9 @@ d00 <- cbind(Date, d00)
 d00 <- as.data.frame(d00)
 d00$Date <- as.Date(d00$Date)
 
-
-d0 <- poll0[poll0$Date==min(poll0$Date),]
+d00 <- poll0[poll0$Date==max(poll0$Date),]
+d00 <- as.data.frame(d00)
+d0 <- poll1[poll1$Date==max(poll1$Date),]
 d0 <- as.data.frame(d0)
 d1 <- poll1[poll1$Date==min(poll1$Date),]
 d1 <- as.data.frame(d1)
@@ -199,7 +200,7 @@ plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         plot.title = ggtext::element_markdown(face="bold"),
         axis.text.y = element_text(face="bold",size=10))+
-  ggtitle(' 14 Day Average <br> Jun 2024 Result <br> Apr 2023 Result <br> Oct 2022 Result <br> Nov 2021 Result <br> Jul 2021 Result <br> Apr 2021 Result <br> Mar 2017 Result  ')+
+  ggtitle(' Oct 2024 Result <br> Jun 2024 Result <br> Apr 2023 Result <br> Oct 2022 Result <br> Nov 2021 Result <br> Jul 2021 Result <br> Apr 2021 Result <br> Mar 2017 Result  ')+
   scale_x_discrete(limits = rev(levels(d7$variable)))+
   coord_flip()
 plot2

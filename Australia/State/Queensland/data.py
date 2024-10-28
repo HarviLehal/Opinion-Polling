@@ -22,6 +22,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[-3])
   d[i].columns = headers
   d[i]=d[i].drop(["Firm","Sample"], axis=1)
+  d[0].loc[0,['Date']] = '26 October 2024'
   d[0].loc[len(d[0].index)-1,['Date']] = '31 October 2020'
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -29,18 +30,20 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Labor'] != d[i]['Other']]
   for z in parties:
     d[i][z] = d[i][z].str.split('%').str[0]
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = d[i][z].astype('float')
-    
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] = d[i].dropna(subset=['Labor2'])
+
 D = pd.concat(d.values(), ignore_index=True)
+
 PP = ['Labor2', 'Coalition2']
 E = D.drop(PP, axis=1)
+E = E.dropna(subset=['Labor'])
 E.to_csv('Australia/State/Queensland/poll.csv', index=False)
 
 

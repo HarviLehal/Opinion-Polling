@@ -179,7 +179,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=4)
+fourteen_days_before = dates - pd.Timedelta(days=6)
 
 # check polls for Nevada
 # polls[polls['State'] == 'Nevada']
@@ -269,7 +269,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 4 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -423,7 +423,7 @@ states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 
 # Class a winner based on the 14 day average since the most recent poll for each state
 dates = polls.groupby('State')['Date'].max()
 dates
-fourteen_days_before = dates - pd.Timedelta(days=4)
+fourteen_days_before = dates - pd.Timedelta(days=6)
 
 averages = pd.DataFrame(columns=['State', 'Harris', 'Trump', 'Winner'])
 for state in states:
@@ -509,7 +509,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 4 day average from the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -597,7 +597,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 4 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (Adjusted for 2020 Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -684,7 +684,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Adjusted_Winner', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 4 day average from the most recent poll for each state (Reverse Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (Reverse Error)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')
@@ -786,7 +786,7 @@ fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 
 usa.plot(column='Winner2', ax=ax, legend=True, cmap='bwr', edgecolor='black')
 # plt.title('2024 US Presidential Election Polling taking the most recent poll for each state (States without polling projected)', fontsize=16, fontname='Times New Roman', fontweight='bold')
-plt.title('2024 US Presidential Election Polling taking the 4 day average from the most recent poll for each state (Rounded to nearest %)', fontsize=16, fontname='Times New Roman', fontweight='bold')
+plt.title('2024 US Presidential Election Polling taking the 5 day average from the most recent poll for each state (Rounded to nearest %)', fontsize=16, fontname='Times New Roman', fontweight='bold')
 # make state outlines black
 usa.boundary.plot(ax=ax, color='black', linewidth=0.5)
 plt.axis('off')

@@ -19,7 +19,7 @@ parties = ['GERB','DPS1','DPS2','PP-DB','V','BSP','ITN','Velichie','Other']
 drops = ['1','2','3','4','5','6','7','8']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -37,7 +37,8 @@ for i in range(1):
     d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
-    
+  d[i].drop(d[i].index[[-1]],inplace=True)
+
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
 
@@ -59,4 +60,19 @@ c[1]=c[1].drop(["DPS2"], axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)
 
-C.to_csv('Bulgaria/poll.csv', index=False)
+G=25.52
+A=7.24
+D=11.17
+P=13.74
+V=12.92
+B=7.32
+I=6.56
+VE=3.87
+O=100-G-A-D-P-V-B-I-VE
+
+new_row = pd.DataFrame({'Date':'27 October 2024','GERB':G,'APS':A,'DPS–NN':D,'PP-DB':P,'V':V,'BSP':B,'ITN':I,'Velichie':VE,'Other':O,'DPS':np.nan}, index=[0])
+D = pd.concat([new_row,C]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+
+D.to_csv('Bulgaria/poll.csv', index=False)

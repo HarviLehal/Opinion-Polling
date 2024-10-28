@@ -34,12 +34,11 @@ d<-d[d$Date>start|d$Date==old,]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
-                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#aaaaaa"
+                                "#ffba00","#ed008c","#ed7301","#1ca9e9","#0b80db","#aaaaaa"
   ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -57,8 +56,8 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0), alpha=0)+
   geom_hline(aes(yintercept=233), alpha=1)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_break(c(old+0.5, start+1))+
   scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old-1,election),guide = guide_axis(angle = -90))+
   ggtitle('Seat Projection for the 2024 Japanese General election (Excluding No Party and Undecided)')
@@ -71,7 +70,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-1),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE),digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -93,7 +92,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#d4e28e","#b8ce43","#fb99b3","#f95580",
                                "#e96677","#db001c","#ffd666","#ffba00",
                                "#f466ba","#ed008c","#f4ab67","#ed7301",
-                               "#77cbf2","#1ca9e9","#cccccc","#aaaaaa"))+
+                               "#77cbf2","#1ca9e9","#6db3e9","#0b80db","#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date),
                                ifelse(is.nan(d3$value)==TRUE,"",
                                       (paste(d3$value))),""),y = 0),

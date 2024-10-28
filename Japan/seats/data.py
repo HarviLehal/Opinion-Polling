@@ -14,13 +14,13 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','Oth','Gov','Opp']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','Oth','Gov','Opp']
+headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','CPJ','Oth','Gov','Opp']
+parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','CPJ','Oth','Gov','Opp']
 d = {}
 
 for i in range(1):
   d[i]=pd.DataFrame(df[10])
-  d[i]=d[i].drop(["Analysts","Publication/ Newspapers","LDP Majority","Gov. Majority",'NHK'], axis=1)
+  d[i]=d[i].drop(["Analysts","Publication/ Newspapers","LDP Majority","Gov. Majority"], axis=1)
   d[i].columns = headers
   # d[i]=d[i][~d[i].Date.str.contains("13 Oct 2024")]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -28,7 +28,8 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i].drop([0],axis=0,inplace=True)
+  d[i].drop([1,2],axis=0,inplace=True)#
+  d[i]=d[i].reset_index(drop=True)
   for z in parties:
     d[i][z] = [x.replace('~','') for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('>','') for x in d[i][z].astype(str)]
@@ -36,26 +37,27 @@ for i in range(1):
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].astype(str)
     for x in range(len(d[i][z])):
-      if len(d[i][z][x+1].split(' '))>1:
-        d[i][z][x+1] = d[i][z][x+1].split(' ')[0]
-      elif len(d[i][z][x+1].split('–'))>1:
-        d[i][z][x+1] = d[i][z][x+1].split('–')[0]
+      if len(d[i][z][x].split(' '))>1:
+        d[i][z][x] = d[i][z][x].split(' ')[0]
+      elif len(d[i][z][x].split('–'))>1:
+        d[i][z][x] = d[i][z][x].split('–')[0]
       else:
-        d[i][z][x+1] = d[i][z][x+1]
+        d[i][z][x] = d[i][z][x]
   for z in parties:
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
 
 e = {}
 for i in range(1):
   e[i]=pd.DataFrame(df[10])
-  e[i]=e[i].drop(["Analysts","Publication/ Newspapers","LDP Majority","Gov. Majority",'NHK'], axis=1)
+  e[i]=e[i].drop(["Analysts","Publication/ Newspapers","LDP Majority","Gov. Majority"], axis=1)
   e[i].columns = headers
   e[i]['Date2'] = e[i]['Date'].str.split('–').str[1]
   e[i].Date2.fillna(e[i].Date, inplace=True)
   e[i]['Date'] = e[i]['Date2']
   e[i] = e[i].drop(['Date2'], axis=1)
   e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  e[i].drop([0],axis=0,inplace=True)
+  e[i].drop([1,2],axis=0,inplace=True)
+  e[i]=e[i].reset_index(drop=True)
   for z in parties:
     e[i][z] = [x.replace('~','') for x in e[i][z].astype(str)]
     e[i][z] = [x.replace('>','') for x in e[i][z].astype(str)]
@@ -63,12 +65,12 @@ for i in range(1):
     e[i][z] = [p.sub('', x) for x in e[i][z].astype(str)]
     e[i][z] = e[i][z].astype(str)
     for x in range(len(e[i][z])):
-      if len(e[i][z][x+1].split(' '))>1:
-        e[i][z][x+1] = e[i][z][x+1].split(' ')[0]
-      elif len(e[i][z][x+1].split('–'))>1:
-        e[i][z][x+1] = e[i][z][x+1].split('–')[1]
+      if len(e[i][z][x].split(' '))>1:
+        e[i][z][x] = e[i][z][x].split(' ')[0]
+      elif len(e[i][z][x].split('–'))>1:
+        e[i][z][x] = e[i][z][x].split('–')[1]
       else:
-        e[i][z][x+1] = e[i][z][x+1]
+        e[i][z][x] = e[i][z][x]
   for z in parties:
     e[i][z] = pd.to_numeric(e[i][z], errors='coerce')
 
@@ -95,5 +97,5 @@ E = pd.concat(e.values(), ignore_index=True)
 E=E[(pd.to_datetime(E["Date"]) != split_date)]
 D = pd.concat([D,E], ignore_index=True)
 D=D.drop_duplicates()
-D=D.drop(['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','Oth'], axis=1)
+D=D.drop(['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','CPJ','Oth'], axis=1)
 D.to_csv('Japan/seats/poll2.csv', index=False)

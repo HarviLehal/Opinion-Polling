@@ -249,6 +249,50 @@ D.to_csv('US/Presidential/States/GA.csv', index=False)
 
 
 
+wikiurl="https://en.wikipedia.org/wiki/2024_United_States_presidential_election_in_Arizona"
+table_class="wikitable sortable jquery-tablesorter"
+response=requests.get(wikiurl)
+print(response.status_code)
+soup = BeautifulSoup(response.text, 'html.parser')
+tables = soup.find_all('table',class_="wikitable")
+df=pd.read_html(str(tables))
+
+d = {}
+for i in range(1):
+  d[i]=pd.DataFrame(df[4])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
+  d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
+  d[i] = d[i].dropna(subset=['Date'])
+  d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
+  d[i]['Date2'] = [x.replace(',','') for x in d[i]['Date2']]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+
+D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z]]
+  D[z] = [x.replace('—',str(np.NaN)) for x in D[z]]
+  D[z] = D[z].str.strip('%')
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D=D.dropna(subset=['Harris'])
+D=D[(pd.to_datetime(D["Date"]) > split_date)]
+D['total']=D[parties].sum(axis=1)
+D['Harris'] = D['Harris']/D['total']
+D['Trump'] = D['Trump']/D['total']
+D = D.drop(['total'], axis=1)
+
+D.to_csv('US/Presidential/States/AZ.csv', index=False)
+
+
+
+
 wikiurl="https://en.wikipedia.org/wiki/2024_United_States_presidential_election_in_North_Carolina"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
@@ -290,4 +334,49 @@ D['Trump'] = D['Trump']/D['total']
 D = D.drop(['total'], axis=1)
 
 D.to_csv('US/Presidential/States/NC.csv', index=False)
+
+
+
+
+wikiurl="https://en.wikipedia.org/wiki/2024_United_States_presidential_election_in_Florida"
+table_class="wikitable sortable jquery-tablesorter"
+response=requests.get(wikiurl)
+print(response.status_code)
+soup = BeautifulSoup(response.text, 'html.parser')
+tables = soup.find_all('table',class_="wikitable")
+df=pd.read_html(str(tables))
+headers = ['Date','2','3','Trump','Harris','4']
+
+d = {}
+for i in range(1):
+  d[i]=pd.DataFrame(df[4])
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i].drop(["Poll source"], axis=1)
+  d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
+  d[i] = d[i].dropna(subset=['Date'])
+  d[i]['Date2'] = [extract_latest_date(x) for x in d[i]['Date']]
+  d[i]['Date2'] = [x.replace(',','') for x in d[i]['Date2']]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+
+D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = D[z].astype(str)
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.NaN)) for x in D[z]]
+  D[z] = [x.replace('—',str(np.NaN)) for x in D[z]]
+  D[z] = D[z].str.strip('%')
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D=D.dropna(subset=['Harris'])
+D=D[(pd.to_datetime(D["Date"]) > split_date)]
+D['total']=D[parties].sum(axis=1)
+D['Harris'] = D['Harris']/D['total']
+D['Trump'] = D['Trump']/D['total']
+D = D.drop(['total'], axis=1)
+
+D.to_csv('US/Presidential/States/FL.csv', index=False)
 
