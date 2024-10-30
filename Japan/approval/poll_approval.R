@@ -14,7 +14,7 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-py_run_file("Japan/approval/data2.py")
+py_run_file("Japan/approval/data.py")
 poll <- read_csv("Japan/approval/poll_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100

@@ -66,14 +66,14 @@ D=D[['Date','GD','UNM','FG','C4C','SG','Girchi','GLP','APG','Other']]
 D.replace(0, np.nan, inplace=True)
 
 
-G=53.064
-U=9.847
-F=8.222
-C=11.176
-S=8.998
-GI=3.215
-GL=0.752
-A=2.527
+G=53.936
+U=10.166
+F=7.769
+C=11.034
+S=8.809
+GI=3.001
+GL=0.727
+A=2.436
 O=100-G-U-F-C-S-GI-GL-A
 
 new_row = pd.DataFrame({'Date':'26 October 2024','GD':G,'UNM':U,'FG':F,'C4C':C,'SG':S,'Girchi':GI,'GLP':GL,'APG':A,'Other':O}, index=[0])

@@ -12,53 +12,30 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
+headers = ['Date','1','2','LDP','CDP','DPFP','KMT','NIK','REI','JCP','DIY','CPJ','SDP','3','None','4','5']
+parties = ['LDP','CDP','DPFP','KMT','NIK','REI','JCP','DIY','CPJ','SDP','None']
+drops = ['1','2','3','4','5']
 d = {}
-
-for i in range(4):
-  d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
-  # if i < 2:
-  #   d[i]=d[i].drop(["Sample size","Polling firm","FEFA","Others","Und./ no ans.", "Lead"], axis=1)
-  # else:
-  #   d[i]=d[i].drop(["Sample size","Polling firm","Others","Und./ no ans.", "Lead"], axis=1)
-  if i==3:
-    headers.remove('DIY')
-    parties.remove('DIY')
+for i in range(1):
+  d[i]=pd.DataFrame(df[0])
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].loc[len(d[i].index)-1,['Date']] = '31 October 2021'
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['LDP'] != d[i]['KMT']]
-  for z in parties:
-    d[i][z] = d[i][z].astype('string')
-  for z in parties:
-    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] = d[i][d[i]['LDP'] != d[i]['SDP']]
+  d[i] = d[i].dropna(subset=['Date'])
 
-for i in range(3):
-  d[i].drop(d[i].index[[-1]],inplace=True)
 
 
 D = pd.concat(d.values(), ignore_index=True)
+for z in parties:
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D.drop(D.index[[-1]],inplace=True)
+
+  
+
 D.to_csv('Japan/poll.csv', index=False)
-
-headers = ['Date','LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK','None']
-
-D['None'].fillna(0, inplace=True)
-D['total']=D[parties].sum(axis=1)
-
-D['decided']=D['total']-D['None']
-
-print(D)
-parties = ['LDP','CDP','NIK','KMT','JCP','DPP','REI','DIY','SDP','NHK']
-D[parties] = D[parties].div(D['decided'], axis=0)*100
-
-D = D.drop(["decided","total","None"], axis=1)
-
-D.to_csv('Japan/poll2.csv', index=False)

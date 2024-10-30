@@ -34,13 +34,13 @@ f<-formattable::percent(0.6)
 
 # LOESS GRAPH
 
-plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#184589","#b8ce43","#f95580","#db001c",
                                 "#ffba00","#ed008c","#ed7301","#1ca9e9","#60bcaf","#0f428e"
                                 # "#666666"
                                 ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -58,8 +58,8 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_hline(aes(yintercept=0), alpha=0)+
-  geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   # scale_x_break(c(old+6, start+1))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the 2024 Japanese General election (Excluding No Party and Undecided)')
@@ -72,7 +72,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-1),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -109,16 +109,18 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),
                                ifelse(is.na(d3$value)==TRUE,"(New)",
                                       (paste("(",formattable::percent(d3$value),")"))),""),y = 0),
-            hjust=0, color="#404040", position = position_dodge(1), size=3.5, fontface="bold")+
+            hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 7 day Average \n (2021 Election)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
+  ggtitle(' 2024 Results <br> *(2021 Election)*')+
+  # scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,na.last = FALSE)])+
+  
   coord_flip()
 
 

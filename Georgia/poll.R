@@ -59,7 +59,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_break(c(old+30, start+1))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-30,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 Georgian Parliamentary election*')+
+  ggtitle('Opinion Polling for the Rigged 2024 Georgian Parliamentary election*')+
   labs(caption = "* Fraudulent GORBI Polls Removed")
 
 
@@ -128,7 +128,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle('30 day Average <br> *(2020 Election)*')+
-  ggtitle(' 2024 Results <br> 14 Day Average <br> *(2020 Results)*')+
+  ggtitle(' 2024 Rigged Results <br> 14 Day Average <br> *(2020 Results)*')+
   scale_x_discrete(limits = d4$variable[order(d3$value,na.last = FALSE)])+
   coord_flip()
 

@@ -14,7 +14,7 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-poll1 <- read_csv("Japan/approval/Kishida/poll_approval2.csv")
+poll1 <- read_csv("Japan/old/approval/Kishida/poll_approval2.csv")
 poll2 <- read_csv("Japan/approval/poll_approval2.csv")
 poll<-dplyr::bind_rows(poll2,poll1)
 d <- reshape2::melt(poll, id.vars="Date")
@@ -62,7 +62,7 @@ plot1<-ggplot(data=d[d$Date!=old,],aes(x=Date,y=value, colour=variable, group=va
   ggtitle('Prime Minister of Japan Approval (Excluding Undecided)')
 plot1 
 
-poll1 <- read_csv("Japan/approval/Kishida/poll_approval2.csv")
+poll1 <- read_csv("Japan/old/approval/Kishida/poll_approval2.csv")
 poll2 <- read_csv("Japan/approval/poll_approval2.csv")
 poll<-dplyr::bind_rows(poll2,poll1)
 Date <- c(max(poll$Date))
@@ -108,7 +108,7 @@ ggsave(plot=plot, file="Japan/approval/plot_approval_reweighted.png",width = 15,
 
 # NET APPROVAL
 
-poll1 <- read_csv("Japan/approval/Kishida/poll_approval_net2.csv")
+poll1 <- read_csv("Japan/old/approval/Kishida/poll_approval_net2.csv")
 poll2 <- read_csv("Japan/approval/poll_approval_net2.csv")
 poll<-dplyr::bind_rows(poll2,poll1)
 d <- reshape2::melt(poll, id.vars="Date")
