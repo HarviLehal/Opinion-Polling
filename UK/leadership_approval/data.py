@@ -46,6 +46,8 @@ for z in parties:
 
 data2
 
+data2 = data2.dropna(subset=['s1'])
+
 # Separate approval-disapproval ratings by leader into separate tables
 
 data_starmer = data2[['Date','s1','s2']]
@@ -76,9 +78,26 @@ data
 
 data=data.drop(["Denyer", "Adams"], axis=1)
 
+split_date = '2 November 2024'
+split_date=dateparser.parse(split_date)
+
+c={}
+c[0]=data[data["Date"] > split_date]
+c[0].rename(columns={"Sunak": 'Badenoch'}, inplace=True)
+
+c[1]=data[data["Date"] < split_date]
+
+data = pd.concat(c.values(), ignore_index=True)
+
+data_badenoch=data_sunak[data_sunak["Date"] > split_date]
+data_sunak=data_sunak[data_sunak["Date"] < split_date]
+
+
+
 data.to_csv('UK/leadership_approval/net_approval.csv', index=False)
 data_starmer.to_csv('UK/leadership_approval/starmer_approval.csv', index=False)
 data_sunak.to_csv('UK/leadership_approval/sunak_approval.csv', index=False)
+data_badenoch.to_csv('UK/leadership_approval/badenoch_approval.csv', index=False)
 data_farage.to_csv('UK/leadership_approval/farage_approval.csv', index=False)
 data_davey.to_csv('UK/leadership_approval/davey_approval.csv', index=False)
 data_denyer.to_csv('UK/leadership_approval/denyer_approval.csv', index=False)

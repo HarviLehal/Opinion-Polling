@@ -15,8 +15,7 @@ py_run_file("UK/leadership_approval/data.py")
 poll <- read_csv("UK/leadership_approval/net_approval.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
-# d$value<-as.numeric(d$value)/100
-# d$value[is.na(d$value)] <- 0
+
 d$value<-formattable::percent(d$value)
 old<-as.Date("04 07 2024", "%d %m %Y")
 # election<-as.Date("15 08 2029", "%d %m %Y")
@@ -26,12 +25,19 @@ election<-max(d$Date)+14
 # new2<-d[d$variable=='Denyer'&d$variable=='Adams',]
 # new2<-new2[!is.na(new2$value),]
 
+colss <-c("Starmer" ="#c70000",
+          "Badenoch"="#0066b7",
+          "Farage"  ="#13bece",
+          "Davey"   ="#e05e00",
+          "Sunak"   ="#0077b6",
+          "Denyer"  ="#33a22b",
+          "Adams"   ="#528D6B")
+          
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
-  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00"
-                                # ,"#33a22b","#528D6B"
-                                ))+
+  scale_color_manual(values =colss)+
+  
   geom_hline(aes(yintercept=0), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -74,7 +80,7 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#c70000","#0077b6","#12B6CF",
-                               "#e05e00"
+                               "#e05e00","#0077b6"
                                # ,"#33a22b","#528D6B"
                                ))+
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),

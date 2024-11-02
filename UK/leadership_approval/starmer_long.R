@@ -20,6 +20,7 @@ old<-min(d$Date)
 elect<-as.Date("04 07 2024", "%d %m %Y")
 elect2<-elect+(Sys.Date()-as.Date("04 07 2024", "%d %m %Y"))
 election<-max(d$Date)+14
+f<-formattable::percent(0.6)
 
 
 
