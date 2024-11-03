@@ -240,9 +240,9 @@ plot1
 ggsave(plot=plot1, file="UK/general_polling/Historic/PLOT.png",width = 50, height = 10, type = "cairo-png",limitsize=FALSE)
 state<-d[d$Date==max(d$Date),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_hline(yintercept=state$value, linetype="solid",
-             color = c("#0077b6","#c70000","#e05e00","#6D3177",
-                       "#528D6B","#f5dc00","#12B6CF","#222221"), alpha=1,linetype="dashed", size=1)+
+  # geom_hline(yintercept=state$value, linetype="solid",
+  #            color = c("#0077b6","#c70000","#e05e00","#6D3177",
+  #                      "#528D6B","#f5dc00","#12B6CF","#222221"), alpha=1,linetype="dashed", size=1)+
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#6D3177",
                                 "#528D6B","#f5dc00","#12B6CF","#222221"))+

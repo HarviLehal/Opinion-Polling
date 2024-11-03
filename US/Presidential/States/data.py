@@ -47,6 +47,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[4])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -90,6 +91,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[5])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -133,6 +135,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[4])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -176,6 +179,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[5])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -219,6 +223,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[4])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -262,6 +267,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[4])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -307,6 +313,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[5])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
@@ -352,6 +359,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[4])
   d[i] = d[i][~d[i]['Poll source'].str.contains('(R)' ,na=False)]
   d[i] = d[i][~d[i]['Poll source'].str.contains('(D)' ,na=False)]
+  d[i] = d[i][~d[i]['Poll source'].str.contains('AtlasIntel' ,na=False)]
   d[i] = d[i].drop(["Poll source"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
