@@ -14,8 +14,8 @@ df=pd.read_html(str(tables))
 
 df0=pd.DataFrame(df[1])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Reform"]
-parties = ['SNP', 'Con', 'Lab', 'Green', 'Lib Dem', "Reform"]
+headers = ['Date','SNP','Con','Lab','Green','Lib Dem','Alba','Reform']
+parties = ['SNP','Con','Lab','Green','Lib Dem','Alba','Reform']
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)
@@ -34,6 +34,7 @@ print(data23)
 for z in parties:
   data23[z] = data23[z].astype(str)
   data23[z] = data23[z].str.strip('%')
+  data23[z] = data23[z].str.strip('%*')
   data23[z] = data23[z].astype('float')
 
 data23.to_csv('UK/Subnational/Scotland/poll2.csv', index=False)
@@ -42,8 +43,8 @@ data23.to_csv('UK/Subnational/Scotland/poll2.csv', index=False)
 
 df0=pd.DataFrame(df[0])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
-headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
-parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green']
+headers = ['Date', 'SNP', 'Con', 'Lab', 'Lib Dem', 'Green', "Reform"]
+parties = ['SNP', 'Con', 'Lab', 'Lib Dem', 'Green', "Reform"]
 data23.columns = headers
 data23['Date2'] = data23['Date'].str.split('–').str[1]
 data23.Date2.fillna(data23.Date, inplace=True)
@@ -62,6 +63,7 @@ print(data23)
 for z in parties:
   data23[z] = data23[z].astype(str)
   data23[z] = data23[z].str.strip('%')
+  data23[z] = data23[z].str.strip('%*')
   data23[z] = data23[z].astype('float')
 
 data23.to_csv('UK/Subnational/Scotland/poll3.csv', index=False)
