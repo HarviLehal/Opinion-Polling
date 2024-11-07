@@ -90,7 +90,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -121,7 +121,7 @@ d2<-droplevels(d2)
 d4<-d4[d4$variable!='DK–MSZP–Dialogue',]
 d4<-droplevels(d4)
 d4$value<-ifelse(is.nan(d4$value)==TRUE,NA,d4$value)
-d4$value<-ifelse(d4$value==0.3444,0.0000000001,d4$value)
+d4$value<-ifelse(d4$value==0.34440000,0.0000000001,d4$value)
 
 
 
@@ -164,9 +164,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('Moyenne sur 2 semaines <br> *(Résultats 2022)*')+
+  ggtitle('Moyenne sur la semaine <br> *(Résultats 2022)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,na.last = TRUE)])+
-  
   coord_flip()
 
 
