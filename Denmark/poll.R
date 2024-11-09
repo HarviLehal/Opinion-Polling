@@ -107,7 +107,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 7 day average \n (2022 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,na.last=FALSE)])+
   coord_flip()
 plot2
 

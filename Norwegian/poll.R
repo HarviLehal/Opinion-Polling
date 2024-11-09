@@ -16,6 +16,7 @@ library(data.table)
 library(hrbrthemes)
 py_run_file("Norwegian/data.py")
 poll <- read_csv("Norwegian/poll.csv")
+Sys.setlocale("LC_ALL", "Norwegian")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -35,8 +36,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
-        axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold"),
+        axis.text.x = element_text(face="bold", color="#000000"),
+        axis.text.y = element_text(face="bold", color="#000000"),
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
@@ -47,7 +48,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2025 Norwegian Parliamentary Election')
+  ggtitle('Meningsmåling til Stortingsvalget 2025')
 plot1
 
 
@@ -76,7 +77,7 @@ d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
 
-
+d4<-d3
 
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
@@ -86,18 +87,28 @@ scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
                              "#82c28d","#2D843B","#78b3b3","#236666",
                              "#fcedac","#F9DA5A","#94b0f7","#3064F1",
                              "#81a6d3","#2760A7","#6bd2e0","#08b4cc"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("(New)"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),
-            hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold.italic")+
+  # geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+  #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+  # geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("(Nytt)"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),
+  #           hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold.italic")+
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               ifelse(d4$Date == max(d4$Date),
+                                      paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
+                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
+                y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
+                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")"),paste("(Nytt)")),""),
+                y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
-  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+  theme(legend.position = "none",
+        axis.title=element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold", color="#000000"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average \n (2021 Result)')+
+  ggtitle('2 Ukers Gjennomsnitt <br> *(2021 Resultat)*')+
   scale_x_discrete(limits = d3$variable[order(d2$value,na.last = FALSE)])+
   # scale_x_discrete(limits = (levels(d3$variable)))+
   coord_flip()
@@ -111,3 +122,4 @@ ggsave(plot=plot, file="Norwegian/plot.svg",width = 15, height = 7.5)
 aaa=readLines("Norwegian/plot.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
 writeLines(bbb,"Norwegian/plot.svg")
+Sys.setlocale("LC_ALL", "English")

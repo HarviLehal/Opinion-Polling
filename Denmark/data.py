@@ -90,3 +90,43 @@ print(D)
 D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
 
 D.to_csv('Denmark/poll2.csv', index=False)
+
+
+parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+
+govt = ['A','V','M']
+
+D[parties] = D[parties].astype(float)
+D['Government'] = D[govt].sum(axis=1)
+D['Opposition'] = 175- D['Government']
+
+D = D.drop(parties, axis=1)
+
+D.to_csv('Denmark/poll_govt2.csv', index=False)
+
+
+
+
+D = pd.concat(d.values(), ignore_index=True)
+D.loc[len(D.index)-1,['Date']] = '2022-11-01'
+D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+D[parties] = D[parties].astype(float)
+
+print(D)
+
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
+
+parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+
+govt = ['A','B','F','Ø','Å']
+opp = ['V','Æ','I','C','D','O']
+
+D[parties] = D[parties].astype(float)
+D['Red'] = D[govt].sum(axis=1)
+D['Blue'] = D[opp].sum(axis=1)
+
+D = D.drop(govt, axis=1)
+D = D.drop(opp, axis=1)
+
+D = D[['Date','Red','M','Blue']]
+D.to_csv('Denmark/poll_bloc.csv', index=False)

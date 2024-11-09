@@ -15,14 +15,16 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z 0-9]+\]')
 
 data22=pd.DataFrame(df[-1])
-data22=data22.drop(['Sample size','Polling firm / Commissioner','O/I[nb 1]','II'],axis=1)
-headers = ['Date','SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
+headers = ['Date','1','2','SF','FF','FG','GP','Lab','SD','PBP-S','Aon','3','4']
 parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
+drops = ['1','2','3','4']
 data22.columns = headers
-
+data22=data22.drop(drops,axis=1)
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
     data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
+    data22[z] = pd.to_numeric(data22[z], errors='coerce')
+
 print(data22)
 
 data22.to_csv('Irish/poll.csv', index=False)

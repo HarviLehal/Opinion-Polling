@@ -21,6 +21,8 @@ d$value<-formattable::percent(d$value)
 old<-as.Date("06 05 2021", "%d %m %Y")
 election<-as.Date("07 05 2026", "%d %m %Y")
 reform<-as.Date("08 05 2024", "%d %m %Y")
+eluned<-as.Date("24 06 2024", "%d %m %Y")
+vaughan<-as.Date("20 03 2024", "%d %m %Y")
 
 f<-formattable::percent(0.6)
 
@@ -28,6 +30,9 @@ f<-formattable::percent(0.6)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_vline(xintercept=reform, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=eluned, linetype="dashed", color = "#b6002f", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=vaughan, linetype="dashed", color = "#b6002f", alpha=0.5, size=0.75)+
   geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#E4003B","#0087DC","#1e5b53",
                                 "#528D6B","#FAA61A","#800001","#12B6CF"))+
@@ -48,7 +53,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-0.5,election),guide = guide_axis(angle = -90))+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  geom_vline(xintercept=reform, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+

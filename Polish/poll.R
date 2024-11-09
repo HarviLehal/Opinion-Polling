@@ -23,30 +23,35 @@ election<-as.Date("11 11 2027", "%d %m %Y")
 # election<-max(d$Date)+14
 old <-min(d$Date)
 # MAIN GRAPH
+data<-d[d$variable!='Razem',]
+razem<-d[d$variable=='Razem',]
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#122746"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#4f2d8f","#122746"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=data[data$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=razem[razem$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
-        axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        axis.text.x = element_text(face="bold", colour="#000000"),
+        axis.text.y = element_text(face="bold", colour="#000000"),
+        plot.title = element_text(face="bold", colour="#000000"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_hline(aes(yintercept=g), alpha=0.75, linetype="dashed", colour="#000000")+
-  geom_text(aes(election,g,label = "8% Coalition Threshold", vjust = -1, hjust=1),colour="#56595c")+
-  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#56595c")+
+  geom_text(aes(election,g,label = "8% Coalition Threshold", vjust = -1, hjust=1),colour="#000000", fontface="italic")+
+  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#000000", fontface="italic")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -59,14 +64,12 @@ plot1
 # Bar Chart
 
 poll <- read_csv("Polish/poll.csv")
-
+poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
-poll[-1][is.na(poll[-1])] <- 0
-d2[-1][is.na(d2[-1])] <- 0
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -84,30 +87,34 @@ d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
-d3<-d3[!is.na(d3$value),]
-d3$variable<-droplevels(d3$variable)
+
+d4<-d3
 
 
-
-
-plot2<-ggplot(data=d3, aes(x=d3$variable, y=value,fill=interaction(Date,d3$variable), group=Date )) +
+plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#7d87ae","#263778","#fabc81","#F68F2D",
                                "#76d066","#1BB100","#b676a2","#851A64",
-                               "#717d90","#122746"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
-            hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+                               "#9581bc","#4f2d8f","#717d90","#122746"))+
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               ifelse(d4$Date == max(d4$Date),
+                                      paste(formattable::percent(d4$value, digits = 2)),
+                                      paste(formattable::percent(d4$value, digits = 1))), ""),
+                y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
+                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),paste("(Split from Lewica)")),""),
+                y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
-  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+  theme(legend.position = "none",
+        axis.title=element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold", color="#000000"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 Day Average \n 2023 Results')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  ggtitle(' 14 Day Average <br> *2023 Results*')+
+  scale_x_discrete(limits = d3$variable[order(d2$value,na.last = FALSE)])+
   coord_flip()
 
 
