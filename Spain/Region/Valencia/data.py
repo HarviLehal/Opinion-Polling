@@ -20,7 +20,7 @@ parties = ['PP','PSOE','Compromís','VOX','Podemos','Sumar']
 drops = ['1','2','3','4','5']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-2])
+  d[i]=pd.DataFrame(df[-5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
