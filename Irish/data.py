@@ -15,9 +15,10 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z 0-9]+\]')
 
 data22=pd.DataFrame(df[-1])
-headers = ['Date','1','2','SF','FF','FG','GP','Lab','SD','PBP-S','Aon','3','4']
-parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon']
+headers = ['Date','1','2','SF','FF','FG','GP','Lab','SD','PBP-S','Aon','3','Ind.']
+parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon','Ind.']
 drops = ['1','2','3','4']
+drops = ['1','2','3']
 data22.columns = headers
 data22=data22.drop(drops,axis=1)
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))

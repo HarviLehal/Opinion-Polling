@@ -29,7 +29,7 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#39675F","#74BC64","#729AFF","#45AD6E", "#C11112", "#712C8D","#87221E","#445225"))+
+  scale_color_manual(values = c("#39675F","#74BC64","#729AFF","#45AD6E", "#C11112", "#712C8D","#87221E","#445225","#c99999"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -53,18 +53,15 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Opinion Polling for the Next Irish General Election')
 plot1
 
-# d <- d %>%
-#   group_by(variable) %>%
-#   arrange(Date) %>%
-#   mutate(Moving_Average = zoo::rollmean(value, k = 7, fill = NA, align = "right"))
+
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 30, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 60, Date), mean,na.rm=TRUE))
 
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#39675F","#74BC64","#729AFF","#45AD6E", "#C11112", "#712C8D","#87221E","#445225"))+
+  scale_color_manual(values = c("#39675F","#74BC64","#729AFF","#45AD6E", "#C11112", "#712C8D","#87221E","#445225","#c99999"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -96,7 +93,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-8),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -131,7 +128,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#da7071","#C11112",
                                "#aa80bb","#712C8D",
                                "#b77a78","#87221E",
-                               "#8f977c","#445225"))+
+                               "#8f977c","#445225",
+                               "#dfc2c2","#c99999"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
@@ -149,8 +147,9 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 Day Average <br> *(2020 Results)*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  ggtitle('7 Day Average <br> *(2020 Results)*')+
+  # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d3$value,na.last=FALSE)],labels = label_wrap(8))+
   coord_flip()
 plot2
 
