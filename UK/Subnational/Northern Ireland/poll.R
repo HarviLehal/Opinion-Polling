@@ -14,8 +14,8 @@ library(zoo)
 library(tidyverse)
 library(data.table)
 library(hrbrthemes)
-py_run_file("Spain/Region/Valencia/data.py")
-poll <- read_csv("Spain/Region/Valencia/poll.csv")
+py_run_file("UK/Subnational/Northern Ireland/data.py")
+poll <- read_csv("UK/Subnational/Northern Ireland/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -23,19 +23,16 @@ d$value<-formattable::percent(d$value)
 election<-as.Date("27 06 2027", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-parties<-d[d$variable!='Podemos'&d$variable!='SALF',]
-podemos<-d[d$variable=='Podemos'|d$variable=='SALF',]
-podemos<-podemos[!is.na(podemos$value),]
+
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#1d84ce","#ef1c27","#ec640c",
-                                "#63be21","#9369f5","#795a44"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=podemos[podemos$Date!=old&podemos$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
+  scale_color_manual(values = c("#326760","#d46a4c","#f6cb2f",
+                                "#48a5ee","#2aa82c","#0c3a6a",
+                                "#8dc63f","#44532a","#e91d50"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -55,19 +52,19 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the Next Valencian Regional Election')
+  ggtitle('Opinion Polling for the Next Northern Ireland Assembly Election')
 
 plot1
 
 
-poll <- read_csv("Spain/Region/Valencia/poll.csv")
+poll <- read_csv("UK/Subnational/Northern Ireland/poll.csv")
 Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -95,19 +92,22 @@ d4<-rbind(d1,d2)
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#61a9dd","#1d84ce",
-                               "#f46068","#ef1c27",
-                               "#f29355","#ec640c",
-                               "#92d264","#63be21",
-                               "#bea5f9","#9369f5",
-                               "#af9c8f","#795a44"))+
+  scale_fill_manual(values = c("#84a4a0","#326760",
+                               "#e5a694","#d46a4c",
+                               "#fae082","#f6cb2f",
+                               "#91c9f5","#48a5ee",
+                               "#7fcb80","#2aa82c",
+                               "#6d89a6","#0c3a6a",
+                               "#bbdd8c","#8dc63f",
+                               "#8f987f","#44532a",
+                               "#f27796","#e91d50"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
-                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
+                                      paste(formattable::percent(d4$value, digits = 1)),
+                                      paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")"),""),
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
+                                                              paste("(",formattable::percent(d4$value, digits = 1),")"),paste("(Part of Comuns)")),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
@@ -119,13 +119,14 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('7 Day Average <br> *(2023 Result)*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  ggtitle('Latest Poll <br> *(2023 Result)*')+
+  # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = TRUE)])+
   coord_flip()
 
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
-ggsave(plot=plot, file="Spain/Region/Valencia/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="UK/Subnational/Northern Ireland/plot.png",width = 15, height = 7.5, type="cairo-png")
 

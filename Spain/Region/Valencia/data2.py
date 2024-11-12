@@ -34,7 +34,8 @@ for i in range(1):
   d[i] = d[i].dropna(subset=['Date'])
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = d[i][z].str.split(' ').str[0]
+    d[i][z] = d[i][z].str.split(' ').str[1]
+    d[i][z] = d[i][z].str.split('/').str[0]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i] = d[i].dropna(subset=['PP'])
 
@@ -46,6 +47,6 @@ D = pd.concat(d.values(), ignore_index=True)
 # D=D.drop(['Sumar'], axis=1)
 
 
-  
+D=D[['Date','Podemos','Compromís','PSOE','PP','VOX','SALF']]
 
-D.to_csv('Spain/Region/Valencia/poll.csv', index=False)
+D.to_csv('Spain/Region/Valencia/poll2.csv', index=False)
