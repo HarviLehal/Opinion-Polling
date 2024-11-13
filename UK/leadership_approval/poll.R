@@ -21,20 +21,24 @@ old<-as.Date("04 07 2024", "%d %m %Y")
 # election<-as.Date("15 08 2029", "%d %m %Y")
 election<-max(d$Date)+14
 
-# new<-d[d$variable!='Denyer'|d$variable!='Adams',]
-# new2<-d[d$variable=='Denyer'&d$variable=='Adams',]
-# new2<-new2[!is.na(new2$value),]
+# new<-d[d$variable!='Denyer'|d$variable!='Adams'|d$variable!='Badenoch',]
+# new2<-d[d$variable=='Denyer'&d$variable=='Adams'&d$variable=='Badenoch',]
+new<-d[d$variable!='Badenoch',]
+new2<-d[d$variable=='Badenoch',]
+new2<-new2[!is.na(new2$value),]
 
 colss <-c("Starmer" ="#c70000",
           "Badenoch"="#0066b7",
           "Farage"  ="#13bece",
           "Davey"   ="#e05e00",
-          "Sunak"   ="#0077b6",
+          "Sunak"   ="#66add3",
           "Denyer"  ="#33a22b",
           "Adams"   ="#528D6B")
           
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values =colss)+
   
@@ -65,7 +69,7 @@ poll <- read_csv("UK/leadership_approval/net_approval.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-10),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -76,13 +80,14 @@ d1 <- reshape2::melt(d1, id.vars="Date")
 # d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
+d1<-d1[d1$variable!='Sunak',]
+
+d1<-droplevels(d1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#c70000","#0077b6","#12B6CF",
-                               "#e05e00","#0077b6"
-                               # ,"#33a22b","#528D6B"
-                               ))+
+                               "#e05e00"))+
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
@@ -95,8 +100,8 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 10 Day Average')+
-  scale_x_discrete(limits = d1$variable[order(d1$value)])+
+  ggtitle(' 14 Day Average')+
+  scale_x_discrete(limits = d1$variable[order(d1$value,na.last = TRUE)])+
   coord_flip()
 plot2
 

@@ -124,6 +124,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
   ggtitle('Moyenne sur la semaine <br> *(Résultats 2021)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
+  
   coord_flip()
 
 

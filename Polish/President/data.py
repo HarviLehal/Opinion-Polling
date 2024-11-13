@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['1','Date','2','3','4','5','Morawiecki','Nawrocki','6','7','Trzaskowski','8','Hołownia','9','10','Dziemianowicz-Bąk','11','12','13','Bosak','Mentzen','14','15','16']
+headers = ['1','Date','2','3','4','Czarnek','5','Morawiecki','Nawrocki','6','7','Trzaskowski','8','Hołownia','9','10','Dziemianowicz-Bąk','11','Biejat','12','Bosak','Mentzen','13','14','15']
 parties = ['Morawiecki','Nawrocki','Trzaskowski','Hołownia','Dziemianowicz-Bąk','Bosak','Mentzen']
-drops = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16']
+drops = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15']
 d = {}
 for i in range(1):
   # i=j+1
@@ -37,16 +37,16 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Morawiecki'] != d[i]['Hołownia']]
 
 
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype(str)
   D[z] = pd.to_numeric(D[z], errors='coerce')
+D = D[D['Morawiecki'] != D['Czarnek']]
 
 
 D=D.dropna(subset=['Date'])
-# D=D.dropna(subset=['Morawiecki'])
+D=D.dropna(subset=['Trzaskowski'])
 
 D.to_csv('Polish/President/poll.csv', index=False)

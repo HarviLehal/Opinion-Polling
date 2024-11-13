@@ -81,24 +81,24 @@ d2$value<-formattable::percent(d2$value, digits = 1, decimal.mark = ",")
 d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
-geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#78bcff","#1e90ff","#ffb38c","#ff8040",
-                             "#b7e2fc","#87cefa","#f2a7a6","#ea6d6a",
-                             "#838ba6","#313e6b"))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
-  theme_minimal()+
-  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
-        axis.text.y = element_text(face="bold"),
-        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
-        panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
-        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
-        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle(' Moyenne sur 14 jours <br> *(Résultats 2022)*')+
-scale_x_discrete(limits = rev(levels(d3$variable)))+
-coord_flip()
+  geom_bar(stat="identity",width=0.9, position=position_dodge())+
+  scale_fill_manual(values = c("#78bcff","#1e90ff","#ffb38c","#ff8040",
+                               "#b7e2fc","#87cefa","#f2a7a6","#ea6d6a",
+                               "#838ba6","#313e6b"))+
+    geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
+              hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+    geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
+              hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
+    theme_minimal()+
+    theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+          axis.text.y = element_text(face="bold"),
+          plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
+          panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+          panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+          plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  ggtitle(' Moyenne sur 14 jours <br> *(Résultats 2022)*')+
+  scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
+  coord_flip()
 
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))

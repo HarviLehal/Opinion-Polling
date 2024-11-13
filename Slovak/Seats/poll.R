@@ -105,7 +105,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         plot.caption = element_text(hjust = 0,face="italic"))+
   ggtitle(' 14 day average \n (2023 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  # scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()+
   labs(caption = "* Government Parties (Smer-Hlas-SNS)")
 plot2

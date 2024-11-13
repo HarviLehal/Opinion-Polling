@@ -20,8 +20,8 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("05 10 2027", "%d %m %Y")
-election<-min(d$Date)+14
+election<-as.Date("27 10 2027", "%d %m %Y")
+election<-max(d$Date)+14
 old <-as.Date("28 10 2024", "%d %m %Y")
 # MAIN GRAPH
 
@@ -33,7 +33,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#f95580","#b8ce43","#ed008c",
                                 "#db001c","#ee7300","#0b80db",
                                 "#1ca9e9","#777777"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d,na.rm = FALSE)+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^3),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -47,12 +48,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  # geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   # scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  # ggtitle('Opinion Polling for the 2024 New Brunswick general election')
   ggtitle('Party Identification for the Next Japanese General Election')
 
 

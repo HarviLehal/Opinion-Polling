@@ -33,7 +33,7 @@ new4<-new4[!is.na(new4$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#515f93","#F68F2D","#F9C013","#eb2a48","#122746","#717d90"))+
+  scale_color_manual(values = c("#979fbe","#263778","#515f93","#F68F2D","#F9C013","#eb2a48","#870f57","#122746","#717d90"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=new2[new2$Date!=old,])+
@@ -82,7 +82,7 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#263778","#515f93","#F68F2D","#F9C013","#eb2a48","#122746","#717d90"))+
+  scale_fill_manual(values = c("#979fbe","#263778","#515f93","#F68F2D","#F9C013","#eb2a48","#870f57","#122746","#717d90"))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
             hjust=-0.1, color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+

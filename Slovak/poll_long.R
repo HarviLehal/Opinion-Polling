@@ -141,7 +141,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('14 day Average \n (2023 Election)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
+  # scale_x_discrete(limits = rev(levels(d3$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 
 
