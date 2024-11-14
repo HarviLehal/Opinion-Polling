@@ -33,7 +33,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#325BC7","#E48291","#389043",
                                 "#D61616","#E8B460","#6192CE",
                                 "#C15127","#9F1897","#EF3F24",
-                                "#0094ff","#e11b22"))+
+                                "#0094ff","#e11b22","#7a4faa"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -103,7 +103,8 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#cf78ca","#9F1897",
                                "#f79d8f","#EF3F24",
                                "#66bfff","#0094ff",
-                               "#ed767a","#e11b22"))+
+                               "#ed767a","#e11b22",
+                               "#af95cc","#7a4faa"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Νέος"),(paste("(",d3$value,")"))),""),y = 0),

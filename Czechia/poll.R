@@ -121,5 +121,9 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Czechia/plot.png",width = 21, height = 7, type="cairo-png")
+ggsave(plot=plot, file="Czechia/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Czechia/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Czechia/plot.svg")
 
 Sys.setlocale("LC_ALL", "English")

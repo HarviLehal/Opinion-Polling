@@ -12,11 +12,11 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο']
-# headers = [r'Date', r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο']
+headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο','Κασσελάκης']
+# headers = [r'Date', r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο',r'Κασσελάκης']
 
-# parties = [r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο']
-parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο']
+# parties = [r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο',r'Κασσελάκης']
+parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο','Κασσελάκης']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -36,9 +36,9 @@ for i in range(1):
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = d[i][z].astype('float')
-    
-d[0].drop(d[0].index[[-1,-3]],inplace=True)
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] = d[i].dropna(subset=['ΝΔ'])
+
 
 D = pd.concat(d.values(), ignore_index=True)
 # new_row = pd.DataFrame({'Date': '25 June 2023', 'ΝΔ':40.43 , 'ΣΥΡΙΖΑ':17.83 , 'ΠΑΣΟΚ':12.23 , 'KKE':7.49,'Σπαρτιάτες':4.71,'ΕΛ':4.49,'Νίκη':3.74,'ΠΕ':3.15,'ΜέΡΑ25':2.42}, index=[0])

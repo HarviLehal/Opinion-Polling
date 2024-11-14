@@ -16,12 +16,16 @@ d$value<-formattable::percent(d$value)
 election<-as.Date("11 11 2027", "%d %m %Y")
 old<-min(d$Date)
 
+data<-d[d$variable!='Razem',]
+razem<-d[d$variable=='Razem',]
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.75)+
   scale_color_manual(values = c("#4f2d8f","#20B2AA","#263778"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=data[data$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=razem[razem$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
