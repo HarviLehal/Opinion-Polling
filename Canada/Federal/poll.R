@@ -58,7 +58,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-14),]
-d1 <- colMeans(poll[-1])
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)

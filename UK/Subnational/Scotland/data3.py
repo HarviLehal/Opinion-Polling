@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-df0=pd.DataFrame(df[-5])
+df0=pd.DataFrame(df[3])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
 headers = ['Date', 'Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']
 parties = ['Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']
@@ -33,12 +33,12 @@ for z in parties:
   data23[z] = [x.replace('TBC',str(np.NaN)) for x in data23[z]]
   data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z]]
   data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z]]
-data23 = data23[data23['Green'] != data23['Con']]
 
 for z in parties:
   data23[z] = data23[z].astype(str)
   data23[z] = data23[z].str.strip('%')
-  data23[z] = data23[z].astype('float')
+  data23[z] = pd.to_numeric(data23[z], errors='coerce')
+data23 = data23.dropna(subset='Lab')
 print(data23)
 
 data23.to_csv('UK/Subnational/Scotland/poll_new.csv', index=False)

@@ -27,7 +27,7 @@ hy<-formattable::percent(h$value[h$Date==min(h$Date)]-0.01)
 h$value<-formattable::percent(h$value)
 h$Date <- as.Date(h$Date, "%Y-%m-%d")
 
-election<-as.Date("26 10 2025", "%d %m %Y")
+election<-as.Date("23 02 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -100,7 +100,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date>(max(poll$Date)-7),]
-d1 <- colMeans(poll[-1])
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
