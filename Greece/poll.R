@@ -25,6 +25,9 @@ h <- formattable::percent(0.03)
 election<-as.Date("31 12 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
+parties<-d[d$variable!='Κασσελάκης',]
+kass<-d[d$variable=='Κασσελάκης',]
+kass<-kass[!is.na(kass$value),]
 
 # LOESS GRAPH
 
@@ -34,7 +37,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#D61616","#E8B460","#6192CE",
                                 "#C15127","#9F1897","#EF3F24",
                                 "#0094ff","#e11b22","#7a4faa"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=kass[kass$Date!=old&kass$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
