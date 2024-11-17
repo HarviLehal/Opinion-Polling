@@ -29,13 +29,22 @@ h$Date <- as.Date(h$Date, "%Y-%m-%d")
 
 election<-as.Date("23 02 2025", "%d %m %Y")
 old <-min(d$Date)
+
+colss <-c("Rot-Grün"    ="#770004",
+          "GroKo"       ="#005974",
+          "Ampel"       ="#DD1529",
+          "Jamaika"     ="#509A3A",
+          "Deutschland" ="#FBBE00",
+          "Kenia"       ="#E5963F",
+          "Kiwi"        ="#8EE53F",
+          "Rechts"      ="#0489DB",
+          "Kemmerich"   ="#AA692F",
+          "Mehrheit"    ="#000000")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#FBBE00","#005974",
-                                "#509A3A","#AA692F","#E5963F",
-                                "#8EE53F","#000000","#0489DB","#770004"))+
+  scale_color_manual(values = colss)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=1.2, data=h, alpha=0.5, linetype="longdash")+
   theme_minimal()+

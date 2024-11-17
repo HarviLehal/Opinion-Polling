@@ -149,7 +149,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('7 Day Average <br> *(2020 Results)*')+
   # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
-  scale_x_discrete(limits = d4$variable[order(d3$value,na.last=FALSE)],labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last=FALSE)],labels = label_wrap(8))+
   coord_flip()
 plot2
 
