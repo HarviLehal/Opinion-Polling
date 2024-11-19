@@ -72,3 +72,14 @@ C = pd.concat(c.values(), ignore_index=True)
 
 
 C.to_csv('Italy/poll2.csv', index=False)
+
+
+parties=['FdI', 'PD', 'M5S', 'Lega', 'FI', 'A', 'IV', 'AVS', '+E', 'PTD','NM', 'Libertà', 'SUE', 'DSP', 'AP', 'Italexit', 'A-IV']
+gov = ['FdI','Lega','FI','NM']
+opp = [p for p in parties if p not in gov]
+
+C['Government'] = C[gov].sum(axis=1)
+C['Opposition'] = C[opp].sum(axis=1)
+C = C.drop(gov+opp, axis=1)
+
+C.to_csv('Italy/poll_bloc.csv', index=False)

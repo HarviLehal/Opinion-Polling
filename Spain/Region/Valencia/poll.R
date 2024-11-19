@@ -35,7 +35,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#63be21","#9369f5","#795a44"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=podemos[podemos$Date!=old&podemos$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -91,6 +91,7 @@ d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
 d4<-rbind(d1,d2)
+d4$value<-ifelse(is.nan(d4$value)==TRUE,NA,d4$value)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
@@ -103,11 +104,11 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#af9c8f","#795a44"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
+                                      ifelse(is.na(d4$value)==TRUE,"",paste(formattable::percent(d4$value, digits = 2, decimal.mark = ","))),
                                       paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")"),""),
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value==TRUE),paste("(New)"),
+                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")")),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
@@ -120,7 +121,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
   ggtitle('7 Day Average <br> *(2023 Result)*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
+  
   coord_flip()
 
 

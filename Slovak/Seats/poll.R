@@ -66,7 +66,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -104,7 +104,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         plot.caption = element_text(hjust = 0,face="italic"))+
-  ggtitle(' 14 day average \n (2023 Result)')+
+  ggtitle(' 7 day average \n (2023 Result)')+
   # scale_x_discrete(limits = rev(levels(d3$variable)))+
   scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()+
