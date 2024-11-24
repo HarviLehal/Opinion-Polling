@@ -12,11 +12,11 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο','Κασσελάκης']
+headers = ['Date','ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','ΚΔ']
 # headers = [r'Date', r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο',r'Κασσελάκης']
 
 # parties = [r'ΝΔ', r'ΣΥΡΙΖΑ', r'ΠΑΣΟΚ', r'KKE', r'ΣΠ', r'ΕΛ', r'Νίκη', r'ΠΕ', r'ΜέΡΑ25', r'ΦΛ', r'ΝΑ', r'Δημο',r'Κασσελάκης']
-parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','Δημο','Κασσελάκης']
+parties = ['ΝΔ','ΣΥΡΙΖΑ','ΠΑΣΟΚ','KKE','ΣΠ','ΕΛ','Νίκη','ΠΕ','ΜέΡΑ25','ΦΛ','ΝΑ','ΚΔ']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -44,6 +44,5 @@ D = pd.concat(d.values(), ignore_index=True)
 # new_row = pd.DataFrame({'Date': '25 June 2023', 'ΝΔ':40.43 , 'ΣΥΡΙΖΑ':17.83 , 'ΠΑΣΟΚ':12.23 , 'KKE':7.49,'Σπαρτιάτες':4.71,'ΕΛ':4.49,'Νίκη':3.74,'ΠΕ':3.15,'ΜέΡΑ25':2.42}, index=[0])
 # D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-D=D.drop(["Δημο"], axis=1)
 
 D.to_csv('Greece/poll.csv', index=False)

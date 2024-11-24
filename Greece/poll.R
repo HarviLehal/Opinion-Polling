@@ -25,8 +25,8 @@ h <- formattable::percent(0.03)
 election<-as.Date("31 12 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-parties<-d[d$variable!='Κασσελάκης',]
-kass<-d[d$variable=='Κασσελάκης',]
+parties<-d[d$variable!='ΚΔ',]
+kass<-d[d$variable=='ΚΔ',]
 kass<-kass[!is.na(kass$value),]
 
 # LOESS GRAPH

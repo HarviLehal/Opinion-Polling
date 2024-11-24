@@ -18,7 +18,7 @@ parties = ['Scholz','Merz','Neither']
 drops = ['1','2']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-22])
+  d[i]=pd.DataFrame(df[-24])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
