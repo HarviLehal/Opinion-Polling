@@ -24,6 +24,11 @@ election<-as.Date("20 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
+# d<- d %>%
+#   group_by(variable) %>%
+#   arrange(Date) %>%
+#   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
+
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#00529F","#D91920",
@@ -57,7 +62,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -93,7 +98,7 @@ scale_fill_manual(values = c("#6F94ED","#00529F","#DF6F6C","#D91920",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle(' 14 day average \n (2021 Result)')+
+ggtitle(' 7 day average \n (2021 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 

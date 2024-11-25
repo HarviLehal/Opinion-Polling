@@ -20,6 +20,9 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 f<-formattable::percent(0.9)
+election<-as.Date("03 03 2027", "%d %m %Y")
+# election<-max(d$Date)+2
+
 
 # LOESS GRAPH
 d<- d %>%
@@ -43,7 +46,7 @@ plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date)-2,max(d$Date)+2),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date)-2,election),guide = guide_axis(angle = -90))+
   ggtitle('Yoon Suk Yeol Presidency Approval')
 plotwiki
 ggsave(plot=plotwiki, file="Korea/approval.png",width = 15, height = 7.5, type = "cairo-png")
@@ -58,7 +61,6 @@ poll <- read_csv("Korea/approval2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-f<-formattable::percent(0.9)
 
 d<- d %>%
   group_by(variable) %>%
@@ -81,7 +83,7 @@ plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.9,0.9,0.05))+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date)-2,max(d$Date)+2),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date)-2,election),guide = guide_axis(angle = -90))+
   ggtitle('Yoon Suk Yeol Presidency Net Approval')
 plotwiki
 ggsave(plot=plotwiki, file="Korea/approval2.png",width = 15, height = 7.5, type = "cairo-png")

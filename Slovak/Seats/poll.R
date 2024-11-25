@@ -66,7 +66,8 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
+# poll[poll==0] <-NA
 d1 <- round(colMeans(poll[-1],na.rm=TRUE), digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -99,12 +100,16 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),y=0),
                 hjust=-0.1, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
-  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+  theme(legend.position = "none",
+        axis.title=element_blank(),
+        axis.text.x = element_blank(),
+        axis.text.y = element_text(face="bold", color="#000000"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
-        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
-        plot.caption = element_text(hjust = 0,face="italic"))+
-  ggtitle(' 7 day average \n (2023 Result)')+
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  # ggtitle(' 7 day average \n (2023 Result)')+
+  ggtitle('7 day average  <br> *(2023 Result)*')+
   # scale_x_discrete(limits = rev(levels(d3$variable)))+
   scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()+

@@ -98,6 +98,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-1,1,0.05))+
   scale_x_continuous(name="Days",breaks=seq(0,400,10),limits=c(0,400),guide = guide_axis(angle = -90))+
+  scale_x_continuous(name="Days",breaks=seq(0,800,20),limits=c(0,800),guide = guide_axis(angle = -90))+
+  # scale_x_continuous(name="Days",breaks=seq(0,2300,50),limits=c(0,2300),guide = guide_axis(angle = -90))+
   ggtitle('Net Approval After Becoming Prime Minister')
 
 plot1
