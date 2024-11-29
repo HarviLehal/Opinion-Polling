@@ -37,6 +37,7 @@ for i in range(1):
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   
 D = pd.concat(d.values(), ignore_index=True)
+D = D.dropna(subset=['Singh'])
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)*100
 D = D.drop(["total"], axis=1)

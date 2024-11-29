@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Next_Irish_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2024_Irish_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z 0-9]+\]')
 
-data22=pd.DataFrame(df[-1])
+data22=pd.DataFrame(df[0])
 headers = ['Date','1','2','SF','FF','FG','GP','Lab','SD','PBP-S','Aon','3','Ind.']
 parties = ['SF','FF','FG','GP','Lab','SD','PBP-S','Aon','Ind.']
 drops = ['1','2','3','4']

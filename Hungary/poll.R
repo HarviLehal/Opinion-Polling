@@ -145,9 +145,10 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#d6d6d6","#BBBBBB"
                                ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               ifelse(is.na(d4$value)==F,
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
-                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
+                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))),""), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
                                ifelse(d4$variable=="TISZA",paste("(Nouveau)"),
@@ -165,7 +166,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
   ggtitle('Moyenne sur la semaine <br> *(Résultats 2022)*')+
-  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = TRUE)])+
+  # ggtitle('Moyenne sur 14 jours <br> *(Résultats 2022)*')+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)])+
   coord_flip()
 
 

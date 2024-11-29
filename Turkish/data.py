@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://tr.wikipedia.org/wiki/Bir_sonraki_Türkiye_genel_seçimleri_için_yapılan_anketler"
+wikiurl="https://tr.wikipedia.org/wiki/Bir_sonraki_T%C3%BCrkiye_genel_se%C3%A7imleri_i%C3%A7in_yap%C4%B1lan_anketler"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -13,18 +13,18 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 
-headers = ['Date', 'AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP']
-parties = ['AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP']
-
+headers = ['Date','1','2', 'AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP','A','3','4']
+parties = ['AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP','A']
+drops = ['1','2','3','4']
 d = {}
 for i in range(2):
   if i == 1:
-    headers = ['Date', 'AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP', 'MP']
+    headers = ['Date','1','2', 'AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP', 'MP','3','4']
     parties = ['AKP', 'CHP', 'MHP', 'İYİ', 'DEM', 'YRP', 'ZP', 'TİP', 'MP']
   d[i]=pd.DataFrame(df[i])
-  d[i] = d[i].drop(['Anket şirketi','Örneklem','Diğer','Fark'], axis=1)
   d[i].columns = headers
-  d[i] = d[i][d[i]['AKP'] != d[i]['DEM']]
+  d[i] = d[i].drop(drops, axis=1)
+  # d[i] = d[i][d[i]['AKP'] != d[i]['DEM']]
   # d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i]['Date2'] = d[i]['Date'].str.split('-').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -32,10 +32,8 @@ for i in range(2):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   for z in parties:
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
-  d[i][parties] = d[i][parties].astype(float)
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] = d[i].dropna(subset=['AKP'])
 d[1] = d[1].drop(['MP'], axis=1)
 # d[1] = d[1].drop(['DEVA'], axis=1)
 for i in range(2):

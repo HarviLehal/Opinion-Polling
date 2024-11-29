@@ -32,7 +32,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#9369f5","#ec640c","#ef1c27",
                                 "#1d84ce","#63be21","#795a44"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=podemos[podemos$Date!=old&podemos$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^5),fullrange=FALSE,se=FALSE, linewidth=0.75, data=podemos[podemos$Date!=old&podemos$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=podemos[podemos$Date!=old&podemos$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

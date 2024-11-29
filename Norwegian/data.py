@@ -49,3 +49,24 @@ for i in range(3):
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Norwegian/poll.csv', index=False)
+
+
+parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
+red = ['Ap','R','Sp','SV','MDG']
+blue = ['FrP','H','KrF','V']
+
+for z in parties:
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+  # D[z] = D[z].apply(lambda x: x if x > 4 else 0)
+
+D['Red'] = D[red].sum(axis=1)
+D['Blue'] = D[blue].sum(axis=1)
+
+D = D.drop(parties, axis=1)
+parties=['Red','Blue']
+D['total']=D[parties].sum(axis=1)
+D[parties] = D[parties].div(D['total'], axis=0)
+D = D.drop(["total"], axis=1)
+D = D[['Date','Red','Blue']]
+D.to_csv('Norwegian/poll2.csv', index=False)
+
