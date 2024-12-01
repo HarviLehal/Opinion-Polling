@@ -28,4 +28,7 @@ for z in parties:
 
 print(data22)
 
+data22.drop(data22.index[[1]],inplace=True)
+
+
 data22.to_csv('Irish/poll.csv', index=False)
