@@ -38,8 +38,8 @@ colss <-c("Starmer" ="#c70000",
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values =colss)+
   
@@ -92,7 +92,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
-            hjust=ifelse(d1$value<0,1.8,-0.1), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
+            hjust=ifelse(d1$value<0,1.8,-0.05), color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   geom_hline(aes(yintercept=0), alpha=1, linewidth=1, linetype="solid", colour="#000000")+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -106,6 +106,6 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   coord_flip()
 plot2
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
+plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 ggsave(plot=plot, file="UK/leadership_approval/plot.png",width = 20, height = 7.5, type = "cairo-png")

@@ -37,8 +37,7 @@ for i in range(2):
       d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
       d[i][z] = d[i][z].str.strip('%')
       d[i][z] = d[i][z].astype('float')
-    
-d[0].drop(d[0].index[[-1]],inplace=True)
+  d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('UK/Subnational/Wales/poll_Senedd.csv', index=False)

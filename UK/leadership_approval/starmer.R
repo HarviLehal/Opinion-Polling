@@ -40,7 +40,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=0), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "10 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Keir Starmer Approval Rating')
 
