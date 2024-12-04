@@ -124,8 +124,8 @@ plot3<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
   scale_fill_manual(values = c("#66a5d3","#0069b5",
                                "#fdde7a","#fcc822"))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Government",paste("Government:",d3$value),paste("Opposition:",d3$value)),
-                               ifelse(d3$variable=="Government",paste("Current Government:",d3$value),paste("Current Opposition:",d3$value))),
+  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Government",paste("2024 Government:",d3$value),paste("2024 Opposition:",d3$value)),
+                               ifelse(d3$variable=="Government",paste("2022 Government:",d3$value),paste("2022 Opposition:",d3$value))),
                 hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Government",0.89,0.11)),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+

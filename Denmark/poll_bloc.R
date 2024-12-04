@@ -110,8 +110,8 @@ plot3<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
                                "#678ebb","#01438e"
                                ))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Red",paste("Red:",d3$value),ifelse(d3$variable=="Blue",paste("Blue:",d3$value),paste("M:",d3$value))),
-                               ifelse(d3$variable=="Red",paste("Current Red:",d3$value),ifelse(d3$variable=="Blue",paste("Current Blue:",d3$value),paste("M:",d3$value)))),
+  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Red",paste("2024 Red:",d3$value),ifelse(d3$variable=="Blue",paste("2024 Blue:",d3$value),paste("M:",d3$value))),
+                               ifelse(d3$variable=="Red",paste("2022 Red:",d3$value),ifelse(d3$variable=="Blue",paste("2022 Blue:",d3$value),paste("M:",d3$value)))),
                 hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Red",0.89,ifelse(d3$variable=="Blue",0.11,0.47))),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+

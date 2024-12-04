@@ -31,7 +31,7 @@ colss <-c("Starmer" ="#c70000",
           "Badenoch"="#0066b7",
           "Farage"  ="#13bece",
           "Davey"   ="#e05e00",
-          "Sunak"   ="#66add3",
+          "Sunak"   ="#0066b7",
           "Denyer"  ="#33a22b",
           "Adams"   ="#528D6B")
 
@@ -79,8 +79,8 @@ d1 <- reshape2::melt(d1, id.vars="Date")
 # d1$value<-as.numeric(d1$value)/100
 d1$value<-formattable::percent(d1$value, digits = 1)
 
-# d1<-d1[d1$variable!='Sunak',]
-d1<-d1[d1$variable!='Badenoch',]
+d1<-d1[d1$variable!='Sunak',]
+# d1<-d1[d1$variable!='Badenoch',]
 
 d1<-droplevels(d1)
 
