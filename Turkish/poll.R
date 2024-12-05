@@ -33,7 +33,9 @@ AH<-AH[!is.na(AH$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = c("#FFCC00","#ed1c24","#870000","#3db5e6","#951b88","#007d60","#404040","#b61f23","#002653"))+
+  scale_color_manual(values = c("#FFCC00","#ed1c24","#870000","#3db5e6","#951b88","#007d60","#404040","#b61f23","#004e81"
+                                # "#002653"
+                                ))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=AH[AH$Date!=old&AH$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
@@ -105,7 +107,9 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#66b1a0","#007d60",
                                "#8c8c8c","#404040",
                                "#d3797b","#b61f23",
-                               "#667d98","#002653"))+
+                               # "#667d98","#002653"
+                               "#6695b3","#004e81"
+                               ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),

@@ -28,7 +28,7 @@ election<-as.Date("03 03 2027", "%d %m %Y")
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 4, Date), mean,na.rm=TRUE))
 
 plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5)+

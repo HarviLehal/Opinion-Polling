@@ -28,7 +28,7 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#3777bc","#ff66ff","#202056","#00adef",
-                                "#8b0000","#ff0000","#c2d216","#008080"))+
+                                "#8b0000","#ff0000","#c2d216","#008080","#aaaaaa"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
@@ -85,19 +85,19 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#87add7","#3777bc","#ffa3ff","#ff66ff",
                                "#79799a","#202056","#66cef5","#00adef",
                                "#b96666","#8b0000","#ff6666","#ff0000",
-                               "#dae473","#c2d216","#66b3b3","#008080"))+
+                               "#dae473","#c2d216","#66b3b3","#008080","#dddddd","#aaaaaa"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 2),y = 0),
-            hjust=0, vjust = 0, color="#000000",position = position_dodge(0.7), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color=ifelse(d3$variable=='Chega'|d3$variable=='BE',"#ffffff","#000000"),position = position_dodge(0.7), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d3$value,")"),""),y = 0),
-            hjust=0, vjust = 0, color="#404040", position = position_dodge(1.1), size=3.5, fontface="bold")+
+            hjust=0, vjust = 0, color="#000000", position = position_dodge(1.1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 Day Average \n 2024 Results')+
+  ggtitle('14 Day Average <br> *(2024 Results)*')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 plot2

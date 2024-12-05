@@ -17,13 +17,13 @@ p = re.compile(r'\[[a-z]+\]')
 
 # 2024
 
-headers = ['Date','AD','PS','Chega','IL','BE','CDU','LIVRE','PAN']
-parties = ['AD','PS','Chega','IL','BE','CDU','LIVRE','PAN']
+headers = ['Date','AD','PS','Chega','IL','BE','CDU','LIVRE','PAN','Others']
+parties = ['AD','PS','Chega','IL','BE','CDU','LIVRE','PAN','Others']
 
 d={}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(['Polling firm/Link','Sample size','Turnout','O','Lead'], axis=1)
+  d[i]=d[i].drop(['Polling firm/Link','Sample size','Turnout','Lead'], axis=1)
   d[i].columns = headers
   if i == 0:
     d[i]=d[i][d[i]['Date'] != '9 Jun 2024']

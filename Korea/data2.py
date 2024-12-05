@@ -16,7 +16,9 @@ df=pd.read_html(str(tables))
 
 headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','1','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok','Lee Nak-yon']
 parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok','Lee Nak-yon']
-drops = ['1']
+headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','1','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok','2']
+parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok']
+drops = ['1','2']
 d = {}
 
 for i in range(1):
