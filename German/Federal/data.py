@@ -59,7 +59,7 @@ D[parties] = D[parties].astype(float)
 
 ''' REMOVE WEIRD POLL!!!!'''
 
-D=D.drop(D[D['BSW'] ==14].index)
+# D=D.drop(D[D['BSW'] ==14].index)
 # D=D.drop('BSW', axis=1)
 
 D.to_csv('German/Federal/poll.csv', index=False)
