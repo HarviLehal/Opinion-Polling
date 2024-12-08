@@ -36,7 +36,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#979fbe","#263778","#515f93","#F68F2D","#F9C013","#eb2a48","#870f57","#122746","#717d90"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=new2[new2$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new3[new3$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=new4[new4$Date!=election,])+
   theme_minimal()+

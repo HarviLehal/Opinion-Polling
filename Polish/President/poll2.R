@@ -30,7 +30,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        legend.position = "none",
+        # legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold.italic"),
@@ -45,11 +45,17 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the Next Polish Presidential Election')
+  scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  guides(color = guide_legend(override.aes = list(fill = c("white", "white"), shape = c(NA, NA))))+
+  ggtitle('Head-to-Head Opinion Polling for the 2025 Polish Presidential Election (Excluding Don\'t knows and Abstains)')
 plot1
 
+ggsave(plot=plot1, file="Polish/President/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Polish/President/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Polish/President/plot.svg")
 
+plot1<-plot1 +   theme(legend.position = "none")
 
 poll <- read_csv("Polish/President/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")

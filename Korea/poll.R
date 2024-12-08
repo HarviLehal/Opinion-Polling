@@ -53,7 +53,7 @@ poll <- read_csv("Korea/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-10),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -84,11 +84,11 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#f9b566","#f58400",
                                "#a3a3a3","#666666"
   ))+
-  geom_text(aes(label = ifelse(d3$Date != min(d3$Date),
-                               paste(formattable::percent(d3$value, digits = 1)), ""),y = 0),
+  geom_text(aes(label = ifelse(d3$Date != min(d3$Date),ifelse(is.nan(d3$value)==FALSE,
+                               paste(formattable::percent(d3$value, digits = 1)),""), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),
-                               ifelse(is.na(d3$value)==TRUE,ifelse(d3$variable=='PP'|d3$variable=='SDP',"(Part of DPK)","(New)"),
+                               ifelse(is.na(d3$value)==TRUE,ifelse(d3$variable=='PP'|d3$variable=='SDP'|d3$variable=='BIP',"(Part of DPK)","(New)"),
                                       (paste("(",formattable::percent(d3$value, digits = 2),")"))),""),y = 0),
             hjust=0, color="#404040", position = position_dodge(0.85), size=3.5, fontface="bold")+
   theme_minimal()+
@@ -98,7 +98,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 day average \n (2024 Result)')+
+  ggtitle(' 10 day average \n (2024 Result)')+
   scale_x_discrete(limits = rev(levels(d3$variable)))+
   coord_flip()
 plot2
