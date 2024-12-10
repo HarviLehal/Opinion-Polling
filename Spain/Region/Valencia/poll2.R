@@ -83,8 +83,8 @@ d2$value<-ifelse(is.na(d2$value)==TRUE,0,d2$value)
 # d2<-d2[rev(d2$variable),]
 d1$value<-d1$value/sum(d1$value,na.rm=TRUE)
 d2$value<-d2$value/sum(d2$value,na.rm=TRUE)
-d1$Date<-'Current'
-d2$Date<-'Previous'
+d1$Date<-'Polling'
+d2$Date<-'Election'
 d3<-rbind(d2,d1)
 
 
@@ -102,7 +102,7 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=rou
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),
         axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold.italic",size=15),
+        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=2),
         # axis.text.y = element_blank(),
         plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(),

@@ -45,7 +45,7 @@ plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
+  scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,1,0.05))+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date)-2,election),guide = guide_axis(angle = -90))+
   ggtitle('Yoon Suk Yeol Presidency Approval')
 plotwiki
