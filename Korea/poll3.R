@@ -61,13 +61,16 @@ poll <- read_csv("Korea/approval2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
+coup<-as.Date("03 12 2024", "%d %m %Y")
 
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 4, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean,na.rm=TRUE))
 
 plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_vline(xintercept=coup, linetype="dashed", color = "#000000", alpha=0.5, size=0.5)+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.25, size=0.75)+
   geom_point(size=1, data=d,alpha=0.5)+
   scale_color_manual(values = c("#5f3976"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d)+
@@ -76,7 +79,7 @@ plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
-        # legend.position = "none",
+        legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
