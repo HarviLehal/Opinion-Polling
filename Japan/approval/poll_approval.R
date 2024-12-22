@@ -31,7 +31,7 @@ f<-formattable::percent(0.9)
 plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#db001c","#666666"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),
         legend.title = element_blank(),
@@ -43,7 +43,8 @@ plotwiki<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.9,0.05))+
-  scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
+  # scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(min(d$Date),max(d$Date)),guide = guide_axis(angle = -90))+
   ggtitle('Ishiba Cabinet Approval')
 plotwiki
 ggsave(plot=plotwiki, file="Japan/approval/plot_wiki.svg",width = 15, height = 7.5)
@@ -110,7 +111,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(yintercept = 0, size=1.25,colour="#000000",alpha=0.25)+
   geom_point(size=2, data=d,alpha=1)+
   scale_color_manual(values = c("#999999","#5f3976"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -122,7 +123,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Approval",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.9,0.9,0.1))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
+  # scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(min(d$Date)-2,max(d$Date)+10),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "1 months", date_labels =  "%b %Y",limits = c(min(d$Date)-2,max(d$Date)+20),guide = guide_axis(angle = -90))+
   ggtitle('Ishiba Cabinet Net Approval')
 plot1 
 

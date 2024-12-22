@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','ODS','KDU-CSL','TOP09','ANO','STAN','Piráti','SPD','1','2','Přísaha','3','SOCDEM','KSČM','Zelení','PRO']
-parties = ['ODS','KDU-CSL','TOP09','ANO','STAN','Piráti','SPD','Přísaha','SOCDEM','KSČM','Zelení','PRO']
+headers = ['Date','ODS','KDU-CSL','TOP09','ANO','STAN','Piráti','SPD','1','2','PŘÍSAHA','3','SOCDEM','Stačilo!','Zelení','PRO']
+parties = ['ODS','KDU-CSL','TOP09','ANO','STAN','Piráti','SPD','PŘÍSAHA','SOCDEM','Stačilo!','Zelení','PRO']
 drops = ['1','2','3']
 d = {}
 for i in range(1):
@@ -51,16 +51,16 @@ D = D.dropna(subset=['ANO'])
 SPOLU = ['ODS','KDU-CSL','TOP09']
 
 
-D['Spolu']=D[SPOLU].sum(axis=1)
+D['SPOLU']=D[SPOLU].sum(axis=1)
 
 
 
 
 D = D.drop(SPOLU, axis=1)
 
-D= D[['Date','Spolu','ANO','STAN','Piráti','SPD','Přísaha','SOCDEM','KSČM','Zelení','PRO']]
+D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','PŘÍSAHA','SOCDEM','Stačilo!','Zelení','PRO']]
 
-D.loc[D['Spolu'] > 50, 'Spolu'] = D['Spolu']/3
+D.loc[D['SPOLU'] > 50, 'SPOLU'] = D['SPOLU']/3
 
 
 D.to_csv('Czechia/poll.csv', index=False)

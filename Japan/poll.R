@@ -30,7 +30,7 @@ old <-as.Date("28 10 2024", "%d %m %Y")
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d,alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#00469c","#ffba00",
-                                "#f95580","#b8ce43","#ed008c",
+                                "#b8ce43","#f95580","#ed008c",
                                 "#db001c","#ee7300","#0b80db",
                                 "#1ca9e9","#777777"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d,na.rm = FALSE)+
@@ -79,7 +79,7 @@ d4<-d1
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#3ca324","#00469c","#ffba00",
-                               "#f95580","#b8ce43","#ed008c",
+                               "#b8ce43","#f95580","#ed008c",
                                "#db001c","#ee7300","#0b80db",
                                "#1ca9e9","#777777"))+
   geom_text(aes(label = paste(formattable::percent(d4$value, digits = 2)),
