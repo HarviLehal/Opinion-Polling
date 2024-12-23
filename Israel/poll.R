@@ -22,9 +22,9 @@ d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
 # d$value[is.na(d$value)]<-0
-new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
-new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
-new2<-new2[!is.na(new2$value),]
+# new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
+# new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
+# new2<-new2[!is.na(new2$value),]
 h<-3.25
 # MAIN GRAPH
 
@@ -37,7 +37,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#003066","#9bc1e3","#0d7a3a",
                                 "#d51f33","#ef1520","#1be263",
                                 "#2d38cf","#f66004"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
   theme_minimal()+
