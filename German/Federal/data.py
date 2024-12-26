@@ -53,8 +53,8 @@ D = pd.concat(d.values(), ignore_index=True)
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 # parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
-    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 
 ''' REMOVE WEIRD POLL!!!!'''
@@ -91,8 +91,8 @@ D=D.drop('BSW', axis=1)
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
-    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 # D=D.drop(D[D['BSW'] > 0].index)
 # D=D.drop('BSW', axis=1)
@@ -131,8 +131,8 @@ D.to_csv('German/Federal/poll3.csv', index=False)
 D = pd.concat(d.values(), ignore_index=True)
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 for z in parties:
-    D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-    D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+    D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 for z in parties:
   D[z] = D[z].apply(lambda x: x if x > 5 else 0)

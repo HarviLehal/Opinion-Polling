@@ -34,9 +34,9 @@ for i in range(1):
   d[i] = d[i][d[i]['Cho Kuk'] != d[i]['Lee Jae-myung']]
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
     d[i][z] = d[i][z].astype('float').astype(str)
 
 D = pd.concat(d.values(), ignore_index=True)

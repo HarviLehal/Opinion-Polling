@@ -29,14 +29,14 @@ data2 =data2.dropna(subset=['Date'])
 
 for z in parties:
   data2[z] = [p.sub('', x) for x in data2[z].astype(str)]
-  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
-  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z].astype(str)]
+  data2[z] = [x.replace('–',str(np.nan)) for x in data2[z].astype(str)]
+  data2[z] = [x.replace('–',str(np.nan)) for x in data2[z].astype(str)]
 data2 =data2.dropna(subset=['SEATS'])
 
 data2 = data2[pd.to_numeric(data2['SEATS'], errors='coerce').notnull()]
 for z in parties:
-  data2[z] = [x.replace('None',str(np.NaN)) for x in data2[z].astype(str)]
-data2 = data2.replace(r'^\s*$', str(np.NaN), regex=True)
+  data2[z] = [x.replace('None',str(np.nan)) for x in data2[z].astype(str)]
+data2 = data2.replace(r'^\s*$', str(np.nan), regex=True)
 
 data2[parties] = data2[parties].astype(float)
 

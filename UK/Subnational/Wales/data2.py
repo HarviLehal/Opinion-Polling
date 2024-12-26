@@ -31,10 +31,10 @@ for i in range(2):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Lab'] != d[i]['Green']]
   for z in parties:
-      d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
-      d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z].astype(str)]
+      d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
       d[i][z] = d[i][z].str.strip('%')
       d[i][z] = d[i][z].astype('float')
   d[i].drop(d[i].index[[-1]],inplace=True)

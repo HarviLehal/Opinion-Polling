@@ -26,9 +26,9 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
@@ -63,16 +63,16 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
 
-D['PP-DB']=np.where(D['PP']==D['DB'],D['PP'],np.NaN)
-D['PP']=np.where(D['PP']==D['DB'],np.NaN,D['PP'])
-D['DB']=np.where(D['DB']>10,np.NaN,D['DB'])
+D['PP-DB']=np.where(D['PP']==D['DB'],D['PP'],np.nan)
+D['PP']=np.where(D['PP']==D['DB'],np.nan,D['PP'])
+D['DB']=np.where(D['DB']>10,np.nan,D['DB'])
 
 D=D[['Date','GERB','PP-DB','PP','DB','DPS','V','BSP','BV','ITN','Levitsata','Other']]
 D
@@ -107,9 +107,9 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 D[parties] = D[parties].astype(float)
@@ -147,9 +147,9 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
@@ -190,9 +190,9 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
@@ -233,9 +233,9 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:

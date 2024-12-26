@@ -35,8 +35,8 @@ data23 = data23[data23['PS'] != data23['LIVRE']]
 for z in parties:
     data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
     data23[z] = data23[z].str.split(' ').str[0]
-    data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('–',str(np.nan)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('?',str(np.nan)) for x in data23[z].astype(str)]
 
 data23.drop(data23.index[[-1,-3]],inplace=True)
 data23.drop(data23.index[[0,2,3,4,5,6]],inplace=True)
@@ -78,8 +78,8 @@ data23 = data23[data23['PS'] != data23['LIVRE']]
 for z in parties:
     data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
     data23[z] = data23[z].str.split(' ').str[0]
-    data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('–',str(np.nan)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('?',str(np.nan)) for x in data23[z].astype(str)]
 
 data23.drop(data23.index[[-1,-3]],inplace=True)
 data23.drop(data23.index[[0,2,3,4,5,6]],inplace=True)

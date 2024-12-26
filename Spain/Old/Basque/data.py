@@ -36,13 +36,13 @@ for i in range(1):
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = [x.replace('–','') for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
   
 
 
 D = pd.concat(d.values(), ignore_index=True)
 
-D = D.replace(r'^\s*$', np.NaN, regex=True)
+D = D.replace(r'^\s*$', np.nan, regex=True)
 
 # parties = ['PNV','EHB','PSE','EP','Vox','PP','Sumar']
 D[parties] = D[parties].astype(float)
@@ -52,7 +52,7 @@ D=D.drop(['PPCS'], axis=1)
 D=D.dropna(subset=['PNV'])
 
 # D.drop(D.index[[0]],inplace=True)
-# new_row = pd.DataFrame({'Date': '18 Feb 2024','PP':47.35,'BNG':31.58,'PSOE':14.04,'Podemos':0.26, 'VOX':2.19, 'CS':np.NaN, 'Sumar':1.90,'DO':1.03}, index=[0])
+# new_row = pd.DataFrame({'Date': '18 Feb 2024','PP':47.35,'BNG':31.58,'PSOE':14.04,'Podemos':0.26, 'VOX':2.19, 'CS':np.nan, 'Sumar':1.90,'DO':1.03}, index=[0])
 # D = pd.concat([new_row,D]).reset_index(drop=True)
 # D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 

@@ -42,10 +42,10 @@ for i in range(1):
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = [x.replace('–',str()) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.replace(r'^\s*$', np.NaN, regex=True)
+D = D.replace(r'^\s*$', np.nan, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
 D=D.dropna(subset=['PSC'])
@@ -88,10 +88,10 @@ for i in range(1):
     d[i][z] = d[i][z].str.split(' ').str[1]
     d[i][z] = [x.split('/')[1] if len(x.split('/')) > 1 else x for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('–',str()) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.replace(r'^\s*$', np.NaN, regex=True)
+D = D.replace(r'^\s*$', np.nan, regex=True)
 D[parties] = D[parties].astype(float)
 D.drop(D.index[[-1,-3]],inplace=True)
 D=D.dropna(subset=['PSC'])
@@ -122,10 +122,10 @@ for i in range(1):
     e[i][z] = e[i][z].str.split(' ').str[1]
     e[i][z] = [x.split('/')[0] if len(x.split('/')) > 1 else x for x in e[i][z].astype(str)]
     e[i][z] = [x.replace('–',str()) for x in e[i][z].astype(str)]
-    e[i][z] = [x.replace('?',str(np.NaN)) for x in e[i][z].astype(str)]
+    e[i][z] = [x.replace('?',str(np.nan)) for x in e[i][z].astype(str)]
 
 E = pd.concat(e.values(), ignore_index=True)
-E = E.replace(r'^\s*$', np.NaN, regex=True)
+E = E.replace(r'^\s*$', np.nan, regex=True)
 E[parties] = E[parties].astype(float)
 E.drop(E.index[[-1,-3]],inplace=True)
 E=E.dropna(subset=['PSC'])

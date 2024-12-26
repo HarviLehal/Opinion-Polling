@@ -26,10 +26,10 @@ data22['Date'] = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREF
 
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z]]
-  data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z]]
-  data22[z] = data22[z].replace(r'^\s*$', str(np.NaN), regex=True)
-  # data22[z] = [x.replace(-,str(np.NaN)) for x in data22[z]]
+  data22[z] = [x.replace('–',str(np.nan)) for x in data22[z]]
+  data22[z] = [x.replace('-',str(np.nan)) for x in data22[z]]
+  data22[z] = data22[z].replace(r'^\s*$', str(np.nan), regex=True)
+  # data22[z] = [x.replace(-,str(np.nan)) for x in data22[z]]
   
 for z in parties:
   data22[z] = data22[z].astype('float')
@@ -41,9 +41,9 @@ data22 = data22.drop(["Centar1","Centar2"], axis=1)
 headers = ['Date','HDZ','SDP','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
 parties = ['HDZ','SDP','DP','Most','Možemo!','RF','Centar','Fokus','KH','HNS','IDS','HSS','HSU','HS','SD','Others','Undecided']
 data22=data22.reindex(columns=headers)
-data22.loc[len(data22.index)-1,['RF']] = np.NaN
-data22.loc[len(data22.index)-2,['RF']] = np.NaN
-data22.loc[len(data22.index)-1,['Fokus']] = np.NaN
+data22.loc[len(data22.index)-1,['RF']] = np.nan
+data22.loc[len(data22.index)-2,['RF']] = np.nan
+data22.loc[len(data22.index)-1,['Fokus']] = np.nan
 
 data22.to_csv('Croatia/alternative/poll.csv', index=False)
 

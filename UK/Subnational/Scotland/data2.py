@@ -24,10 +24,10 @@ data23['Date'] = data23['Date2']
 data23 = data23.drop(['Date2'], axis=1)
 data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
-  data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z].astype(str)]
-  data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z].astype(str)]
-  data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z].astype(str)]
-  data23[z] = [x.replace('-',str(np.NaN)) for x in data23[z].astype(str)]
+  data23[z] = [x.replace('–',str(np.nan)) for x in data23[z].astype(str)]
+  data23[z] = [x.replace('TBA',str(np.nan)) for x in data23[z].astype(str)]
+  data23[z] = [x.replace('?',str(np.nan)) for x in data23[z].astype(str)]
+  data23[z] = [x.replace('-',str(np.nan)) for x in data23[z].astype(str)]
 data23 = data23[data23['Lib Dem'] != data23['SNP']]
 print(data23)
 
@@ -53,10 +53,10 @@ data23['Date'] = data23['Date2']
 data23 = data23.drop(['Date2'], axis=1)
 data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
-    data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z].astype(str)]
-    data23[z] = [x.replace('-',str(np.NaN)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('–',str(np.nan)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('TBA',str(np.nan)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('?',str(np.nan)) for x in data23[z].astype(str)]
+    data23[z] = [x.replace('-',str(np.nan)) for x in data23[z].astype(str)]
 data23 = data23[data23['Lib Dem'] != data23['SNP']]
 print(data23)
 

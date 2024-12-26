@@ -33,8 +33,8 @@ D.Date = D.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MON
 D = D[D['PVV'] != D['SGP']]
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 # D['PvdA']=np.where(D['PvdA']==D['GL'], 0, D['PvdA'])
 # Fusie=['PvdA','GL']

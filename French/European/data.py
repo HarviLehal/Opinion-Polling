@@ -34,11 +34,11 @@ for i in range(1):
   for z in parties: # replace any non-numeric values with NaN
     # e[i][z] = e[i][z].str.strip('%')
     e[i][z] = [p.sub('', x) for x in e[i][z].astype(str)]
-    e[i][z] = [x.replace('-',str(np.NaN)) for x in e[i][z]]
-    e[i][z] = [x.replace('—',str(np.NaN)) for x in e[i][z]]
-    e[i][z] = [x.replace('–',str(np.NaN)) for x in e[i][z]]
+    e[i][z] = [x.replace('-',str(np.nan)) for x in e[i][z]]
+    e[i][z] = [x.replace('—',str(np.nan)) for x in e[i][z]]
+    e[i][z] = [x.replace('–',str(np.nan)) for x in e[i][z]]
     e[i][z] = [x.replace('<','') for x in e[i][z]]
-    e[i].replace(r'^\s*$', str(np.NaN), regex=True)
+    e[i].replace(r'^\s*$', str(np.nan), regex=True)
   for z in parties: # replace any non-numeric values with NaN
     e[i][z] = pd.to_numeric(e[i][z], errors='coerce')
     e[i][z] = e[i][z].astype('float')

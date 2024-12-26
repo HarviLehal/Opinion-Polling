@@ -52,8 +52,8 @@ for i in range(5):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Likud'] != d[i]['Otzma Yehudit']]
   for z in parties:
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
 
   # if i ==1:
   #   d[i].drop(d[i].index[[-1]],inplace=True)

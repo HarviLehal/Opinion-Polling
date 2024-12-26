@@ -33,12 +33,12 @@ data2 = data2.drop(['Date2'], axis=1)
 data2.Date=data2.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
   data2[z] = data2[z].astype(str)
-  data2[z] = [x.replace('-',str(np.NaN)) for x in data2[z]]
-  data2[z] = [x.replace('—',str(np.NaN)) for x in data2[z]]
-  data2[z] = [x.replace('–',str(np.NaN)) for x in data2[z]]
-  data2[z] = [x.replace('TBC',str(np.NaN)) for x in data2[z]]
-  data2[z] = [x.replace('TBA',str(np.NaN)) for x in data2[z]]
-  data2[z] = [x.replace('?',str(np.NaN)) for x in data2[z]]
+  data2[z] = [x.replace('-',str(np.nan)) for x in data2[z]]
+  data2[z] = [x.replace('—',str(np.nan)) for x in data2[z]]
+  data2[z] = [x.replace('–',str(np.nan)) for x in data2[z]]
+  data2[z] = [x.replace('TBC',str(np.nan)) for x in data2[z]]
+  data2[z] = [x.replace('TBA',str(np.nan)) for x in data2[z]]
+  data2[z] = [x.replace('?',str(np.nan)) for x in data2[z]]
   data2[z] = data2[z].astype(str)
   data2[z] = data2[z].str.strip('%')
   data2[z] = pd.to_numeric(data2[z], errors='coerce')

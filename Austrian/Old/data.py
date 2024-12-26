@@ -63,8 +63,8 @@ D = D[D.Date.notnull()]
 parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','KEINE','BIER','LMP','MFG','HC']
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
 
@@ -125,8 +125,8 @@ D = D[D.Date.notnull()]
 parties = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','KEINE','BIER','LMP','MFG','HC']
 for z in parties:
   D[z] = [p.sub('', x) for x in D[z].astype(str)]
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 D=D.drop(["MFG", "HC",'KEINE','LMP'], axis=1)
 parties  = ['ÖVP','SPÖ','FPÖ','Grüne','NEOS','KPÖ','BIER']

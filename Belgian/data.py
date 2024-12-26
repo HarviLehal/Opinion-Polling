@@ -32,8 +32,8 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 data = data[data['VB'] != data['Groen']]
 for z in parties:
   data[z] = [p.sub('', x) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
   data[z] = data[z].astype(str)
   data[z] = data[z].str.strip('%')
   data[z] = data[z].astype('float')
@@ -61,8 +61,8 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 data = data[data['DéFI'] != data['PS']]
 for z in parties:
   data[z] = [p.sub('', x) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
   data[z] = data[z].astype(str)
   data[z] = data[z].str.strip('%')
   data[z] = data[z].astype('float')
@@ -94,11 +94,11 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 data = data[data['Vooruit'] != data['PS']]
 for z in parties:
   data[z] = [p.sub('', x) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
   data[z] = data[z].astype(str)
   data[z] = data[z].str.strip('%')
-  data[z] = data[z].replace(r'^([A-Za-z]|[0-9]|_)+$', np.NaN, regex=True)
+  data[z] = data[z].replace(r'^([A-Za-z]|[0-9]|_)+$', np.nan, regex=True)
   data[z] = data[z].astype('float')
 
 print(data)
@@ -124,8 +124,8 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 data = data[data['DéFI'] != data['PS']]
 for z in parties:
   data[z] = [p.sub('', x) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
-  data[z] = [x.replace('–',str(np.NaN)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
+  data[z] = [x.replace('–',str(np.nan)) for x in data[z].astype(str)]
   data[z] = data[z].astype(str)
   data[z] = data[z].astype('float')
 

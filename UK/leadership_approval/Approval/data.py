@@ -34,8 +34,8 @@ for i in range(3):
 D = pd.concat(d.values(), ignore_index=True)
 
 for z in parties:
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
   D[z] = D[z].str.strip('%')
 D[parties] = D[parties].astype(float)
 
@@ -66,8 +66,8 @@ D = pd.concat(d.values(), ignore_index=True)
 # for z in parties:
 #   D[z] = [p.sub('', x) for x in D[z].astype(str)]
 for z in parties:
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
   D[z] = D[z].str.strip('%')
 D[parties] = D[parties].astype(float)
 
@@ -98,8 +98,8 @@ D.to_csv('UK/leadership_approval/Approval/starmer.csv', index=False)
 # # for z in parties:
 # #   D[z] = [p.sub('', x) for x in D[z].astype(str)]
 # for z in parties:
-#   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-#   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 #   D[z] = D[z].str.strip('%')
 # D[parties] = D[parties].astype(float)
 # 
@@ -154,8 +154,8 @@ D.to_csv('UK/leadership_approval/Approval/starmer.csv', index=False)
 # 
 # D = pd.concat(d.values(), ignore_index=True)
 # for z in parties:
-#   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-#   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 #   D[z] = D[z].str.strip('%')
 #   D[z] = D[z].str.strip('<')
 # D[parties] = D[parties].astype(float)
@@ -217,8 +217,8 @@ D.to_csv('UK/leadership_approval/Approval/starmer.csv', index=False)
 # 
 # D = pd.concat(d.values(), ignore_index=True)
 # for z in parties:
-#   D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-#   D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+#   D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 #   D[z] = D[z].str.strip('%')
 #   D[z] = D[z].str.strip('<')
 # D[parties] = D[parties].astype(float)

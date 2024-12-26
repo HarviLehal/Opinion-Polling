@@ -41,8 +41,8 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype(str)
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z]]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z]]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z]]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z]]
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
   

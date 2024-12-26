@@ -31,9 +31,9 @@ for i in range(1):
   d[i].drop(d[i].index[[-1,-2,-4]],inplace=True)
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   
 D = pd.concat(d.values(), ignore_index=True)

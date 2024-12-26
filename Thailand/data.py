@@ -35,12 +35,12 @@ from io import StringIO
 #   for z in parties:
 #     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
 #     d[i][z] = d[i][z].str.split(' ').str[0]
-#     d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-#     d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
-#     d[i][z] = [x.replace('Did',str(np.NaN)) for x in d[i][z].astype(str)]
+#     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+#     d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
+#     d[i][z] = [x.replace('Did',str(np.nan)) for x in d[i][z].astype(str)]
 # 
 # D = pd.concat(d.values(), ignore_index=True)
-# D = D.replace(r'^\s*$', np.NaN, regex=True)
+# D = D.replace(r'^\s*$', np.nan, regex=True)
 # for z in parties:
 #   D[z] = D[z].astype(str)
 #   D[z] = D[z].str.strip('%')
@@ -121,13 +121,13 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('Did',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('Did',str(np.nan)) for x in d[i][z].astype(str)]
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.replace(r'^\s*$', np.NaN, regex=True)
+D = D.replace(r'^\s*$', np.nan, regex=True)
 for z in parties:
   D[z] = D[z].astype(str)
   D[z] = D[z].str.strip('%')

@@ -29,17 +29,17 @@ data22.Date = data22['Date'].astype(str)
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for z in parties:
-  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('-',str(np.NaN)) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('–',str(np.nan)) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('-',str(np.nan)) for x in data22[z].astype(str)]
 
 data22[parties] = data22[parties].astype(float)
-data22['OLaNO-ZL']=np.where(data22['ZL']==data22['OLaNO'], data22['ZL'], np.NaN)
-data22['OLaNO']=np.where(data22['OLaNO']==data22['OLaNO-ZL'], np.NaN, data22['OLaNO'])
-data22['ZL']=np.where(data22['ZL']==data22['OLaNO-ZL'], np.NaN, data22['ZL'])
+data22['OLaNO-ZL']=np.where(data22['ZL']==data22['OLaNO'], data22['ZL'], np.nan)
+data22['OLaNO']=np.where(data22['OLaNO']==data22['OLaNO-ZL'], np.nan, data22['OLaNO'])
+data22['ZL']=np.where(data22['ZL']==data22['OLaNO-ZL'], np.nan, data22['ZL'])
 
 for i in range(len(data22)):
   if data22['SPOLU/Dem'][i]==data22['PS'][i]:
-    data22['SPOLU/Dem'][i] = np.NaN
+    data22['SPOLU/Dem'][i] = np.nan
 
 data22.drop([0], axis=0, inplace=True)
 

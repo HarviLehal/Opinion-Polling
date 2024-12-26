@@ -30,7 +30,7 @@ for i in range(1):
   d[i] = d[i][d[i]['Lab'] != d[i]['ACT']]
   for z in parties:
     d[i][z] = d[i][z].astype('str')
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
 
 
   

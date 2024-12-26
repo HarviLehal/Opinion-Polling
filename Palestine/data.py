@@ -31,9 +31,9 @@ for i in range(1):
   d[i] = d[i][d[i]['Fatah'] != d[i]['Other1']]
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
 
 D = pd.concat(d.values(), ignore_index=True)
 
@@ -47,7 +47,7 @@ D = D.drop(Others, axis=1)
 
 H=44.45
 F=41.43
-U=np.NaN
+U=np.nan
 O=100-H-F
 
 

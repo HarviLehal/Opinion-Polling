@@ -33,10 +33,10 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
   d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)

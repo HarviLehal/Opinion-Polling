@@ -44,9 +44,9 @@ data22.loc[len(data22.index)-1,['Date']] = '11 October 2020'
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 for z in parties:
-  # data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]
-  # data22[z] = [x.replace('−',str(np.NaN)) for x in data22[z].astype(str)]
-  # data22[z] = [x.replace('−',str(np.NaN)) for x in data22[z].astype(str)]
+  # data22[z] = [x.replace('–',str(np.nan)) for x in data22[z].astype(str)]
+  # data22[z] = [x.replace('−',str(np.nan)) for x in data22[z].astype(str)]
+  # data22[z] = [x.replace('−',str(np.nan)) for x in data22[z].astype(str)]
   data22[z] = pd.to_numeric(data22[z], errors='coerce')
 # data22[parties] = data22[parties].astype(float)
 

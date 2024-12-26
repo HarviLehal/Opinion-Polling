@@ -35,12 +35,12 @@ for i in range(2):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
 
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.replace(r'^\s*$', np.NaN, regex=True)
+D = D.replace(r'^\s*$', np.nan, regex=True)
 parties = ['PP','PSOE','VOX','Sumar','Podemos','ERC','JxCat','EHB','PNV','SALF']
 D[parties] = D[parties].astype(float)
 D = D[['Date','PSOE','PP','Sumar','Podemos','VOX','ERC','JxCat','PNV','EHB','SALF']]

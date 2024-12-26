@@ -35,8 +35,8 @@ for i in range(3):
   d[i] = d[i][d[i]['A'] != d[i]['Å']]
   d[i].drop(d[i].index[[-2]],inplace=True)
   for z in parties:
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
   if i != 2:
     d[i].drop(d[i].index[[-1]],inplace=True)
 
@@ -75,8 +75,8 @@ for i in range(3):
   d[i] = d[i][d[i]['A'] != d[i]['Å']]
   d[i].drop(d[i].index[[-2]],inplace=True)
   for z in parties:
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
   if i != 2:
     d[i].drop(d[i].index[[-1]],inplace=True)
 

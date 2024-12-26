@@ -29,12 +29,12 @@ for i in range(1):
     d[i]=d[i][d[i]['Date'] != '9 Jun 2024']
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBC',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]
     d[i][z] = d[i][z].str.split(' ').str[0]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

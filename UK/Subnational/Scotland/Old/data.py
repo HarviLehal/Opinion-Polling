@@ -27,12 +27,12 @@ data23 = data23.drop(['Date2'], axis=1)
 data23.Date=data23.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 for z in parties:
   data23[z] = [p.sub('', x) for x in data23[z].astype(str)]
-  data23[z] = [x.replace('-',str(np.NaN)) for x in data23[z]]
-  data23[z] = [x.replace('—',str(np.NaN)) for x in data23[z]]
-  data23[z] = [x.replace('–',str(np.NaN)) for x in data23[z]]
-  data23[z] = [x.replace('TBC',str(np.NaN)) for x in data23[z]]
-  data23[z] = [x.replace('TBA',str(np.NaN)) for x in data23[z]]
-  data23[z] = [x.replace('?',str(np.NaN)) for x in data23[z]]
+  data23[z] = [x.replace('-',str(np.nan)) for x in data23[z]]
+  data23[z] = [x.replace('—',str(np.nan)) for x in data23[z]]
+  data23[z] = [x.replace('–',str(np.nan)) for x in data23[z]]
+  data23[z] = [x.replace('TBC',str(np.nan)) for x in data23[z]]
+  data23[z] = [x.replace('TBA',str(np.nan)) for x in data23[z]]
+  data23[z] = [x.replace('?',str(np.nan)) for x in data23[z]]
 data23 = data23[data23['Green'] != data23['Con']]
 for z in parties:
   data23[z] = data23[z].astype(str)

@@ -32,7 +32,7 @@ data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_
 
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z]]
+  data22[z] = [x.replace('–',str(np.nan)) for x in data22[z]]
   data22[z] = data22[z].astype('float').astype(str)
 
 data22.to_csv('Montenegro/poll.csv', index=False)

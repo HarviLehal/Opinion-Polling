@@ -34,8 +34,8 @@ D = pd.concat(d.values(), ignore_index=True)
 D = D[~(D['Date'] < '2022-10-25')]
 
 for z in parties:
-  D[z] = [x.replace('–',str(np.NaN)) for x in D[z].astype(str)]
-  D[z] = [x.replace('—',str(np.NaN)) for x in D[z].astype(str)]
+  D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+  D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
   D[z] = D[z].str.strip('%')
 D[parties] = D[parties].astype(float)
 
@@ -64,8 +64,8 @@ D.to_csv('UK/leadership_approval/sunak.csv', index=False)
 # E = E[~(E['Date'] < '2022-09-06')]
 # 
 # for z in parties:
-#   E[z] = [x.replace('–',str(np.NaN)) for x in E[z].astype(str)]
-#   E[z] = [x.replace('—',str(np.NaN)) for x in E[z].astype(str)]
+#   E[z] = [x.replace('–',str(np.nan)) for x in E[z].astype(str)]
+#   E[z] = [x.replace('—',str(np.nan)) for x in E[z].astype(str)]
 #   E[z] = E[z].str.strip('%')
 # E[parties] = E[parties].astype(float)
 # 
@@ -90,8 +90,8 @@ D.to_csv('UK/leadership_approval/sunak.csv', index=False)
 # F = pd.concat(f.values(), ignore_index=True)
 # 
 # for z in parties:
-#   F[z] = [x.replace('–',str(np.NaN)) for x in F[z].astype(str)]
-#   F[z] = [x.replace('—',str(np.NaN)) for x in F[z].astype(str)]
+#   F[z] = [x.replace('–',str(np.nan)) for x in F[z].astype(str)]
+#   F[z] = [x.replace('—',str(np.nan)) for x in F[z].astype(str)]
 #   F[z] = F[z].str.strip('%')
 # F[parties] = F[parties].astype(float)
 # 
@@ -124,8 +124,8 @@ D.to_csv('UK/leadership_approval/sunak.csv', index=False)
 # G = pd.concat(g.values(), ignore_index=True)
 # 
 # for z in parties:
-#   G[z] = [x.replace('–',str(np.NaN)) for x in G[z].astype(str)]
-#   G[z] = [x.replace('—',str(np.NaN)) for x in G[z].astype(str)]
+#   G[z] = [x.replace('–',str(np.nan)) for x in G[z].astype(str)]
+#   G[z] = [x.replace('—',str(np.nan)) for x in G[z].astype(str)]
 #   G[z] = G[z].str.strip('%')
 # G[parties] = G[parties].astype(float)
 

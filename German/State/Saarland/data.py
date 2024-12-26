@@ -24,8 +24,8 @@ data22['Date'] = [x.replace('–','') for x in data22['Date'].astype(str)]
 data22=data22[~data22.Date.str.contains("9 Jun 2024")]
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–',str(np.NaN)) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('—',str(np.NaN)) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('–',str(np.nan)) for x in data22[z].astype(str)]
+  data22[z] = [x.replace('—',str(np.nan)) for x in data22[z].astype(str)]
 data22=data22[~data22.Others.str.contains(".mw-parser-output")]
 data22[parties] = data22[parties].astype(float)
 

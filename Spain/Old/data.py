@@ -31,8 +31,8 @@ for i in range(1):
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = d[i][z].str.split(' ').str[0]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z].astype(str)]
     
 headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','UP','SMR','Cs','ERC','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
 parties = ['PSOE','PP','VOX','UP','SMR','Cs','ERC','JxCat','PNV','EHB']
@@ -50,8 +50,8 @@ for i in range(1):
   for z in parties:
     d[i+1][z] = [p.sub('', x) for x in d[i+1][z].astype(str)]
     d[i+1][z] = d[i+1][z].str.split(' ').str[0]
-    d[i+1][z] = [x.replace('–',str(np.NaN)) for x in d[i+1][z].astype(str)]
-    d[i+1][z] = [x.replace('?',str(np.NaN)) for x in d[i+1][z].astype(str)]
+    d[i+1][z] = [x.replace('–',str(np.nan)) for x in d[i+1][z].astype(str)]
+    d[i+1][z] = [x.replace('?',str(np.nan)) for x in d[i+1][z].astype(str)]
 
 headers = ['drop1','Date','drop2','drop3','PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB','drop4','drop5','drop6','drop7','drop8','drop9','drop10']
 parties = ['PSOE','PP','VOX','UP','Cs','ERC','MP','JxCat','PNV','EHB']
@@ -70,8 +70,8 @@ for i in range(1):
   for z in parties:
     d[i+2][z] = [p.sub('', x) for x in d[i+2][z].astype(str)]
     d[i+2][z] = d[i+2][z].str.split(' ').str[0]
-    d[i+2][z] = [x.replace('–',str(np.NaN)) for x in d[i+2][z].astype(str)]
-    d[i+2][z] = [x.replace('?',str(np.NaN)) for x in d[i+2][z].astype(str)]
+    d[i+2][z] = [x.replace('–',str(np.nan)) for x in d[i+2][z].astype(str)]
+    d[i+2][z] = [x.replace('?',str(np.nan)) for x in d[i+2][z].astype(str)]
 
 
 wikiurl="https://en.wikipedia.org/wiki/Nationwide_opinion_polling_for_the_2023_Spanish_general_election_(2022)"
@@ -98,8 +98,8 @@ for i in range(1):
   for z in parties:
     d[i+3][z] = [p.sub('', x) for x in d[i+3][z].astype(str)]
     d[i+3][z] = d[i+3][z].str.split(' ').str[0]
-    d[i+3][z] = [x.replace('–',str(np.NaN)) for x in d[i+3][z].astype(str)]
-    d[i+3][z] = [x.replace('?',str(np.NaN)) for x in d[i+3][z].astype(str)]
+    d[i+3][z] = [x.replace('–',str(np.nan)) for x in d[i+3][z].astype(str)]
+    d[i+3][z] = [x.replace('?',str(np.nan)) for x in d[i+3][z].astype(str)]
 
 d[3].drop(d[3].index[[-1,-2,-3]],inplace=True)
 
@@ -128,8 +128,8 @@ for i in range(3):
   for z in parties:
     d[i+4][z] = [p.sub('', x) for x in d[i+4][z].astype(str)]
     d[i+4][z] = d[i+4][z].str.split(' ').str[0]
-    d[i+4][z] = [x.replace('–',str(np.NaN)) for x in d[i+4][z].astype(str)]
-    d[i+4][z] = [x.replace('?',str(np.NaN)) for x in d[i+4][z].astype(str)]
+    d[i+4][z] = [x.replace('–',str(np.nan)) for x in d[i+4][z].astype(str)]
+    d[i+4][z] = [x.replace('?',str(np.nan)) for x in d[i+4][z].astype(str)]
 
 
 D = pd.concat(d.values(), ignore_index=True)

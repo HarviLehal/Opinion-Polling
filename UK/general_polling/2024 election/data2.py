@@ -26,12 +26,12 @@ for i in range(5):
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('–',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBC',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBA',str(np.NaN)) for x in d[i][z]]
-    d[i][z] = [x.replace('?',str(np.NaN)) for x in d[i][z]]
+    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBC',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]
   d[i]['Pollster'] = [p.sub('', x) for x in d[i]['Pollster'].astype(str)]
   d[i]['Pollster'] = [q.sub('', x) for x in d[i]['Pollster'].astype(str)]
   # d[i]['Pollster'] = d[i]['Pollster'].str.strip('(MRP)')
