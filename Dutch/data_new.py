@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Next_Dutch_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_Next_Dutch_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-D=pd.DataFrame(df[1])
+D=pd.DataFrame(df[0])
 D=D.drop(["Polling firm", "Sample size", "Lead","Ref"], axis=1)
 
 headers = ['Date','PVV','PvdA','GL','VVD','NSC','D66','BBB','CDA','SP','DENK','PvdD','FvD','SGP','CU','Volt','JA21']
