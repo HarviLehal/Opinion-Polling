@@ -98,3 +98,7 @@ plot2
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 ggsave(plot=plot, file="Polish/President/plot_new.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Polish/President/plot2.svg",width = 15, height = 7.5)
+aaa=readLines("Polish/President/plot2.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Polish/President/plot2.svg")

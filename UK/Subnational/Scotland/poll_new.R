@@ -18,6 +18,7 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 # d$value[is.na(d$value)] <- 0
 d$value<-formattable::percent(d$value)
+old<-min(d$Date)
 election<-max(d$Date)+14
 election<-as.Date("15 08 2029", "%d %m %Y")
 
