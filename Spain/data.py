@@ -19,7 +19,7 @@ parties = ['PP','PSOE','VOX','Sumar','ERC','JxCat','EHB','PNV','Podemos','SALF']
 drops = ['drop1','drop2','drop3','drop4','drop5','drop6','drop7']
 d = {}
 for i in range(2):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   if i == 1:
     headers = ['drop1','Date','drop2','drop3','PP','PSOE','VOX','Sumar','ERC','JxCat','EHB','PNV','drop4','drop5','drop6','Podemos','drop7']
     parties = ['PP','PSOE','VOX','Sumar','ERC','JxCat','EHB','PNV','Podemos']
