@@ -23,7 +23,7 @@ for i in range(3):
   else:
     headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8','9','10']
     drop = ['1','2','3','4','5','6','7','8','9','10']
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
   d[0] = d[0][d[0]['Date'] != '2024 EU election result']
@@ -64,7 +64,7 @@ for i in range(3):
   else:
     headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7']
     drop = ['1','2','3','4','5','6','7']
-  d[i]=pd.DataFrame(df[i+4])
+  d[i]=pd.DataFrame(df[i+5])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

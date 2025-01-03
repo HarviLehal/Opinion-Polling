@@ -14,22 +14,26 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
 e = {}
-for i in range(5):
+for i in range(6):
   print(i)
   e[i]=pd.DataFrame(df[i+1])
   if i==0:
     headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
     parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
-    year = str(2024)
+    year = str(2025)
   elif i==1:
+    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
+    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
+    year = str(2024)
+  elif i==2:
     headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','Libertà','AP']
     parties = ['FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','Libertà','AP']
     year = str(2024)
-  elif i==2:
+  elif i==3:
     headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
     parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
     year = str(2024)
-  elif i==3:
+  elif i==4:
     headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
     parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','Italexit','PTD','DSP','NM']
     year = str(2023)
@@ -60,13 +64,14 @@ c={}
 c[0]=e[0]
 c[1]=e[1]
 c[2]=e[2]
-c[3]=e[3][(pd.to_datetime(e[3]["Date"]) > split_date)]
-c[4]=e[3][(pd.to_datetime(e[3]["Date"]) < split_date)]
-c[5]=e[4]
+c[3]=e[3]
+c[4]=e[4][(pd.to_datetime(e[4]["Date"]) > split_date)]
+c[5]=e[4][(pd.to_datetime(e[4]["Date"]) < split_date)]
+c[6]=e[5]
 
-c[4]['A-IV']=np.where(c[4]['A']==c[4]['IV'],c[4]['A'],c[4]['A']+c[4]['IV'])
+c[5]['A-IV']=np.where(c[5]['A']==c[5]['IV'],c[5]['A'],c[5]['A']+c[5]['IV'])
 threeway = ['A','IV']
-c[4] = c[4].drop(threeway, axis=1)
+c[5] = c[5].drop(threeway, axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)
 
