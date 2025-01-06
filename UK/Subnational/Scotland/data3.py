@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-df0=pd.DataFrame(df[4])
+df0=pd.DataFrame(df[5])
 data23 = df0.drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
 headers = ['Date', 'Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']
 parties = ['Lab','SNP', 'Con',  'Lib Dem','Reform', 'Green']

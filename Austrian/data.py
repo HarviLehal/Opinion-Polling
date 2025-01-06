@@ -16,8 +16,8 @@ headers = ['1','Date','2','3','FPÖ','ÖVP','SPÖ','NEOS','Grüne','KPÖ','4','O
 parties = ['FPÖ','ÖVP','SPÖ','NEOS','Grüne','KPÖ','Others']
 drops = ['1','2','3','4','5']
 d = {}
-for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+for i in range(2):
+  d[i]=pd.DataFrame(df[i+1])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
@@ -27,6 +27,7 @@ for i in range(1):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i].dropna(subset=['Date'])
+d[0].drop(d[0].index[[-1]],inplace=True)
 
 
 

@@ -15,11 +15,11 @@ df=pd.read_html(str(tables))
 headers = ['Date','SPD','Union','Grüne','FDP','AfD','Linke','FW']
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','FW']
 d = {}
-for i in range(4):
+for i in range(5):
   if i ==0:
     # headers.append('FW')
     headers.append('BSW')
-  elif i == 1:
+  elif i == 2:
     # headers.remove('FW')
     headers.remove('BSW')
   # elif i == 2:
@@ -44,7 +44,7 @@ for i in range(4):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['SPD'] != d[i]['Linke']]
 
-for i in range(3):
+for i in range(4):
   d[i].drop(d[i].index[[-1]],inplace=True)
   
 
