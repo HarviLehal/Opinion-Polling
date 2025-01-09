@@ -69,7 +69,7 @@ D.to_csv('German/Federal/poll.csv', index=False)
 parties = ['SPD','Union','Grüne','FDP','AfD']
 D[parties] = D[parties].astype(float)
 for z in parties:
-  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
+  D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
 
 parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
 
@@ -98,7 +98,7 @@ D[parties] = D[parties].astype(float)
 # D=D.drop('BSW', axis=1)
 
 for z in parties:
-  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
+  D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
 
 RG              = ['SPD','Grüne']
 GroKo           = ['Union','SPD']
@@ -135,7 +135,7 @@ for z in parties:
     D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
 for z in parties:
-  D[z] = D[z].apply(lambda x: x if x > 5 else 0)
+  D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
 D['Mehrheit'] = D[parties].sum(axis=1)
 # divide by 2 to get the true majority required
 D['Mehrheit'] = D['Mehrheit']/2
