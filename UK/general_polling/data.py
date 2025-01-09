@@ -19,7 +19,7 @@ parties = ['Lab','Con','Reform','Lib Dem','Green']
 d = {}
 for i in range(2):
   # i=j+1
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
   d[i].columns = headers
   for z in parties:

@@ -14,34 +14,35 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-# 2024 part2
+# 2025
 
-# data242=pd.DataFrame(df[2])
-# data242=data242.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead'],axis=1)
-# 
-# headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
-# parties = ['PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
-# data242.columns = headers
-# data242.drop(data242.index[[-1]],inplace=True)
-# data242['Date'] = [p.sub('', x) for x in data242['Date']]
-# data242['Date2'] = data242['Date'].str.split('–').str[1]
-# data242.Date2.fillna(data242['Date'].str.split('-').str[1], inplace=True)
-# data242.Date2.fillna(data242.Date, inplace=True)
-# data242.Date = data242.Date2
-# data242 = data242.drop(['Date2'],axis=1)
-# data242.Date = data242['Date'].astype(str)
-# data242['Date'] = [x+' 2024' for x in data242['Date']]
-# data242.Date = data242.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-# for z in parties:
-#   data242[z] = [p.sub('', x) for x in data242[z].astype(str)]
-#   data242[z] = pd.to_numeric(data242[z], errors='coerce')
-# 
-# data242 = data242.dropna(subset=['PiS'])
-# 
+data25=pd.DataFrame(df[2])
+data25=data25.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
+
+headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
+parties = ['PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
+data25.columns = headers
+data25.drop(data25.index[[-1,-2,-3,]],inplace=True)
+data25=data25[data25['Date'] != '7 Apr']
+data25=data25[data25['Date'] != '9 Jun	']
+data25['Date'] = [p.sub('', x) for x in data25['Date']]
+data25['Date2'] = data25['Date'].str.split('–').str[1]
+data25.Date2.fillna(data25['Date'].str.split('-').str[1], inplace=True)
+data25.Date2.fillna(data25.Date, inplace=True)
+data25.Date = data25.Date2
+data25 = data25.drop(['Date2'],axis=1)
+data25.Date = data25['Date'].astype(str)
+data25['Date'] = [x+' 2025' for x in data25['Date']]
+data25.Date = data25.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+for z in parties:
+  data25[z] = [p.sub('', x) for x in data25[z].astype(str)]
+  data25[z] = pd.to_numeric(data25[z], errors='coerce')
+data25 = data25.dropna(subset=['PiS'])
+
 
 # 2024
 
-data24=pd.DataFrame(df[2])
+data24=pd.DataFrame(df[3])
 data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 # headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
@@ -81,7 +82,7 @@ C = pd.concat(c.values(), ignore_index=True)
 
 # 2023
 
-data23=pd.DataFrame(df[3])
+data23=pd.DataFrame(df[4])
 data23=data23.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
@@ -104,7 +105,7 @@ data23 = data23.dropna(subset=['PiS'])
 
 
 # data = pd.concat([data242,data24,data23])
-data = pd.concat([C,data23])
+data = pd.concat([data25,C,data23])
 data=data[['Date','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']]
 data.to_csv('Polish/poll.csv', index=False)
 

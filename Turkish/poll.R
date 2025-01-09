@@ -21,6 +21,7 @@ poll <- read_csv("Turkish/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
+h<-0.07
 
 election<-as.Date("07 05 2028", "%d %m %Y")
 old <-min(d$Date)
@@ -41,6 +42,8 @@ colss <-c("AKP"="#FFCC00",
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
+  geom_text(aes(election-2,h,label = "7% Threshold", vjust = -1, hjust=1,fontface="italic",alpha=0.75),colour="#000000")+
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = colss)+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
@@ -61,7 +64,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.line.x.top = element_blank())+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  # xlim(min(d$Date), election)+
   geom_vline(xintercept=old,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election,
@@ -146,3 +148,4 @@ plot
 
 
 ggsave(plot=plot, file="Turkish/plot.png",width = 15, height = 7.5, type = "cairo-png")
+

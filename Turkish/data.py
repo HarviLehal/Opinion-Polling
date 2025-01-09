@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 
 d = {}
-for i in range(2):
+for i in range(3):
   heads = []
   for j in range(len(df[i].columns)):
     heads.append(df[i].columns[j][0])
@@ -25,23 +25,23 @@ for i in range(2):
   d[i].rename(columns={'Tarih': 'Date'}, inplace=True)
   d[i]['Date2'] = d[i]['Date'].str.split('-').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+' '+ str(2024-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+' '+ str(2025-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   for z in parties:
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i] = d[i].dropna(subset=['AKP'])
-d[1] = d[1].drop(['MP'], axis=1)
-for i in range(2):
+d[2] = d[2].drop(['MP'], axis=1)
+for i in range(3):
   d[i]=d[i].reset_index(drop=True)
 
-d[0].loc[len(d[0].index)-12,['Date']] = ' 1 May 2024'
-d[0].loc[len(d[0].index)-5,['Date']] = ' 1 Nis 2024'
-d[0].loc[len(d[0].index)-3,['Date']] = ' 5 Mar 2024'
-d[1].loc[len(d[1].index)-1,['Date']] = '14 May 2023'
+d[1].loc[len(d[1].index)-12,['Date']] = ' 1 May 2024'
+d[1].loc[len(d[1].index)-5,['Date']] = ' 1 Nis 2024'
+d[1].loc[len(d[1].index)-3,['Date']] = ' 5 Mar 2024'
+d[2].loc[len(d[2].index)-1,['Date']] = '14 May 2023'
 
-d[0].drop(d[0].index[[-1]],inplace=True)
-d[0] = d[0][d[0]['Date'] != '31 Mart 2024']
+d[1].drop(d[1].index[[-1]],inplace=True)
+d[1] = d[1][d[1]['Date'] != '31 Mart 2024']
 
 D = pd.concat(d.values(), ignore_index=True)
 

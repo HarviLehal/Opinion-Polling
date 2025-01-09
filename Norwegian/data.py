@@ -16,13 +16,13 @@ headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
 d = {}
 
-for i in range(2):
+for i in range(3):
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
-  d[i]['Date2'] = [x+ str(2024-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
@@ -32,7 +32,7 @@ headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
 
 for j in range(2):
-  i = j+2
+  i = j+3
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
   d[i].columns = headers
@@ -44,7 +44,7 @@ for j in range(2):
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['KrF'] != d[i]['H']]
 
-for i in range(3):
+for i in range(4):
   d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
