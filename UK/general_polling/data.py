@@ -37,15 +37,17 @@ for i in range(2):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Lab'] != d[i]['Green']]
+  d[0] = d[0].dropna(subset=['Date'])
+
 
 D = pd.concat(d.values(), ignore_index=True)
 
 for z in parties:
   D[z] = D[z].astype(str)
   D[z] = D[z].str.strip('%')
-  D[z] = D[z].astype('float')
-  
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D = D.dropna(subset=['Lab'])
+
 D.drop(D.index[[-2]],inplace=True)
 D = D.reset_index(drop=True)
 D.loc[len(D.index)-1,['Date']] = '4 July 2024'

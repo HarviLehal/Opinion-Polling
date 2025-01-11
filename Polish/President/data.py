@@ -20,7 +20,7 @@ drops = ['1','2','3','4','5']
 d = {}
 for i in range(1):
   # i=j+1
-  d[i]=pd.DataFrame(df[1])
+  d[i]=pd.DataFrame(df[2])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   for z in parties:
@@ -95,7 +95,7 @@ drops = ['1','2','3','4','5']
 d = {}
 for i in range(1):
   # i=j+1
-  d[i]=pd.DataFrame(df[3])
+  d[i]=pd.DataFrame(df[4])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   for z in parties:
