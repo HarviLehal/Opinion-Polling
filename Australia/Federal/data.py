@@ -18,7 +18,7 @@ p = re.compile(r'\[[a-z]+\]')
 headers=['Date', 'Brand', 'mode', 'Sample', 'Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'UND', 'Labor2', 'Coalition2']
 parties = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'Labor2', 'Coalition2']
 d = {}
-for i in range(3):
+for i in range(4):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(["Brand", "Sample", "UND", "mode"], axis=1)

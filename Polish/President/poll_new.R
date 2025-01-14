@@ -10,7 +10,7 @@ library(formattable)
 library(svglite)
 library(Rcpp)
 library(ggpubr)
-
+py_run_file("Polish/President/data.py")
 poll <- read_csv("Polish/President/poll_new.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
@@ -35,7 +35,7 @@ colss <-c(
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1.2, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = colss)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.9,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

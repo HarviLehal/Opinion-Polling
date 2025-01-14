@@ -37,7 +37,7 @@ colss <-c("Starmer" ="#c70000",
           
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
@@ -56,7 +56,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.6,0.6,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Net Leadership Approval for British Party Leaders')
 

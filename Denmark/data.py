@@ -12,41 +12,52 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8','9']
-parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
-drop = ['1','2','3','4','5','6','7','8','9']
+headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','3','4','5','6','7','8']
+parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
+drop = ['1','2','3','4','5','6','7','8']
 
 d = {}
-for i in range(3):
+for i in range(4):
   if i == 0:
     pass
+  elif i ==1:
+    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8']
+    parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+    drop = ['1','2','3','4','5','6','7','8']
   else:
-    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8','9','10']
-    drop = ['1','2','3','4','5','6','7','8','9','10']
+    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7','8','9']
+    drop = ['1','2','3','4','5','6','7','8','9']
   d[i]=pd.DataFrame(df[i+1])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
-  d[0] = d[0][d[0]['Date'] != '2024 EU election result']
+  d[i] = d[i][d[i]['Date'] != '2024 EU election result']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
+  # d[i] =  d[i].dropna(subset=['Date'])
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['A'] != d[i]['Å']]
-  d[i].drop(d[i].index[[-2]],inplace=True)
+  # d[i] =  d[i].dropna(subset=['Date'])
+  # d[i] = d[i][d[i]['A'] != d[i]['Å']]
+  # d[i].drop(d[i].index[[-2]],inplace=True)
   for z in parties:
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
-  if i != 2:
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] =  d[i].dropna(subset=['A'])
+  d[i]=d[i].reset_index(drop=True)
+  if i != 3:
     d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)
+
 D.loc[len(D.index)-1,['Date']] = '2022-11-01'
 D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-D[parties] = D[parties].astype(float)
+# D[parties] = D[parties].astype(float)
 
 print(D)
 
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
 
 
 D.to_csv('Denmark/poll.csv', index=False)
@@ -58,26 +69,31 @@ parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
 drop = ['1','2','3','4','5','6']
 
 d = {}
-for i in range(3):
-  if i == 0:
-    pass
-  else:
+for i in range(4):
+  if i ==2:
     headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7']
+    parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
     drop = ['1','2','3','4','5','6','7']
-  d[i]=pd.DataFrame(df[i+5])
+  d[i]=pd.DataFrame(df[i+6])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
+  d[i] = d[i][d[i]['Date'] != '2024 EU election result']
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
+  # d[i] =  d[i].dropna(subset=['Date'])
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['A'] != d[i]['Å']]
-  d[i].drop(d[i].index[[-2]],inplace=True)
+  # d[i] =  d[i].dropna(subset=['Date'])
+  # d[i] = d[i][d[i]['A'] != d[i]['Å']]
+  # d[i].drop(d[i].index[[-2]],inplace=True)
   for z in parties:
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z].astype(str)]
-  if i != 2:
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] =  d[i].dropna(subset=['A'])
+  d[i]=d[i].reset_index(drop=True)
+  if i != 3:
     d[i].drop(d[i].index[[-1]],inplace=True)
 
 D = pd.concat(d.values(), ignore_index=True)

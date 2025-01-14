@@ -45,7 +45,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_text(aes(election-2,h,label = "7% Threshold", vjust = -1, hjust=1,fontface="italic",alpha=0.75),colour="#000000")+
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = colss)+
+  # scale_color_manual(values = colss)+
+  scale_color_manual(values = c("#FFCC00","#ed1c24","#870000",
+                                "#951b88","#3db5e6","#404040",
+                                "#007d60","#b61f23","#004e81"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=AH[AH$Date!=old&AH$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
@@ -108,10 +111,10 @@ d4<-rbind(d1,d2)
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#f4777c","#ed1c24",
-                               "#ffe066","#FFCC00",
-                               "#bf76b8","#951b88",
+  scale_fill_manual(values = c("#ffe066","#FFCC00",
+                               "#f4777c","#ed1c24",
                                "#b76666","#870000",
+                               "#bf76b8","#951b88",
                                "#8bd3f0","#3db5e6",
                                "#8c8c8c","#404040",
                                "#66b1a0","#007d60",

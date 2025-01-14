@@ -27,7 +27,7 @@ data22.Date = data22.Date2
 data22 = data22.drop(['Date2'],axis=1)
 data22.Date = data22['Date'].astype(str)
 data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-data22.drop(data22.index[[0]],inplace=True)
+# data22.drop(data22.index[[0]],inplace=True)
 data22 = data22[data22['KOK'] != data22['LIIK']]
 
 

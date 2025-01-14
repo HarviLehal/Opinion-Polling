@@ -12,14 +12,17 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
-parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
+# headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
+# parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
 drop = ['1','2','3','4']
 
 d = {}
 for i in range(6):
   print(i)
   if i == 0:
+    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
+    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
+  elif i == 1:
     headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
     parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 2:
@@ -39,7 +42,7 @@ for i in range(6):
   d[i].Date2.fillna(d[i].Date, inplace=True)
   if i == 0:
     d[i]['Date2'] = [x+ str(2025) for x in d[i]['Date2'].astype(str)]
-  elif i == 4:
+  elif i == 5:
     d[i]['Date2'] = [x+ str(2023) for x in d[i]['Date2'].astype(str)]
   else:
     d[i]['Date2'] = [x+ str(2024) for x in d[i]['Date2'].astype(str)]
@@ -89,6 +92,7 @@ c[3] = c[3].drop(threeway, axis=1)
 
 D = pd.concat(c.values(), ignore_index=True)
 D.loc[len(D.index)-1,['Date']] = '2022-11-01'
+D.loc[len(D.index)-2,['Date']] = '2022-12-23'
 D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 

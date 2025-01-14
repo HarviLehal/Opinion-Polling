@@ -38,6 +38,7 @@ for i in range(1):
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z].astype(str)]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i] = d[i].dropna(subset=['ΝΔ'])
+  d[i] = d[i].dropna(subset=['Date'])
 
 
 D = pd.concat(d.values(), ignore_index=True)
