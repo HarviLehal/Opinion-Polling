@@ -40,7 +40,7 @@ plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#173A70","#e4010a","#f48c1f","#4D0E90"))+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
-  stat_smooth(fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  stat_smooth(fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

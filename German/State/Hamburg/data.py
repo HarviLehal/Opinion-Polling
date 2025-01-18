@@ -15,8 +15,8 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 
-headers = ['1','Date','2','SPD','Grüne','CDU','Linke','AfD','FDP','Volt','BSW','Other','3']
-parties = ['SPD','Grüne','CDU','Linke','AfD','FDP','Volt','BSW','Other']
+headers = ['1','Date','2','SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Other','3']
+parties = ['SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Other']
 drops = ['1','2','3']
 d = {}
 for i in range(1):

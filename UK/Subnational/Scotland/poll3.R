@@ -21,6 +21,7 @@ Alex<-as.Date("20 08 2021", "%d %m %Y")
 Yousaf<-as.Date("29 03 2023", "%d %m %Y")
 Swinney<-as.Date("06 05 2024", "%d %m %Y")
 f<-formattable::percent(0.6)
+election<-as.Date("07 05 2026", "%d %m %Y")
 
 
 # MAIN GRAPH (SCOTTISH HOLYROOD)
@@ -67,7 +68,7 @@ plot1
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

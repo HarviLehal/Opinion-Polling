@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-headers = ['drop1','Date','drop2','Smer','PS','Hlas','OLaNOap','DROP5','DROP6','KDH','SASKA','SNS','Republika','Aliancia','Demokrati','SR','ĽSNS','drop3','drop4']
-parties = ['Smer','PS','Hlas','OLaNOap','KDH','SASKA','SNS','Republika','Aliancia','Demokrati','SR','ĽSNS']
-drops = ['drop1','drop2','drop3','drop4','DROP5','DROP6']
+headers = ['drop1','Date','drop2','Smer','PS','Hlas','OLaNOap1','OLaNOap2','OLaNOap3','KDH','SASKA','SNS','Republika','Aliancia','Demokrati','SR','ĽSNS','drop3','drop4']
+parties = ['Smer','PS','Hlas','OLaNOap1','OLaNOap2','OLaNOap3','KDH','SASKA','SNS','Republika','Aliancia','Demokrati','SR','ĽSNS']
+drops = ['drop1','drop2','drop3','drop4']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -43,5 +43,11 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 
 D[parties] = D[parties].astype(float)
+
+Slovensko=['OLaNOap1','OLaNOap2','OLaNOap3']
+
+D['OĽaNOap']=np.where((D['OLaNOap1']==D['OLaNOap2']) & (D['OLaNOap1']==D['OLaNOap3']),D['OLaNOap1'], np.where(D['OLaNOap1']==D['OLaNOap2'],D['OLaNOap1']+D['OLaNOap3'],D[Slovensko].sum(axis=1)))
+
+D= D[['Date','Smer','PS','Hlas','OĽaNOap','KDH','SASKA','SNS','Republika','Aliancia','Demokrati','SR','ĽSNS']]
 
 D.to_csv('Slovak/poll.csv', index=False)
