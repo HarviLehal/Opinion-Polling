@@ -25,15 +25,19 @@ h3 <- formattable::percent(0.11)
 election<-as.Date("01 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-
+parties<-d[d$variable!='AUTO',]
+auto<-d[d$variable=='AUTO',]
+auto<-auto[!is.na(auto$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c(
     "#004da3","#5228ba","#cd0f69","#555555","#0578bc",
-    "#0033ff","#ff5f61","#c10506","#60b44c","#0b9dc2"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+    "#0033ff","#0080c8","#ff5f61","#c10506","#60b44c","#0b9dc2"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=auto[auto$Date!=old&auto$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -93,11 +97,12 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
     "#6694c8","#004da3","#977ed6","#5228ba",
     "#e16fa5","#cd0f69","#999999","#555555",
     "#69aed7","#0578bc","#6685ff","#0033ff",
+    "#66b3de","#0080c8",
     "#ff9fa0","#ff5f61","#da696a","#c10506",
     "#a0d294","#60b44c","#6dc4da","#0b9dc2"
     ))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=-0.35, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
+            hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Nový"),
                                                               ifelse(d3$variable=='STAN'|d3$variable=='Piráti',paste("(",d3$value,") †"),
                                                               (paste("(",formattable::percent(d3$value,digits=1),")")))),""),y = 0),

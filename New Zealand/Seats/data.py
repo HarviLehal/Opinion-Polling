@@ -19,7 +19,7 @@ parties = ['Nat','Lab','Green','ACT','NZF','TPM']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
-  d[i]=d[i].drop(["Likely government formation(s)"], axis=1)
+  d[i]=d[i].drop(["Likely government formation"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(["TOP"], axis=1)
   d[i]['Date'] = d[i]['Date'].str.split(']').str[1]

@@ -12,8 +12,8 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','3','4','5','6','7','8']
-parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
+headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','H','3','4','5','6','7','8']
+parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O','H']
 drop = ['1','2','3','4','5','6','7','8']
 
 d = {}
@@ -57,20 +57,28 @@ D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFE
 
 print(D)
 
-D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
 
+D=D.drop('H', axis=1)
 
 D.to_csv('Denmark/poll.csv', index=False)
 
 
 
-headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','3','4','5','6']
-parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
+headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','H','3','4','5','6']
+parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O','H']
 drop = ['1','2','3','4','5','6']
 
 d = {}
 for i in range(4):
-  if i ==2:
+  print(i)
+  if i ==0:
+    pass
+  elif i ==1:
+    headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','Å','O','3','4','5','6']
+    parties = ['A','V','M','F','Æ','I','C','Ø','B','Å','O']
+    drop = ['1','2','3','4','5','6']
+  else:
     headers = ['1','Date','2','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','3','4','5','6','7']
     parties = ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
     drop = ['1','2','3','4','5','6','7']
@@ -99,11 +107,12 @@ for i in range(4):
 D = pd.concat(d.values(), ignore_index=True)
 D.loc[len(D.index)-1,['Date']] = '2022-11-01'
 D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-D[parties] = D[parties].astype(float)
+# D[parties] = D[parties].astype(float)
 
 print(D)
 
-D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
+D=D.drop('H', axis=1)
 
 D.to_csv('Denmark/poll2.csv', index=False)
 
@@ -130,7 +139,9 @@ D[parties] = D[parties].astype(float)
 
 print(D)
 
-D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O']]
+D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
+D=D.drop('H', axis=1)
+
 
 parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
 
