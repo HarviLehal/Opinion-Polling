@@ -37,14 +37,14 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#53C74A","#E81718","#45B6B1",
                                 "#226B26","#7C1B1C","#DD601C",
                                 "#43A6EB","#552C83","#262B57"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.45,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
-        axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        axis.text.x = element_text(face="bold",color="#000000"),
+        axis.text.y = element_text(face="bold",color="#000000"),
+        plot.title = element_text(face="bold",color="#000000"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
@@ -54,8 +54,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%m %Y",limits = c(old,max))
-plot1
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Dutch Parliamentary Election')
+  plot1
 
 # MA GRAPH
 
@@ -71,9 +72,9 @@ plot2<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
-        axis.text.x = element_text(face="bold"),
-        axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        axis.text.x = element_text(face="bold",color="#000000"),
+        axis.text.y = element_text(face="bold",color="#000000"),
+        plot.title = element_text(face="bold",color="#000000"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
@@ -83,7 +84,8 @@ plot2<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Dutch Parliamentary Election')
 plot2
 # BAR CHART
 
@@ -143,4 +145,55 @@ plotB
 ggsave(plot=plotA, file="Dutch/plot.png",width = 20, height = 10, type="cairo-png")
 
 ggsave(plot=plotB, file="Dutch/plot_ma.png",width = 20, height = 10, type="cairo-png")
+
+# EXTRA GRAPHIEK
+
+
+d1$value<-ifelse(is.na(d1$value)==TRUE,0,d1$value)
+d2$value<-ifelse(is.na(d2$value)==TRUE,0,d2$value)
+d1$value<-d1$value/150
+d2$value<-d2$value/150
+d1$Date<-'Polling'
+d2$Date<-'Election'
+
+ordered<-c('SP','PvdD','PvdA-GL','DENK','D66','Volt','CU','CDA','NSC','VVD','BBB','PVV','SGP','FvD','JA21')
+
+d1<-d1 %>%
+  mutate(variable =  factor(variable, levels = ordered)) %>%
+  arrange(variable)
+
+d2<-d2 %>%
+  mutate(variable =  factor(variable, levels = ordered)) %>%
+  arrange(variable)
+
+d3<-rbind(d2,d1)
+
+
+plot3a<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=round(value*150))) + 
+  scale_fill_manual(values = c("#f17474","#E81718","#7aa67d","#226B26","#e07777","#cc1d1d",
+                               "#8fd3d0","#45B6B1","#8bce8b","#3DAD3E","#9980b5","#552C83",
+                               "#8ecaf3","#43A6EB","#98dd92","#53C74A","#f6dc66","#f0c400",
+                               "#7a7fdf","#222ACA","#c2da76","#99C11A","#6e7d9b","#0E2758",
+                               "#eba077","#DD601C","#b07677","#7C1B1C","#7d809a","#262B57"))+
+  geom_bar(position="fill", stat="identity")+
+  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface="bold",color="#FFFFFF")+
+  scale_y_continuous(labels = scales::percent)+
+  theme_minimal()+
+  theme(legend.position = "none",axis.title=element_blank(),
+        axis.text.x = element_text(face="bold",color="#000000",size=10),
+        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=2),
+        # axis.text.y = element_blank(),
+        plot.title = element_text(face="bold"),
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  geom_hline(yintercept = 0.5,color = "#000000", linetype = "dashed",linewidth=0.5,alpha=0.25) +
+  coord_flip()
+plot3a
+
+plot<-ggarrange(plot1, plot3a,ncol = 1, nrow = 2,heights=c(2,0.3))
+plot
+
+ggsave(plot=plot, file="Dutch/plot_bar.png",width = 20, height = 10, type="cairo-png")
 

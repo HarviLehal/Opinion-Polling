@@ -27,15 +27,19 @@ colss <-c(
           "Trzaskowski"="#F68F2D",
           "Hołownia"   ="#F9C013",
           "Biejat"     ="#eb2a48",
+          "Zandberg"   ="#ac145a",
           "Mentzen"    ="#717d90",
-          "Jakubiak"   ="#c99999")
+          "Braun"      ="#d4aa00",
+          "Jakubiak"   ="#1b2d7f",
+          "Woch"       ="#e6001a",
+          "Szumlewicz" ="#c99999")
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1.2, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = colss)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.9,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -48,7 +52,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.4,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
@@ -79,7 +83,7 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#263778","#F68F2D","#F9C013","#eb2a48","#717d90","#c99999"))+
+  scale_fill_manual(values = c("#263778","#F68F2D","#F9C013","#eb2a48","#ac145a","#717d90","#d4aa00","#1b2d7f","#e6001a","#c99999"))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
             hjust=-0.1, color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+

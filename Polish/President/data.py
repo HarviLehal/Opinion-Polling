@@ -14,9 +14,9 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['1','Date','2','Nawrocki','Trzaskowski','Hołownia','Biejat','3','Mentzen','Jakubiak','4','5','6','7','8','9']
-parties = ['Nawrocki','Trzaskowski','Hołownia','Biejat','Mentzen','Jakubiak']
-drops = ['1','2','3','4','5','6','7','8','9']
+headers = ['1','Date','2','Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Braun','Jakubiak','Woch','Szumlewicz','3','4','5','6']
+parties = ['Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Jakubiak']
+drops = ['1','2','3','4','5','6']
 d = {}
 for i in range(1):
   # i=j+1
@@ -46,6 +46,9 @@ for z in parties:
 
 D=D.dropna(subset=['Date'])
 D=D.dropna(subset=['Trzaskowski'])
+# D['total']=D[parties].sum(axis=1)
+# D[parties]=D[parties].div(D['total'], axis=0)*100
+# D = D.drop(['total'], axis=1)
 
 D.to_csv('Polish/President/poll_new.csv', index=False)
 
