@@ -55,7 +55,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Voting Intention for the Next Japanese General Election')
+  ggtitle('Voting Intention for the Next Japanese General Election (Excluding No Party and Undecided)')
 
 
 

@@ -50,4 +50,8 @@ parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other']
 D = D.drop(parties2, axis=1)
 headers = ['Date', 'Labor', 'Coalition']
 D.columns = headers
+parties=['Labor', 'Coalition']
+D['total']=D[parties].sum(axis=1)
+D[parties] = D[parties].div(D['total'], axis=0)*100
+D = D.drop(["total"], axis=1)
 D.to_csv('Australia/Federal/poll2.csv', index=False)

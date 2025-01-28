@@ -36,6 +36,7 @@ for i in range(2):
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
+  d[0].loc[len(d[0].index)-1,['Date']] = '3 Jan 2025'
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[0] = d[0].dropna(subset=['Date'])
 

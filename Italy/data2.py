@@ -18,12 +18,12 @@ for i in range(6):
   print(i)
   e[i]=pd.DataFrame(df[i+1])
   if i==0:
-    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
-    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
+    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM','ScN']
+    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM','ScN']
     year = str(2025)
   elif i==1:
-    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
-    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','Libertà']
+    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','ScN']
+    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','ScN']
     year = str(2024)
   elif i==2:
     headers = ['Date','FdI','PD','M5S','Lega','FI','SUE','A','AVS','PTD','DSP','Libertà','AP']
@@ -79,7 +79,7 @@ C = pd.concat(c.values(), ignore_index=True)
 C.to_csv('Italy/poll2.csv', index=False)
 
 
-parties=['FdI', 'PD', 'M5S', 'Lega', 'FI', 'A', 'IV', 'AVS', '+E', 'PTD','NM', 'Libertà', 'SUE', 'DSP', 'AP', 'Italexit', 'A-IV']
+parties=['FdI', 'PD', 'M5S', 'Lega', 'FI', 'A', 'IV', 'AVS', '+E', 'PTD','NM', 'Libertà','ScN', 'SUE', 'DSP', 'AP', 'Italexit', 'A-IV']
 gov = ['FdI','Lega','FI','NM']
 opp = [p for p in parties if p not in gov]
 

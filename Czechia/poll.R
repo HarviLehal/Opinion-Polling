@@ -12,7 +12,7 @@ library(Rcpp)
 library(ggpubr)
 library(ggtext)
 
-py_run_file("Czechia/data.py")
+py_run_file("Czechia/data2.py")
 poll <- read_csv("Czechia/poll.csv")
 Sys.setlocale("LC_ALL", "Czech")
 d <- reshape2::melt(poll, id.vars="Date")

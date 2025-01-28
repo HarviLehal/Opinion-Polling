@@ -26,8 +26,8 @@ EU<-as.Date("09 06 2024", "%d %m %Y")
 old <-min(d$Date)
 # LOESS GRAPH
 
-new<-d[d$variable!='Libertà'&d$variable!='SUE'&d$variable!='PTD'&d$variable!='Italexit'&d$variable!='AP'&d$variable!='DSP',]
-new2<-d[d$variable=='Libertà'|d$variable=='SUE'|d$variable=='PTD'|d$variable=='Italexit'|d$variable=='AP'|d$variable=='DSP',]
+new<-d[d$variable!='Libertà'&d$variable!='SUE'&d$variable!='PTD'&d$variable!='Italexit'&d$variable!='AP'&d$variable!='DSP'&d$variable!='ScN'&d$variable!='A-IV',]
+new2<-d[d$variable=='Libertà'|d$variable=='SUE'|d$variable=='PTD'|d$variable=='Italexit'|d$variable=='AP'|d$variable=='DSP'|d$variable=='ScN'|d$variable=='A-IV',]
 new2<-new2[!is.na(new2$value),]
 
 # TRUE M5S COLOURS
@@ -36,8 +36,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
   scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a","#048404",
                                 "#0484dc","#0039aa","#d4448c","#bc3454",
-                                "#f6d025","#b41317","#0039aa","#075271",
-                                "#fcd404","#b04e4e","#2149a7","#346c9c","#0039aa"))+
+                                "#f6d025","#0039aa","#e9a513","#b41317",
+                                "#fcd404","#b04e4e","#075271","#2149a7","#346c9c","#0039aa"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=new[new$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=new2[new2$Date!=old,])+
@@ -80,8 +80,8 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
   scale_color_manual(values = c("#03386a","#ef1c27","#f4c01a","#048404",
                                 "#0484dc","#0039aa","#d4448c","#bc3454",
-                                "#f6d025","#b41317","#0039aa","#075271",
-                                "#fcd404","#b04e4e","#2149a7","#346c9c","#0039aa"))+
+                                "#f6d025","#0039aa","#e9a513","#b41317",
+                                "#fcd404","#b04e4e","#075271","#2149a7","#346c9c","#0039aa"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -113,7 +113,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-15),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -137,6 +137,7 @@ d3<-d3[d3$variable!='AP',]
 d3<-d3[d3$variable!='A-IV',]
 d3<-d3[d3$variable!='PTD',]
 d3<-d3[d3$variable!='Italexit',]
+d3<-d3[d3$variable!='Libertà',]
 d3<-droplevels(d3)
 
 
@@ -144,8 +145,8 @@ d3<-droplevels(d3)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date ))+
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#6888a6","#03386a","#f5777d","#ef1c27","#f8d976","#f4c01a","#68b568","#048404",
-                               "#68b5ea","#0484dc","#6688cc","#0039aa","#d78598","#bc3454","#d27174","#b41317",
-                               "#fae37c","#f6d025","#6688cc","#0039aa","#6a97aa","#075271"))+
+                               "#68b5ea","#0484dc","#6688cc","#0039aa","#e58fba","#d4448c","#d78598","#bc3454",
+                               "#fae37c","#f6d025","#6688cc","#0039aa","#f2c971","#e9a513"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",d3$value,")"))),""),y = 0),

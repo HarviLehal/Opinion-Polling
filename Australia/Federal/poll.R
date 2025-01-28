@@ -31,7 +31,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_color_manual(values = c("#00557c","#de3533",
                                 "#3AA54F","#E76E29",
                                 "#F8CC10","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -51,12 +51,14 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Opinion Polling for the Next Australian Federal Election')
 plot1
 
-d<- d %>%
+z <- d[d$Date!=old,]
+
+z<- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 
-plot1ma<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1ma<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#00557c","#de3533","#3AA54F","#E76E29","#F8CC10","#a2aab3"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
@@ -149,7 +151,7 @@ old <-min(d$Date)
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#de3533","#00557c"))+
-  geom_smooth(method="loess",fullrange=TRUE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -159,7 +161,7 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
@@ -167,13 +169,16 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Two Party Preference Polling for the Next Australian Federal Election')
+plot1a
 
-d<- d %>%
+z <- d[d$Date!=old,]
+
+z<- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 
-plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1ama<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
   scale_color_manual(values = c("#de3533","#00557c"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
@@ -186,7 +191,7 @@ plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.7,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
@@ -194,7 +199,7 @@ plot1ama<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Two Party Preference Polling for the Next Australian Federal Election')
-
+plot1ama
 
 
 poll <- read_csv("Australia/Federal/poll2.csv")
