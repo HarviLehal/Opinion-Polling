@@ -69,29 +69,38 @@ plot1
 
 
 poll <- read_csv("Czechia/poll.csv")
-# poll$Date <- as.Date(poll$Date, "%d %b %Y")
-Date <- c(max(poll$Date))
+Date <- c(max(poll$Date)-1)
+poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
+  as.numeric(sub("%","",as.character(x)))))
+d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
-d1 <- colMeans(poll[-1],na.rm = TRUE)
+poll<-poll[poll$Date!=election,]
+poll<-poll[poll$Date>(max(poll$Date)-8),]
+d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
 d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d2 <- as.data.frame(d2)
+d3 <- as.data.frame(d3)
 
 d1 <- reshape2::melt(d1, id.vars="Date")
 d1$value<-as.numeric(d1$value)/100
-d1$value<-formattable::percent(d1$value, digits = 1)
+d1$value<-formattable::percent(d1$value, digits = 2)
 
 d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
-d3<-rbind(d2,d1)
+d3 <- reshape2::melt(d3, id.vars="Date")
+d3$value<-as.numeric(d3$value)/100
+d3$value<-formattable::percent(d3$value, digits = 1)
 
-plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
+d4<-rbind(d1,d2,d3)
+d4<-rbind(d1,d2)
+
+plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c(
     "#6694c8","#004da3","#977ed6","#5228ba",
@@ -101,11 +110,16 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
     "#ff9fa0","#ff5f61","#da696a","#c10506",
     "#a0d294","#60b44c","#6dc4da","#0b9dc2"
     ))+
-  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
-            hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("Nový"),
-                                                              ifelse(d3$variable=='STAN'|d3$variable=='Piráti',paste("(",d3$value,") †"),
-                                                              (paste("(",formattable::percent(d3$value,digits=1),")")))),""),y = 0),
+  # geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2, decimal.mark = ","),y = 0),
+  #           hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               ifelse(d4$Date == max(d4$Date),
+                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ",")),
+                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
+                y = 0),hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==TRUE,paste("Nový"),
+                                                              ifelse(d4$variable=='STAN'|d4$variable=='Piráti',paste("(",formattable::percent(d4$value,digits=2, decimal.mark = ","),") †"),
+                                                              (paste("(",formattable::percent(d4$value,digits=2, decimal.mark = ","),")")))),""),y = 0),
             hjust=-0.00, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -116,7 +130,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' Týdenní průměr <br> *(Výsledky 2021)*')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = rev(levels(d4$variable)))+
   labs(caption = '† Piráti a Starostové')+
   coord_flip()
 plot2

@@ -63,6 +63,9 @@ D = D.drop(SPOLU, axis=1)
 D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','PRO']]
 
 D.loc[D['SPOLU'] > 50, 'SPOLU'] = D['SPOLU']/3
+D['STAN']=np.where(D['Piráti']==D['STAN'], np.nan, D['STAN'])
+D.loc[len(D.index)-1,['STAN']] = 15.62
+D = D.dropna(subset=['STAN'])
 
 
 D.to_csv('Czechia/poll.csv', index=False)
