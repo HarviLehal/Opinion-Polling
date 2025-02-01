@@ -21,7 +21,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("04 06 2026", "%d %m %Y")
+election<-as.Date("27 02 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -52,7 +52,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # ggtitle('Opinion Polling for the 2024 New Brunswick general election')
-  ggtitle('Sondages sur les élections générales ontariennes de 2024')
+  ggtitle('Sondages sur les élections générales ontariennes de 2025')
 
 
 
@@ -131,5 +131,9 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Canada/Provincial/Ontario/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Canada/Provincial/Ontario/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Canada/Provincial/Ontario/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Canada/Provincial/Ontario/plot.svg")
 Sys.setlocale("LC_ALL", "English")
 
