@@ -14,13 +14,13 @@ tables = soup.find_all('table',class_="wikitable")
 p = re.compile(r'\[[a-z]+\]')
 df=pd.read_html(str(tables))
 
-headers = ['Date','Lee Jae-myung','Kim Dong-yeon','3','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','1','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok','2']
-parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Won Hee-ryong','Anh Cheol-soo','Cho Kuk','Lee Jun-seok']
-drops = ['1','2','3']
+headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Kim Kyoung-soo','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','1']
+parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok']
+drops = ['1']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[-2])
+  d[i]=pd.DataFrame(df[-5])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','Und./ no ans.','Lead','Others'], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)

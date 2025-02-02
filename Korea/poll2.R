@@ -25,7 +25,7 @@ old <-as.Date("09 03 2022", "%d %m %Y")
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c(
-    "#004ea2","#3371b5","#e61e2b","#eb4b55","#b81822","#8a121a","#f39399","#0073cf","#ff7920"
+    "#004ea2","#3371b5","#6695c7","#e61e2b","#eb4b55","#b81822","#f07880","#f8bcbf","#8a121a","#f39399","#0073cf","#ff7920"
     # ,"#45babd"
   ))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=election,])+
@@ -70,8 +70,10 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#004ea2","#3371b5","#e61e2b","#eb4b55","#b81822","#8a121a","#f39399",
-                               "#0073cf","#ff7920"
+  scale_fill_manual(values = c("#004ea2","#3371b5","#6695c7",
+                               "#e61e2b","#eb4b55","#b81822",
+                               "#f07880","#f8bcbf","#8a121a",
+                               "#f39399","#0073cf","#ff7920"
                                # ,"#45babd" 
                                ))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
