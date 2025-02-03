@@ -32,7 +32,8 @@ colss <-c(
           "Braun"      ="#d4aa00",
           "Jakubiak"   ="#1b2d7f",
           "Woch"       ="#e6001a",
-          "Szumlewicz" ="#c99999")
+          "Szumlewicz" ="#c99999",
+          "Stanowski"  ="#99c9c9")
 
 # LOESS GRAPH
 
@@ -70,7 +71,7 @@ poll <- read_csv("Polish/President/poll_new.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-8),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -83,7 +84,7 @@ d1$value<-formattable::percent(d1$value, digits = 1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#263778","#F68F2D","#F9C013","#eb2a48","#ac145a","#717d90","#d4aa00","#1b2d7f","#e6001a","#c99999"))+
+  scale_fill_manual(values = c("#263778","#F68F2D","#F9C013","#eb2a48","#ac145a","#717d90","#d4aa00","#1b2d7f","#e6001a","#c99999","#99c9c9"))+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
             hjust=-0.1, color="#000000",position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+

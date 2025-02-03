@@ -33,7 +33,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#445225","#3bee56","#45AD6E","#ff0090","#c99999"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
-  geom_smooth(method = "lm",formula=y ~ x ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x+I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -50,6 +50,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
