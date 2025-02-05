@@ -72,7 +72,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-8),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -127,7 +127,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('Latest Poll <br> *(2020 Result)*')+
+  ggtitle('7 Day Average <br> *(2020 Result)*')+
   # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   scale_x_discrete(limits = d4$variable[order(d1$value,na.last = TRUE)])+
   coord_flip()
@@ -137,4 +137,7 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="German/State/Hamburg/plot.png",width = 15, height = 7.5, type="cairo-png")
-
+ggsave(plot=plot, file="German/State/Hamburg/plot.svg",width = 15, height = 7.5)
+aaa=readLines("German/State/Hamburg/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"German/State/Hamburg/plot.svg")

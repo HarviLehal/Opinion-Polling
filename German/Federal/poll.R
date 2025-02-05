@@ -29,7 +29,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#DD1529","#005974","#509A3A",
                                 "#FBBE00","#AA692F","#B43377","#792350"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=d[d$Date!=old,])+
   # theme(axis.title=element_blank(),legend.title = element_blank(),
   #       legend.key.size = unit(2, 'lines'),
   #       legend.position = "none")+
@@ -66,7 +66,7 @@ plot1
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 5, Date), mean,na.rm=TRUE))
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
@@ -102,7 +102,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-5),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -141,7 +141,7 @@ scale_fill_manual(values = c("#f08490","#DD1529","#669bac","#005974",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle(' 7 day average \n (2021 Result)')+
+ggtitle(' 5 day average \n (2021 Result)')+
 scale_x_discrete(limits = rev(levels(d3$variable)))+
 coord_flip()
 
