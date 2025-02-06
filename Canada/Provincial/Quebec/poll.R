@@ -31,7 +31,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#1e90ff","#ff8040",
                                 "#87cefa","#ea6d6a","#313e6b"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -61,7 +61,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(x)))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-31),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -96,7 +96,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
           panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
           panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
           plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Moyenne sur 14 jours <br> *(Résultats 2022)*')+
+  ggtitle(' Moyenne mensuelle <br> *(Résultats 2022)*')+
   scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 

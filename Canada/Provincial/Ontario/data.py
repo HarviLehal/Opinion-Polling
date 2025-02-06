@@ -49,3 +49,13 @@ for z in parties:
   
 
 D.to_csv('Canada/Provincial/Ontario/poll.csv', index=False)
+
+
+split_date = '29 January 2025'
+split_date=dateparser.parse(split_date)
+z=D.tail(1)
+D=D[(pd.to_datetime(D["Date"]) > split_date)]
+D = pd.concat([D,z], ignore_index=True)
+# D=D.drop(['BCU'], axis=1)
+
+D.to_csv('Canada/Provincial/Ontario/poll2.csv', index=False)
