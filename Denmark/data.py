@@ -59,7 +59,7 @@ print(D)
 
 D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
 
-D=D.drop('H', axis=1)
+# D=D.drop('H', axis=1)
 
 D.to_csv('Denmark/poll.csv', index=False)
 
@@ -112,12 +112,12 @@ D.Date = D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFE
 print(D)
 
 D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
-D=D.drop('H', axis=1)
+# D=D.drop('H', axis=1)
 
 D.to_csv('Denmark/poll2.csv', index=False)
 
 
-parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']
 
 govt = ['A','V','M']
 
@@ -140,13 +140,13 @@ D[parties] = D[parties].astype(float)
 print(D)
 
 D = D[['Date','A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']]
-D=D.drop('H', axis=1)
+# D=D.drop('H', axis=1)
 
 
-parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O']
+parties= ['A','V','M','F','Æ','I','C','Ø','B','D','Å','O','H']
 
 govt = ['A','B','F','Ø','Å']
-opp = ['V','Æ','I','C','D','O']
+opp = ['V','Æ','I','C','D','O','H']
 
 D[parties] = D[parties].astype(float)
 D['Red'] = D[govt].sum(axis=1)

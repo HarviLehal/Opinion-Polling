@@ -20,6 +20,10 @@ h <- formattable::percent(0.02)
 
 election<-as.Date("31 10 2026", "%d %m %Y")
 old <-min(d$Date)
+
+parties<-d[d$variable!='H',]
+new<-d[d$variable=='H',]
+new<-new[!is.na(new$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
@@ -34,9 +38,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                   "#c82518","#01438e","#b48cd2",
                                   "#eb94d1","#1272c2","#3fb2be",
                                   "#6b9249","#f7660d","#733280",
-                                  "#00505b","#00ff00","#fcd03b"
+                                  "#00505b","#00ff00","#fcd03b","#39c2f7"
                                 ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new[new$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -81,6 +88,9 @@ d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
 d3<-rbind(d2,d1)
+d3<-d3[d3$variable!='D',]
+d3<-droplevels(d3)
+
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
@@ -92,13 +102,13 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#de7c74","#c82518","#678ebb","#01438e","#d2bae4","#b48cd2",
                                "#f3bfe3","#eb94d1","#71aada","#1272c2","#8cd1d8","#3fb2be",
                                "#a6be92","#6b9249","#faa36e","#f7660d","#ab84b3","#733280",
-                               "#66969d","#00505b","#66ff66","#00ff00","#fde389","#fcd03b"
+                               # "#66969d","#00505b",
+                               "#66ff66","#00ff00","#fde389","#fcd03b","#88dafa","#39c2f7"
                                ))+
-  geom_text(aes(label = ifelse(d3$Date == max(d3$Date), ifelse(is.nan(d3$value)==FALSE,paste(formattable::percent(d3$value, digits = 1)),""), paste("(",formattable::percent(d3$value, digits = 1),")")),y = 0),
-  # geom_text(aes(label = formattable::percent(d3$value, digits = 1),y = 0),
+  geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
-  # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
-  #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
+  geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("(New)"),(paste("(",d3$value,")"))),""),y = 0),
+            hjust=0, color="#000000", position = position_dodge(1), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),

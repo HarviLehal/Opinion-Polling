@@ -31,10 +31,12 @@ for i in range(3):
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
+  d[0].loc[len(d[0].index)-3,['Date']] = '5 Jan 2025'
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Isamaa'] != d[i]['Parempoolsed']]
 for i in range(2):
   d[i].drop(d[i].index[[-1,-2]],inplace=True)
+
 
 D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1]],inplace=True)
