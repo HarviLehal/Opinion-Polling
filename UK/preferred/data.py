@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 
-headers = ['Date','1','2','Starmer','Sunak','Farage','3','4','5','6','7','8']
+headers = ['Date','1','2','Starmer','Sunak','Farage','3','4','5','6']
 parties = ['Starmer','Sunak','Farage']
-drops = ['1','2','3','4','5','6','7','8']
+drops = ['1','2','3','4','5','6']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-3])
@@ -56,9 +56,8 @@ c[1]=D[D["Date"] < split_date]
 D = pd.concat(c.values(), ignore_index=True)
 
 
-# D['Compromís']=np.where(pd.isna(D['Compromís'])==True,D['Sumar'],D['Compromís'])
-# D['Sumar']=np.where(D['Compromís']==D['Sumar'],np.nan,D['Sumar'])
-# D=D.drop(['Sumar'], axis=1)
+D = D.loc[~D.index.isin(D[D["Starmer"]>0.9999].index)]
+
 
 
   
