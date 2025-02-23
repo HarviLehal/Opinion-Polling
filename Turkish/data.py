@@ -40,7 +40,8 @@ d[1].loc[len(d[1].index)-5,['Date']] = ' 1 Nis 2024'
 d[1].loc[len(d[1].index)-3,['Date']] = ' 5 Mar 2024'
 d[2].loc[len(d[2].index)-1,['Date']] = '14 May 2023'
 
-d[1].drop(d[1].index[[-1]],inplace=True)
+for i in range(2):
+  d[i].drop(d[i].index[[-1]],inplace=True)
 d[1] = d[1][d[1]['Date'] != '31 Mart 2024']
 
 D = pd.concat(d.values(), ignore_index=True)

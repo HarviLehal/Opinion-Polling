@@ -31,7 +31,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#D82C3C","#AC347D","#6F9323","#CB182D","#2D843B",
                                 "#236666","#F9DA5A","#3064F1","#2760A7","#08b4cc"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -58,7 +58,7 @@ Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-8),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -108,7 +108,7 @@ scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('Ukentlig Gjennomsnitt <br> *(2021 Resultat)*')+
+  ggtitle('2 Ukers Gjennomsnitt <br> *(2021 Resultat)*')+
   scale_x_discrete(limits = d3$variable[order(d2$value,na.last = FALSE)])+
   # scale_x_discrete(limits = (levels(d3$variable)))+
   coord_flip()

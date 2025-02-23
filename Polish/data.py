@@ -16,12 +16,13 @@ p = re.compile(r'\[[a-z]+\]')
 
 # 2025
 
-data25=pd.DataFrame(df[2])
-data25=data25.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
+data25=pd.DataFrame(df[3])
 
-headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
+headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja','3','4','5','6','7']
 parties = ['PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
 data25.columns = headers
+drops = ['1','2','3','4','5','6','7']
+data25=data25.drop(drops, axis=1)
 data25.drop(data25.index[[-1,-2,-3,]],inplace=True)
 data25=data25[data25['Date'] != '7 Apr']
 data25=data25[data25['Date'] != '9 Jun	']
@@ -42,7 +43,7 @@ data25 = data25.dropna(subset=['PiS'])
 
 # 2024
 
-data24=pd.DataFrame(df[3])
+data24=pd.DataFrame(df[4])
 data24=data24.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 # headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
@@ -82,7 +83,7 @@ C = pd.concat(c.values(), ignore_index=True)
 
 # 2023
 
-data23=pd.DataFrame(df[4])
+data23=pd.DataFrame(df[5])
 data23=data23.drop(['Polling firm/Link','Sample size','Others','Don\'t know','Lead','Nonpartisan Local Government Activists','There is One Poland'],axis=1)
 
 headers = ['Date','PiS','KO','Trzecia Droga','Lewica','Konfederacja']
