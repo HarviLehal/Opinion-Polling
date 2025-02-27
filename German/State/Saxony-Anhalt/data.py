@@ -26,6 +26,7 @@ for i in range(1):
   d[i] = d[i].dropna(subset=['Date'])
   d[i]=d[i][~d[i].Date.str.contains("9 Jun 2024")]
   d[i]=d[i][~d[i].Date.str.contains("26 Sep 2021")]
+  d[i]=d[i][~d[i].Date.str.contains("23 Feb 2025")]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']

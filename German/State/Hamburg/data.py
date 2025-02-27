@@ -15,8 +15,8 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 
-headers = ['1','Date','2','SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Other','3']
-parties = ['SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Other']
+headers = ['1','Date','2','SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Volt','Other','3']
+parties = ['SPD','Grüne','CDU','Linke','AfD','FDP','BSW','Volt','Other']
 drops = ['1','2','3']
 d = {}
 for i in range(1):
@@ -26,6 +26,7 @@ for i in range(1):
   d[i] = d[i].dropna(subset=['Date'])
   d[i]=d[i][~d[i].Date.str.contains("9 Jun 2024")]
   d[i]=d[i][~d[i].Date.str.contains("26 Sep 2021")]
+  d[i]=d[i][~d[i].Date.str.contains("23 Feb 2025")]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']

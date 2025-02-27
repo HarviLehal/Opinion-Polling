@@ -21,6 +21,8 @@ for i in range(2):
   # i=j+1
   d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
+  if i == 0:
+    d[i]=d[i].drop(["SNP", "PC"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]

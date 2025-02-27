@@ -34,6 +34,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
   geom_smooth(method = "lm",formula=y ~ x+I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=election,])+
+  # geom_smooth(method = "lm",formula=y ~ x+I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),

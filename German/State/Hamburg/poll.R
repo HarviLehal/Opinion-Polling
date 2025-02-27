@@ -33,9 +33,7 @@ BSW<-BSW[!is.na(BSW$value),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#DD1529","#509A3A","#005974","#B43377",
-                                "#009EE0","#FBBE00",
-                                # "#502379",
-                                "#792350","#aaaaaa"))+
+                                "#009EE0","#FBBE00","#792350","#502379","#aaaaaa"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=BSW[BSW$Date!=old&BSW$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
@@ -107,7 +105,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#66c5ec","#009EE0",
                                "#fdd866","#FBBE00",
                                "#af7b96","#792350",
-                               # "#967baf","#502379",
+                               "#967baf","#502379",
                                "#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
