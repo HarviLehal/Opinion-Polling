@@ -89,21 +89,16 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
-d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  # scale_fill_manual(values = c("#d6d6ff","#c2c2ff","#9999ff",
-  #                              "#fbdbbf","#f8c8a0","#f4a460",
-  #                              "#f7c5c3","#f2a7a6","#ea6d6a",
-  #                              "#d6e9bb","#c2df99","#99c955",
-  #                              "#dddddd","#cccccc","#aaaaaa"))+
-  scale_fill_manual(values = c("#c2c2ff","#9999ff",
-                               "#f8c8a0","#f4a460",
-                               "#f2a7a6","#ea6d6a",
-                               "#c2df99","#99c955",
-                               "#cccccc","#aaaaaa"))+
+  scale_fill_manual(values = c("#d6d6ff","#c2c2ff","#9999ff",
+                               "#fbdbbf","#f8c8a0","#f4a460",
+                               "#f7c5c3","#f2a7a6","#ea6d6a",
+                               "#d6e9bb","#c2df99","#99c955",
+                               "#dddddd","#cccccc","#aaaaaa"))+
+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
@@ -122,7 +117,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('Moyenne sur la semaine <br> *(Résultats 2022)*')+
+  ggtitle(' Résultats 2025 <br> Moyenne sur la semaine <br> *(Résultats 2022)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 

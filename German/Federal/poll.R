@@ -142,8 +142,8 @@ scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529",
                              "#ddc3ac","#cca582","#AA692F",
                              "#e2b5c5","#d285ad","#B43377",
                              "#bf95ab","#af7b96","#792350"))+
-  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
-                               paste(formattable::percent(d4$value, digits = 1)), ""),y = 0),
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),ifelse(d4$Date==max(d4$Date),
+                               paste(formattable::percent(d4$value, digits = 2)),paste(formattable::percent(d4$value, digits = 1))), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
                                ifelse(is.na(d4$value)==TRUE,"(New)",
