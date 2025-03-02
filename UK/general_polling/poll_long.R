@@ -38,7 +38,7 @@ d_new$value<-formattable::percent(d_new$value)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#33a22b","#13bece"))+
+  scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#f5dc00","#33a22b","#13bece","#005b54"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=d_old[d_old$Date!=old_election&d_old$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=d_new[d_new$Date!=election,])+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_new[d_new$Date!=election,])+
@@ -65,14 +65,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Opinion Polling since the 2019 United Kingdom General Election')
 plot1
 
-poll1 <- read_csv("UK/general_polling/2024 election/poll.csv")
-poll2 <- read_csv("UK/general_polling/poll.csv")
-poll<-dplyr::bind_rows(poll1,poll2)
+poll <- read_csv("UK/general_polling/poll.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-d2 <- poll1[poll1$Date==election,]
+d2 <- poll[poll$Date==election,]
 poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
@@ -96,9 +94,9 @@ d3<-rbind(d2,d1)
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   
-  scale_fill_manual(values = c("#66add3","#0077b6","#dd6666","#c70000",
-                               "#ec9e66","#e05e00","#f9ea66","#f5dc00",
-                               "#85c780","#33a22b","#80dae8","#12B6CF"))+
+  scale_fill_manual(values = c("#dd6666","#c70000","#66add3","#0077b6",
+                               "#80dae8","#12B6CF","#ec9e66","#e05e00",
+                               "#85c780","#33a22b","#f9ea66","#f5dc00","#669d98","#005b54"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), ifelse(is.nan(d3$value)==FALSE,paste(formattable::percent(d3$value, digits = 1)),"")
                                ,""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+

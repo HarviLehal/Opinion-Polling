@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['1','Date','2','Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Braun','Jakubiak','Woch','Szumlewicz','Stanowski','3','4','5']
+headers = ['1','Date','2','Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Braun','Jakubiak','Stanowski','3','4','5']
 parties = ['Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Jakubiak','Stanowski']
 drops = ['1','2','3','4','5']
 d = {}

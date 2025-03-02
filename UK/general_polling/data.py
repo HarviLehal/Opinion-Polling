@@ -14,15 +14,13 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','Lab','Con','Reform','Lib Dem','Green']
-parties = ['Lab','Con','Reform','Lib Dem','Green']
+headers = ['Date','Lab','Con','Reform','Lib Dem','Green','SNP','PC']
+parties = ['Lab','Con','Reform','Lib Dem','Green','SNP','PC']
 d = {}
 for i in range(2):
   # i=j+1
   d[i]=pd.DataFrame(df[i+1])
   d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
-  if i == 0:
-    d[i]=d[i].drop(["SNP"], axis=1)
   d[i].columns = headers
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
@@ -62,16 +60,19 @@ D.to_csv('UK/general_polling/poll.csv', index=False)
 
 govt = ['Lab','Green']
 opp = ['Reform','Con']
+nat = ['SNP','PC']
 
 D[parties] = D[parties].astype(float)
 D['Left (Lab+Green)'] = D[govt].sum(axis=1)
 D['Right (Con+Ref)'] = D[opp].sum(axis=1)
+D['Nat (SNP+PC)'] = D[nat].sum(axis=1)
 
 D = D.drop(govt, axis=1)
 D = D.drop(opp, axis=1)
-parties = ['Left (Lab+Green)','Lib Dem','Right (Con+Ref)']
+D = D.drop(nat, axis=1)
+parties = ['Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)
 D = D.drop(["total"], axis=1)
-D = D[['Date','Left (Lab+Green)','Lib Dem','Right (Con+Ref)']]
+D = D[['Date','Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']]
 D.to_csv('UK/general_polling/poll_bloc.csv', index=False)

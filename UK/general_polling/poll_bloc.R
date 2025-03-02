@@ -30,7 +30,7 @@ d<- d %>%
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#c70000","#e05e00","#0077b6"))+
+  scale_color_manual(values = c("#c70000","#f5dc00","#e05e00","#0077b6"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -83,20 +83,21 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) + 
   scale_fill_manual(values = c("#dd6666","#c70000",
+                               "#f9ea66","#f5dc00",
                                "#ec9e66","#e05e00",
                                "#66add3","#0077b6"
   ))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Left (Lab+Green)",paste("Left (Lab+Green):",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right (Con+Ref):",d3$value),paste("Lib Dem:",d3$value))),
-                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left (Lab+Green):",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right (Con+Ref):",d3$value),paste("Lib Dem:",d3$value)))),
-                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Left (Lab+Green)",0.89,ifelse(d3$variable=="Right (Con+Ref)",0.11,ifelse(d3$Date==min(d3$Date),0.49,0.56)))),
+  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
+                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
+                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Left (Lab+Green)",0.89,ifelse(d3$variable=="Right (Con+Ref)",0.11,ifelse(d3$variable=="Nat (SNP+PC)",ifelse(d3$Date==min(d3$Date),0.55,0.645),ifelse(d3$Date==min(d3$Date),0.45,0.56))))),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold.italic",size=15),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold"),
         panel.grid.major = element_blank(),
         panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),

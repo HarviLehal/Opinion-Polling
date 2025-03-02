@@ -33,7 +33,7 @@ d<- d %>%
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b"))+
+  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#f5dc00","#005b54"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -61,7 +61,7 @@ plot1
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
-  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b"))+
+  scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#f5dc00","#005b54"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d)+
@@ -115,7 +115,7 @@ d3<-rbind(d2,d1)
 plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#dd6666","#c70000","#66add3","#0077b6","#80dae8","#12B6CF",
-                               "#ec9e66","#e05e00","#85c780","#33a22b"))+
+                               "#ec9e66","#e05e00","#85c780","#33a22b","#f9ea66","#f5dc00","#669d98","#005b54"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),y = 0),
             hjust=-0.5, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),ifelse(is.na(d3$value)==TRUE,paste("New"),(paste("(",formattable::percent(d3$value,digits=1),")"))),""),y = 0),

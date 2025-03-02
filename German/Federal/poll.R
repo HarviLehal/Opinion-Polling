@@ -21,15 +21,17 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 
-election<-as.Date("23 02 2025", "%d %m %Y")
+election<-as.Date("25 03 2029", "%d %m %Y")
 old <-min(d$Date)
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#005974","#509A3A",
-                                "#FBBE00","#AA692F","#B43377","#792350"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = c("#005974","#AA692F","#DD1529","#509A3A",
+                                "#B43377","#792350","#FBBE00","#aaaaaa"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x+I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=election,])+
+  
   # theme(axis.title=element_blank(),legend.title = element_blank(),
   #       legend.key.size = unit(2, 'lines'),
   #       legend.position = "none")+
@@ -71,8 +73,8 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#DD1529","#005974","#509A3A",
-                                "#FBBE00","#AA692F","#B43377","#792350"))+
+  scale_color_manual(values = c("#005974","#AA692F","#DD1529","#509A3A",
+                                "#B43377","#792350","#FBBE00","#aaaaaa"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -129,25 +131,34 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
+d4<-rbind(d1,d2)
 
 
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529",
-                             "#99bdc7","#669bac","#005974",
-                             "#afd6b4","#96c289","#509A3A",
-                             "#fbe397","#fdd866","#FBBE00",
-                             "#ddc3ac","#cca582","#AA692F",
-                             "#e2b5c5","#d285ad","#B43377",
-                             "#bf95ab","#af7b96","#792350"))+
+# scale_fill_manual(values = c("#99bdc7","#669bac","#005974",
+#                              "#ddc3ac","#cca582","#AA692F",
+#                              "#f39da6","#eb737f","#DD1529",
+#                              "#afd6b4","#96c289","#509A3A",
+#                              "#e2b5c5","#d285ad","#B43377",
+#                              "#bf95ab","#af7b96","#792350",
+#                              "#fbe397","#fdd866","#FBBE00"))+
+  scale_fill_manual(values = c("#669bac","#005974",
+                               "#66c5ec","#009EE0",
+                               "#eb737f","#DD1529",
+                               "#96c289","#509A3A",
+                               "#d285ad","#B43377",
+                               "#af7b96","#792350",
+                               "#fdd866","#FBBE00",
+                               "#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),ifelse(d4$Date==max(d4$Date),
                                paste(formattable::percent(d4$value, digits = 2)),paste(formattable::percent(d4$value, digits = 1))), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
                                ifelse(is.na(d4$value)==TRUE,"(New)",
-                                      (paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
+                                      (paste("(",formattable::percent(d4$value, digits = 2),")"))),""),y = 0),
             hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -156,7 +167,7 @@ scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('Results <br> 5 day Average <br> *(2021 Election)*')+
+  ggtitle('Latest Poll <br> *(2025 Election)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 

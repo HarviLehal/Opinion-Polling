@@ -130,7 +130,7 @@ d<- d %>%
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#6D3177",
-                                "#528D6B","#f5dc00","#12B6CF","#222221"))+
+                                "#528D6B","#f5dc00","#12B6CF","#222221","#005b54"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=d[d$Date!=old|d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d_1[d_1$Date!=old,],alpha=0.75)+
   # geom_smooth(method = "lm",formula=y ~ poly(x, 5, raw = TRUE),fullrange=TRUE,se=FALSE, linewidth=0.75, data=d_1[d_1$Date!=old,],alpha=0.75)+
@@ -245,7 +245,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   #                      "#528D6B","#f5dc00","#12B6CF","#222221"), alpha=1,linetype="dashed", size=1)+
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#0077b6","#c70000","#e05e00","#6D3177",
-                                "#528D6B","#f5dc00","#12B6CF","#222221"))+
+                                "#528D6B","#f5dc00","#12B6CF","#222221","#005b54"))+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
