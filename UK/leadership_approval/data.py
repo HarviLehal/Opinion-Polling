@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data2=pd.DataFrame(df[-4])
+data2=pd.DataFrame(df[-5])
 data2=data2.drop(["Pollster", "Sample size"], axis=1)
 
 headers = ['Date','s1','s2','s3','r1','r2','r3','f1','f2','f3','d1','d2','d3','c1','c2','c3','a1','a2','a3']
