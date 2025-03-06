@@ -90,7 +90,7 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
   geom_bar(position="fill", stat="identity")+
   geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
                                ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
-                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Left (Lab+Green)",0.89,ifelse(d3$variable=="Right (Con+Ref)",0.11,ifelse(d3$variable=="Nat (SNP+PC)",ifelse(d3$Date==min(d3$Date),0.55,0.645),ifelse(d3$Date==min(d3$Date),0.45,0.56))))),
+                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Left (Lab+Green)",0.89,ifelse(d3$variable=="Right (Con+Ref)",0.11,ifelse(d3$variable=="Nat (SNP+PC)",ifelse(d3$Date==min(d3$Date),0.55,0.64),ifelse(d3$Date==min(d3$Date),0.45,0.56))))),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
@@ -108,7 +108,7 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
 plot2
 
 
-plotA<-ggarrange(plot1, plot2,ncol = 1, nrow = 2,heights=c(2,0.3))
+plotA<-ggarrange(plot1, plot2,ncol = 1, nrow = 2,heights=c(2,0.55))
 plotA
 
 

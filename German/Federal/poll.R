@@ -27,7 +27,7 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#005974","#AA692F","#DD1529","#509A3A",
+  scale_color_manual(values = c("#005974","#009EE0","#DD1529","#509A3A",
                                 "#B43377","#792350","#FBBE00","#aaaaaa"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
@@ -74,7 +74,7 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#005974","#AA692F","#DD1529","#509A3A",
+  scale_color_manual(values = c("#005974","#009EE0","#DD1529","#509A3A",
                                 "#B43377","#792350","#FBBE00","#aaaaaa"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
@@ -158,17 +158,19 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                paste(formattable::percent(d4$value, digits = 2)),paste(formattable::percent(d4$value, digits = 1))), ""),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               ifelse(is.na(d4$value)==TRUE,"(New)",
-                                      (paste("(",formattable::percent(d4$value, digits = 2),")"))),""),y = 0),
+                               ifelse(is.na(d4$value)==TRUE,"(New)",ifelse(d4$variable=='BSW',paste("(",formattable::percent(d4$value,digits=1),")†"),
+                                      paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
             hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
         plot.title = ggtext::element_markdown(face="bold"),
+        plot.caption = element_text(hjust = 0,face="bold.italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('7 Day Average <br> *(2025 Election)*')+
+  labs(caption = '† Rounded from 4.97%, below threshold')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 

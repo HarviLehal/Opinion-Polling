@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Next_German_federal_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,6 +12,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[a-z]+\]')
 
 headers = ['Date','Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
 parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
@@ -32,6 +34,7 @@ D = pd.concat(d.values(), ignore_index=True)
 parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
 # parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
 for z in parties:
+    D[z] = [p.sub('', x) for x in D[z].astype(str)]
     D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
     D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
 D[parties] = D[parties].astype(float)
