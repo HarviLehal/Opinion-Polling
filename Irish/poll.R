@@ -30,7 +30,10 @@ old <-min(d$Date)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#74BC64","#729AFF","#39675F","#712C8D","#C11112",
-                                "#445225","#3bee56","#45AD6E","#ff0090","#c99999"))+
+                                "#445225","#3bee56","#45AD6E","#ff0090",
+                                # "#c99999"
+                                "#777777"
+                                ))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
   # geom_smooth(method = "lm",formula=y ~ x+I(x^2) ,fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=election,])+
@@ -104,7 +107,9 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#89f59a","#3bee56",
                                "#8fcea8","#45AD6E",
                                "#ff66bc","#ff0090",
-                               "#dfc2c2","#c99999"))+
+                               # "#dfc2c2","#c99999"
+                               "#BBBBBB","#777777"
+                               ))+
   # scale_fill_manual(values = c("#c7e4c1","#acd7a2","#74BC64",
   #                              "#c7d7ff","#aac2ff","#729AFF",
   #                              "#b0c2bf","#88a49f","#39675F",

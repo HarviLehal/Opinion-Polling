@@ -88,9 +88,23 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
                                "#66add3","#0077b6"
   ))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
-                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
-                hjust=0.5, vjust = 0.5,y = ifelse(d3$variable=="Left (Lab+Green)",0.89,ifelse(d3$variable=="Right (Con+Ref)",0.11,ifelse(d3$variable=="Nat (SNP+PC)",ifelse(d3$Date==min(d3$Date),0.55,0.64),ifelse(d3$Date==min(d3$Date),0.45,0.56))))),
+  geom_text(aes(label = ifelse(d3$Date==max(d3$Date),
+                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),
+                                      ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
+                                             ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
+                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),
+                                      ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
+                                             ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
+                hjust=0.5, vjust = 0.5,
+                y = ifelse(d3$variable=="Left (Lab+Green)",0.89,
+                           ifelse(d3$variable=="Right (Con+Ref)",0.11,
+                                  ifelse(d3$variable=="Nat (SNP+PC)",
+                                         ifelse(d3$Date==min(d3$Date),
+                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lib Dem",]$value+(d2[d2$variable=="Nat (SNP+PC)",]$value)/2,
+                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lib Dem",]$value+(d1[d1$variable=="Nat (SNP+PC)",]$value)/2),
+                                         ifelse(d3$Date==min(d3$Date),
+                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lib Dem",]$value/2,
+                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lib Dem",]$value/2))))),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+

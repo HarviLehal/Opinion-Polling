@@ -43,6 +43,12 @@ for z in parties:
   D[z] = pd.to_numeric(D[z], errors='coerce')
 D = D.dropna(subset=['LSDP'])
 
-  
+other = ['LLRA−KŠS','NS','DP','LRP','LŽP','TTS','PLT']
+D['others']=D[other].sum(axis=1)
+for i in other:
+  D[i]=np.where(D['others']>36.35, np.nan, D[i])
+D = D.drop(['others'], axis=1)
+D.loc[1,['LP']] = np.nan
+
 
 D.to_csv('Lithuanian/poll.csv', index=False)

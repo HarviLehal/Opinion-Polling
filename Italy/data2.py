@@ -16,10 +16,10 @@ df=pd.read_html(str(tables))
 e = {}
 for i in range(6):
   print(i)
-  e[i]=pd.DataFrame(df[i+2])
+  e[i]=pd.DataFrame(df[i+1])
   if i==0:
-    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM','ScN']
-    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM','ScN']
+    headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM']
+    parties = ['FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','NM']
     year = str(2025)
   elif i==1:
     headers = ['Date','FdI','PD','M5S','Lega','FI','A','IV','AVS','+E','PTD','NM','ScN']

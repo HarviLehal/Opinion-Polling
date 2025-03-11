@@ -63,7 +63,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-5),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -112,7 +112,7 @@ scale_fill_manual(values = c("#6F94ED","#00529F","#DF6F6C","#D91920",
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('7 Day Average <br> *(2021 Result)*')+
+  ggtitle('5 Day Average <br> *(2021 Result)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 
