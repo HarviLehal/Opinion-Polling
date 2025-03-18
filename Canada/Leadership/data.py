@@ -14,12 +14,17 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','Trudeau','Poilievre','Singh','Blanchet','May','Bernier']
-parties = ['Trudeau','Poilievre','Singh','Blanchet','May','Bernier']
+
 d = {}
-for i in range(1):
-  d[i]=pd.DataFrame(df[-4])
+for i in range(2):
+  d[i]=pd.DataFrame(df[i-5])
   d[i]=d[i].drop(["Polling firm", "Link", "Unsure", "Margin of error[c]", "Lead"], axis=1)
+  if i == 0:
+    headers = ['Date','Carney','Poilievre','Singh','Blanchet','May','Bernier']
+    parties = ['Carney','Poilievre','Singh','Blanchet','May','Bernier']
+  else:
+    headers = ['Date','Trudeau','Poilievre','Singh','Blanchet','May','Bernier']
+    parties = ['Trudeau','Poilievre','Singh','Blanchet','May','Bernier']
   d[i].columns = headers
   # d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   # d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -28,7 +33,6 @@ for i in range(1):
   # d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['Poilievre'] != d[i]['Blanchet']]
-  d[i].drop(d[i].index[[-1,-2,-4]],inplace=True)
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
@@ -37,7 +41,8 @@ for i in range(1):
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   
 D = pd.concat(d.values(), ignore_index=True)
-D = D.dropna(subset=['Singh'])
+D = D.dropna(subset=['Poilievre'])
+parties = ['Carney','Poilievre','Singh','Blanchet','May','Bernier','Trudeau']
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)*100
 D = D.drop(["total"], axis=1)
