@@ -135,10 +135,10 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#8188e2","#2d38cf","#faa068","#f66004"))+
   geom_text(aes(label = ifelse(d3$Date == max(d3$Date),
                                ifelse(d3$value>=4,paste(d3$value),
-                                      ifelse(d3$variable=='Meretz'|d3$variable=='Labor','Merged into The Democrats',paste(d3$value,"%"))),
+                                      ifelse(d3$variable=='Meretz'|d3$variable=='Labor','Merged into The Democrats',paste(round(d3$value,digits=2),"%"))),
                                ifelse(d3$value>=4,paste("(",d3$value,")"),
                                       ifelse(d3$variable=='New Hope','(Part of National Unity)',
-                                             ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)",paste("(",d3$value,"%",")"))))),
+                                             ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)",paste("(",round(d3$value,digits=2),"%",")"))))),
                 y = 0),hjust=ifelse(is.na(d3$value)==TRUE,ifelse(d3$Date==max(d3$Date),ifelse(d3$value<10,ifelse(d3$value<4,-0.15,-1.1),-0.45),0),0), color="#000000",position = position_dodge(1), size=3.5, fontface=ifelse(d3$value<4,"bold.italic","bold"))+
   # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
   #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
