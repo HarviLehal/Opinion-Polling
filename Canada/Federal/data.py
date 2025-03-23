@@ -14,13 +14,14 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','CPC','LPC','NDP','BQ','PPC','GPC']
+headers = ['1','Date','2','CPC','LPC','NDP','BQ','PPC','GPC','3','4','5','6','7']
 parties = ['CPC','LPC','NDP','BQ','PPC','GPC']
+drops = ['1','2','3','4','5','6','7']
 d = {}
-for i in range(1):
+for i in range(2):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Polling firm", "Link", "Others[b]", "Margin of error[c]", "Sample size[d]", "Polling method[e]", "Lead"], axis=1)
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   # d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   # d[i].Date2.fillna(d[i].Date, inplace=True)
   # d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
@@ -28,13 +29,12 @@ for i in range(1):
   # d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['CPC'] != d[i]['BQ']]
-  d[i].drop(d[i].index[[-1,-2,-4]],inplace=True)
+  # d[i].drop(d[i].index[[-1,-2,-4]],inplace=True)
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
-    d[i][z] = d[i][z].astype('float').astype(str)
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+  d[i] = d[i].dropna(subset=['Date'])
+  d[i] = d[i].dropna(subset=['CPC'])
   
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Canada/Federal/poll.csv', index=False)
