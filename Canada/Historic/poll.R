@@ -42,7 +42,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-next_election<-as.Date("20 10 2025", "%d %m %Y")
+next_election<-as.Date("28 04 2025", "%d %m %Y")
 start <-min(d$Date)
 
 election58<-as.Date("31 03 1958", "%d %m %Y")

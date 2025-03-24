@@ -18,7 +18,7 @@ p = re.compile(r'\[[a-z]+\]')
 d = {}
 for i in range(2):
   d[i]=pd.DataFrame(df[i-5])
-  d[i]=d[i].drop(["Polling firm", "Link", "Unsure", "Margin of error[a]", "Lead"], axis=1)
+  d[i]=d[i].drop(["Polling firm", "Link", "Unsure", "Margin of error[c]", "Lead"], axis=1)
   if i == 0:
     headers = ['Date','Carney','Poilievre','Singh','Blanchet','May','Bernier']
     parties = ['Carney','Poilievre','Singh','Blanchet','May','Bernier']
