@@ -51,7 +51,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_hline(aes(yintercept=0), alpha=0)+
-  geom_text(aes(old,h,label = "5% Party Threshold", vjust = -0.6, hjust=-0.05),colour="#000000",fontface="italic")+
+  geom_text(aes(election,h,label = "5% Party Threshold", vjust = -0.6, hjust=1.05),colour="#000000",fontface="italic")+
   geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
