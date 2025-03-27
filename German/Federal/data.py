@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Next_German_federal_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_German_federal_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -18,7 +18,7 @@ headers = ['Date','Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
 parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[0])
   d[i]=d[i].drop(["Polling firm", "Sample size", "Abs.", "Lead"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

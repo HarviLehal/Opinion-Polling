@@ -6,7 +6,7 @@ import dateparser
 import re
 
 
-wikiurl="https://en.wikipedia.org/wiki/2023_Montenegrin_parliamentary_election"
+wikiurl="https://en.wikipedia.org/wiki/Next_Montenegrin_parliamentary_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -15,10 +15,10 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-data22=pd.DataFrame(df[1])
-data22 = data22.drop(['Polling firm/source','Others','Lead','SNP','UCG','Prava','DP','Demos','LSh','KSh'],axis=1)
-headers = ['Date','DPS','SD','DF','DCG','CnB','BS','SDP','PES']
-parties = ['DPS','SD','DF','DCG','CnB','BS','SDP','PES']
+data22=pd.DataFrame(df[-1])
+data22 = data22.drop(['Polling firm/source','Lead'],axis=1)
+headers = ['Date','PES','DPS','SD','SDP','NSD','DNP','DCG','URA','BS','SNP','ASh','Others']
+parties = ['PES','DPS','SD','SDP','NSD','DNP','DCG','URA','BS','SNP','ASh','Others']
 data22.columns = headers
 
 
@@ -32,7 +32,17 @@ data22.Date = data22.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_
 
 for z in parties:
   data22[z] = [p.sub('', x) for x in data22[z].astype(str)]
-  data22[z] = [x.replace('–',str(np.nan)) for x in data22[z]]
-  data22[z] = data22[z].astype('float').astype(str)
+  data22[z] = pd.to_numeric(data22[z], errors='coerce')
+  
+data22['ES']=np.where(data22['SD'] != data22['SDP'], data22['SD']+data22['SDP'], data22['SD'])
+data22['ES']=np.where(data22['ES'] >20, data22['SDP'], data22['ES'])
+
+data22['ZBCG']=np.where(data22['NSD'] != data22['DNP'],np.nan, data22['NSD'])
+
+data22 =data22.dropna(subset=['ZBCG'])
+data22 =data22.dropna(subset=['Date'])
+data22 = data22.drop(['SD','SDP','NSD','DNP'],axis=1)#
+
+data22 = data22[['Date','PES','DPS','ES','ZBCG','DCG','URA','BS','SNP','ASh','Others']]
 
 data22.to_csv('Montenegro/poll.csv', index=False)
