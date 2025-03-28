@@ -22,14 +22,20 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("18 10 2027", "%d %m %Y")
 old <-min(d$Date)
+
+parties<-d[d$variable!='WLC'&d$variable!='Liberal'&d$variable!='Green',]
+small<-d[d$variable=='WLC'|d$variable=='Liberal'|d$variable=='Green',]
+small<-small[!is.na(small$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#005d7d","#ff9900","#089cdc"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#005d7d","#ff9900","#99c955","#089cdc","#ea6d6a","#d870bb"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=small[small$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=parties[parties$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -46,6 +52,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
@@ -89,7 +96,10 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#669eb1","#005d7d",
                                "#ffc266","#ff9900",
-                               "#6bc4ea","#089cdc"))+
+                               "#c2df99","#99c955",
+                               "#6bc4ea","#089cdc",
+                               "#f2a7a6","#ea6d6a",
+                               "#e8a9d6","#d870bb"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
@@ -116,3 +126,7 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Canada/Provincial/Alberta/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Canada/Provincial/Alberta/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Canada/Provincial/Alberta/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Canada/Provincial/Alberta/plot.svg")

@@ -22,7 +22,9 @@ def extract_latest_date(date_range):
     return end_date
 
 headers = ['1','Date','2','NDP','PC','Libéral','Keystone','Vert','Autres','3','4','5','6']
-parties = ['NDP','PC','Libéral','Keystone','Vert','Autres']
+parties = ['NPD','PC','Libéral','Keystone','Vert','Autres']
+headers = ['1','Date','2','NDP','PC','Liberal','Keystone','Green','Others','3','4','5','6']
+parties = ['NDP','PC','Liberal','Keystone','Green','Others']
 drops = ['1','2','3','4','5','6']
 d = {}
 for i in range(1):
@@ -35,7 +37,7 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date = d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Vert'] != d[i]['PC']]
+  d[i] = d[i].dropna(subset=['PC'])
   d[i] = d[i].dropna(subset=['Date'])
 
 # d[0]['Date'].replace({pd.NaT: "0 days"}, inplace=True)

@@ -20,7 +20,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("19 10 2024", "%d %m %Y")
+election<-as.Date("21 10 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -28,16 +28,17 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#EF7B00","#19bfd2",
-                                "#3D9F3B","#00529F"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = c("#EF7B00","#00529F","#3D9F3B","#aaaaaa"
+                                ))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
         legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold.italic",lineheight = 1.5),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
@@ -46,11 +47,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 British Columbia general election')
+  ggtitle('Opinion Polling for the 44<sup>th</sup> British Columbia general election')
 
 plot1
 poll <- read_csv("Canada/Provincial/British Columbia/poll.csv")
@@ -60,7 +62,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-30),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -83,28 +85,37 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
+d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#f9ca99","#f5b066","#EF7B00",
-                               "#a3e5ed","#75d9e4","#19bfd2",
-                               "#b1d9b1","#8bc589","#3D9F3B","#9ab4f2","#6F94ED","#00529F"))+
-geom_text(aes(label = ifelse(d4$Date != min(d4$Date),ifelse(d4$Date == max(d4$Date),ifelse(d4$variable=='BCU',paste(''),paste(formattable::percent(d4$value, digits = 2))),ifelse(d4$variable=='BCU',paste('Campaign Suspended'),paste(formattable::percent(d4$value, digits = 1)))), ""),y = 0),
-          hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
+                               "#9ab4f2","#6F94ED","#00529F",
+                               "#b1d9b1","#8bc589","#3D9F3B",
+                               "#dddddd","#cccccc","#aaaaaa"))+
+  scale_fill_manual(values = c("#f5b066","#EF7B00",
+                               "#6F94ED","#00529F",
+                               "#8bc589","#3D9F3B",
+                               "#cccccc","#aaaaaa"))+
+  geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
+                               ifelse(d4$Date == max(d4$Date),
+                                      paste(formattable::percent(d4$value, digits = 2)),
+                                      paste(formattable::percent(d4$value, digits = 1))), ""),
+                y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               ifelse(is.na(d4$value)==TRUE,"(New)",
-                                      (paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
-            hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
+                               paste("(",formattable::percent(d4$value, digits = 2),")"),""),
+                y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
-  theme_minimal()+
-  theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
+  theme(legend.position = "none",
+        axis.title=element_blank(),
+        axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
-        plot.title = ggtext::element_markdown(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold",lineheight = 1.5),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('Results <br> 7 day Average <br> *(2020 Election)*')+
+  ggtitle('30 day Average <br> *(2024 Election)*')+
   scale_x_discrete(limits = d4$variable[order(d3$value,na.last = FALSE)])+
   coord_flip()
 
@@ -112,3 +123,7 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Canada/Provincial/British Columbia/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Canada/Provincial/British Columbia/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Canada/Provincial/British Columbia/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Canada/Provincial/British Columbia/plot.svg")

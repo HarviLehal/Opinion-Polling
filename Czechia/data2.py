@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','1','2','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','PRO','ostatní']
-parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','PRO','ostatní']
+headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','1','2','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
+parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
 drops = ['1','2']
 d = {}
 for i in range(1):
@@ -59,7 +59,7 @@ D = D.drop(SPOLU, axis=1)
 
 
 
-D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','PRO']]
+D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení']]
 
 # D.loc[D['SPOLU'] > 50, 'SPOLU'] = D['SPOLU']/3
 

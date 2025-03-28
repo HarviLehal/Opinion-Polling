@@ -38,3 +38,11 @@ for i in range(2):
   
 D = pd.concat(d.values(), ignore_index=True)
 D.to_csv('Canada/Federal/poll.csv', index=False)
+
+split_date = '23 March 2025'
+split_date=dateparser.parse(split_date)
+z=D.tail(1)
+D=D[(pd.to_datetime(D["Date"]) > split_date)]
+D = pd.concat([D,z], ignore_index=True)
+
+D.to_csv('Canada/Federal/poll2.csv', index=False)

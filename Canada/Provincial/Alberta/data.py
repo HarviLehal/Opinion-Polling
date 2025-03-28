@@ -24,6 +24,9 @@ def extract_latest_date(date_range):
 headers = ['1','2','Date','3','UCP','NDP','4','Alberta','5','6','7','8','9','10','11','12']
 parties = ['UCP','NDP','Alberta']
 drops = ['1','2','3','4','5','6','7','8','9','10','11','12']
+headers = ['1','2','Date','3','UCP','NDP','Green','Alberta','Liberal','WLC','7','8','9','10','11','12']
+parties = ['UCP','NDP','Green','Alberta','Liberal','WLC']
+drops = ['1','2','3','7','8','9','10','11','12']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])

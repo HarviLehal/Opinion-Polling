@@ -16,7 +16,7 @@ library(data.table)
 library(hrbrthemes)
 py_run_file("Canada/Provincial/Manitoba/data.py")
 poll <- read_csv("Canada/Provincial/Manitoba/poll.csv")
-Sys.setlocale("LC_ALL", "French")
+# Sys.setlocale("LC_ALL", "French")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
@@ -38,7 +38,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         legend.position = "none",
         axis.text.x = element_text(face="bold"),
         axis.text.y = element_text(face="bold"),
-        plot.title = element_text(face="bold"),
+        plot.title = ggtext::element_markdown(face="bold.italic",lineheight = 1.5),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
         axis.text.x.top = element_blank(),
@@ -51,8 +51,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  # ggtitle('Opinion Polling for the 2024 New Brunswick general election')
-  ggtitle('Sondages sur les élections générales manitobaines de 2027')
+  ggtitle('Opinion Polling for the 44<sup>th</sup> Manitoba general election')
+  # ggtitle('Sondages sur les élections générales manitobaines de 2027')
 
 
 
@@ -66,7 +66,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-30),]
+poll<-poll[poll$Date>(max(poll$Date)-31),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -108,11 +108,11 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
-                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
+                                      paste(formattable::percent(d4$value, digits = 2)),
+                                      paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")"),""),
+                               paste("(",formattable::percent(d4$value, digits = 2),")"),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
@@ -124,7 +124,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('Moyenne sur le mois <br> *(Résultats 2023)*')+
+  # ggtitle('Moyenne sur le mois <br> *(Résultats 2023)*')+
+  ggtitle('Monthly Average <br> *(2023 Result)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 
@@ -133,5 +134,9 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Canada/Provincial/Manitoba/plot.png",width = 15, height = 7.5, type="cairo-png")
-Sys.setlocale("LC_ALL", "English")
+ggsave(plot=plot, file="Canada/Provincial/Manitoba/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Canada/Provincial/Manitoba/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Canada/Provincial/Manitoba/plot.svg")
+# Sys.setlocale("LC_ALL", "English")
 
