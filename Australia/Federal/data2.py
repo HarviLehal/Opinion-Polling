@@ -15,13 +15,14 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', 'Brand', 'mode', 'Sample', 'Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'UND', 'Labor2', 'Coalition2']
-parties = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'Labor2', 'Coalition2']
+headers=['Date', '1', '2', 'Coalition', 'Labor', 'Green', 'Other', '3']
+parties = ['Coalition', 'Labor', 'Green', 'Other']
+drops = ['1','2','3']
 d = {}
-for i in range(4):
-  d[i]=pd.DataFrame(df[i])
+for i in range(1):
+  d[i]=pd.DataFrame(df[-4])
   d[i].columns = headers
-  d[i]=d[i].drop(["Brand", "Sample", "UND", "mode"], axis=1)
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
@@ -37,21 +38,6 @@ for i in range(4):
 
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
-  D[z] = D[z].astype(str)
-  D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
   
-PP = ['Labor2', 'Coalition2']
-E = D.drop(PP, axis=1)
-E.to_csv('Australia/Federal/poll.csv', index=False)
-
-
-parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other']
-D = D.drop(parties2, axis=1)
-headers = ['Date', 'Labor', 'Coalition']
-D.columns = headers
-parties=['Labor', 'Coalition']
-D['total']=D[parties].sum(axis=1)
-D[parties] = D[parties].div(D['total'], axis=0)*100
-D = D.drop(["total"], axis=1)
-D.to_csv('Australia/Federal/poll2.csv', index=False)
+D.to_csv('Australia/Federal/poll_seats.csv', index=False)

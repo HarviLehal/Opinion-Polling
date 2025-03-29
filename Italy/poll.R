@@ -138,9 +138,10 @@ d3<-d3[d3$variable!='A-IV',]
 d3<-d3[d3$variable!='PTD',]
 d3<-d3[d3$variable!='Italexit',]
 d3<-d3[d3$variable!='Libertà',]
+d3<-d3[d3$variable!='ScN',]
 d3<-droplevels(d3)
 
-
+print(unique(d3$variable))
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date ))+
   geom_bar(stat="identity",width=0.9, position=position_dodge())+

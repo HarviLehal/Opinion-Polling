@@ -121,3 +121,4 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 ggsave(plot=plot, file="Canada/Provincial/Quebec/federales_plot.png",width = 20, height = 7.5, type="cairo-png")
+Sys.setlocale("LC_ALL", "English")
