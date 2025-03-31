@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', '1', '2', 'Coalition', 'Labor', 'Green', 'Other', '3']
+headers=['Date', '1', '2', '3', 'Coalition', 'Labor', 'Green', 'Other', '4']
 parties = ['Coalition', 'Labor', 'Green', 'Other']
-drops = ['1','2','3']
+drops = ['1','2','3','4']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-4])
