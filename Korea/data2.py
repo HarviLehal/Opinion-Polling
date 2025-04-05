@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/2027_South_Korean_presidential_election"
+wikiurl="https://en.wikipedia.org/wiki/2025_South_Korean_presidential_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)

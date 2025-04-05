@@ -16,7 +16,7 @@ poll <- read_csv("Korea/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 
-election<-as.Date("03 03 2027", "%d %m %Y")
+election<-as.Date("03 06 2025", "%d %m %Y")
 old <-as.Date("09 03 2022", "%d %m %Y")
 # MAIN GRAPH
 
@@ -47,7 +47,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2027 South Korean Presidential Election*')+
+  ggtitle('Opinion Polling for the 2025 South Korean Presidential Election*')+
   labs(caption = "*Before Nominees are Finalised")
 
 plot1
