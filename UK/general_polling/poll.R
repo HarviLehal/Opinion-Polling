@@ -26,12 +26,14 @@ f<-formattable::percent(0.6)
 g<-formattable::percent(0.55)
 
 # MAIN GRAPH
-d<- d %>%
+z <- d[d$Date!=old,]
+
+z<- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 8, Date), mean,na.rm=TRUE))
 
-plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#f5dc00","#005b54"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
