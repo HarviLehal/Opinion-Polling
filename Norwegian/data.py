@@ -12,14 +12,17 @@ soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 
-headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
+headers = ['1','Date','2','3','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP','4','5']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
+drops = ['1','2','3','4','5']
 d = {}
 
 for i in range(3):
   d[i]=pd.DataFrame(df[i+1])
-  d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
+  if i == 0:
+    d[i]=d[i].drop(["Blocs"],axis=1)
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
@@ -27,15 +30,20 @@ for i in range(3):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i][d[i]['KrF'] != d[i]['H']]
+  if i == 0:
+    for z in parties:
+      d[i][z] = d[i][z].str.split(' ').str[0]
 
-headers = ['Date','R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
+
+headers = ['1','Date','2','3','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','4','5']
 parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP']
+drops = ['1','2','3','4','5']
 
 for j in range(2):
   i = j+3
   d[i]=pd.DataFrame(df[i+1])
-  d[i]=d[i].drop(["Polling firm", "Sample size", "Resp.", "Others", "Lead"], axis=1)
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]

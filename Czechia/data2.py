@@ -14,25 +14,24 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','1','2','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
-parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
-drops = ['1','2']
+headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
+parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
+# drops = ['1','2']
 d = {}
 for i in range(1):
   # i=j+1
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["agentura (zdroj)"], axis=1)
   d[i].columns = headers
-  d[i]=d[i].drop(drops, axis=1)
+  # d[i]=d[i].drop(drops, axis=1)
   d[i]=d[i][d[i]['Date'] != '7.–8.6.2024']
   for z in parties:
-    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+    d[i][z] = d[i][z].astype(str)
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBC',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -44,9 +43,9 @@ for i in range(1):
   d[i] = d[i][d[i]['ANO'] != d[i]['Zelení']]
 
 D = pd.concat(d.values(), ignore_index=True)
-for z in parties:
-  D[z] = D[z].astype(str)
-  D[z] = D[z].astype('float')
+# for z in parties:
+# D[z] = D[z].astype(str)
+# D[z] = D[z].astype('float')
 
 D = D.dropna(subset=['ANO'])
 
@@ -58,8 +57,22 @@ D['SPOLU']=np.where(D['ODS']==D['TOP09'], D['ODS'], D[SPOLU].sum(axis=1))
 D = D.drop(SPOLU, axis=1)
 
 
+split_date = '21 Mar 2025'
+split_date=dateparser.parse(split_date)
+c={}
+c[0]=D[(pd.to_datetime(D["Date"]) > split_date)]
+c[1]=D[(pd.to_datetime(D["Date"]) < split_date)]
 
-D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení']]
+vs = ['SPD','Trikolora','Svobodní','PRO']
+
+c[0]['Vlastenecké síly']=np.where(c[0]['SPD']==c[0]['PRO'],c[0]['SPD'],c[0][vs].sum(axis=1))
+c[0] = c[0].drop(vs, axis=1)
+
+C = pd.concat(c.values(), ignore_index=True)
+
+D = C
+
+D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','Trikolora','Svobodní','PRO','Vlastenecké síly','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení']]
 
 # D.loc[D['SPOLU'] > 50, 'SPOLU'] = D['SPOLU']/3
 

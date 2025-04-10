@@ -20,7 +20,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("20 10 2025", "%d %m %Y")
+election<-as.Date("28 04 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 new<-d[d$variable!='Carney',]
@@ -61,7 +61,7 @@ poll <- read_csv("Canada/Leadership/poll.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-5),]
+poll<-poll[poll$Date>(max(poll$Date)-3),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -91,7 +91,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 5 Day Average')+
+  ggtitle(' 3 Day Average')+
   scale_x_discrete(limits = d1$variable[order(d1$value)])+
   coord_flip()
 plot2

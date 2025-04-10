@@ -25,16 +25,16 @@ h3 <- formattable::percent(0.11)
 election<-as.Date("01 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-parties<-d[d$variable!='AUTO',]
-auto<-d[d$variable=='AUTO',]
+parties<-d[d$variable!='AUTO'&d$variable!='Vlastenecké síly',]
+auto<-d[d$variable=='AUTO'|d$variable=='Vlastenecké síly',]
 auto<-auto[!is.na(auto$value),]
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c(
-    "#004da3","#5228ba","#cd0f69","#555555","#0578bc",
-    "#0033ff","#0080c8","#ff5f61","#c10506","#60b44c","#0b9dc2"))+
+    "#004da3","#5228ba","#cd0f69","#555555","#0578bc","#034ea2","#009685","#0b9dc2","#f14548",
+    "#0033ff","#0080c8","#ff5f61","#c10506","#60b44c"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=auto[auto$Date!=old&auto$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
@@ -103,35 +103,41 @@ d4<-rbind(d1,d2)
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c(
-    "#6694c8","#004da3","#977ed6","#5228ba",
-    "#e16fa5","#cd0f69","#999999","#555555",
-    "#69aed7","#0578bc","#6685ff","#0033ff",
+    "#6694c8","#004da3",
+    "#977ed6","#5228ba",
+    "#e16fa5","#cd0f69",
+    "#999999","#555555",
+    "#69aed7","#0578bc",
+    "#6895c7","#034ea2",
+    "#66c0b6","#009685",
+    "#6dc4da","#0b9dc2",
+    "#f78f91","#f14548",
+    "#6685ff","#0033ff",
     "#66b3de","#0080c8",
-    "#ff9fa0","#ff5f61","#da696a","#c10506",
-    "#a0d294","#60b44c","#6dc4da","#0b9dc2"
+    "#ff9fa0","#ff5f61",
+    "#da696a","#c10506",
+    "#a0d294","#60b44c"
     ))+
-  # geom_text(aes(label = formattable::percent(ifelse(d4$Date != min(d4$Date), d4$value, ""), digits = 2, decimal.mark = ","),y = 0),
-  #           hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
-                               ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ",")),
+                               ifelse(d4$Date == max(d4$Date),ifelse(d4$variable=='SPD'|d4$variable=='Trikolora'|d4$variable=='Svobodní'|d4$variable=='PRO',paste("‡"),
+                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))),
                                       paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
-                y = 0),hjust=-0.25, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
+                y = 0),hjust=-0.001, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==TRUE,paste("Nový"),
                                                               ifelse(d4$variable=='STAN'|d4$variable=='Piráti',paste("(",formattable::percent(d4$value,digits=2, decimal.mark = ","),") †"),
                                                               (paste("(",formattable::percent(d4$value,digits=2, decimal.mark = ","),")")))),""),y = 0),
-            hjust=-0.00, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
+            hjust=-0.001, color="#000000", position = position_dodge(0.8), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
         axis.text.y = element_text(face="bold"),
         plot.title = ggtext::element_markdown(face="bold"),
-        plot.caption = element_text(hjust = 0,face="bold.italic"),
+        plot.caption = ggtext::element_markdown(hjust = 0,face="bold.italic"),
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' Týdenní průměr <br> *(Výsledky 2021)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)))+
-  labs(caption = '† Piráti a Starostové')+
+  labs(caption = '† Piráti a Starostové <br> ‡ Seskupené Pod Vlastenecké síly')+
   coord_flip()
 plot2
 

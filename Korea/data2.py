@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/2025_South_Korean_presidential_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2025_South_Korean_presidential_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -20,7 +20,7 @@ drops = ['1']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[-5])
+  d[i]=pd.DataFrame(df[0])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','Und./ no ans.','Lead','Others'], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)

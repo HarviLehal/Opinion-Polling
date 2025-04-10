@@ -33,7 +33,7 @@ d <- d %>%
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,]) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF"))+
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF","#005eb8"))+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -67,7 +67,7 @@ plot1
 
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5) +
-  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF"))+
+  scale_color_manual(values = c("#decb10","#0087DC","#E4003B","#FAA61A","#528D6B","#12B6CF","#005eb8"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -134,7 +134,7 @@ d4<-rbind(d1,d2)
 plot3<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#ede480","#decb10","#77c0ed","#0087DC",
-                               "#f27999","#E4003B","#fcd38b","#FAA61A","#9dc7af","#528D6B","#80dae8","#12B6CF"))+
+                               "#f27999","#E4003B","#fcd38b","#FAA61A","#9dc7af","#528D6B","#80dae8","#12B6CF","#669ed4","#005eb8"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
