@@ -25,18 +25,29 @@ h3 <- formattable::percent(0.11)
 election<-as.Date("01 10 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
-parties<-d[d$variable!='AUTO'&d$variable!='Vlastenecké síly',]
-auto<-d[d$variable=='AUTO'|d$variable=='Vlastenecké síly',]
+parties<-d[d$variable!='AUTO',]
+auto<-d[d$variable=='AUTO',]
 auto<-auto[!is.na(auto$value),]
+colss <-c("SPOLU"    ="#fc6e00",
+          "ANO"      ="#5228ba",
+          "STAN"     ="#cd0f69",
+          "Piráti"   ="#555555",
+          "SPD"      ="#0578bc",
+          "Trikolora"="#034ea2",
+          "Svobodní" ="#009685",
+          "PRO"      ="#0b9dc2",
+          "PŘÍSAHA"  ="#0033ff",
+          "AUTO"     ="#0080c8",
+          "SOCDEM"   ="#ff5f61",
+          "Stačilo!" ="#c10506",
+          "Zelení"   ="#60b44c")
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c(
-    "#004da3","#5228ba","#cd0f69","#555555","#0578bc","#034ea2","#009685","#0b9dc2","#f14548",
-    "#0033ff","#0080c8","#ff5f61","#c10506","#60b44c"))+
+  scale_color_manual(values = colss)+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=auto[auto$Date!=old&auto$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=auto[auto$Date!=old&auto$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -75,7 +86,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-8),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -103,7 +114,7 @@ d4<-rbind(d1,d2)
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c(
-    "#6694c8","#004da3",
+    "#fda866","#fc6e00",
     "#977ed6","#5228ba",
     "#e16fa5","#cd0f69",
     "#999999","#555555",
@@ -111,7 +122,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
     "#6895c7","#034ea2",
     "#66c0b6","#009685",
     "#6dc4da","#0b9dc2",
-    "#f78f91","#f14548",
+    # "#f78f91","#f14548",
     "#6685ff","#0033ff",
     "#66b3de","#0080c8",
     "#ff9fa0","#ff5f61",
@@ -119,7 +130,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
     "#a0d294","#60b44c"
     ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
-                               ifelse(d4$Date == max(d4$Date),ifelse(d4$variable=='SPD'|d4$variable=='Trikolora'|d4$variable=='Svobodní'|d4$variable=='PRO',paste("‡"),
+                               ifelse(d4$Date == max(d4$Date),ifelse(d4$variable=='Trikolora'|d4$variable=='Svobodní'|d4$variable=='PRO',paste("‡"),
                                       paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))),
                                       paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))), ""),
                 y = 0),hjust=-0.001, color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
@@ -137,7 +148,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' Týdenní průměr <br> *(Výsledky 2021)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)))+
-  labs(caption = '† Piráti a Starostové <br> ‡ Seskupené Pod Vlastenecké síly')+
+  labs(caption = '† Piráti a Starostové <br> ‡ Seskupené Pod SPD')+
   coord_flip()
 plot2
 

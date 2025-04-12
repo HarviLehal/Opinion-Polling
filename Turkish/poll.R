@@ -114,12 +114,12 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#ffe066","#FFCC00",
                                "#f4777c","#ed1c24",
                                "#b76666","#870000",
-                               "#bf76b8","#951b88",
                                "#8bd3f0","#3db5e6",
-                               "#8c8c8c","#404040",
+                               "#bf76b8","#951b88",
                                "#66b1a0","#007d60",
-                               "#6695b3","#004e81",
-                               "#d3797b","#b61f23"
+                               "#8c8c8c","#404040",
+                               "#d3797b","#b61f23",
+                               "#6695b3","#004e81"
                                ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),

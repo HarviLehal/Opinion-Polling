@@ -57,22 +57,22 @@ D['SPOLU']=np.where(D['ODS']==D['TOP09'], D['ODS'], D[SPOLU].sum(axis=1))
 D = D.drop(SPOLU, axis=1)
 
 
-split_date = '21 Mar 2025'
+split_date = '26 Mar 2025'
 split_date=dateparser.parse(split_date)
 c={}
 c[0]=D[(pd.to_datetime(D["Date"]) > split_date)]
 c[1]=D[(pd.to_datetime(D["Date"]) < split_date)]
 
-vs = ['SPD','Trikolora','Svobodní','PRO']
+vs = ['Trikolora','Svobodní','PRO']
 
-c[0]['Vlastenecké síly']=np.where(c[0]['SPD']==c[0]['PRO'],c[0]['SPD'],c[0][vs].sum(axis=1))
+c[0]['SPD']=np.where(c[0]['SPD']==c[0]['PRO'],c[0]['SPD'],c[0][vs].sum(axis=1))
 c[0] = c[0].drop(vs, axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)
 
 D = C
 
-D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','Trikolora','Svobodní','PRO','Vlastenecké síly','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení']]
+D= D[['Date','SPOLU','ANO','STAN','Piráti','SPD','Trikolora','Svobodní','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení']]
 
 # D.loc[D['SPOLU'] > 50, 'SPOLU'] = D['SPOLU']/3
 
