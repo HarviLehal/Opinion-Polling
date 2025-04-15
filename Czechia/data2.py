@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables), decimal=',', thousands='.')
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
-parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','PŘÍSAHA','AUTO','SOCDEM','Stačilo!','Zelení','ostatní']
+headers = ['Date','ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','AUTO','Stačilo!','SOCDEM','PŘÍSAHA','Zelení','ostatní']
+parties = ['ANO','ODS','TOP09','KDU-CSL','Piráti','STAN','SPD','Trikolora','Svobodní','PRO','AUTO','Stačilo!','SOCDEM','PŘÍSAHA','Zelení','ostatní']
 # drops = ['1','2']
 d = {}
 for i in range(1):
@@ -30,6 +30,7 @@ for i in range(1):
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -53,6 +54,9 @@ SPOLU = ['ODS','KDU-CSL','TOP09']
 
 
 # D['SPOLU']=D[SPOLU].sum(axis=1)
+for z in SPOLU:
+  D[z]=np.where(np.isnan(D[z])==True,0,D[z])
+
 D['SPOLU']=np.where(D['ODS']==D['TOP09'], D['ODS'], D[SPOLU].sum(axis=1))
 D = D.drop(SPOLU, axis=1)
 
@@ -63,9 +67,12 @@ c={}
 c[0]=D[(pd.to_datetime(D["Date"]) > split_date)]
 c[1]=D[(pd.to_datetime(D["Date"]) < split_date)]
 
-vs = ['Trikolora','Svobodní','PRO']
+vs = ['SPD','Trikolora','Svobodní','PRO']
+for z in vs:
+  c[0][z]=np.where(np.isnan(c[0][z])==True,0,c[0][z])
 
 c[0]['SPD']=np.where(c[0]['SPD']==c[0]['PRO'],c[0]['SPD'],c[0][vs].sum(axis=1))
+vs = ['Trikolora','Svobodní','PRO']
 c[0] = c[0].drop(vs, axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)

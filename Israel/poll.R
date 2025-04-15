@@ -22,9 +22,9 @@ d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
 # d$value[is.na(d$value)]<-0
-# new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
-# new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
-# new2<-new2[!is.na(new2$value),]
+new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
+new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
+new2<-new2[!is.na(new2$value),]
 h<-3.25
 # MAIN GRAPH
 
@@ -37,9 +37,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#003066","#9bc1e3","#0d7a3a",
                                 "#d51f33","#ef1520","#1be263",
                                 "#2d38cf","#f66004"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -109,7 +109,7 @@ poll <- read_csv("Israel/poll.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>=(max(poll$Date)-7),]
+poll<-poll[poll$Date>=(max(poll$Date)-15),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -150,7 +150,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 14 day average \n (2022 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,na.last=FALSE)])+
   coord_flip()
 plot2
 
