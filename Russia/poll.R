@@ -23,7 +23,7 @@ election<-as.Date("20 09 2026", "%d %m %Y")
 president<-as.Date("17 03 2024", "%d %m %Y")
 war<-as.Date("24 02 2022", "%d %m %Y")
 
-f<-formattable::percent(1)
+f<-formattable::percent(1.05)
 g<-formattable::percent(0.55)
 h <- formattable::percent(0.05)
 
@@ -48,7 +48,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=president, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   geom_vline(xintercept=war, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  geom_text(aes(president,f,label = "Presidential Election", vjust = -1, hjust=0, angle=-90),colour="#000000")+
+  geom_text(aes(president,f,label = 'Presidential "Election"', vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_text(aes(war,f,label = "Invasion of Ukraine", vjust = -1, hjust=0, angle=-90),colour="#000000")+
   geom_hline(aes(yintercept=h), alpha=0.75,linetype="dashed",colour="#000000")+
   geom_text(aes(election-14,h,label = "5% Party Threshold", vjust = -1, hjust=1),colour="#000000", alpha=0.75, fontface="italic")+
