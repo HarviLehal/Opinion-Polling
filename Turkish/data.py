@@ -45,7 +45,8 @@ for i in range(2):
 d[1] = d[1][d[1]['Date'] != '31 Mart 2024']
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.drop(['Diğer'], axis=1)
+D = D.drop(D.columns[[-1]],axis = 1)
+
 
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 # D['Date'] = D['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
