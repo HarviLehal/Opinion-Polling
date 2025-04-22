@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 p = re.compile(r'\[[a-z]+\]')
 df=pd.read_html(str(tables))
 
-headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Kim Kyoung-soo','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','1']
-parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok']
+headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Kim Kyoung-soo','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Han Duck-soo','1']
+parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Han Duck-soo']
 drops = ['1']
 d = {}
 
