@@ -20,7 +20,7 @@ parties = ['Coalition', 'Labor', 'Green', 'Other']
 drops = ['1','2','3','4']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-4])
+  d[i]=pd.DataFrame(df[-5])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
