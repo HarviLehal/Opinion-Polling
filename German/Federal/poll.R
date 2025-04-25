@@ -170,7 +170,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('7 Day Average <br> *(2025 Election)*')+
-  labs(caption = '† Rounded from 4.97%, below threshold')+
+  labs(caption = '† Rounded from 4.98%, below threshold')+
   scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   coord_flip()
 
