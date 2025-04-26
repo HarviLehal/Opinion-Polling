@@ -33,6 +33,7 @@ for i in range(1):
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i] = d[i].dropna(subset=['Date'])
+  d[i]['HDZ'] = np.where(d[i]['HDZ']>100,np.nan,d[i]['HDZ'])
   d[i] = d[i].dropna(subset=['HDZ'])
 
 D = pd.concat(d.values(), ignore_index=True)
