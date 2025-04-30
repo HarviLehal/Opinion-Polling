@@ -44,7 +44,10 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
-p = re.compile(r'\[[a-z]+\]')
+# p = re.compile(r'\[[a-z]+\]')
+# q = re.compile(r'\[[0-9]+\]')
+p = re.compile(r'\[[a-z 0-9]+\]')
+
 
 d = {}
 for i in range(2):
@@ -52,10 +55,11 @@ for i in range(2):
   heads = []
   for j in range(len(df[i].columns)):
     heads.append(df[i].columns[j][0])
+    heads[j] = p.sub('', heads[j])
   d[i]=pd.DataFrame(df[i])
   d[i].columns = heads
   parties = heads[3:-5]
-  d[i] = d[i].drop(d[i].columns[[0,2,-1,-2,-3,-4,-5]],axis = 1)
+  d[i] = d[i].drop(d[i].columns[[0,2,-1,-2,-3,-4]],axis = 1)
   d[i].rename(columns={ d[i].columns[0]: "Date" }, inplace = True)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   for z in parties:

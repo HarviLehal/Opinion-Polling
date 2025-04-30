@@ -88,14 +88,20 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
-d4<-rbind(d1,d2)
+# d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#6F94ED","#00529F","#DF6F6C","#D91920",
-                               "#EBA562","#EF7B00","#94CDFA","#127C73",
-                               "#6E5D9A","#442D7B","#9EC953","#3D9F3B"))+
+  # scale_fill_manual(values = c("#6F94ED","#00529F","#DF6F6C","#D91920",
+  #                              "#EBA562","#EF7B00","#94CDFA","#127C73",
+  #                              "#6E5D9A","#442D7B","#9EC953","#3D9F3B"))+
+  scale_fill_manual(values = c("#9ab4f2","#6F94ED","#00529F",
+                               "#f0a3a6","#DF6F6C","#D91920",
+                               "#f9ca99","#EBA562","#EF7B00",
+                               "#a0cbc7","#71b0ab","#127C73",
+                               "#b4abca","#6E5D9A","#442D7B",
+                               "#b1d9b1","#8bc589","#3D9F3B"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
@@ -113,7 +119,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('3 day Average <br> *(2020 Election)*')+
+  ggtitle(' 2025 Result <br> 3 Day Average <br> *(2021 Result)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)])+
   coord_flip()
 

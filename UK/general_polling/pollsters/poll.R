@@ -53,9 +53,11 @@ for (i in 1:length(polls)) {
   if (names(polls)[i] == "FindOutNow"){
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1.25, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
-  else if (names(polls)[i] == "InsertPollster2Here"){
-    plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1.25, linetype="dotted", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+  else if (names(polls)[i] == "LordAshcroftPolls"){
+    plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=1, linetype="dotted", alpha=0, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
+  else if (names(polls)[i] == "FreshwaterStrategy"){
+ re  }
   else{
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, alpha=0.25, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
@@ -165,7 +167,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 7 day average \n (2024 Result)')+
-  scale_x_discrete(limits = rev(levels(d4$variable)))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)])+
   coord_flip()
 plot2
 

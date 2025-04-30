@@ -66,8 +66,9 @@ election11<-as.Date("02 05 2011", "%d %m %Y")
 election15<-as.Date("19 10 2015", "%d %m %Y")
 election19<-as.Date("21 10 2019", "%d %m %Y")
 election21<-as.Date("20 10 2021", "%d %m %Y")
+election25<-as.Date("28 04 2025", "%d %m %Y")
 
-elections<-c(election58,election62,election63,election65,election68,election72,election74,election79,election80,election84,election88, election93,election97,election00,election04,election06,election08,election11,election15,election19,election21)
+elections<-c(election58,election62,election63,election65,election68,election72,election74,election79,election80,election84,election88, election93,election97,election00,election04,election06,election08,election11,election15,election19,election21,election25)
 
 for (i in 1:21){
   assign(paste0("d_",i),reshape2::melt(get(paste0(polls[i])), id.vars="Date"))
@@ -129,5 +130,5 @@ scale_color_manual(values = c("#00529F","#D91920",
 # plot1
 
 
-ggsave(plot=plot1, file="Canada/Historic/plot.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot1, file="Canada/Historic/plot.png",width = 30, height = 10, type="cairo-png")
 
