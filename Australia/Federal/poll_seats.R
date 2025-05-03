@@ -65,7 +65,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-7),]
 d1 <- round(colMeans(poll[-1],na.rm=TRUE),digits=0)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -111,7 +111,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' Latest Poll <br> *(2022 Result)*')+
+  ggtitle(' 7 Day Average <br> *(2022 Result)*')+
   scale_x_discrete(limits =  d4$variable[order(d1$value,na.last = FALSE)],labels = label_wrap(8))+
   coord_flip()
 

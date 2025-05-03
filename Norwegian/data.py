@@ -78,3 +78,38 @@ D = D.drop(["total"], axis=1)
 D = D[['Date','Red','Blue']]
 D.to_csv('Norwegian/poll2.csv', index=False)
 
+
+
+
+headers = ['1','Date','2','3','R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP','4','5','Red','Blue']
+parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP','Red','Blue']
+drops = ['1','2','3','4','5']
+d = {}
+
+for i in range(1):
+  d[i]=pd.DataFrame(df[i+1])
+  d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
+  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date2.fillna(d[i].Date, inplace=True)
+  d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
+  d[i]['Date'] = d[i]['Date2']
+  d[i] = d[i].drop(['Date2'], axis=1)
+  d[0].loc[len(d[0].index)-1,['Date']] = '13 September 2021'
+  d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+  d[i] = d[i][d[i]['KrF'] != d[i]['H']]
+  if i == 0:
+    for z in parties:
+      d[i][z] = d[i][z].str.split(' ').str[1]
+      
+D = pd.concat(d.values(), ignore_index=True)
+
+parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
+D = D.drop(['Red','Blue'], axis=1)
+D.to_csv('Norwegian/poll_seats.csv', index=False)
+
+D = pd.concat(d.values(), ignore_index=True)
+
+parties = ['R','SV','MDG','Ap','Sp','V','KrF','H','FrP','INP']
+D = D.drop(parties, axis=1)
+D.to_csv('Norwegian/poll_seats2.csv', index=False)
