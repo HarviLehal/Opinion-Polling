@@ -83,7 +83,7 @@ f<-formattable::percent(0.6)
 # d<-d[d$Date>start|d$Date==old,]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=0.6, data=d[d$Date!=old&d$Date!=election,],alpha=1) +
+  geom_point(size=0.6, data=d[d$Date!=old&d$Date!=election,],alpha=0.9) +
   scale_color_manual(values = c("#c70000","#0077b6","#12B6CF","#e05e00","#528D6B","#f5dc00","#005b54"))+
   plots+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=1.5, data=d[d$Date!=old&d$Date!=election,])+
