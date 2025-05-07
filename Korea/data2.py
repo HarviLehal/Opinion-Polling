@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 p = re.compile(r'\[[a-z]+\]')
 df=pd.read_html(str(tables))
 
-headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Kim Kyoung-soo','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Han Duck-soo','1']
-parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Han Duck-soo']
+headers = ['Date','Lee Jae-myung','Kim Dong-yeon','Kim Kyoung-soo','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Lee Nak-yon','Han Duck-soo']
+parties = ['Lee Jae-myung','Kim Dong-yeon','Han Dong-hoon','Oh Se-hoon','Hong Joon-pyo','Yoo Seong-min','Won Hee-ryong','Anh Cheol-soo','Kim Moon-soo','Cho Kuk','Lee Jun-seok','Lee Nak-yon','Han Duck-soo']
 drops = ['1']
 d = {}
 
@@ -23,7 +23,7 @@ for i in range(1):
   d[i]=pd.DataFrame(df[0])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','Und./ no ans.','Lead','Others'], axis=1)
   d[i].columns = headers
-  d[i]=d[i].drop(drops, axis=1)
+  # d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -42,4 +42,7 @@ for i in range(1):
 D = pd.concat(d.values(), ignore_index=True)
 D.drop(D.index[[-1]],inplace=True)
 
+split_date = '1 April 2025'
+split_date=dateparser.parse(split_date)
+D['Han Duck-soo'] = np.where(D['Date']>split_date,D['Han Duck-soo'],np.nan)
 D.to_csv('Korea/poll2.csv', index=False)

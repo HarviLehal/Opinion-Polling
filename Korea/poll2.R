@@ -25,10 +25,13 @@ old <-as.Date("09 03 2022", "%d %m %Y")
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c(
-    "#004ea2","#3371b5","#6695c7","#e61e2b","#eb4b55","#b81822","#f07880","#f8bcbf","#8a121a","#f39399","#0073cf","#ff7920","#808080"
-    # ,"#45babd"
+    "#004ea2","#3371b5","#6695c7",
+    "#e61e2b","#eb4b55","#b81822",
+    "#f07880","#f8bcbf","#8a121a","#f39399",
+    "#0073cf","#ff7920","#45babd","#808080"
+
   ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=election,])+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -55,9 +58,9 @@ plot1
 poll <- read_csv("Korea/poll2.csv")
 # poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
-poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
+poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-5),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -65,25 +68,29 @@ d1 <- cbind(Date, d1)
 d1 <- as.data.frame(d1)
 d1$Date <- as.Date(d1$Date)
 d1 <- reshape2::melt(d1, id.vars="Date")
+d1$value<-ifelse(is.nan(d1$value)==TRUE,0.5,d1$value+0.5)
+                 
 d1$value<-as.numeric(d1$value)/100
-d1$value<-formattable::percent(d1$value, digits = 1)
+d1$value<-formattable::percent(d1$value, digits = 4)
 
-d1<-d1[d1$variable!='Cho Kuk',]
+# d1<-d1[d1$variable!='Cho Kuk',]
+# d1<-d1[d1$variable!='Kim Dong-yeon'&d1$variable!='Kim Kyoung-soo'&d1$variable!='Oh Se-hoon'&d1$variable!='Hong Joon-pyo'&d1$variable!='Yoo Seong-min'&d1$variable!='Won Hee-ryong'&d1$variable!='Anh Cheol-soo',]
 
-d1<-droplevels(d1)
+# d1<-droplevels(d1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#004ea2","#3371b5","#6695c7",
-                               "#e61e2b","#eb4b55","#b81822",
-                               "#f07880","#f8bcbf","#8a121a",
-                               "#f39399",
-                               # "#0073cf",
+  scale_fill_manual(values = c("#004ea2",
+                               "#3371b5","#6695c7",
+                               "#e61e2b","#eb4b55",
+                               "#b81822","#f07880","#f8bcbf","#8a121a","#f39399",
+                               "#0073cf",
                                "#ff7920",
+                               "#45babd",
+
                                "#808080"
-                               # ,"#45babd"
                                ))+
-  geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
+  geom_text(aes(label = ifelse(d1$value>0.006,paste(formattable::percent(d1$value-0.005, digits = 2)),paste(" ")),y = 0),
             hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),axis.text.x = element_blank(),
@@ -92,8 +99,10 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('14 day average')+
-  scale_x_discrete(limits = rev(levels(d1$variable)))+
+  ggtitle('5 day average')+
+  # scale_x_discrete(limits = rev(levels(d1$variable)))+
+  scale_x_discrete(limits = d1$variable[order(d1$value)])+
+
   coord_flip()
 plot2
 
@@ -107,3 +116,4 @@ ggsave(plot=plot, file="Korea/plot2_wiki.svg",width = 21, height = 7)
 aaa=readLines("Korea/plot2_wiki.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
 writeLines(bbb,"Korea/plot2_wiki.svg")
+
