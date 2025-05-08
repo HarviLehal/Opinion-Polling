@@ -17,27 +17,24 @@ df=pd.read_html(str(tables))
 drop = ['1','2','3','4']
 
 d = {}
-for i in range(9):
+for i in range(8):
   print(i)
   if i == 0:
-    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','3','Noam','5','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
-    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','Noam','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
+    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
+    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 1:
-    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
-    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
+    headers = ['Date','1','2','Likud','Mafdal-RZ','Shas','UTJ','New Hope','3','Otzma Yehudit','5','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
+    parties = ['Likud','Mafdal-RZ','Shas','UTJ','New Hope','Otzma Yehudit','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 2:
-    headers = ['Date','1','2','Likud','Mafdal-RZ','Noam','Shas','UTJ','New Hope','3','Otzma Yehudit','5','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
-    parties = ['Likud','Mafdal-RZ','Noam','Shas','UTJ','New Hope','Otzma Yehudit','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
+    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
+    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 3:
     headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
     parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
   elif i == 4:
-    headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','3','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
-    parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','New Hope','Yesh Atid','National Unity','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
-  elif i == 5:
     headers = ['Date','1','2','Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','3','Yesh Atid','National Unity','New Hope','Yisrael Beiteinu','Raam','Democrats','4','Hadash-Taal','Balad']
     parties = ['Likud','Mafdal-RZ','Otzma Yehudit','Noam','Shas','UTJ','Yesh Atid','National Unity','New Hope','Yisrael Beiteinu','Raam','Democrats','Hadash-Taal','Balad']
-  elif i == 6:
+  elif i == 5:
     headers = ['Date','1','2','Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad','3','4']
     parties = ['Likud','Yesh Atid','Mafdal-RZ','Otzma Yehudit','Noam','National Unity','New Hope','Shas','UTJ','Yisrael Beiteinu','Raam','Hadash-Taal','Labor','Meretz','Balad']
   else:
@@ -47,9 +44,8 @@ for i in range(9):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(drop, axis=1)
-  if i == 2 or i==0:
+  if i == 1:
     d[i]=d[i].drop('5', axis=1)
-  
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   if i == 0:
@@ -58,9 +54,7 @@ for i in range(9):
     d[i]['Date2'] = [x+ str(2025) for x in d[i]['Date2'].astype(str)]
   elif i == 2:
     d[i]['Date2'] = [x+ str(2025) for x in d[i]['Date2'].astype(str)]
-  elif i == 3:
-    d[i]['Date2'] = [x+ str(2025) for x in d[i]['Date2'].astype(str)]
-  elif i == 8:
+  elif i == 7:
     d[i]['Date2'] = [x+ str(2023) for x in d[i]['Date2'].astype(str)]
   else:
     d[i]['Date2'] = [x+ str(2024) for x in d[i]['Date2'].astype(str)]
@@ -89,7 +83,7 @@ for i in range(9):
   for z in parties: # replace any non-numeric values with NaN
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
     
-    
+print("SPLIT TIME")
 split_date = '29 May 2024'
 
 split_date=dateparser.parse(split_date)
@@ -100,15 +94,14 @@ c[1]=d[1]
 c[2]=d[2]
 c[3]=d[3]
 c[4]=d[4]
-c[5]=d[5]
-c[6]=d[6][(pd.to_datetime(d[6]["Date"]) > split_date)]
-c[7]=d[6][(pd.to_datetime(d[6]["Date"]) < split_date)]
+c[5]=d[5][(pd.to_datetime(d[5]["Date"]) > split_date)]
+c[6]=d[5][(pd.to_datetime(d[5]["Date"]) < split_date)]
+c[7]=d[6]
 c[8]=d[7]
-c[9]=d[8]
 
-c[6]['Democrats']=np.where(c[6]['Labor']+c[6]['Meretz']>12,c[6]['Labor'],c[6]['Labor']+c[6]['Meretz'])
+c[5]['Democrats']=np.where(c[5]['Labor']+c[5]['Meretz']>12,c[5]['Labor'],c[5]['Labor']+c[5]['Meretz'])
 threeway = ['Labor','Meretz']
-c[6] = c[6].drop(threeway, axis=1)
+c[5] = c[5].drop(threeway, axis=1)
 
 
 D = pd.concat(c.values(), ignore_index=True)

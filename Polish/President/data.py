@@ -12,7 +12,7 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
-p = re.compile(r'\[[a-z]+\]')
+p = re.compile(r'\[[a-z 0-9]+\]')
 
 headers = ['1','Date','2','Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Braun','Jakubiak','Stanowski','3','4','5','6','7','8','9']
 parties = ['Nawrocki','Trzaskowski','Hołownia','Biejat','Zandberg','Mentzen','Jakubiak','Stanowski']
@@ -30,7 +30,8 @@ for i in range(1):
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('TBC',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]#
+  d[i]['Date'] = [p.sub('', x) for x in d[i]['Date'].astype(str)]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)
@@ -69,7 +70,8 @@ for i in range(1):
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('TBC',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('TBA',str(np.nan)) for x in d[i][z]]
-    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('?',str(np.nan)) for x in d[i][z]]#
+  d[i]['Date'] = [p.sub('', x) for x in d[i]['Date'].astype(str)]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i]['Date'].str.split('-').str[1], inplace=True)
   d[i].Date2.fillna(d[i].Date, inplace=True)

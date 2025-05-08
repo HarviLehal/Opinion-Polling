@@ -103,7 +103,7 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=rou
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),
         axis.text.x = element_text(face="bold",color="#000000",size=10),
-        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=2),
+        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=1),
         # axis.text.y = element_blank(),
         plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(),

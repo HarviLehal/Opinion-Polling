@@ -15,14 +15,14 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', '1', '2', '3', 'Coalition', 'Labor', 'Green', 'Other', '4']
-parties = ['Coalition', 'Labor', 'Green', 'Other']
+headers=['Date', '1', '2', '3', 'Labor', 'Coalition', 'Green', 'Other', '4']
+parties = ['Labor', 'Coalition', 'Green', 'Other']
 drops = ['1','2','3','4']
 d = {}
 for i in range(2):
   d[i]=pd.DataFrame(df[i-5])
   if i == 1:
-    headers=['Date', '1', '2', 'Coalition', 'Labor', 'Green', 'Other', '3']
+    headers=['Date', '1', '2', 'Labor', 'Coalition', 'Green', 'Other', '3']
     drops = ['1','2','3']
     d[i].drop(d[i].index[[-1]],inplace=True)
   d[i].columns = headers

@@ -30,9 +30,9 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#00557c","#de3533",
+  scale_color_manual(values = c("#de3533","#00557c",
                                 "#3AA54F","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -55,7 +55,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_x_date(date_breaks = "10 days", date_labels =  "%d %b %Y",limits = c(old-5,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#56595c",alpha=0.5)+
   geom_hline(yintercept = 76, size = 1, colour="#333333", linetype="dashed",alpha=0.5)+
-  ggtitle('Seat Projection for the Next Australian Federal Election')
+  ggtitle('Seat Projection for the 2025 Australian Federal Election')
 plot1
 
 poll <- read_csv("Australia/Federal/poll_seats.csv")
@@ -82,7 +82,7 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d3 <- reshape2::melt(d3, id.vars="Date")
 
 d4<-rbind(d1,d2,d3)
-d4<-rbind(d1,d2)
+# d4<-rbind(d1,d2)
 
 
 
@@ -90,10 +90,8 @@ d4<-rbind(d1,d2)
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#6699b0","#00557c",
-                               "#eb8685","#de3533",
-                               "#9EED8E","#3AA54F",
-                               "#d0d4d9","#a2aab3"))+
+  scale_fill_manual(values = c("#eb8685","#e87270","#de3533","#6699b0","#337796","#00557c",
+                               "#9EED8E","#61b772","#3AA54F","#c7ccd1","#b5bbc2","#a2aab3"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(d4$value),
@@ -111,7 +109,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 7 Day Average <br> *(2022 Result)*')+
+  ggtitle(' 2025 Result <br> 7 Day Average <br> *(2022 Result)*')+
   scale_x_discrete(limits =  d4$variable[order(d1$value,na.last = FALSE)],labels = label_wrap(8))+
   coord_flip()
 

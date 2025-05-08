@@ -33,7 +33,7 @@ old <-min(d$Date)
 
 plot<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#D82222","#00BDFF","#81163B",
+  scale_color_manual(values = c("#c21f1f","#00BDFF","#81163B",
                                 "#BED62F","#FFE17C","#78fc04",
                                 "#173A70","#e4010a","#f48c1f",
                                 "#4D0E90","#034B9F","#005222"))+
@@ -95,7 +95,7 @@ d3<-rbind(d2,d1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#e87a7a","#D82222",
+  scale_fill_manual(values = c("#da7979","#c21f1f",
                                "#66d7ff","#00BDFF",
                                "#b37389","#81163B",
                                "#d8e682","#BED62F",

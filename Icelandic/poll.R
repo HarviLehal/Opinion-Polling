@@ -18,18 +18,26 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 
-election<-as.Date("30 11 2024", "%d %m %Y")
+election<-as.Date("30 11 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
+colss <-c("S"="#EC3E48",
+          "D"="#41A4DB",
+          "C"="#EDA823",
+          "F"="#F8CB3C",
+          "M"="#3B8F93",
+          "B"="#A2D150",
+          "J"="#F13A52",
+          "P"="#790581",
+          "V"="#6D9B3F"
+          )
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#41A4DB","#A2D150","#6D9B3F",
-                                "#EC3E48","#F8CB3C","#790581",
-                                "#EDA823","#3B8F93","#F13A52"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = colss)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -45,14 +53,14 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_hline(aes(yintercept=0), alpha=0)+
-  geom_text(aes(old+150,h,label = "5% Party Threshold", vjust = -0.5, hjust=1),colour="#000000", fontface="italic", alpha=0.75)+
+  geom_text(aes(election-50,h,label = "5% Party Threshold", vjust = -0.5, hjust=1),colour="#000000", fontface="italic", alpha=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 Icelandic Parliamentary Election')
+  ggtitle('Opinion Polling for the 2028 Icelandic Parliamentary Election')
 plot1
 
 
@@ -63,7 +71,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-8),]
+poll<-poll[poll$Date>(max(poll$Date)-31),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -86,20 +94,29 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
-# d4<-rbind(d1,d2)
+d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#b3dbf1","#8dc8e9","#41A4DB",
-                               "#daedb9","#c7e396","#A2D150",
-                               "#c5d7b2","#a7c38c","#6D9B3F",
-                               "#f7b2b6","#f48b91","#EC3E48",
-                               "#fceab1","#fbe08a","#F8CB3C",
-                               "#c99bcd","#af69b3","#790581",
-                               "#f8dca7","#f4cb7b","#EDA823",
-                               "#b1d2d4","#89bcbe","#3B8F93",
-                               "#f9b0ba","#f78997","#F13A52"))+
+  # scale_fill_manual(values = c("#b3dbf1","#8dc8e9","#41A4DB",
+  #                              "#daedb9","#c7e396","#A2D150",
+  #                              "#c5d7b2","#a7c38c","#6D9B3F",
+  #                              "#f7b2b6","#f48b91","#EC3E48",
+  #                              "#fceab1","#fbe08a","#F8CB3C",
+  #                              "#c99bcd","#af69b3","#790581",
+  #                              "#f8dca7","#f4cb7b","#EDA823",
+  #                              "#b1d2d4","#89bcbe","#3B8F93",
+  #                              "#f9b0ba","#f78997","#F13A52"))+
+  scale_fill_manual(values = c("#f48b91","#EC3E48",
+                               "#8dc8e9","#41A4DB",
+                               "#f4cb7b","#EDA823",
+                               "#fbe08a","#F8CB3C",
+                               "#89bcbe","#3B8F93",
+                               "#c7e396","#A2D150",
+                               "#f78997","#F13A52",
+                               "#af69b3","#790581",
+                               "#a7c38c","#6D9B3F"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
@@ -117,7 +134,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('2024 Results <br> 7 Day Average <br> *(2021 Results)*')+
+  ggtitle(' 30 Day Average <br> *(2024 Results)*')+
   # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   scale_x_discrete(limits = d4$variable[order(d3$value,na.last=FALSE)],labels = label_wrap(8))+
   coord_flip()
@@ -127,6 +144,7 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 
+ggsave(plot=plot, file="Icelandic/plot.png",width = 15, height = 7.5, type="cairo-png")
 ggsave(plot=plot, file="Icelandic/plot.svg",width = 15, height = 7.5)
 aaa=readLines("Icelandic/plot.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
@@ -142,7 +160,7 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 h <- formattable::percent(0.05)
 
-election<-as.Date("30 11 2024", "%d %m %Y")
+election<-as.Date("30 11 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -150,8 +168,8 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#EDA823","#EC3E48","#41A4DB"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  scale_color_manual(values = c("#EC3E48","#41A4DB","#790581"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -174,7 +192,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the 2024 Icelandic Parliamentary Election')
+  ggtitle('Opinion Polling for the 2028 Icelandic Parliamentary Election')
 plot1
 
 poll <- read_csv("Icelandic/poll2.csv")
@@ -184,7 +202,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-8),]
+poll<-poll[poll$Date>(max(poll$Date)-31),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -207,14 +225,14 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
-# d4<-rbind(d1,d2)
+d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#f8dca7","#f4cb7b","#EDA823",
-                               "#f7b2b6","#f48b91","#EC3E48",
-                               "#b3dbf1","#8dc8e9","#41A4DB"))+
+  scale_fill_manual(values = c("#f48b91","#EC3E48",
+                               "#8dc8e9","#41A4DB",
+                               "#af69b3","#790581"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
@@ -232,7 +250,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('2024 Results <br> 7 Day Average <br> *(2021 Results)*')+
+  ggtitle('30 Day Average <br> *(2024 Results)*')+
   # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   scale_x_discrete(limits = d4$variable[order(d3$value,na.last=FALSE)],labels = label_wrap(8))+
   coord_flip()

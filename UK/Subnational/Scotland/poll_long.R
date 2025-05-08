@@ -122,7 +122,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('30 Day Average <br> *(2024 Election)*')+
-  scale_x_discrete(limits = d4$variable[order(d3$value,na.last = FALSE)])+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)])+
   coord_flip()
 coord_flip()
 plot2

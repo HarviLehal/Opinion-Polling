@@ -33,7 +33,7 @@ g<-formattable::percent(0.55)
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#f5dc00","#0077b6","#e05e00","#13bece","#33a22b"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.67,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -113,8 +113,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle('30 Day Average <br> *(2024 Election)*')+
-  scale_x_discrete(limits = d4$variable[order(d3$value,na.last = FALSE)])+
-  coord_flip()
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)])+
   coord_flip()
 plot2
 
