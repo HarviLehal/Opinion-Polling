@@ -53,12 +53,12 @@ for (i in 1:length(polls)) {
   if (names(polls)[i] == "FindOutNow"){
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
-  else if (names(polls)[i] == "LordAshcroftPolls"){
-    plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dotted", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
-  }
-  else if (names(polls)[i] == "FreshwaterStrategy"){
-    plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dotdash", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
-  }
+  # else if (names(polls)[i] == "LordAshcroftPolls"){
+  #   plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dotted", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+  # }
+  # else if (names(polls)[i] == "FreshwaterStrategy"){
+  #   plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dotdash", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
+  # }
   else{
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, alpha=0.25, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
