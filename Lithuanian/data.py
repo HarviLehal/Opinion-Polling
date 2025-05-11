@@ -46,7 +46,7 @@ D = D.dropna(subset=['LSDP'])
 other = ['LLRA−KŠS','NS','DP','LRP','LŽP','TTS','PLT']
 D['others']=D[other].sum(axis=1)
 for i in other:
-  D[i]=np.where(D['others']>36.35, np.nan, D[i])
+  D[i]=np.where(D['others']>30, np.nan, D[i])
 D = D.drop(['others'], axis=1)
 D.loc[1,['LP']] = np.nan
 
