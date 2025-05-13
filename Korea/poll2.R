@@ -102,7 +102,6 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
   ggtitle('5 day average')+
   # scale_x_discrete(limits = rev(levels(d1$variable)))+
   scale_x_discrete(limits = d1$variable[order(d1$value)])+
-
   coord_flip()
 plot2
 

@@ -16,43 +16,26 @@ library(data.table)
 library(hrbrthemes)
 library(ggbreak)
 
-py_run_file("Turkish/data.py")
-poll <- read_csv("Turkish/poll.csv")
+py_run_file("Turkish/President/data.py")
+poll <- read_csv("Turkish/President/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
-h<-0.07
+h<-0.5
 
 election<-as.Date("07 05 2028", "%d %m %Y")
+start <- as.Date("17 08 2024", "%d %m %Y")
+
 old <-min(d$Date)
 
-parties<-d[d$variable!='A',]
-AH<-d[d$variable=='A',]
-AH<-AH[!is.na(AH$value),]
 
-colss <-c("AKP"="#FFCC00",
-          "CHP"="#ed1c24",
-          "DEM"="#951b88",
-          "MHP"="#870000",
-          "İYİ"="#3db5e6",
-          "ZP" ="#404040",
-          "YRP"="#007d60",
-          "A"  ="#004e81",
-          "TİP"="#b61f23")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
-  geom_text(aes(election-2,h,label = "7% Threshold", vjust = -1, hjust=1,fontface="italic",alpha=0.75),colour="#000000")+
-  geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = colss)+
-  # scale_color_manual(values = c("#FFCC00","#ed1c24","#870000",
-  #                               "#951b88","#3db5e6","#404040",
-  #                               "#007d60","#b61f23","#004e81"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=AH[AH$Date!=old&AH$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
-  # bbplot::bbc_style()+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.25)+
+  scale_color_manual(values = c("#FFCC00","#ed1c24","#951b88","#007d60","#404040"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -65,18 +48,20 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(min(d$Date),election),guide = guide_axis(angle = -90))+
-  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
+  scale_x_break(c(old+20, start))+
+  scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old-20,election),guide = guide_axis(angle = -90))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.8,0.05))+
   geom_vline(xintercept=old,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election,
              linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)
+  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  ggtitle('Opinion Polling for the 2028 Turkish Presidential Election')
 plot1
 
 
-poll <- read_csv("Turkish/poll.csv")
+poll <- read_csv("Turkish/President/poll.csv")
 Date <- c(max(poll$Date)-1)
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
@@ -113,21 +98,17 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#ffe066","#FFCC00",
                                "#f4777c","#ed1c24",
-                               "#b76666","#870000",
-                               "#8bd3f0","#3db5e6",
                                "#bf76b8","#951b88",
                                "#66b1a0","#007d60",
-                               "#8c8c8c","#404040",
-                               "#d3797b","#b61f23",
-                               "#6695b3","#004e81"
-                               ))+
+                               "#8c8c8c","#404040"
+  ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),
                                       paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
-                               paste("(",formattable::percent(d4$value, digits = 2),")"),"New"),""),
+                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),ifelse(d4$variable=='Erbakan',paste("(Endorsed ",names(poll)[2],")"),"(Endorsed Kılıçdaroğlu (CHP))")),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
@@ -146,9 +127,12 @@ plot2
 
 
 
-plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
+plot<-aplot::plot_list(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 
 
-ggsave(plot=plot, file="Turkish/plot.png",width = 15, height = 7.5, type = "cairo-png")
-
+ggsave(plot=plot, file="Turkish/President/plot.png",width = 15, height = 7.5, type = "cairo-png")
+ggsave(plot=plot, file="Turkish/President/plot.svg",width = 15, height = 7.5)
+aaa=readLines("Turkish/President/plot.svg",-1)
+bbb <- gsub(".svglite ", "", aaa)
+writeLines(bbb,"Turkish/President/plot.svg")

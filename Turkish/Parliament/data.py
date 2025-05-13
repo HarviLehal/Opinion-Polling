@@ -35,10 +35,10 @@ d[2] = d[2].drop(['MP'], axis=1)
 for i in range(3):
   d[i]=d[i].reset_index(drop=True)
 
-d[1].loc[len(d[1].index)-12,['Date']] = ' 1 May 2024'
-d[1].loc[len(d[1].index)-5,['Date']] = ' 1 Nis 2024'
-d[1].loc[len(d[1].index)-3,['Date']] = ' 5 Mar 2024'
-d[2].loc[len(d[2].index)-1,['Date']] = '14 May 2023'
+# d[1].loc[len(d[1].index)-12,['Date']] = ' 1 May 2024'
+# d[1].loc[len(d[1].index)-5,['Date']] = ' 1 Nis 2024'
+# d[1].loc[len(d[1].index)-3,['Date']] = ' 5 Mar 2024'
+# d[2].loc[len(d[2].index)-1,['Date']] = '14 May 2023'
 
 for i in range(2):
   d[i].drop(d[i].index[[-1]],inplace=True)
@@ -48,10 +48,10 @@ D = pd.concat(d.values(), ignore_index=True)
 # D = D.drop(D.columns[[-1]],axis = 1)
 
 
-D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, languages=['tr'], settings={'PREFER_DAY_OF_MONTH': 'first'}))
 # D['Date'] = D['Date'].apply(lambda x: x.strftime('%Y-%m-%d'))
 D['Date'] = D['Date'].apply(lambda x: x.date())
 # D['Date'] = D['Date'].apply(lambda x: datetime.datetime.strptime(x, '%Y-%m-%d').date())
 
-D.to_csv('Turkish/poll.csv', index=False)
+D.to_csv('Turkish/Parliament/poll.csv', index=False)
 

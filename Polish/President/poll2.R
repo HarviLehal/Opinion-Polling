@@ -17,7 +17,8 @@ d$value<-as.numeric(d$value)
 d$value<-formattable::percent(d$value)
 
 old<-min(d$Date)
-election<-as.Date("18 05 2025", "%d %m %Y")
+election2<-as.Date("18 05 2025", "%d %m %Y")
+election<-as.Date("01 06 2025", "%d %m %Y")
 # election<-max(d$Date)+14
 # MAIN GRAPH
 
@@ -43,6 +44,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election2, linetype="dashed", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==election,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "4 days", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+

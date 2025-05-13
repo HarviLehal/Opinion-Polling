@@ -61,7 +61,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   geom_hline(aes(yintercept=0), alpha=0, linetype="longdash", colour="#000000")+
   scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the Next Polish Presidential Election')
+  ggtitle('Opinion Polling for the 2025 Polish Presidential Election')
 plot1
 
 
