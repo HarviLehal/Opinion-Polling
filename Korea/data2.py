@@ -20,7 +20,7 @@ drops = ['1']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[0])
+  d[i]=pd.DataFrame(df[1])
   d[i]=d[i].drop(['Polling firm','Sample size','Margin of error','Und./ no ans.','Lead','Others'], axis=1)
   d[i].columns = headers
   # d[i]=d[i].drop(drops, axis=1)
