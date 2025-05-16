@@ -18,7 +18,7 @@ headers = ['Date','DROP','CAQ','QS','PQ','PLQ','PCQ']
 parties = ['DROP','CAQ','QS','PQ','PLQ','PCQ']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i]=d[i].drop(["Polling organisation","Source","Other","Sample size","Lead"], axis=1)
   d[i].columns = headers
   d[i]=d[i].drop(['DROP'], axis=1)

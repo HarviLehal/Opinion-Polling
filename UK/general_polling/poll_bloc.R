@@ -30,7 +30,7 @@ d<- d %>%
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#c70000","#f5dc00","#e05e00","#0077b6"))+
+  scale_color_manual(values = c("#e05e00","#f5dc00","#c70000","#0077b6"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -50,7 +50,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Left-Right Polling for the Next United Kingdom General Election (Excl. Regional Parties)')
+  ggtitle('Left-Right Polling for the Next United Kingdom General Election')
 
 plot1
 
@@ -82,29 +82,29 @@ d3<-rbind(d2,d1)
 
 
 plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) + 
-  scale_fill_manual(values = c("#dd6666","#c70000",
+  scale_fill_manual(values = c("#ec9e66","#e05e00",
                                "#f9ea66","#f5dc00",
-                               "#ec9e66","#e05e00",
+                               "#dd6666","#c70000",
                                "#66add3","#0077b6"
   ))+
   geom_bar(position="fill", stat="identity")+
   geom_text(aes(label = ifelse(d3$Date==max(d3$Date),
-                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),
+                               ifelse(d3$variable=="Left (Lib+Green)",paste("Left\n(Lib+Green):\n",d3$value),
                                       ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
-                                             ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
-                               ifelse(d3$variable=="Left (Lab+Green)",paste("Left\n(Lab+Green):\n",d3$value),
+                                             ifelse(d3$variable=="Lab",paste("Lab:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
+                               ifelse(d3$variable=="Left (Lib+Green)",paste("Left\n(Lib+Green):\n",d3$value),
                                       ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
-                                             ifelse(d3$variable=="Lib Dem",paste("Lib Dem:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
+                                             ifelse(d3$variable=="Lab",paste("Lab:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
                 hjust=0.5, vjust = 0.5,
-                y = ifelse(d3$variable=="Left (Lab+Green)",0.89,
+                y = ifelse(d3$variable=="Left (Lib+Green)",0.89,
                            ifelse(d3$variable=="Right (Con+Ref)",0.11,
                                   ifelse(d3$variable=="Nat (SNP+PC)",
                                          ifelse(d3$Date==min(d3$Date),
-                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lib Dem",]$value+(d2[d2$variable=="Nat (SNP+PC)",]$value)/2,
-                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lib Dem",]$value+(d1[d1$variable=="Nat (SNP+PC)",]$value)/2),
+                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lab",]$value+(d2[d2$variable=="Nat (SNP+PC)",]$value)/2,
+                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lab",]$value+(d1[d1$variable=="Nat (SNP+PC)",]$value)/2),
                                          ifelse(d3$Date==min(d3$Date),
-                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lib Dem",]$value/2,
-                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lib Dem",]$value/2))))),
+                                                d2[d2$variable=="Right (Con+Ref)",]$value+d2[d2$variable=="Lab",]$value/2,
+                                                d1[d1$variable=="Right (Con+Ref)",]$value+d1[d1$variable=="Lab",]$value/2))))),
             color="#000000",position =, size=5, fontface="bold")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+

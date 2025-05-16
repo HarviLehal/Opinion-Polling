@@ -108,7 +108,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                       paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
-                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),ifelse(d4$variable=='Erbakan',paste("(Endorsed ",names(poll)[2],")"),"(Endorsed Kılıçdaroğlu (CHP))")),""),
+                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),ifelse(d4$variable=='Erbakan YRP',paste("( Endorsed ",names(poll)[2],")"),"( Endorsed Kılıçdaroğlu CHP )")),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",

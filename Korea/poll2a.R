@@ -28,7 +28,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
     "#004ea2","#e61e2b","#ff7920","#ffcc00","#080b9e","#99c9c9","#c99999","#777777"
     
   ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -56,7 +56,7 @@ poll <- read_csv("Korea/poll2a.csv")
 Date <- c(max(poll$Date))
 # poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 #   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-5),]
+poll<-poll[poll$Date>(max(poll$Date)-2),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -86,7 +86,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('Latest Poll')+
+  ggtitle('2 day average')+
   # scale_x_discrete(limits = rev(levels(d1$variable)))+
   scale_x_discrete(limits = d1$variable[order(d1$value)])+
   coord_flip()

@@ -58,21 +58,44 @@ D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_
 D.to_csv('UK/general_polling/poll.csv', index=False)
 
 
-govt = ['Lab','Green']
+# govt = ['Lab','Green']
+# opp = ['Reform','Con']
+# nat = ['SNP','PC']
+# 
+# D[parties] = D[parties].astype(float)
+# D['Left (Lab+Green)'] = D[govt].sum(axis=1)
+# D['Right (Con+Ref)'] = D[opp].sum(axis=1)
+# D['Nat (SNP+PC)'] = D[nat].sum(axis=1)
+# 
+# D = D.drop(govt, axis=1)
+# D = D.drop(opp, axis=1)
+# D = D.drop(nat, axis=1)
+# parties = ['Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']
+# D['total']=D[parties].sum(axis=1)
+# D[parties] = D[parties].div(D['total'], axis=0)
+# D = D.drop(["total"], axis=1)
+# D = D[['Date','Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']]
+# D.to_csv('UK/general_polling/poll_bloc.csv', index=False)
+
+
+
+# LABOUR IS NOW ITS OWN MESSED UP THING
+
+govt = ['Lib Dem','Green']
 opp = ['Reform','Con']
 nat = ['SNP','PC']
 
 D[parties] = D[parties].astype(float)
-D['Left (Lab+Green)'] = D[govt].sum(axis=1)
+D['Left (Lib+Green)'] = D[govt].sum(axis=1)
 D['Right (Con+Ref)'] = D[opp].sum(axis=1)
 D['Nat (SNP+PC)'] = D[nat].sum(axis=1)
 
 D = D.drop(govt, axis=1)
 D = D.drop(opp, axis=1)
 D = D.drop(nat, axis=1)
-parties = ['Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']
+parties = ['Left (Lib+Green)','Nat (SNP+PC)','Lab','Right (Con+Ref)']
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)
 D = D.drop(["total"], axis=1)
-D = D[['Date','Left (Lab+Green)','Nat (SNP+PC)','Lib Dem','Right (Con+Ref)']]
+D = D[['Date','Left (Lib+Green)','Nat (SNP+PC)','Lab','Right (Con+Ref)']]
 D.to_csv('UK/general_polling/poll_bloc.csv', index=False)

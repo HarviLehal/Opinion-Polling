@@ -23,7 +23,10 @@ for i in range(1):
   d[i]=d[i].drop(["Polling firm/commissioner","Sample size","Lead"], axis=1)
   d[i].columns = headers
   print(type(d[i]['Date']))
-  d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
+  if len(d[i]['Date'].str.split('–'))>2:
+    d[i]['Date2'] = d[i]['Date'].str.split('–').str[2]
+  else:
+    d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)

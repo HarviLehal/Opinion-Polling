@@ -27,26 +27,27 @@ hy<-formattable::percent(h$value[h$Date==min(h$Date)]-0.01)
 h$value<-formattable::percent(h$value)
 h$Date <- as.Date(h$Date, "%Y-%m-%d")
 
-election<-as.Date("23 02 2025", "%d %m %Y")
+election<-as.Date("25 03 2029", "%d %m %Y")
 old <-min(d$Date)
 
-colss <-c("Rot-Grün"    ="#770004",
+colss <-c("Rot²-Grün"   ="#770004",
           "GroKo"       ="#005974",
-          "Ampel"       ="#DD1529",
+          "Rot-Grün"    ="#DD1529",
           "Jamaika"     ="#509A3A",
           "Deutschland" ="#FBBE00",
           "Kenia"       ="#E5963F",
           "Kiwi"        ="#8EE53F",
           "Rechts"      ="#0489DB",
           "Kemmerich"   ="#AA692F",
+          "Brombeer"    ="#792350",
           "Mehrheit"    ="#000000")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = colss)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=1.2, data=h, alpha=0.5, linetype="longdash")+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=1.2, data=h, alpha=0.5, linetype="longdash")+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -60,10 +61,11 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(old,hy,label = "Mehrheit", vjust = -1, hjust=1),colour="#000000")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date)-12, election)+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old-12,election),guide = guide_axis(angle = -90))+
   ggtitle('Wahlumfragen zur nächsten Bundestagswahl nach möglichen Koalitionen')
 
 plot1
@@ -77,9 +79,7 @@ d<- d %>%
 
 plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#770004","#005974","#DD1529",
-                                "#509A3A","#FBBE00","#E5963F",
-                                "#8EE53F","#0489DB","#AA692F"))+
+  scale_color_manual(values = colss)+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -95,6 +95,7 @@ plot3<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_text(aes(election,max(h$value[h$Date==max(h$Date)]),label = "Mehrheit", vjust = -1, hjust=1),colour="#56595c")+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), election)+
+  geom_hline(aes(yintercept=0), alpha=0)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
@@ -129,7 +130,7 @@ d3<-rbind(d2,d1)
 
 hx <- read.csv("German/Federal/poll4.csv")
 hx$Date <- as.Date(hx$Date, "%Y-%m-%d")
-hx<-hx[hx$Date>(max(h$Date)-14),]
+hx<-hx[hx$Date>(max(h$Date)-7),]
 hx <- colMeans(hx[-1],na.rm=TRUE)
 hx <- reshape2::melt(hx, id.vars="Date")
 hx$value<-as.numeric(hx$value)/100
@@ -142,7 +143,7 @@ scale_fill_manual(values = c("#ad6668","#770004","#669bac","#005974",
                              "#eb737f","#DD1529","#96c289","#509A3A",
                              "#fdd866","#FBBE00","#f5bb7b","#Ee8d23",
                              "#bbef8c","#8EE53F","#68b8e9","#0489DB",
-                             "#cca582","#AA692F"))+
+                             "#cca582","#AA692F","#af7b96","#792350"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0), hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
@@ -155,8 +156,8 @@ scale_fill_manual(values = c("#ad6668","#770004","#669bac","#005974",
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-ggtitle(' Mittelwert des Woches \n (Ergebnisse 2021)')+
-scale_x_discrete(limits = rev(levels(d3$variable)))+
+ggtitle(' Mittelwert des Woches \n (Ergebnisse 2025)')+
+scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
 coord_flip()
 
 

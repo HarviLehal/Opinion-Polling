@@ -41,88 +41,79 @@ D[parties] = D[parties].astype(float)
 
 D.to_csv('German/Federal/poll.csv', index=False)
 
+for z in parties:
+  D[z] = np.where(5>D[z],np.nan,D[z])
+D.loc[len(D.index)-1,['BSW']] = np.nan
+
+D = D.drop('Others',axis=1)
+parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP']
+Gov = ['SPD','Union']
+Opp = [p for p in parties if p not in Gov]
+D['Government'] = D[Gov].sum(axis=1)
+D['Opposition'] = D[Opp].sum(axis=1)
+D = D.drop(Gov + Opp, axis=1)
+D.to_csv('German/Federal/poll2.csv', index=False)
 
 
+D = pd.concat(d.values(), ignore_index=True)
 
-
-
-
-
-
-
-
-# parties = ['SPD','Union','Grüne','FDP','AfD']
-# D[parties] = D[parties].astype(float)
-# for z in parties:
-#   D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
-# 
-# parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
-# 
-# Gov = ['SPD','Grüne','FDP']
-# Right = ['Union', 'AfD']
-# 
-# D[parties] = D[parties].astype(float)
-# D['Government'] = D[Gov].sum(axis=1)
-# D['Right Wing'] = D[Right].sum(axis=1)
-# D = D.drop(Gov + Right, axis=1)
-# 
-# D.to_csv('German/Federal/poll2.csv', index=False)
-# 
-# 
-# 
-# D = pd.concat(d.values(), ignore_index=True)
-# D=D.drop('BSW', axis=1)
-# 
-# parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
+parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP','Others']
 # parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
-# for z in parties:
-#     D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
-#     D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
-# D[parties] = D[parties].astype(float)
-# # D=D.drop(D[D['BSW'] > 0].index)
-# # D=D.drop('BSW', axis=1)
+for z in parties:
+    D[z] = [p.sub('', x) for x in D[z].astype(str)]
+    D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+
+for z in parties:
+  D[z] = np.where(5>D[z],np.nan,D[z])
+D = D.drop('Others',axis=1)
+D.loc[len(D.index)-1,['BSW']] = np.nan
+parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP']
+
+RG              = ['SPD','Grüne']
+R2G             = ['SPD','Linke','Grüne']
+GroKo           = ['Union','SPD']
+Jamaika         = ['Union','Grüne','FDP']
+Deutschland     = ['Union','SPD','FDP']
+Kenia           = ['Union','SPD','Grüne']
+Kiwi            = ['Union','Grüne']
+Rechts          = ['Union','AfD']
+Kemmerich       = ['Union','AfD','FDP']
+Brombeer        = ['Union','BSW','SPD']
+# Mehrheit        = ['SPD','Union','Grüne','FDP','AfD']
+parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP']
 # 
-# for z in parties:
-#   D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
+D[parties] = D[parties].astype(float)
+D['Rot²-Grün'] = D[R2G].sum(axis=1)               # RGY (Red) #DD1529
+D['GroKo'] = D[GroKo].sum(axis=1)               # RB  (Black) #10305B
+D['Rot-Grün'] = D[RG].sum(axis=1)               # RG  (Maroon) #770004
+D['Jamaika'] = D[Jamaika].sum(axis=1)           # BGY (Green) #509A3A
+D['Deutschland'] = D[Deutschland].sum(axis=1)   # BRY (Yellow) #FBBE00
+D['Kenia'] = D[Kenia].sum(axis=1)               # BRG (Orange) #E5963F
+D['Kiwi'] = D[Kiwi].sum(axis=1)                 # BG  (Kiwi Green) #8EE53F
+D['Rechts'] = D[Rechts].sum(axis=1)            # BBr (AfD blue) #0489DB
+D['Kemmerich'] = D[Kemmerich].sum(axis=1)       # BBr (Brown) #AA692F
+D['Brombeer'] = D[Brombeer].sum(axis=1)       # BBr (Brown) #AA692F
+# D['Mehrheit'] = D[parties].sum(axis=1)/2
+D = D.drop(parties, axis=1)
 # 
-# RG              = ['SPD','Grüne']
-# GroKo           = ['Union','SPD']
-# Ampel           = ['SPD','Grüne','FDP']
-# Jamaika         = ['Union','Grüne','FDP']
-# Deutschland     = ['Union','SPD','FDP']
-# Kenia           = ['Union','SPD','Grüne']
-# Kiwi            = ['Union','Grüne']
-# Rechts          = ['Union','AfD']
-# Kemmerich       = ['Union','AfD','FDP']
-# # Mehrheit        = ['SPD','Union','Grüne','FDP','AfD']
-# parties = ['SPD','Union','Grüne','FDP','AfD','Linke']
-# 
-# D[parties] = D[parties].astype(float)
-# D['Rot-Grün'] = D[RG].sum(axis=1)               # RG  (Maroon) #770004
-# D['GroKo'] = D[GroKo].sum(axis=1)               # RB  (Black) #10305B
-# D['Ampel'] = D[Ampel].sum(axis=1)               # RGY (Red) #DD1529
-# D['Jamaika'] = D[Jamaika].sum(axis=1)           # BGY (Green) #509A3A
-# D['Deutschland'] = D[Deutschland].sum(axis=1)   # BRY (Yellow) #FBBE00
-# D['Kenia'] = D[Kenia].sum(axis=1)               # BRG (Orange) #E5963F
-# D['Kiwi'] = D[Kiwi].sum(axis=1)                 # BG  (Kiwi Green) #8EE53F
-# D['Rechts'] = D[Rechts].sum(axis=1)            # BBr (AfD blue) #0489DB
-# D['Kemmerich'] = D[Kemmerich].sum(axis=1)       # BBr (Brown) #AA692F
-# # D['Mehrheit'] = D[Mehrheit].sum(axis=1)/2
-# D = D.drop(parties, axis=1)
-# 
-# D.to_csv('German/Federal/poll3.csv', index=False)
+D.to_csv('German/Federal/poll3.csv', index=False)
 # 
 # 
-# D = pd.concat(d.values(), ignore_index=True)
-# parties = ['SPD','Union','Grüne','FDP','AfD','Linke','BSW']
-# for z in parties:
-#     D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
-#     D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
-# D[parties] = D[parties].astype(float)
-# for z in parties:
-#   D[z] = D[z].apply(lambda x: x if x > 4.9 else 0)
-# D['Mehrheit'] = D[parties].sum(axis=1)
-# # divide by 2 to get the true majority required
-# D['Mehrheit'] = D['Mehrheit']/2
-# D.drop(parties, axis=1, inplace=True)
-# D.to_csv('German/Federal/poll4.csv', index=False)
+D = pd.concat(d.values(), ignore_index=True)
+D = D.drop('Others',axis=1)
+parties = ['Union','AfD','SPD','Grüne','Linke','BSW','FDP']
+for z in parties:
+    D[z] = [p.sub('', x) for x in D[z].astype(str)]
+    D[z] = [x.replace('–',str(np.nan)) for x in D[z].astype(str)]
+    D[z] = [x.replace('—',str(np.nan)) for x in D[z].astype(str)]
+D[parties] = D[parties].astype(float)
+for z in parties:
+  D[z] = np.where(5>D[z],np.nan,D[z])
+D.loc[len(D.index)-1,['BSW']] = np.nan
+D['Mehrheit'] = D[parties].sum(axis=1)
+# divide by 2 to get the true majority required
+D['Mehrheit'] = D['Mehrheit']/2
+D.drop(parties, axis=1, inplace=True)
+D.to_csv('German/Federal/poll4.csv', index=False)
