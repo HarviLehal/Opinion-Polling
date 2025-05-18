@@ -54,6 +54,7 @@ d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 election<-as.Date("01 07 2029", "%d %m %Y")
+election<-max(d$Date)+1
 mindate<-min(d$Date)
 old<-c(as.Date("04 07 2024", "%d %m %Y"),
        as.Date("12 12 2019", "%d %m %Y"),
@@ -122,10 +123,11 @@ for (i in 1:23){
 }
 spans[21]<-0.3
 spans[22]<-0.05
+spans[23]<-0.5
 d<- d %>%
   group_by(variable) %>%
   arrange(Date) %>%
-  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 7, Date), mean,na.rm=TRUE))
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +

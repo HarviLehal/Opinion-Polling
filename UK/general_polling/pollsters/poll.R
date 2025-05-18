@@ -17,6 +17,9 @@ py_run_file("UK/general_polling/pollsters/data_pollsters.py")
 files <- list.files("UK/general_polling/pollsters", full.names = TRUE)
 # remove non csv files
 files <- files[grep(".csv", files)]
+# Remove Ashcroft And Freshwater (NOT IN BPC)
+files <- files[grep("Freshwater", files, invert = TRUE)]
+files <- files[grep("Ashcroft", files, invert = TRUE)]
 # read all csv files into separate dataframes
 polls <- lapply(files, read_csv)
 # rename eacc dataframe to the name of the file without the polls_ prefix
