@@ -39,7 +39,6 @@ for i in range(1):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
-
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
   D[z] = D[z].astype(str)
@@ -47,11 +46,21 @@ for z in parties:
 
 D=D.dropna(subset=['Date'])
 D=D.dropna(subset=['Trzaskowski'])
-# D['total']=D[parties].sum(axis=1)
-# D[parties]=D[parties].div(D['total'], axis=0)*100
-# D = D.drop(['total'], axis=1)
+
+
+c={}
+c[0] = D[:1]
+c[1] = D[1:]
+c[1] = c[1][(pd.to_datetime(c[1]["Date"])<dateparser.parse("17 May 2025"))]
+D = pd.concat(c.values(), ignore_index=True)
 
 D.to_csv('Polish/President/poll_new.csv', index=False)
+
+
+
+
+
+
 
 
 headers = ['1','Date','2','Nawrocki','Trzaskowski','3','4','5']

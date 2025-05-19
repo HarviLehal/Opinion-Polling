@@ -15,7 +15,8 @@ library(tidyverse)
 library(data.table)
 
 poll1 <- read_csv("UK/general_polling/2024 election/poll.csv")
-poll2 <- read_csv("UK/general_polling/poll.csv")
+# poll2 <- read_csv("UK/general_polling/poll.csv")
+poll2 <- read_csv("UK/general_polling/unbiased_polls.csv")
 poll<-dplyr::bind_rows(poll1,poll2)
 # poll <- rbind(poll1,poll2) 
 d <- reshape2::melt(poll, id.vars="Date")
@@ -65,7 +66,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Opinion Polling since the 2019 United Kingdom General Election')
 plot1
 
-poll <- read_csv("UK/general_polling/poll.csv")
+# poll <- read_csv("UK/general_polling/poll.csv")
+poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 

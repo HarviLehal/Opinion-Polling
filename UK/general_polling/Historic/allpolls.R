@@ -34,7 +34,9 @@ poll15 <- read_csv("UK/general_polling/Historic/poll15.csv")
 poll17 <- read_csv("UK/general_polling/Historic/poll17.csv")
 poll19 <- read_csv("UK/general_polling/Historic/poll19.csv")
 poll24 <- read.csv("UK/general_polling/2024 election/poll.csv")
-poll29 <- read.csv("UK/general_polling/poll.csv")
+# poll29 <- read.csv("UK/general_polling/poll.csv")
+poll29 <- read_csv("UK/general_polling/unbiased_polls.csv")
+
 # convert poll24 to a tibble
 poll24 <- as_tibble(poll24)
 poll29 <- as_tibble(poll29)

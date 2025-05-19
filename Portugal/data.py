@@ -44,12 +44,26 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i]['Date']=d[i]['Date'].astype(str)
-  # d[i]=d[i][~d[i].Date.str.contains("9 Jun 2024")]
+  d[i]=d[i][~d[i].Date.str.contains("18 May 2025")]
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i]=d[i].dropna(subset=['AD'])
 
 
 D = pd.concat(d.values(), ignore_index=True)
+
+AD=32.10+0.62
+PS=23.38
+CH=22.56
+IL=5.53
+BE=2
+CD=3.03
+PA=1.36
+LI=4.20
+O=100-AD-PS-CH-IL-BE-CD-PA-LI
+
+new_row = pd.DataFrame({'Date': '18 May 2025', 'AD':AD , 'PS':PS , 'Chega':CH, 'IL':IL, 'BE':BE, 'CDU':CD,'PAN':PA,'LIVRE':LI,'Others':O}, index=[0])
+D = pd.concat([new_row,D]).reset_index(drop=True)
+D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 D.to_csv('Portugal/poll.csv', index=False)
 

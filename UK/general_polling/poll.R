@@ -12,7 +12,8 @@ library(zoo)
 library(dplyr)
 
 py_run_file("UK/general_polling/data.py")
-poll <- read_csv("UK/general_polling/poll.csv")
+# poll <- read_csv("UK/general_polling/poll.csv")
+poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 d$value<-as.numeric(d$value)/100
@@ -64,7 +65,7 @@ plot1
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#f5dc00","#005b54"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d)+
   theme_minimal()+
@@ -90,7 +91,8 @@ plot2
 
 # BAR CHART!!
 
-poll <- read_csv("UK/general_polling/poll.csv")
+# poll <- read_csv("UK/general_polling/poll.csv")
+poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]

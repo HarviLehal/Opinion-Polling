@@ -99,7 +99,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
-        plot.caption = element_text(face="bold.italic"),
+        plot.caption = element_text(face="bold.italic",hjust=0),
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
@@ -111,7 +111,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the Next United Kingdom General Election*')+
-  labs(caption = "* Excluding Find Out Now (Dashed) from averages and LOESS")
+  labs(caption = "* Excluding non BPC Pollsters (Lord Ashcroft Polls and Freshwater Strategy). Find Out Now included in LOESS and average, shown as dashed")
 plot1
 
 
