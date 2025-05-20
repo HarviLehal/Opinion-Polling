@@ -150,7 +150,7 @@ d3<-rbind(d2,d1)
 
 d1$value<-ifelse(is.na(d1$value)==TRUE,0,d1$value)
 d2$value<-ifelse(is.na(d2$value)==TRUE,0,d2$value)
-d1$value<-d1$value/150
+d1$value<-d1$value/sum(d1$value)
 d2$value<-d2$value/150
 d1$Date<-'Polling'
 d2$Date<-'Results'

@@ -139,11 +139,16 @@ hx$value<-formattable::percent(hx$value, digits = 1)
 
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
 geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#ad6668","#770004","#669bac","#005974",
-                             "#eb737f","#DD1529","#96c289","#509A3A",
-                             "#fdd866","#FBBE00","#f5bb7b","#Ee8d23",
-                             "#bbef8c","#8EE53F","#68b8e9","#0489DB",
-                             "#cca582","#AA692F","#af7b96","#792350"))+
+scale_fill_manual(values = c("#ad6668","#770004",
+                             "#669bac","#005974",
+                             "#eb737f","#DD1529",
+                             "#96c289","#509A3A",
+                             "#fdd866","#FBBE00",
+                             "#f5bb7b","#Ee8d23",
+                             "#bbef8c","#8EE53F",
+                             "#68b8e9","#0489DB",
+                             "#cca582","#AA692F",
+                             "#af7b96","#792350"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0), hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),

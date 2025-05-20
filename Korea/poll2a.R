@@ -97,8 +97,8 @@ plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
 
-ggsave(plot=plot, file="Korea/plot2a.png",width = 21, height = 7, type="cairo-png")
-ggsave(plot=plot, file="Korea/plot2a_wiki.svg",width = 21, height = 7)
+ggsave(plot=plot, file="Korea/plot2a.png",width = 15, height = 7.5, type="cairo-png")
+ggsave(plot=plot, file="Korea/plot2a_wiki.svg",width = 15, height = 7.5)
 aaa=readLines("Korea/plot2a_wiki.svg",-1)
 bbb <- gsub(".svglite ", "", aaa)
 writeLines(bbb,"Korea/plot2a_wiki.svg")

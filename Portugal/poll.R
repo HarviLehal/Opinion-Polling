@@ -117,7 +117,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 2025 Result (99.23% counted) <br> 7 Day Average <br> *(2024 Result)*')+
+  ggtitle(' 2025 Result <br> 7 Day Average <br> *(2024 Result)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 
