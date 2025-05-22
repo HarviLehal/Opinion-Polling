@@ -28,7 +28,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
     "#004ea2","#e61e2b","#ff7920","#ffcc00","#080b9e","#99c9c9","#c99999","#777777"
     
   ))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d[d$Date!=election,])+
   # geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),

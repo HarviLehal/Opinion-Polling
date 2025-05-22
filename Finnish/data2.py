@@ -39,7 +39,8 @@ for z in parties:
     data22[z] = [x.replace('–','0') for x in data22[z].astype(str)]
 data22[parties] = data22[parties].astype(float)
 Gov=['KOK','PS','SFP','KD']
+Opp=['SDP','KESK','VIHR','SFP','VAS']
 data22['Government'] = data22[Gov].sum(axis=1)
-data22['Opposition'] = 100-data22['Government']
+data22['Opposition'] = data22[Opp].sum(axis=1)
 data22 = data22.drop(parties, axis=1)
 data22.to_csv('Finnish/poll2_new.csv', index=False)
