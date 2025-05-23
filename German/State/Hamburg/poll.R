@@ -93,20 +93,20 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 1)
 
 d4<-rbind(d1,d2,d3)
-d4<-rbind(d1,d2)
+# d4<-rbind(d1,d2)
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#eb737f","#DD1529",
-                               "#96c289","#509A3A",
-                               "#669bac","#005974",
-                               "#d285ad","#B43377",
-                               "#66c5ec","#009EE0",
-                               "#fdd866","#FBBE00",
-                               "#af7b96","#792350",
-                               "#967baf","#502379",
-                               "#cccccc","#aaaaaa"))+
+  scale_fill_manual(values = c("#f39da6","#eb737f","#DD1529",
+                               "#afd6b4","#96c289","#509A3A",
+                               "#99bdc7","#669bac","#005974",
+                               "#e2b5c5","#d285ad","#B43377",
+                               "#99d8f3","#66c5ec","#009EE0",
+                               "#fbe397","#fdd866","#FBBE00",
+                               "#bf95ab","#af7b96","#792350",
+                               "#b9a7c9","#967baf","#502379",
+                               "#dddddd","#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 1)),
@@ -125,7 +125,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle('7 Day Average <br> *(2020 Result)*')+
+  ggtitle(' 2025 Result <br> 7 Day Average <br> *(2020 Result)*')+
   # scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
   scale_x_discrete(limits = d4$variable[order(d1$value,na.last = TRUE)])+
   coord_flip()

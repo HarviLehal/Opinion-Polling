@@ -29,7 +29,9 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#005baa","#ed1c24","#a5a5a5","#444444","#203d71","#c3d746",
                                 "#e85726","#033e7c","#05aacb","#0cb14b","#2c9180","#cc0000",
-                                "#2d7ab0","#02b14b","#004b88","#ff931e","#c99999"))+
+                                "#2d7ab0","#02b14b","#004b88","#ff931e"
+                                # "#c99999"
+                                ))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -60,7 +62,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
-poll<-poll[poll$Date>(max(poll$Date)-14),]
+poll<-poll[poll$Date>(max(poll$Date)-30),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -92,7 +94,9 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#f19a7d","#e85726","#688bb0","#033e7c","#69cce0","#05aacb",
                                "#6dd093","#0cb14b","#80bdb3","#2c9180","#e06666","#cc0000",
                                "#81afd0","#2d7ab0","#67d093","#02b14b","#6693b8","#004b88",
-                               "#ffbe78","#ff931e","#dfc2c2","#c99999"))+
+                               "#ffbe78","#ff931e"
+                               # "#dfc2c2","#c99999"
+                               ))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 1)),
@@ -114,7 +118,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 14 Day Average <br> *(2024 Result)*')+
+  ggtitle(' 30 Day Average <br> *(2024 Result)*')+
   scale_x_discrete(limits = rev(levels(d4$variable)))+
   coord_flip()
 plot2

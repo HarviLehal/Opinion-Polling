@@ -51,7 +51,7 @@ for z in parties:
   D[z] = pd.to_numeric(D[z], errors='coerce')
 
 # D[parties]=D[parties].div(D['total'], axis=0)
-D = D.drop(['total','UND','Other'], axis=1)
+D = D.drop(['total','UND','Other','Others'], axis=1)
 
 
 

@@ -30,15 +30,18 @@ h$Date <- as.Date(h$Date, "%Y-%m-%d")
 election<-as.Date("25 03 2029", "%d %m %Y")
 old <-min(d$Date)
 
+d<-d[d$variable!='Jamaika'&d$variable!='Deutschland'&d$variable!='Kemmerich',]
+d<-droplevels(d)
+
 colss <-c("Rot²-Grün"   ="#770004",
           "GroKo"       ="#005974",
           "Rot-Grün"    ="#DD1529",
-          "Jamaika"     ="#509A3A",
-          "Deutschland" ="#FBBE00",
+          # "Jamaika"     ="#509A3A",
+          # "Deutschland" ="#FBBE00",
           "Kenia"       ="#E5963F",
           "Kiwi"        ="#8EE53F",
           "Rechts"      ="#0489DB",
-          "Kemmerich"   ="#AA692F",
+          # "Kemmerich"   ="#AA692F",
           "Brombeer"    ="#792350",
           "Mehrheit"    ="#000000")
 # MAIN GRAPH
@@ -126,6 +129,10 @@ d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
 d2$value<-formattable::percent(d2$value, digits = 1)
 
+d2<-d2[d2$variable!='Jamaika'&d2$variable!='Deutschland'&d2$variable!='Kemmerich',]
+d2<-droplevels(d2)
+d1<-d1[d1$variable!='Jamaika'&d1$variable!='Deutschland'&d1$variable!='Kemmerich',]
+d1<-droplevels(d1)
 d3<-rbind(d2,d1)
 
 hx <- read.csv("German/Federal/poll4.csv")
@@ -142,12 +149,12 @@ geom_bar(stat="identity",width=0.9, position=position_dodge())+
 scale_fill_manual(values = c("#ad6668","#770004",
                              "#669bac","#005974",
                              "#eb737f","#DD1529",
-                             "#96c289","#509A3A",
-                             "#fdd866","#FBBE00",
+                             # "#96c289","#509A3A",
+                             # "#fdd866","#FBBE00",
                              "#f5bb7b","#Ee8d23",
                              "#bbef8c","#8EE53F",
                              "#68b8e9","#0489DB",
-                             "#cca582","#AA692F",
+                             # "#cca582","#AA692F",
                              "#af7b96","#792350"))+
   geom_text(aes(label = formattable::percent(ifelse(d3$Date != min(d3$Date), d3$value, ""), digits = 1),
                 y = 0), hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
