@@ -31,7 +31,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#326760","#d46a4c","#f6cb2f",
                                 "#48a5ee","#2aa82c","#0c3a6a",
-                                "#8dc63f","#44532a","#e91d50"))+
+                                "#8dc63f","#44532a","#e91d50","#AAAAAA"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -100,7 +100,8 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#6d89a6","#0c3a6a",
                                "#bbdd8c","#8dc63f",
                                "#8f987f","#44532a",
-                               "#f27796","#e91d50"))+
+                               "#f27796","#e91d50",
+                               "#CCCCCC","#AAAAAA"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 1)),

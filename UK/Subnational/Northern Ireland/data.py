@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 
-headers = ['Date','1','2','3','SF','DUP','APNI','UUP','SDLP','TUV','Green','Aontú','PBP','4','5']
-parties = ['SF','DUP','APNI','UUP','SDLP','TUV','Green','Aontú','PBP']
-drops = ['1','2','3','4','5']
+headers = ['Date','1','2','3','SF','DUP','APNI','UUP','SDLP','TUV','Green','Aontú','PBP','Other','4']
+parties = ['SF','DUP','APNI','UUP','SDLP','TUV','Green','Aontú','PBP','Other']
+drops = ['1','2','3','4']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[0])
@@ -32,17 +32,40 @@ for i in range(1):
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i].dropna(subset=['Date'])
-  for z in parties:
-    d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
-    d[i][z] = d[i][z].str.strip('%')
-    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
-  d[i] = d[i].dropna(subset=['TUV'])
+  
+  
+  
+D = pd.concat(d.values(), ignore_index=True)
+
+for z in parties:
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  D[z] = D[z].str.split('%').str[0]
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+  D = D.dropna(subset=['TUV'])
+
+
+
+
+D.to_csv('UK/Subnational/Northern Ireland/poll.csv', index=False)
+
 
 
 D = pd.concat(d.values(), ignore_index=True)
 
 
+for z in parties:
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
+  for x in range(len(d[i]['Date'])):
+    D[z][x] = str(D[z][x])
+    if len(D[z][x].split('%'))>2:
+      D[z][x] = D[z][x].split('%')[2]
+    elif len(D[z][x].split('%'))>1:
+      D[z][x] = D[z][x].split('%')[1]
+    else:
+      pass
+  D[z] = pd.to_numeric(D[z], errors='coerce')
+D = D.dropna(subset=['TUV'])
 
-  
 
-D.to_csv('UK/Subnational/Northern Ireland/poll.csv', index=False)
+
+D.to_csv('UK/Subnational/Northern Ireland/poll2.csv', index=False)
