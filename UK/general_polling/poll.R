@@ -65,7 +65,7 @@ plot1
 plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values = c("#c70000","#0077b6","#13bece","#e05e00","#33a22b","#f5dc00","#005b54"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d)+
   theme_minimal()+
@@ -96,7 +96,7 @@ poll <- read_csv("UK/general_polling/unbiased_polls.csv")
 poll$Date <- as.Date(poll$Date, "%d %b %Y")
 Date <- c(max(poll$Date))
 d2 <- poll[poll$Date==min(poll$Date),]
-poll<-poll[poll$Date>(max(poll$Date)-5),]
+poll<-poll[poll$Date>(max(poll$Date)-6),]
 d1 <- colMeans(poll[-1],na.rm = TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)

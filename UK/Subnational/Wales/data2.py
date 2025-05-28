@@ -18,7 +18,10 @@ parties = ['Lab', 'Con', 'Plaid Cymru', 'Green', 'Lib Dem', 'Reform']
 d = {}
 for i in range(2):
   d[i]=pd.DataFrame(df[i])
-  d[i] = d[i].drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
+  if i == 0:
+    d[i] = d[i].drop(["Pollster", "Client", "Sample size", "Others", "Lead"], axis=1)
+  else:
+    d[i] = d[i].drop(["Pollster", "Client", "Sample size", "Others", "Lead","AWA"], axis=1)
   d[i].columns = headers
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)

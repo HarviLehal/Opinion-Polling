@@ -52,20 +52,20 @@ D.to_csv('UK/Subnational/Northern Ireland/poll.csv', index=False)
 
 D = pd.concat(d.values(), ignore_index=True)
 
-
-for z in parties:
-  D[z] = [p.sub('', x) for x in D[z].astype(str)]
-  for x in range(len(d[i]['Date'])):
-    D[z][x] = str(D[z][x])
-    if len(D[z][x].split('%'))>2:
-      D[z][x] = D[z][x].split('%')[2]
-    elif len(D[z][x].split('%'))>1:
-      D[z][x] = D[z][x].split('%')[1]
-    else:
-      pass
-  D[z] = pd.to_numeric(D[z], errors='coerce')
-D = D.dropna(subset=['TUV'])
-
-
-
-D.to_csv('UK/Subnational/Northern Ireland/poll2.csv', index=False)
+# 
+# for z in parties:
+#   D[z] = [p.sub('', x) for x in D[z].astype(str)]
+#   for x in range(len(d[i]['Date'])):
+#     D[z][x] = str(D[z][x])
+#     if len(D[z][x].split('%'))>2:
+#       D[z][x] = D[z][x].split('%')[2]
+#     elif len(D[z][x].split('%'))>1:
+#       D[z][x] = D[z][x].split('%')[1]
+#     else:
+#       pass
+#   D[z] = pd.to_numeric(D[z], errors='coerce')
+# D = D.dropna(subset=['TUV'])
+# 
+# 
+# 
+# D.to_csv('UK/Subnational/Northern Ireland/poll2.csv', index=False)

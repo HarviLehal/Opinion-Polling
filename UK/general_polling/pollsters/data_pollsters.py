@@ -51,8 +51,8 @@ for z in parties:
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
   
-D.drop(D.index[[-1]],inplace=True)
-D.loc[len(D.index)-1,['Date']] = '4 Jul 2024'
+D.drop(D.index[[-2]],inplace=True)
+D.loc[len(D.index),['Date']] = '4 Jul 2024'
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
 # rename all FindOutNow/ElectoralCalculus to FindOutNow only in the Pollster column
