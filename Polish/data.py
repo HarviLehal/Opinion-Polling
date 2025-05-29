@@ -18,10 +18,10 @@ p = re.compile(r'\[[a-z]+\]')
 
 data25=pd.DataFrame(df[3])
 
-headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja','3','4','5','6','7']
+headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja','3','4','5','6','7','8']
 parties = ['PiS','KO','Trzecia Droga','Lewica','Razem','Konfederacja']
 data25.columns = headers
-drops = ['1','2','3','4','5','6','7']
+drops = ['1','2','3','4','5','6','7','8']
 data25=data25.drop(drops, axis=1)
 data25.drop(data25.index[[-1,-2,-3,]],inplace=True)
 data25=data25[data25['Date'] != '7 Apr']

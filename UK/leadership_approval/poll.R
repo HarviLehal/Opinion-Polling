@@ -35,11 +35,37 @@ colss <-c("Starmer" ="#c70000",
           "Denyer"  ="#33a22b",
           "Adams"   ="#528D6B")
           
+# d[d$variable=='Badenoch',]$variable<-"Sunak"
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=new2)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
+  scale_color_manual(values =colss)+
+  
+  geom_hline(aes(yintercept=0), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold.italic"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(-0.6,0.6,0.05))+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  ggtitle('Net Leadership Approval for British Party Leaders')
+plot1
+
+d<- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 15, Date), mean,na.rm=TRUE))
+
+plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+  geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values =colss)+
   
@@ -60,8 +86,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
   ggtitle('Net Leadership Approval for British Party Leaders')
 
-
-plot1
+plot1a
 
 # BAR CHART!!
 
@@ -70,7 +95,7 @@ poll <- read_csv("UK/leadership_approval/net_approval.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-7),]
+poll<-poll[poll$Date>(max(poll$Date)-14),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -101,7 +126,7 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle(' 7 Day Average')+
+  ggtitle(' 14 Day Average')+
   scale_x_discrete(limits = d1$variable[order(d1$value,na.last = TRUE)])+
   coord_flip()
 plot2
@@ -109,3 +134,8 @@ plot2
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
 plot
 ggsave(plot=plot, file="UK/leadership_approval/plot.png",width = 20, height = 7.5, type = "cairo-png")
+
+
+plot<-ggarrange(plot1a, plot2,ncol = 2, nrow = 1,widths=c(2,0.6))
+plot
+ggsave(plot=plot, file="UK/leadership_approval/plot_ma.png",width = 20, height = 7.5, type = "cairo-png")
