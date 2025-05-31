@@ -89,14 +89,14 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date)) +
   ))+
   geom_bar(position="fill", stat="identity")+
   geom_text(aes(label = ifelse(d3$Date==max(d3$Date),
-                               ifelse(d3$variable=="Left (Lib+Green)",paste("Left\n(Lib+Green):\n",d3$value),
+                               ifelse(d3$variable=="Progressive (Lib+Green)",paste("Progressive\n(Lib+Green):\n",d3$value),
                                       ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
                                              ifelse(d3$variable=="Lab",paste("Lab:\n",d3$value),paste("Nat\n(SNP+PC):\n",d3$value)))),
-                               ifelse(d3$variable=="Left (Lib+Green)",paste("Left\n(Lib+Green):\n",d3$value),
+                               ifelse(d3$variable=="Progressive (Lib+Green)",paste("Progressive\n(Lib+Green):\n",d3$value),
                                       ifelse(d3$variable=="Right (Con+Ref)",paste("Right\n(Con+Ref):\n",d3$value),
                                              ifelse(d3$variable=="Lab",paste("Lab:\n",d3$value),paste("Nat \n(SNP+PC):\n",d3$value))))),
                 hjust=0.5, vjust = 0.5,
-                y = ifelse(d3$variable=="Left (Lib+Green)",0.89,
+                y = ifelse(d3$variable=="Progressive (Lib+Green)",0.89,
                            ifelse(d3$variable=="Right (Con+Ref)",0.11,
                                   ifelse(d3$variable=="Nat (SNP+PC)",
                                          ifelse(d3$Date==min(d3$Date),

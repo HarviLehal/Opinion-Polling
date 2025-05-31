@@ -53,7 +53,7 @@ plots <- list()
 # create function loop through each dataframe in the list and create a LOESS regression line for each without using lapply
 for (i in 1:length(polls)) {
   x <- polls[[i]]
-  if (names(polls)[i] == "FindOutNow"){
+  if (names(polls)[i] == "Opinium"){
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
   # else if (names(polls)[i] == "LordAshcroftPolls"){
@@ -85,11 +85,13 @@ f<-formattable::percent(0.6)
 
 # d<-d[d$Date>start|d$Date==old,]
 
-plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable, fill=variable)) +
   geom_point(size=0.6, data=d[d$Date!=old&d$Date!=election,],alpha=0.9) +
   scale_color_manual(values = c("#c70000","#0077b6","#12B6CF","#e05e00","#528D6B","#f5dc00","#005b54"))+
+  scale_fill_manual(values = c("#c70000","#0077b6","#12B6CF","#e05e00","#528D6B","#f5dc00","#005b54"))+
   plots+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=1.5, data=d[d$Date!=old&d$Date!=election,])+
+  # ggnewscale::new_scale_fill() +
+  geom_smooth(aes(fill = variable),method="loess",fullrange=FALSE,se=TRUE,span=0.3,alpha=0.15,linewidth=1.5, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -111,7 +113,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the Next United Kingdom General Election*')+
-  labs(caption = "* Excluding non BPC Pollsters (Lord Ashcroft Polls and Freshwater Strategy). Find Out Now included in LOESS and average, shown as dashed")
+  labs(caption = "* Excluding non BPC Pollsters (Lord Ashcroft Polls and Freshwater Strategy). Opinium included in LOESS and average, shown as dashed")
 plot1
 
 
