@@ -81,27 +81,27 @@ old<-c(as.Date("04 07 2024", "%d %m %Y"),
        as.Date("23 02 1950", "%d %m %Y"),
        as.Date("05 07 1945", "%d %m %Y"))
 
-h<-melt(poll50[1,],id.vars="Date")
+h<-reshape2::melt(poll50[1,],id.vars="Date")
 h$value<-as.numeric(h$value)/100
 h$value<-formattable::percent(h$value)
 
-h2<-melt(poll74_2[1,],id.vars="Date")
+h2<-reshape2::melt(poll74_2[1,],id.vars="Date")
 h2$value<-as.numeric(h2$value)/100
 h2$value<-formattable::percent(h2$value)
 
-h3<-melt(poll15[1,],id.vars="Date")
+h3<-reshape2::melt(poll15[1,],id.vars="Date")
 h3$value<-as.numeric(h3$value)/100
 h3$value<-formattable::percent(h3$value)
 
-h4<-melt(poll19[1,],id.vars="Date")
+h4<-reshape2::melt(poll19[1,],id.vars="Date")
 h4$value<-as.numeric(h4$value)/100
 h4$value<-formattable::percent(h4$value)
 
-h5<-melt(poll45[1,],id.vars="Date")
+h5<-reshape2::melt(poll45[1,],id.vars="Date")
 h5$value<-as.numeric(h5$value)/100
 h5$value<-formattable::percent(h5$value)
 
-h6<-melt(poll17[1,],id.vars="Date")
+h6<-reshape2::melt(poll17[1,],id.vars="Date")
 h6$value<-as.numeric(h6$value)/100
 h6$value<-formattable::percent(h6$value)
 # GRAPH
