@@ -14,8 +14,8 @@ tables = soup.find_all('table',class_="wikitable")
 p = re.compile(r'\[[a-z]+\]')
 df=pd.read_html(str(tables))
 
-headers = ['Date','1','2','3','Lee Jae-myung','Kim Moon-soo','Lee Jun-seok','Kwon Yeong-guk','Koo Joo-wa','Hwang Kyo-ahn','Song Jin-ho','Other','4','5']
-parties = ['Lee Jae-myung','Kim Moon-soo','Lee Jun-seok','Kwon Yeong-guk','Koo Joo-wa','Hwang Kyo-ahn','Song Jin-ho','Other']
+headers = ['Date','1','2','3','Lee Jae-myung','Kim Moon-soo','Lee Jun-seok','Kwon Yeong-guk','Koo Joo-wa*','Hwang Kyo-ahn*','Song Jin-ho','Other','4','5']
+parties = ['Lee Jae-myung','Kim Moon-soo','Lee Jun-seok','Kwon Yeong-guk','Koo Joo-wa*','Hwang Kyo-ahn*','Song Jin-ho','Other']
 drops = ['1','2','3','4','5']
 d = {}
 
@@ -40,5 +40,11 @@ for i in range(1):
 
 D = pd.concat(d.values(), ignore_index=True)
 # D.drop(D.index[[-1]],inplace=True)
+
+c={}
+c[0] = D[:1]
+c[1] = D[1:]
+c[1] = c[1][(pd.to_datetime(c[1]["Date"])<dateparser.parse("3 June 2025"))]
+D = pd.concat(c.values(), ignore_index=True)
 
 D.to_csv('Korea/poll2a.csv', index=False)

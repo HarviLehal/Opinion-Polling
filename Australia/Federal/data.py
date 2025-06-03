@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2025_Australian_federal_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Australian_federal_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -15,10 +15,10 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', 'Brand', 'mode', 'Sample', 'Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'UND', 'Labor2', 'Coalition2']
-parties = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other', 'Labor2', 'Coalition2']
+headers=['Date', 'Brand', 'mode', 'Sample', 'Labor','Coalition',  'Green', 'ONP', 'TOP', 'IND', 'Other', 'UND', 'Labor2', 'Coalition2']
+parties = ['Labor', 'Coalition', 'Green', 'ONP', 'TOP', 'IND', 'Other', 'Labor2', 'Coalition2']
 d = {}
-for i in range(4):
+for i in range(1):
   d[i]=pd.DataFrame(df[i])
   d[i].columns = headers
   d[i]=d[i].drop(["Brand", "Sample", "UND", "mode"], axis=1)
@@ -40,13 +40,16 @@ for z in parties:
   D[z] = D[z].astype(str)
   D[z] = D[z].str.strip('%')
   D[z] = D[z].astype('float')
+oth = ['Other','IND']
+D['Other'] = D[oth].sum(axis=1)
+D = D.drop('IND',axis=1)
   
 PP = ['Labor2', 'Coalition2']
 E = D.drop(PP, axis=1)
 E.to_csv('Australia/Federal/poll.csv', index=False)
 
 
-parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'UAP', 'Other']
+parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'TOP', 'Other']
 D = D.drop(parties2, axis=1)
 headers = ['Date', 'Labor', 'Coalition']
 D.columns = headers

@@ -151,10 +151,10 @@ ggsave(plot=plotB, file="Dutch/plot_ma.png",width = 20, height = 10, type="cairo
 
 d1$value<-ifelse(is.na(d1$value)==TRUE,0,d1$value)
 d2$value<-ifelse(is.na(d2$value)==TRUE,0,d2$value)
-d1$value<-d1$value/150
-d2$value<-d2$value/150
-d1$Date<-'Polling'
-d2$Date<-'Election'
+d1$value<-d1$value/sum(d1$value,na.rm=TRUE)
+d2$value<-d2$value/sum(d2$value,na.rm=TRUE)
+d1$Date<-'14 Day Average'
+d2$Date<-'2023 Result'
 
 ordered<-c('SP','PvdD','PvdA-GL','DENK','D66','Volt','CU','CDA','NSC','VVD','BBB','PVV','SGP','FvD','JA21')
 
@@ -166,22 +166,22 @@ d2<-d2 %>%
   mutate(variable =  factor(variable, levels = ordered)) %>%
   arrange(variable)
 
-d3<-rbind(d2,d1)
+d3<-rbind(d1,d2)
 
 
-plot3a<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=round(value*150))) + 
+plot3a<-ggplot(d3, aes(fill=interaction(rev(Date),variable), y=value, x=Date,label=round(value*150))) + 
   scale_fill_manual(values = c("#f17474","#E81718","#7aa67d","#226B26","#e07777","#cc1d1d",
                                "#8fd3d0","#45B6B1","#8bce8b","#3DAD3E","#9980b5","#552C83",
                                "#8ecaf3","#43A6EB","#98dd92","#53C74A","#f6dc66","#f0c400",
                                "#7a7fdf","#222ACA","#c2da76","#99C11A","#6e7d9b","#0E2758",
                                "#eba077","#DD601C","#b07677","#7C1B1C","#7d809a","#262B57"))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface="bold",color="#FFFFFF")+
+  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(d3$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),
         axis.text.x = element_text(face="bold",color="#000000",size=10),
-        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=2),
+        axis.text.y = element_text(face="bold.italic",size=15,color="#000000",hjust=1),
         # axis.text.y = element_blank(),
         plot.title = element_text(face="bold"),
         panel.grid.major = element_blank(),
@@ -189,6 +189,7 @@ plot3a<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=ro
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   geom_hline(yintercept = 0.5,color = "#000000", linetype = "dashed",linewidth=0.5,alpha=0.25) +
+  scale_x_discrete(limits=rev)+
   coord_flip()
 plot3a
 

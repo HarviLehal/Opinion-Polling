@@ -20,7 +20,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("3 05 2025", "%d %m %Y")
+election<-as.Date("23 09 2028", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 
@@ -28,10 +28,11 @@ old <-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#00557c","#de3533",
+  scale_color_manual(values = c("#de3533","#00557c",
                                 "#3AA54F","#E76E29",
                                 "#F8CC10","#a2aab3"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -51,7 +52,8 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Opinion Polling for the Next Australian Federal Election')
 plot1
 
-z <- d[d$Date!=old&d$Date!=election,]
+# z <- d[d$Date!=old&d$Date!=election,]
+z<-d
 
 z<- z %>%
   group_by(variable) %>%
@@ -60,7 +62,7 @@ z<- z %>%
 
 plot1ma<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#00557c","#de3533","#3AA54F","#E76E29","#F8CC10","#a2aab3"))+
+  scale_color_manual(values = c("#de3533","#00557c","#3AA54F","#E76E29","#F8CC10","#a2aab3"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -112,19 +114,30 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 2)
 
 d4<-rbind(d1,d2,d3)
+d4<-rbind(d1,d2)
 
 
 
 
 plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-scale_fill_manual(values = c("#6699b0","#337796","#00557c","#eb8685","#e87270","#de3533",
-                             "#9EED8E","#61b772","#3AA54F","#f7b792","#ec8b54","#E76E29",
-                             "#fadc7d","#f9d640","#F8CC10","#c7ccd1","#b5bbc2","#a2aab3"))+
+# scale_fill_manual(values = c("#6699b0","#337796","#00557c",
+#                              "#eb8685","#e87270","#de3533",
+#                              "#9EED8E","#61b772","#3AA54F",
+#                              "#f7b792","#ec8b54","#E76E29",
+#                              "#fadc7d","#f9d640","#F8CC10",
+#                              "#c7ccd1","#b5bbc2","#a2aab3"))+
+  scale_fill_manual(values = c("#e87270","#de3533",
+                               "#337796","#00557c",
+                               "#61b772","#3AA54F",
+                               "#ec8b54","#E76E29",
+                               "#f9d640","#F8CC10",
+                               "#b5bbc2","#a2aab3"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 1)),
-                                      paste(formattable::percent(d4$value, digits = 1))), ""),
+                                      ifelse(!is.nan(d4$value),paste(formattable::percent(d4$value, digits = 1)),""),
+                                      paste(formattable::percent(d4$value, digits = 1))
+                                      ), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
                                paste("(",formattable::percent(d4$value, digits = 1),")"),""),
@@ -139,7 +152,7 @@ scale_fill_manual(values = c("#6699b0","#337796","#00557c","#eb8685","#e87270","
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle(' 2025 Result <br> 5 Day Average <br> *(2022 Result)*')+
+  ggtitle(' Latest Poll <br> *(2025 Result)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 
@@ -166,7 +179,8 @@ old <-min(d$Date)
 plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#de3533","#00557c"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -186,7 +200,8 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   ggtitle('Two Party Preference Polling for the Next Australian Federal Election')
 plot1a
 
-z <- d[d$Date!=old&d$Date!=election,]
+# z <- d[d$Date!=old&d$Date!=election,]
+z <- d
 
 z<- z %>%
   group_by(variable) %>%
@@ -247,14 +262,17 @@ d3$value<-as.numeric(d3$value)/100
 d3$value<-formattable::percent(d3$value, digits = 2)
 
 d4<-rbind(d1,d2,d3)
+d4<-rbind(d1,d2)
 
 
 
 
 plot2a<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#eb8685","#e87270","#de3533",
-                               "#6699b0","#337796","#00557c"))+
+  # scale_fill_manual(values = c("#eb8685","#e87270","#de3533",
+  #                              "#6699b0","#337796","#00557c"))+
+  scale_fill_manual(values = c("#e87270","#de3533",
+                               "#337796","#00557c"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 1)),
@@ -273,7 +291,7 @@ plot2a<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   # ggtitle(' Résultats 2024 <br> Moyenne sur la semaine <br> *(Résultats 2020)*')+
-  ggtitle(' 2025 Result <br> 5 Day Average <br> *(2022 Result)*')+
+  ggtitle(' Latest Poll <br> *(2025 Result)*')+
   scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 

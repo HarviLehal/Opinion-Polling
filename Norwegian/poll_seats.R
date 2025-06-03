@@ -111,6 +111,8 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=rou
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   geom_hline(yintercept = 0.5,color = "#000000", linetype = "dashed",linewidth=0.5,alpha=0.25) +
+  geom_hline(yintercept = 0.5+(1/169),color = "#000000", linetype = "dotted",linewidth=0.5,alpha=0.25) +
+  geom_hline(yintercept = 0.5-(1/169),color = "#000000", linetype = "dotted",linewidth=0.5,alpha=0.25) +
   coord_flip()
 plot2
 
