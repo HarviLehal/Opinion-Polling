@@ -25,7 +25,7 @@ election<-as.Date("01 06 2025", "%d %m %Y")
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=election,],alpha=0.5)+
   scale_color_manual(values = c("#263778","#F68F2D"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.3,linewidth=0.75, data=d[d$Date!=election,])+
   theme_minimal()+

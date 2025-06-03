@@ -97,4 +97,15 @@ D=D.dropna(subset=['Trzaskowski'])
 D['total']=D[parties].sum(axis=1)
 D[parties]=D[parties].div(D['total'], axis=0)
 D = D.drop(['total'], axis=1)
+
+
+c={}
+c[0] = D[:1]
+c[1] = D[1:]
+c[1] = c[1][(pd.to_datetime(c[1]["Date"])<dateparser.parse("1 June 2025"))]
+D = pd.concat(c.values(), ignore_index=True)
+
+D.loc[0,['Date']] = dateparser.parse('1 June 2025')
+
+
 D.to_csv('Polish/President/poll2.csv', index=False)
