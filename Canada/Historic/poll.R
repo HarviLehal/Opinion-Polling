@@ -32,17 +32,18 @@ poll11 <- read_csv("Canada/Historic/poll_11.csv")
 poll15 <- read_csv("Canada/Historic/poll_15.csv")
 poll19 <- read_csv("Canada/Historic/poll_19.csv")
 poll21 <- read_csv("Canada/Historic/poll_21.csv")
-poll25 <- read_csv("Canada/Federal//poll.csv")
+poll25 <- read_csv("Canada/Federal/Old/poll.csv")
+poll29 <- read_csv("Canada/Federal/poll.csv")
 '%!in%' <- function(x,y)!('%in%'(x,y))
 
 
-poll<-dplyr::bind_rows(poll25,poll21,poll19,poll15,poll11,poll08,poll06,poll04,poll00,poll97,poll93,poll88,poll84,poll80,poll79,poll74,poll72,poll68,poll65,poll63,poll62)
-polls<-c("poll25","poll21","poll19","poll15","poll11","poll08","poll06","poll04","poll00","poll97","poll93","poll88","poll84","poll80","poll79","poll74","poll72","poll68","poll65","poll63","poll62")
+poll<-dplyr::bind_rows(poll29,poll25,poll21,poll19,poll15,poll11,poll08,poll06,poll04,poll00,poll97,poll93,poll88,poll84,poll80,poll79,poll74,poll72,poll68,poll65,poll63,poll62)
+polls<-c("poll29","poll25","poll21","poll19","poll15","poll11","poll08","poll06","poll04","poll00","poll97","poll93","poll88","poll84","poll80","poll79","poll74","poll72","poll68","poll65","poll63","poll62")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-next_election<-as.Date("28 04 2025", "%d %m %Y")
+next_election<-as.Date("15 10 2029", "%d %m %Y")
 start <-min(d$Date)
 
 election58<-as.Date("31 03 1958", "%d %m %Y")
@@ -67,24 +68,29 @@ election15<-as.Date("19 10 2015", "%d %m %Y")
 election19<-as.Date("21 10 2019", "%d %m %Y")
 election21<-as.Date("20 10 2021", "%d %m %Y")
 election25<-as.Date("28 04 2025", "%d %m %Y")
+election29<-as.Date("15 10 2029", "%d %m %Y")
 
-elections<-c(election58,election62,election63,election65,election68,election72,election74,election79,election80,election84,election88, election93,election97,election00,election04,election06,election08,election11,election15,election19,election21,election25)
+elections<-c(election58,election62,election63,election65,election68,election72,election74,election79,election80,election84,election88, election93,election97,election00,election04,election06,election08,election11,election15,election19,election21,election25,election29)
 
-for (i in 1:21){
+for (i in 1:22){
   assign(paste0("d_",i),reshape2::melt(get(paste0(polls[i])), id.vars="Date"))
   assign(paste0("d_",i),get(paste0("d_",i)) %>% mutate(value=as.numeric(value)/100))
   assign(paste0("d_",i),get(paste0("d_",i)) %>% mutate(value=formattable::percent(value)))
 }
 
-
+colss <-c("CPC"="#00529F",
+          "LPC"="#D91920",
+          "NDP"="#EF7B00",
+          "BQ" ="#127C73",
+          "PPC"="#442D7B",
+          "GPC"="#3D9F3B",
+          "CA" ="#5f9ea0",
+          "PC" ="#9999ff")
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date%!in%elections,],alpha=0.15)+
-scale_color_manual(values = c("#00529F","#D91920",
-                              "#EF7B00","#127C73",
-                              "#442D7B","#3D9F3B",
-                              "#5f9ea0","#9999ff"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d_1[d_1$Date%!in%elections,],alpha=0.5)+
+scale_color_manual(values = colss)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1.0,linewidth=0.75, data=d_1[d_1$Date%!in%elections,],alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d_2[d_2$Date%!in%elections,],alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d_3[d_3$Date%!in%elections,],alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.1,linewidth=0.75, data=d_4[d_4$Date%!in%elections,],alpha=0.5)+
@@ -105,6 +111,7 @@ scale_color_manual(values = c("#00529F","#D91920",
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=d_19[d_19$Date%!in%elections,],alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1.0,linewidth=0.75, data=d_20[d_20$Date%!in%elections,],alpha=0.5)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1.0,linewidth=0.75, data=d_21[d_21$Date%!in%elections,],alpha=0.5)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1.0,linewidth=0.75, data=d_22[d_22$Date%!in%elections,],alpha=0.5)+
   
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -130,5 +137,5 @@ scale_color_manual(values = c("#00529F","#D91920",
 # plot1
 
 
-ggsave(plot=plot1, file="Canada/Historic/plot.png",width = 30, height = 10, type="cairo-png")
+ggsave(plot=plot1, file="Canada/Historic/plot.png",width = 50, height = 10, type="cairo-png",limitsize=FALSE)
 

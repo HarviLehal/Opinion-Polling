@@ -22,12 +22,14 @@ for i in range(1):
   d[i]=pd.DataFrame(df[-1])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
-  # d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
-  # d[i].Date2.fillna(d[i].Date, inplace=True)
-  # d[i]['Date2'] = [x for x in d[i]['Date2'].astype(str)]
-  # d[i]['Date'] = d[i]['Date2']
-  # d[i] = d[i].drop(['Date2'], axis=1)
-  d[i].loc[len(d[i].index)-1,['Date']] = '19 October 2024'
+  d[i]['Date2'] = d[i]['Date'].str.split(' ').str[0]
+  d[i]['Date3'] = d[i]['Date'].str.split('–').str[1]
+  d[i].Date3.fillna(d[i]['Date'].str.split(' ').str[1], inplace=True)
+  d[i]['Date3'] = d[i]['Date3'].str.split(',').str[0]
+  d[i]['Date4'] = d[i]['Date'].str.split(' ').str[-1]
+  d[i]['Date'] = d[i]['Date3']+ ' ' +d[i]['Date2'] + ' ' +d[i]['Date4']
+  d[i] = d[i].drop(['Date2','Date3','Date4'], axis=1)
+  d[i].loc[len(d[i].index)-1,['Date']] = '19 Oct 2024'
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
   d[i] = d[i].dropna(subset=['NDP'])
   # d[i].drop(d[i].index[[-1,-2,-4]],inplace=True)
