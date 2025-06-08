@@ -20,7 +20,7 @@ poll<-dplyr::bind_rows(poll1,poll2)
 # poll <- rbind(poll1,poll2) 
 d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("22 11 2023", "%d %m %Y")
-next_election<-max(d$Date)
+next_election<-as.Date("29 10 2025", "%d %m %Y")
 old_election <-min(d$Date)
 
 d_old <- reshape2::melt(poll1, id.vars="Date")
@@ -51,6 +51,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   geom_vline(xintercept=old_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=next_election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   xlim(min(d$Date), next_election)+
   scale_y_continuous(breaks=seq(0,60,5))+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+

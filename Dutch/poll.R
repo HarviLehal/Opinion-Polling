@@ -17,7 +17,7 @@ library(ggbreak)
 poll <- read_csv("Dutch/poll_govt.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
-# election<-as.Date("22 11 2023", "%d %m %Y")
+election<-as.Date("29 10 2025", "%d %m %Y")
 old <-min(d$Date)
 max<-max(d$Date)
 
@@ -44,9 +44,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Government-Opposition Seat Projections for the Next Dutch General Election')
 
 plot1
@@ -70,9 +71,10 @@ plot2<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,max),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Government-Opposition Seat Projections for the Next Dutch General Election')
 
 plot2
