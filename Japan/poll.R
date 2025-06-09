@@ -65,7 +65,7 @@ poll <- read_csv("Japan/poll.csv")
 Date <- c(max(poll$Date))
 poll[-1]<-data.frame(apply(poll[-1], 2, function(x) 
   as.numeric(sub("%","",as.character(x)))))
-poll<-poll[poll$Date>(max(poll$Date)-8),]
+poll<-poll[poll$Date>(max(poll$Date)-15),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
 d1 <- t(d1)
@@ -93,8 +93,8 @@ plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
-  ggtitle('*7 Day Average*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  ggtitle('*14 Day Average*')+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)],labels = label_wrap(8))+
   coord_flip()
 
 

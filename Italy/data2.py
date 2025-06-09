@@ -80,6 +80,8 @@ C.to_csv('Italy/poll2.csv', index=False)
 
 
 parties=['FdI', 'PD', 'M5S', 'Lega', 'FI', 'A', 'IV', 'AVS', '+E', 'PTD','NM', 'Libertà','ScN', 'SUE', 'DSP', 'AP', 'Italexit', 'A-IV']
+for z in parties:
+  C[z] = np.where(3>C[z],np.nan,C[z])
 gov = ['FdI','Lega','FI','NM']
 opp = [p for p in parties if p not in gov]
 

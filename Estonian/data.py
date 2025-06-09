@@ -18,8 +18,13 @@ headers = ['Date','Ref','EKRE','Kesk','E200','SDE','Isamaa','Parempoolsed']
 parties = ['Ref','EKRE','Kesk','E200','SDE','Isamaa','Parempoolsed']
 d = {}
 for i in range(3):
+  print(i)
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.", 'EÜVP','Koos','EER'], axis=1)
+  if i != 0:
+    d[i]=d[i].drop(['EÜVP'], axis=1)
+  else:
+    d[i]=d[i].drop(['VL'], axis=1)
+  d[i]=d[i].drop(["Polling firm", "Sample size", "Others", "Lead", "Gov.", "Opp.",'Koos','EER'], axis=1)
   if i != 2:
     d[i]=d[i].drop(['ERK'], axis=1)
   d[i].columns = headers

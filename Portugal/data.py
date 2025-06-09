@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Portuguese_legislative_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2025_Portuguese_legislative_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -17,14 +17,14 @@ p = re.compile(r'\[[a-z]+\]')
 
 # 2024
 
-headers = ['Date','AD','PS','Chega','IL','BE','CDU','LIVRE','PAN','Others']
+headers = ['1','Date','2','3','AD','PS','Chega','IL','BE','CDU','LIVRE','PAN','Others','4']
 parties = ['AD','PS','Chega','IL','BE','CDU','LIVRE','PAN','Others']
-
+drops = ['1','2','3','4']
 d={}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(['Polling firm/Link','Sample size','Turnout','Lead'], axis=1)
   d[i].columns = headers
+  d[i]=d[i].drop(drops, axis=1)
   if i == 0:
     d[i]=d[i][d[i]['Date'] != '9 Jun 2024']
   for z in parties:
@@ -51,19 +51,25 @@ for i in range(1):
 
 D = pd.concat(d.values(), ignore_index=True)
 
-AD=32.10+0.62
-PS=23.38
-CH=22.56
-IL=5.53
-BE=2
-CD=3.03
-PA=1.36
-LI=4.20
+AD=31.20+0.58
+PS=22.83
+CH=22.76
+IL=5.36
+BE=1.99
+CD=2.91
+PA=1.38
+LI=5.36
 O=100-AD-PS-CH-IL-BE-CD-PA-LI
 
-new_row = pd.DataFrame({'Date': '18 May 2025', 'AD':AD , 'PS':PS , 'Chega':CH, 'IL':IL, 'BE':BE, 'CDU':CD,'PAN':PA,'LIVRE':LI,'Others':O}, index=[0])
+new_row = pd.DataFrame({'Date': '18 May 2025', 'AD':AD , 'PS':PS , 'Chega':CH, 'IL':IL, 'BE':BE, 'CDU':CD,'LIVRE':LI,'PAN':PA,'Others':O}, index=[0])
 D = pd.concat([new_row,D]).reset_index(drop=True)
 D.Date=D.Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
+
+# c={}
+# c[0] = D[:1]
+# c[1] = D[1:]
+# c[1] = c[1][(pd.to_datetime(c[1]["Date"])<dateparser.parse("18 May 2025"))]
+# D = pd.concat(c.values(), ignore_index=True)
 
 D.to_csv('Portugal/poll.csv', index=False)
 

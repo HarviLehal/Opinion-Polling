@@ -15,13 +15,14 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date','Firm','Liberal', 'Labor', 'Green', 'JLN*', 'Other']
+headers=['Date','1','2','3','Liberal', 'Labor', 'Green', 'JLN*', 'Other']
 parties = ['Liberal', 'Labor', 'Green', 'JLN*', 'Other']
+drops=['1','2','3']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[1])
+  d[i]=pd.DataFrame(df[-1])
   d[i].columns = headers
-  d[i]=d[i].drop(["Firm"], axis=1)
+  d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   # d[i]['Date2'] = [x+ str(2023-i) for x in d[i]['Date2'].astype(str)]
