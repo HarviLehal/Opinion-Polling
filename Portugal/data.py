@@ -58,7 +58,7 @@ IL=5.36
 BE=1.99
 CD=2.91
 PA=1.38
-LI=5.36
+LI=4.07
 O=100-AD-PS-CH-IL-BE-CD-PA-LI
 
 new_row = pd.DataFrame({'Date': '18 May 2025', 'AD':AD , 'PS':PS , 'Chega':CH, 'IL':IL, 'BE':BE, 'CDU':CD,'LIVRE':LI,'PAN':PA,'Others':O}, index=[0])
