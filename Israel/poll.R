@@ -22,8 +22,8 @@ d <- reshape2::melt(poll, id.vars="Date")
 election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
 # d$value[is.na(d$value)]<-0
-new<-d[d$variable!='Democrats'&d$variable!='New Hope',]
-new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
+new<-d[d$variable!='Democrats'&d$variable!='New Hope'&d$variable!='Bennett 2026',]
+new2<-d[d$variable=='Democrats'|d$variable=='New Hope'|d$variable=='Bennett 2026',]
 new2<-new2[!is.na(new2$value),]
 h<-3.25
 # MAIN GRAPH
@@ -36,7 +36,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#00bce0","#0082b3","#032470",
                                 "#003066","#9bc1e3","#0d7a3a",
                                 "#d51f33","#ef1520","#1be263",
-                                "#2d38cf","#f66004"))+
+                                "#2d38cf","#f66004","#19a3bd"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
@@ -77,7 +77,7 @@ plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
                                 "#00bce0","#0082b3","#032470",
                                 "#003066","#9bc1e3","#0d7a3a",
                                 "#d51f33","#ef1520","#1be263",
-                                "#2d38cf","#f66004"))+
+                                "#2d38cf","#f66004","#19a3bd"))+
   geom_line(aes(y = Moving_Average), linetype = "solid", size=0.75)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -132,13 +132,13 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#779cc5","#1c5a9f","#7686b3","#1a3581","#ff8e66","#ff4300","#66d7ec","#00bce0",
                                "#66b4d1","#0082b3","#687ca9","#032470","#6683a3","#003066","#c3daee","#9bc1e3",
                                "#6eaf89","#0d7a3a","#e67985","#d51f33","#f57379","#ef1520","#76eea1","#1be263",
-                               "#8188e2","#2d38cf","#faa068","#f66004"))+
+                               "#8188e2","#2d38cf","#faa068","#f66004","#75c8d7","#19a3bd"))+
   geom_text(aes(label = ifelse(d3$Date == max(d3$Date),
                                ifelse(d3$value>=4,paste(d3$value),
                                       ifelse(d3$variable=='Meretz'|d3$variable=='Labor','Merged into The Democrats',paste(round(d3$value,digits=2),"%"))),
                                ifelse(d3$value>=4,paste("(",d3$value,")"),
                                       ifelse(d3$variable=='New Hope','(Part of National Unity)',
-                                             ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)",paste("(",round(d3$value,digits=2),"%",")"))))),
+                                             ifelse(d3$variable=='Democrats',"(Labor-Meretz Merger)",ifelse(d3$variable=="Bennett 2026","New",paste("(",round(d3$value,digits=2),"%",")")))))),
                 y = 0),hjust=ifelse(is.na(d3$value)==TRUE,ifelse(d3$Date==max(d3$Date),ifelse(d3$value<10,ifelse(d3$value<4,-0.15,-1.1),-0.45),0),0), color="#000000",position = position_dodge(1), size=3.5, fontface=ifelse(d3$value<4,"bold.italic","bold"))+
   # geom_text(aes(label = ifelse(is.na(d3$value), "New", ""),y = 0),
   #           hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+

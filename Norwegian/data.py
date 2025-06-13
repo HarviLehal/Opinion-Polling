@@ -18,9 +18,9 @@ drops = ['1','2','3','4','5']
 d = {}
 
 for i in range(3):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   if i == 0:
-    d[i]=d[i].drop(["Blocs"],axis=1)
+    d[i] = d[i].iloc[:,:-2]
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -41,7 +41,7 @@ drops = ['1','2','3','4','5']
 
 for j in range(2):
   i = j+3
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -87,7 +87,7 @@ drops = ['1','2','3','4','5']
 d = {}
 
 for i in range(1):
-  d[i]=pd.DataFrame(df[i])
+  d[i]=pd.DataFrame(df[i+1])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]

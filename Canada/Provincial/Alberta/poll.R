@@ -23,16 +23,16 @@ d$value<-formattable::percent(d$value)
 election<-as.Date("18 10 2027", "%d %m %Y")
 old <-min(d$Date)
 
-parties<-d[d$variable!='WLC'&d$variable!='Liberal'&d$variable!='Green',]
-small<-d[d$variable=='WLC'|d$variable=='Liberal'|d$variable=='Green',]
+parties<-d[d$variable!='WLC'&d$variable!='Liberal'&d$variable!='Green'&d$variable!='WIP'&d$variable!='RPA',]
+small<-d[d$variable=='WLC'|d$variable=='Liberal'|d$variable=='Green'|d$variable=='WIP'|d$variable=='RPA',]
 small<-small[!is.na(small$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#005d7d","#ff9900","#99c955","#089cdc","#ea6d6a","#d870bb"))+
+  geom_point(size=1.5, data=d[d$Date!=old,],alpha=0.5)+
+  scale_color_manual(values = c("#005d7d","#ff9900","#99c955","#089cdc","#ea6d6a","#d870bb","#0f8753","#e30000"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=small[small$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.6,linewidth=0.75, data=parties[parties$Date!=old,])+
@@ -99,7 +99,9 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#c2df99","#99c955",
                                "#6bc4ea","#089cdc",
                                "#f2a7a6","#ea6d6a",
-                               "#e8a9d6","#d870bb"))+
+                               "#e8a9d6","#d870bb",
+                               "#6fb798","#0f8753",
+                               "#ee6666","#e30000"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),

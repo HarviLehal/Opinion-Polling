@@ -24,9 +24,9 @@ def extract_latest_date(date_range):
 headers = ['1','2','Date','3','UCP','NDP','4','Alberta','5','6','7','8','9','10','11','12']
 parties = ['UCP','NDP','Alberta']
 drops = ['1','2','3','4','5','6','7','8','9','10','11','12']
-headers = ['1','2','Date','3','UCP','NDP','Green','Alberta','Liberal','WLC','7','8','9','10','11','12']
-parties = ['UCP','NDP','Green','Alberta','Liberal','WLC']
-drops = ['1','2','3','7','8','9','10','11','12']
+headers = ['1','2','Date','3','UCP','NDP','Green','Alberta','Liberal','WLC','WIP','RPA','4','5','6','7','8']
+parties = ['UCP','NDP','Green','Alberta','Liberal','WLC','WIP','RPA']
+drops = ['1','2','3','4','5','6','7','8']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[-1])
@@ -52,7 +52,8 @@ for z in parties:
   D[z] = [x.replace('–',str(np.nan)) for x in D[z]]
   D[z] = [x.replace('—',str(np.nan)) for x in D[z]]
   D[z] = D[z].str.strip('%')
-  D[z] = D[z].astype('float')
+  D[z] = [x.replace('<1',"0") for x in D[z]]
+  D[z] = pd.to_numeric(D[z], errors='coerce')
   
 
 D.to_csv('Canada/Provincial/Alberta/poll.csv', index=False)

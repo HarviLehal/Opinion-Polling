@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 data=pd.DataFrame(df[6])
-headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Konfederacja','Korona','3','4','5']
+headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Konfederacja','6','3','4','5','7']
 parties = ['PiS','KO','Trzecia Droga','Lewica','Konfederacja']
-drops = ['1','2','3','4','5']
+drops = ['1','2','3','4','5','6','7']
 
 data.columns = headers
 data=data.drop(drops, axis=1)
@@ -39,12 +39,12 @@ data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_
 
 data.to_csv('Polish/Seats/poll.csv', index=False)
 
-parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga','Korona']
+parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga']
 UO = ['KO', 'Lewica', 'Trzecia Droga']
-R = ['PiS', 'Konfederacja','Korona']
+R = ['PiS', 'Konfederacja']
 data[parties] = data[parties].astype(float)
 data['Government (KO + Lewica + Trzecia Droga)'] = data[UO].sum(axis=1)
-data['Opposition (PiS + Konfederacja + Korona)'] = data[R].sum(axis=1)
+data['Opposition (PiS + Konfederacja)'] = data[R].sum(axis=1)
 data = data.drop(UO + R, axis=1)
 
 data.to_csv('Polish/Seats/poll2.csv', index=False)

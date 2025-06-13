@@ -18,18 +18,11 @@ election<-as.Date("11 11 2027", "%d %m %Y")
 old<-min(d$Date)
 # MAIN GRAPH
 
-parties<-d[d$variable!='Korona',]
-kass<-d[d$variable=='Korona',]
-kass<-kass[!is.na(kass$value),]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#122746","#a37919"))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=kass)+
-  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=kass)+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
+  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#122746"))+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -81,7 +74,7 @@ plot3<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#7d87ae","#263778","#fabc81","#F68F2D",
                                "#76d066","#1BB100","#b676a2","#851A64",
-                               "#717d90","#122746","#c8af75","#a37919"))+
+                               "#717d90","#122746"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
             hjust=ifelse(d3$value<10,-1.45,-0.45), color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
@@ -116,7 +109,7 @@ d2$value<-d2$value/sum(d2$value,na.rm=TRUE)
 d1$Date<-'14 Day Average'
 d2$Date<-'2023 Result'
 
-ordered<-c('KO','Trzecia Droga','Lewica','Korona','Konfederacja','PiS')
+ordered<-c('KO','Trzecia Droga','Lewica','Konfederacja','PiS')
 
 d1<-d1 %>%
   mutate(variable =  factor(variable, levels = ordered)) %>%
@@ -131,7 +124,7 @@ d3<-rbind(d1,d2)
 
 plot3a<-ggplot(d3, aes(fill=interaction(rev(Date),variable), y=value, x=Date,label=round(value*460))) + 
   scale_fill_manual(values = c("#fabc81","#F68F2D","#76d066","#1BB100","#b676a2","#851A64",
-                               "#c8af75","#a37919","#717d90","#122746","#7d87ae","#263778"))+
+                               "#717d90","#122746","#7d87ae","#263778"))+
   geom_bar(position="fill", stat="identity")+
   geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(d3$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
   scale_y_continuous(labels = scales::percent)+
