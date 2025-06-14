@@ -23,12 +23,14 @@ for i in range(2):
   heads = [p.sub('', x) for x in heads]
   d[i]=pd.DataFrame(df[i])
   d[i].columns = heads
-  parties = heads[3:-1]
-  d[i] = d[i].drop(d[i].columns[[1, 2,-1]],axis = 1)
+  d[i] = d[i].drop(d[i].columns[[1, 2,4,5,-1]],axis = 1)
+  # parties = d[i].columns[1:].remove_unused_levels().levels[0]
   # if i==2:
+  parties = d[i].columns[1:]
+  heads = parties.insert(0,'Date')
+  d[i].columns = heads
   d[i].rename(columns={d[i].columns[0]: 'Date'}, inplace=True)
-  # else:
-    # d[i].rename(columns={'Tarih': 'Date'}, inplace=True)
+  d[i].rename(columns={'Demirtaş DEM[a 1]': 'Demirtaş DEM'}, inplace=True)
   d[i]['Date2'] = d[i]['Date'].str.split('-').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+' '+ str(2025-i) for x in d[i]['Date2'].astype(str)]
@@ -48,7 +50,7 @@ CHP = [D.columns[2],D.columns[3],D.columns[4]]
 dig = [D.columns[7],D.columns[8],D.columns[9],D.columns[10]]
 
 D['Other'] = D[dig].sum(axis=1)
-D['CHP'] = D[CHP].sum(axis=1)
+D['CHP'] = np.where(D[CHP[0]]==D[CHP[1]],D[CHP[0]],D[CHP].sum(axis=1))
 
 D = D.drop(CHP+dig,axis=1)
 

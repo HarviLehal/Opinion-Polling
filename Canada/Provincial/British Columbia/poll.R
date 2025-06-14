@@ -22,16 +22,21 @@ d$value<-formattable::percent(d$value)
 
 election<-as.Date("21 10 2028", "%d %m %Y")
 old <-min(d$Date)
+
+parties<-d[d$variable!='OneBC'&d$variable!='CentreBC',]
+kass<-d[d$variable=='OneBC'|d$variable=='CentreBC',]
+kass<-kass[!is.na(kass$value),]
 # MAIN GRAPH
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#EF7B00","#00529F","#3D9F3B","#aaaaaa"
+  geom_point(size=1.5, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
+  scale_color_manual(values = c("#EF7B00","#00529F","#3D9F3B","#c49b50","#ee2d30","#aaaaaa"
                                 ))+
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=2,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=kass[kass$Date!=old&kass$Date!=election,])+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -97,15 +102,16 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#f5b066","#EF7B00",
                                "#6F94ED","#00529F",
                                "#8bc589","#3D9F3B",
+                               "#dcc396","#c49b50",
+                               "#f58183","#ee2d30",
                                "#cccccc","#aaaaaa"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
-                               ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 2)),
-                                      paste(formattable::percent(d4$value, digits = 1))), ""),
-                y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
+                               paste(formattable::percent(d4$value, digits = 1)), ""),y = 0),
+            hjust=0, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 2),")"),""),
-                y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
+                               ifelse(is.na(d4$value)==TRUE,"(New)",
+                                      (paste("(",formattable::percent(d4$value, digits = 1),")"))),""),y = 0),
+            hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
         axis.title=element_blank(),
