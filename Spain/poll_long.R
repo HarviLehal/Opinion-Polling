@@ -35,7 +35,7 @@ d_new$value<-formattable::percent(d_new$value)
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old_election&d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#ef1c27","#1d84ce","#ef4b91",
                                 "#63be21","#ffb232","#00c7ae",
                                 "#4aae4a","#b5cf18","#ec640c",

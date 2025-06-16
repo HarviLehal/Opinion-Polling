@@ -45,7 +45,7 @@ colss <-c("S"="#EC3E48",
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old_election&d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = colss)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d_old[d_old$Date!=election&d_old$Date!=old_election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_new[d_new$Date!=election&d_new$Date!=old_election,])+

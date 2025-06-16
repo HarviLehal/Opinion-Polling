@@ -56,7 +56,7 @@ d$variable <- factor(d$variable, levels = c("Smer","PS","Hlas","OĽaNOap","KDH",
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old_election&d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#c21f1f","#00BDFF","#81163B",
                                 "#BED62F","#FFE17C","#78fc04",
                                 "#173A70","#e4010a","#f48c1f",

@@ -29,7 +29,7 @@ d_new <- reshape2::melt(poll2, id.vars="Date")
 # MAIN GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old_election|d$Date!=election,],alpha=0.25)+
+  geom_point(size=1, data=d[d$Date!=old_election&d$Date!=election,],alpha=0.25)+
   scale_color_manual(values = c("#222ACA","#3DAD3E","#0E2758",
                                 "#cc1d1d","#53C74A","#E81718",
                                 "#7C1B1C","#226B26","#43A6EB",
