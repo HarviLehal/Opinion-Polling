@@ -38,7 +38,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=0.5, data=d[d$Date!=old,],alpha=0.5) +
   scale_color_manual(values = c("#E4003B","#0087DC","#1e5b53",
                                 "#528D6B","#FAA61A","#12B6CF"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=d[d$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -102,11 +102,11 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#9dc7af","#528D6B","#fcd38b","#FAA61A","#80dae8","#12B6CF"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),ifelse(is.nan(d4$value)==FALSE,
                                ifelse(d4$Date == max(d4$Date),
-                                      paste(formattable::percent(d4$value, digits = 2, decimal.mark = ",")),
-                                      paste(formattable::percent(d4$value, digits = 1, decimal.mark = ","))),""), ""),
+                                      paste(formattable::percent(d4$value, digits = 2)),
+                                      paste(formattable::percent(d4$value, digits = 1))),""), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 2, decimal.mark = ","),")"),""),
+                               paste("(",formattable::percent(d4$value, digits = 2),")"),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",
