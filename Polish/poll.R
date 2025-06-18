@@ -30,7 +30,7 @@ razem<-d[d$variable=='Razem',]
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#4f2d8f","#122746"))+
+  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#F9C013","#2cd494","#851A64","#4f2d8f","#122746"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=data[data$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=razem[razem$Date!=old,])+
@@ -94,7 +94,8 @@ d4<-d3
 plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#7d87ae","#263778","#fabc81","#F68F2D",
-                               "#76d066","#1BB100","#b676a2","#851A64",
+                               "#76d066","#1BB100","#fbd971","#F9C013",
+                               "#80e5bf","#2cd494","#b676a2","#851A64",
                                "#9581bc","#4f2d8f","#717d90","#122746"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
@@ -102,7 +103,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                       paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
-                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),paste("(Split from Lewica)")),""),
+                                                              paste("(",formattable::percent(d4$value, digits = 2),")"),ifelse(d4$variable=='Razem',paste("(Split from Lewica)"),paste("(Part of Trzecia Droga)"))),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",

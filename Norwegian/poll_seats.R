@@ -20,7 +20,7 @@ Sys.setlocale("LC_ALL", "Norwegian")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 
-election<-as.Date("01 09 2025", "%d %m %Y")
+election<-as.Date("08 09 2025", "%d %m %Y")
 start <- as.Date("10 Jan 2025", "%d %b %Y")
 old <-min(d$Date)
 
@@ -83,15 +83,15 @@ d3<-rbind(d2,d1)
 
 d1$value<-ifelse(is.na(d1$value)==TRUE,0,d1$value)
 d2$value<-ifelse(is.na(d2$value)==TRUE,0,d2$value)
-d1$value<-d1$value/169
-d2$value<-d2$value/169
+d1$value<-d1$value/sum(d1$value,na.rm=TRUE)
+d2$value<-d2$value/sum(d2$value,na.rm=TRUE)
 d1$Date<-'Gjennomsnitt'
 d2$Date<-'Resultat'
 
 d3<-rbind(d2,d1)
 
 
-plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=round(value*150))) + 
+plot2<-ggplot(d3, aes(fill=interaction(rev(Date),variable), y=value, x=Date,label=round(value*169))) + 
   scale_fill_manual(values = c("#ed8e98","#D82C3C","#d68bba","#AC347D",
                                "#b1c97d","#6F9323","#e6818c","#CB182D",
                                "#82c28d","#2D843B","#78b3b3","#236666",
@@ -113,6 +113,7 @@ plot2<-ggplot(d3, aes(fill=interaction(Date,variable), y=value, x=Date,label=rou
   geom_hline(yintercept = 0.5,color = "#000000", linetype = "dashed",linewidth=0.5,alpha=0.25) +
   geom_hline(yintercept = 0.5+(1/169),color = "#000000", linetype = "dotted",linewidth=0.5,alpha=0.25) +
   geom_hline(yintercept = 0.5-(1/169),color = "#000000", linetype = "dotted",linewidth=0.5,alpha=0.25) +
+  scale_x_discrete(limits=rev)+
   coord_flip()
 plot2
 

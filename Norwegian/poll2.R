@@ -19,7 +19,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 # election<-as.Date("22 11 2023", "%d %m %Y")
 old <-min(d$Date)
-election<-as.Date("01 09 2025", "%d %m %Y")
+election<-as.Date("08 09 2025", "%d %m %Y")
 
 # LOESS GRAPH
 

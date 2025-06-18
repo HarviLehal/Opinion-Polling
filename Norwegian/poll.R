@@ -21,7 +21,7 @@ d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
-election<-as.Date("01 09 2025", "%d %m %Y")
+election<-as.Date("08 09 2025", "%d %m %Y")
 old <-min(d$Date)
 # MAIN GRAPH
 

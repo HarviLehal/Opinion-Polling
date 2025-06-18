@@ -20,7 +20,7 @@ Sys.setlocale("LC_ALL", "Norwegian")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
 
-election<-as.Date("01 09 2025", "%d %m %Y")
+election<-as.Date("08 09 2025", "%d %m %Y")
 start <- as.Date("10 Jan 2025", "%d %b %Y")
 old <-min(d$Date)
 
