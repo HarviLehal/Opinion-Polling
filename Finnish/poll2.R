@@ -92,7 +92,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 30 day average \n (2023 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 
 plot1a<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
@@ -180,7 +180,7 @@ plot4<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 30 day average \n (2023 Result)')+
-  scale_x_discrete(limits = rev(levels(d3$variable)))+
+  scale_x_discrete(limits = d3$variable[order(d1$value,d2$value,na.last = FALSE)])+
   coord_flip()
 plot4
 

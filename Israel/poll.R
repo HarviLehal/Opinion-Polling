@@ -23,8 +23,10 @@ election<-as.Date("27 10 2026", "%d %m %Y")
 old <-min(d$Date)
 # d$value[is.na(d$value)]<-0
 new<-d[d$variable!='Democrats'&d$variable!='New Hope'&d$variable!='Bennett 2026',]
-new2<-d[d$variable=='Democrats'|d$variable=='New Hope'|d$variable=='Bennett 2026',]
+new3<-d[d$variable=='Bennett 2026',]
+new2<-d[d$variable=='Democrats'|d$variable=='New Hope',]
 new2<-new2[!is.na(new2$value),]
+new3<-new3[!is.na(new3$value),]
 h<-3.25
 # MAIN GRAPH
 
@@ -40,6 +42,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.2,linewidth=0.75, data=new[new$Date!=old&new$Date!=election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.4,linewidth=0.75, data=new2[new2$Date!=old&new2$Date!=election,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new3[new3$Date!=old&new3$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
