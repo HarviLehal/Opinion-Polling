@@ -29,7 +29,7 @@ old<-min(d$Date)
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#851A64","#122746"))+
+  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#F9C013","#851A64","#4f2d8f","#122746","#2cd494"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -81,8 +81,9 @@ d3<-rbind(d2,d1)
 plot3<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
   scale_fill_manual(values = c("#7d87ae","#263778","#fabc81","#F68F2D",
-                               "#76d066","#1BB100","#b676a2","#851A64",
-                               "#717d90","#122746"))+
+                               "#76d066","#1BB100","#fbd971","#F9C013",
+                               "#b676a2","#851A64","#9581bc","#4f2d8f",
+                               "#717d90","#122746","#80e5bf","#2cd494"))+
   geom_text(aes(label = ifelse(d3$Date != min(d3$Date), d3$value, ""),y = 0),
             hjust=ifelse(d3$value<10,-1.45,-0.45), color="#000000",position = position_dodge(0.8), size=3.5, fontface="bold")+
   geom_text(aes(label = ifelse(d3$Date == min(d3$Date),paste("(",d2$value,")"),""),
@@ -117,7 +118,7 @@ d2$value<-d2$value/sum(d2$value,na.rm=TRUE)
 d1$Date<-'14 Day Average'
 d2$Date<-'2023 Result'
 
-ordered<-c('KO','Trzecia Droga','Lewica','Konfederacja','PiS')
+ordered<-c('KO','PL2050','PSL','Trzecia Droga','Lewica','Razem','Konfederacja','PiS')
 
 d1<-d1 %>%
   mutate(variable =  factor(variable, levels = ordered)) %>%
@@ -131,10 +132,12 @@ d3<-rbind(d1,d2)
 
 
 plot3a<-ggplot(d3, aes(fill=interaction(rev(Date),variable), y=value, x=Date,label=round(value*460))) + 
-  scale_fill_manual(values = c("#fabc81","#F68F2D","#76d066","#1BB100","#b676a2","#851A64",
+  scale_fill_manual(values = c("#fabc81","#F68F2D","#76d066","#1BB100",
+                               "#fbd971","#F9C013","#80e5bf","#2cd494",
+                               "#b676a2","#851A64","#9581bc","#4f2d8f",
                                "#717d90","#122746","#7d87ae","#263778"))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(d3$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
+  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(subset(d3,value != 0)$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),

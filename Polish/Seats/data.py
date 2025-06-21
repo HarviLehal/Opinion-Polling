@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 data=pd.DataFrame(df[6])
-headers = ['1','Date','2','PiS','KO','Trzecia Droga','Lewica','Konfederacja','6','3','4','5','7']
-parties = ['PiS','KO','Trzecia Droga','Lewica','Konfederacja']
-drops = ['1','2','3','4','5','6','7']
+headers = ['1','Date','2','PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja','3','4','5','6']
+parties = ['PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja']
+drops = ['1','2','3','4','5','6']
 
 data.columns = headers
 data=data.drop(drops, axis=1)
@@ -37,13 +37,44 @@ data = data.drop(['Date2'],axis=1)
 data.Date = data['Date'].astype(str)
 data.Date = data.Date.apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
 
+
+split_date = '17 June 2025'
+split_date=dateparser.parse(split_date)
+
+c={}
+c[0]=data[(pd.to_datetime(data["Date"]) > split_date)]
+
+
+
+c[1]=data[(pd.to_datetime(data["Date"]) < split_date)]
+c[1]=c[1].drop(["PSL"], axis=1)
+c[1].rename(columns={"PL2050": 'Trzecia Droga'}, inplace=True)
+
+data = pd.concat(c.values(), ignore_index=True)
+
+
+split_date = '1 Nov 2024'
+split_date=dateparser.parse(split_date)
+
+c={}
+c[0]=data[(pd.to_datetime(data["Date"]) > split_date)]
+
+
+
+c[1]=data[(pd.to_datetime(data["Date"]) < split_date)]
+c[1]=c[1].drop(["Razem"], axis=1)
+
+data = pd.concat(c.values(), ignore_index=True)
+
+
+
 data.to_csv('Polish/Seats/poll.csv', index=False)
 
-parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga']
-UO = ['KO', 'Lewica', 'Trzecia Droga']
+parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga','PL2050','PSL']
+UO = ['KO', 'Lewica', 'Trzecia Droga','PL2050','PSL']
 R = ['PiS', 'Konfederacja']
 data[parties] = data[parties].astype(float)
-data['Government (KO + Lewica + Trzecia Droga)'] = data[UO].sum(axis=1)
+data['Government (KO + Lewica + PL2050 + PSL)'] = data[UO].sum(axis=1)
 data['Opposition (PiS + Konfederacja)'] = data[R].sum(axis=1)
 data = data.drop(UO + R, axis=1)
 
