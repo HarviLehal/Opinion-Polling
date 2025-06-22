@@ -15,7 +15,7 @@ library(tidyverse)
 library(data.table)
 library(hrbrthemes)
 
-py_run_file("Israel/data.py")
+py_run_file("Israel/data2.py")
 poll <- read_csv("Israel/poll.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 

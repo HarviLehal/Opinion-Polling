@@ -147,7 +147,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' Týdenní průměr <br> *(Výsledky 2021)*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,d2$value,na.last = FALSE)])+
   labs(caption = '† Piráti a Starostové <br> ‡ Seskupené Pod SPD')+
   coord_flip()
 plot2

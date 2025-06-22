@@ -17,9 +17,19 @@ parties = ['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','None']
 drops = ['1','2','3','4','5']
 d = {}
 for i in range(2):
+  heads = []
+  for j in range(len(df[i+1].columns)):
+    heads.append(df[i+1].columns[j][0])
   d[i]=pd.DataFrame(df[i+1])
-  d[i].columns = headers
-  d[i]=d[i].drop(drops, axis=1)
+  d[i].columns = heads
+  # parties.remove("Others")
+  # parties.replace('No Party', 'None')
+  d[i].rename(columns={'No party': 'None','Fieldwork date':'Date','Ishin':'NIK','Reiwa':'REI','Komei':'KMT'}, inplace=True)
+  d[i] = d[i].drop(d[i].columns[[1, 2,-1,-2,-4]],axis = 1)
+  parties = d[i].columns[1:]
+  # d[i]=pd.DataFrame(df[i+1])
+  # d[i].columns = headers
+  # d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
@@ -32,6 +42,8 @@ for i in range(2):
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D = D[['Date','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','None']]
+parties=['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','None']
 for z in parties:
   D[z] = pd.to_numeric(D[z], errors='coerce')
 D.drop(D.index[[-1]],inplace=True)

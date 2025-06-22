@@ -47,10 +47,11 @@ for i in range(3):
 D = pd.concat(d.values(), ignore_index=True)
 parties = ['PP','PSOE','VOX','Sumar','ERC','JxCat','EHB','PNV','BNG','CCa','UPN','Podemos','SALF']
 D['total']=D[parties].sum(axis=1)
-D['total']=np.where(D['total']<345,np.nan,D['total'])
+D['total']=np.where(D['total']<325,np.nan,D['total'])
 D=D.dropna(subset=['total'])
 D=D.drop(['total'], axis=1)
 
+D.to_csv('Spain/Seats/poll2.csv', index=False)
 
 
 opp = ['PP','VOX','UPN','SALF']

@@ -17,10 +17,17 @@ parties = ['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']
 drops = ['1','2','3','4','5','6']
 d = {}
 for i in range(2):
-  d[i]=pd.DataFrame(df[3+i])
-  d[i].columns = headers
-  d[i]=d[i].drop(drops, axis=1)
-  d[i] = d[i].dropna(subset=['Date'])
+  heads = []
+  for j in range(len(df[i+3].columns)):
+    heads.append(df[i+3].columns[j][0])
+  d[i]=pd.DataFrame(df[i+3])
+  d[i].columns = heads
+  d[i].rename(columns={'Fieldwork date':'Date','Ishin':'NIK','Reiwa':'REI','Komei':'KMT'}, inplace=True)
+  d[i] = d[i].drop(d[i].columns[[1, 2,-1,-2,-3,-4]],axis = 1)
+  parties = d[i].columns[1:]
+  # d[i]=pd.DataFrame(df[i+1])
+  # d[i].columns = headers
+  # d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
@@ -33,9 +40,11 @@ for i in range(2):
 
 
 D = pd.concat(d.values(), ignore_index=True)
+D = D[['Date','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']]
+parties=['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']
 for z in parties:
   D[z] = pd.to_numeric(D[z], errors='coerce')
-
+D.drop(D.index[[-1]],inplace=True)
 
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)*100
