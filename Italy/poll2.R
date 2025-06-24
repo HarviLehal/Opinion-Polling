@@ -24,14 +24,18 @@ election<-as.Date("22 12 2027", "%d %m %Y")
 EU<-as.Date("09 06 2024", "%d %m %Y")
 old <-min(d$Date)
 # LOESS GRAPH
-
+new<-d[d$variable!='Libertà'&d$variable!='SUE'&d$variable!='PTD'&d$variable!='Italexit'&d$variable!='AP'&d$variable!='DSP'&d$variable!='ScN'&d$variable!='A-IV',]
+new2<-d[d$variable=='Libertà'|d$variable=='SUE'|d$variable=='PTD'|d$variable=='Italexit'|d$variable=='AP'|d$variable=='DSP'|d$variable=='ScN'|d$variable=='A-IV',]
+new2<-new2[!is.na(new2$value),]
 
 # TRUE M5S COLOURS
 # "#fdf48c","#fcec3f"
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.15)+
-  scale_color_manual(values = c("#03386a","#ef1c27"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  scale_color_manual(values = c("#03386a","#ef1c27","#0039aa","#d4448c","#e9a513","#b41317","#fcd404","#b04e4e","#075271","#2149a7","#346c9c","#0039aa"))+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.15,linewidth=0.75, data=d[d$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.075,linewidth=0.75, data=new[new$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2[new2$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -139,4 +143,59 @@ plot<-ggarrange(plot3, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 ggsave(plot=plot, file="Italy/plot_bloc2.png",width = 15, height = 7.5, type="cairo-png")
 
+
+poll <- read_csv("Italy/poll_bloc2.csv")
+d <- reshape2::melt(poll, id.vars="Date")
+d$value<-as.numeric(d$value)
+d$value<-formattable::percent(d$value)
+Date<-d$Date
+Vote<-d$value
+Party<-d$variable
+data <- data.frame(Date,Vote,Party)
+
+
+rowSums(poll[, -1],na.rm=TRUE)
+
+colss <-c("CDX"     ="#03386a",
+          "A"       ="#0039aa",
+          "IV"      ="#d4448c",
+          "PTD"     ="#e9a513",
+          "ScN"     ="#b41317",
+          "SUE"     ="#fcd404",
+          "DSP"     ="#b04e4e",
+          "Libertà" ="#075271",
+          "AP"      ="#2149a7",
+          "Italexit"="#346c9c",
+          "A-IV"    ="#0039aa",
+          "CSX"     ="#ef1c27")
+
+
+election<-as.Date("22 12 2027", "%d %m %Y")
+EU<-as.Date("09 06 2024", "%d %m %Y")
+old <-min(d$Date)
+
+
+plot1<-ggplot(data, aes(x=Date, y=Vote, fill=Party)) + 
+  geom_area(alpha=0.95,na.rm=TRUE,position="fill",colour="white",size=0.1)+
+  scale_fill_manual(values = colss)+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        # legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,1,0.05))+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=EU, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_hline(yintercept=0.5, linetype="dashed", color = "#000000", size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, linewidth=0.75)+
+  # geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  # geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Italian general election')
+
+ggsave(plot=plot1, file="Italy/plot_bloc3.png",width = 15, height = 7.5, type="cairo-png")
 

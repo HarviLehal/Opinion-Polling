@@ -90,3 +90,31 @@ C['Opposition'] = C[opp].sum(axis=1)
 C = C.drop(gov+opp, axis=1)
 
 C.to_csv('Italy/poll_bloc.csv', index=False)
+
+
+
+
+C = pd.concat(c.values(), ignore_index=True)
+
+
+gov = ['FdI','Lega','FI','NM']
+opp = ['PD','M5S','AVS','+E']
+for z in parties:
+  C[z] = np.where(3>C[z],np.nan,C[z])
+C['CDX'] = C[gov].sum(axis=1)
+C['CSX'] = C[opp].sum(axis=1)
+C = C.drop(gov+opp, axis=1)
+C=C.dropna(axis=1, how='all')
+
+
+column_to_move = C.pop("CSX")
+C.insert(1, "CSX", column_to_move )
+
+newparties = C.columns[1:]
+C['total']=C[newparties].sum(axis=1)
+C[newparties] = C[newparties].div(C['total'], axis=0)
+C = C.drop(["total"], axis=1)
+
+
+
+C.to_csv('Italy/poll_bloc2.csv', index=False)

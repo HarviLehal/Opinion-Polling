@@ -199,3 +199,60 @@ plot
 
 ggsave(plot=plot, file="Dutch/plot_bar.png",width = 20, height = 10, type="cairo-png")
 
+
+
+
+
+
+
+poll <- read_csv("Dutch/poll_new.csv")
+d <- reshape2::melt(poll, id.vars="Date")
+d$value<-as.numeric(d$value)
+
+ordered<-c('SP','PvdD','PvdA-GL','DENK','D66','Volt','CU','CDA','NSC','VVD','BBB','PVV','SGP','FvD','JA21')
+
+d<-d %>%
+  mutate(variable =  factor(variable, levels = ordered)) %>%
+  arrange(variable)
+
+Date<-d$Date
+Seats<-d$value
+Party<-d$variable
+data <- data.frame(Date,Seats,Party)
+
+
+
+
+
+
+
+plot1<-ggplot(data, aes(x=Date, y=Seats, fill=Party)) + 
+  geom_area(alpha=0.8,na.rm=TRUE,colour="white",size=0.1)+
+  scale_fill_manual(values = c("#E81718","#226B26","#cc1d1d",
+                               "#45B6B1","#3DAD3E","#552C83",
+                               "#43A6EB","#53C74A","#f0c400",
+                               "#222ACA","#99C11A","#0E2758",
+                               "#DD601C","#7C1B1C","#262B57"))+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        # legend.position = "none",
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_y_continuous(breaks=seq(0,150,10))+
+  geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_hline(yintercept=75, linetype="dashed", color = "#000000", size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, linewidth=0.75)+
+  # geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  # geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('Opinion Polling for the Next Dutch Parliamentary Election')
+plot1
+
+
+# plot<-ggarrange(plot1, plot3a,ncol = 1, nrow = 2,heights=c(2,0.3))
+# plot
+ggsave(plot=plot1, file="Dutch/plot_bar2.png",width = 20, height = 10, type="cairo-png")
