@@ -147,9 +147,20 @@ ggsave(plot=plot, file="Italy/plot_bloc2.png",width = 15, height = 7.5, type="ca
 poll <- read_csv("Italy/poll_bloc2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$value<-as.numeric(d$value)
-d$value<-formattable::percent(d$value)
+# d$value<-formattable::percent(d$value)
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean, na.rm=TRUE)) %>%
+  ungroup() %>%
+  mutate(Moving_Average = if_else(
+    variable %in% c("A-IV") & is.na(value),
+    NA_real_,
+    Moving_Average
+  ))
+
 Date<-d$Date
-Vote<-d$value
+Vote<-d$Moving_Average
 Party<-d$variable
 data <- data.frame(Date,Vote,Party)
 
@@ -157,7 +168,7 @@ data <- data.frame(Date,Vote,Party)
 rowSums(poll[, -1],na.rm=TRUE)
 
 colss <-c("CDX"     ="#03386a",
-          "A"       ="#0039aa",
+          "A"       ="#003dff",
           "IV"      ="#d4448c",
           "PTD"     ="#e9a513",
           "ScN"     ="#b41317",
@@ -195,7 +206,7 @@ plot1<-ggplot(data, aes(x=Date, y=Vote, fill=Party)) +
   # geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   # geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Opinion Polling for the Next Italian general election')
-
+  ggtitle('14 Day Bloc Average Polling for the Next Italian general election')
+plot1
 ggsave(plot=plot1, file="Italy/plot_bloc3.png",width = 15, height = 7.5, type="cairo-png")
 

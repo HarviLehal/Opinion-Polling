@@ -51,9 +51,9 @@ split_dat2=dateparser.parse(split_date2)
 
 
 c={}
-c[0]=D[D["Date"]<split_date1]
+c[0]=D[D["Date"]>split_date2]
 c[1]=D[(D["Date"]>split_date1)&(D["Date"]<split_date2)]
-c[2]=D[D["Date"]>split_date2]
+c[2]=D[D["Date"]<split_date1]
 
 
 DMD = ['DK','MSZP','Zöldek']
@@ -65,15 +65,15 @@ c[1] = c[1].drop(DMD, axis=1)
 
 C = pd.concat(c.values(), ignore_index=True)
 
-G=25.52
-A=7.24
-D=11.17
-P=13.74
-V=12.92
-B=7.32
-I=6.56
-VE=3.87
-O=100-G-A-D-P-V-B-I-VE
+# G=25.52
+# A=7.24
+# D=11.17
+# P=13.74
+# V=12.92
+# B=7.32
+# I=6.56
+# VE=3.87
+# O=100-G-A-D-P-V-B-I-VE
 # 
 # new_row = pd.DataFrame({'Date':'27 October 2024','GERB':G,'APS':A,'DPS–NN':D,'PP-DB':P,'V':V,'BSP':B,'ITN':I,'Velichie':VE,'Other':O,'DPS':np.nan}, index=[0])
 # D = pd.concat([new_row,C]).reset_index(drop=True)

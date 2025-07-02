@@ -51,12 +51,12 @@ for i in range(6):
   e[i]['Date'] = e[i]['Date2']
   e[i] = e[i].drop(['Date2'], axis=1)
   e[i].Date=e[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  e[i] = e[i][e[i]['FdI'] != e[i]['FI']]
   for z in parties: # replace any non-numeric values with NaN
     e[i][z] = pd.to_numeric(e[i][z], errors='coerce')
+  e[i] = e[i].dropna(subset=['FdI'])
 
 
-split_date = '15 Apr 2023'
+split_date = '19 Oct 2023'
 
 split_date=dateparser.parse(split_date)
 
@@ -65,11 +65,13 @@ c[0]=e[0]
 c[1]=e[1]
 c[2]=e[2]
 c[3]=e[3]
-c[4]=e[4][(pd.to_datetime(e[4]["Date"]) > split_date)]
+c[4]=e[4][(pd.to_datetime(e[4]["Date"]) >= split_date)]
 c[5]=e[4][(pd.to_datetime(e[4]["Date"]) < split_date)]
 c[6]=e[5]
 
 c[5]['A-IV']=np.where(c[5]['A']==c[5]['IV'],c[5]['A'],c[5]['A']+c[5]['IV'])
+# c[4]['A']=np.where(c[4]['A']+c[4]['IV']>5.2,np.nan,c[4]['A'])
+# c[4]['IV']=np.where(c[4]['A']==np.nan&c[4]['IV']==5.2,np.nan,c[4]['IV'])
 threeway = ['A','IV']
 c[5] = c[5].drop(threeway, axis=1)
 
