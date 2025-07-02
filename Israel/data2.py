@@ -31,6 +31,8 @@ for i in range(9):
     d[i]=d[i].drop(['Polling firm','Publisher','Gov. total','Opp. total'], axis=1)
     if i==2:
       d[i]=d[i].drop(['Supp. total'],axis=1)
+    if i==0:
+      d[i].rename(columns={'B&W':'National Unity'},inplace=True)
   else:
     for j in range(len(df[i].columns)):
       heads.append(df[i].columns[j][0])

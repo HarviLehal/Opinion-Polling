@@ -15,12 +15,12 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date','1','2','3','Liberal', 'Labor', 'Green', 'JLN*', 'Other']
-parties = ['Liberal', 'Labor', 'Green', 'JLN*', 'Other']
-drops=['1','2','3']
+headers=['Date','1','2','3','Liberal', 'Labor', 'Green','4','5', 'JLN*','o1', 'o2']
+parties = ['Liberal', 'Labor', 'Green', 'JLN*','o1', 'o2']
+drops=['1','2','3','4','5']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-7])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
@@ -29,18 +29,25 @@ for i in range(1):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['Labor'] != d[i]['Other']]
+  d[i] = d[i][d[i]['Labor'] != d[i]['Green']]
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
+    d[i][z] = [x.replace('%','') for x in d[i][z]]
+    d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
 
 D = pd.concat(d.values(), ignore_index=True)
-for z in parties:
-  D[z] = D[z].astype(str)
-  D[z] = D[z].str.strip('%')
-  D[z] = D[z].astype('float')
+# for z in parties:
+#   D[z] = D[z].astype(str)
+#   D[z] = D[z].str.strip('%')
+#   D[z] = D[z].astype('float')
+#         d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
+
+oth=['o1','o2']
+D['Other']=D[oth].sum(axis=1)
+D = D.drop(oth, axis=1)
 
 # Lib=36.76
 # Lab=29.41

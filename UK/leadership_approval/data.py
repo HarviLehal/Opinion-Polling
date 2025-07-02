@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -14,7 +14,7 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
-data2=pd.DataFrame(df[-6])
+data2=pd.DataFrame(df[-3])
 data2=data2.drop(["Pollster", "Sample size"], axis=1)
 
 headers = ['Date','s1','s2','s3','r1','r2','r3','f1','f2','f3','d1','d2','d3','c1','c2','c3','a1','a2','a3']

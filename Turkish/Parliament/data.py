@@ -31,7 +31,7 @@ for i in range(3):
   for z in parties:
     d[i][z] = pd.to_numeric(d[i][z], errors='coerce')
   d[i] = d[i].dropna(subset=['AKP'])
-d[2] = d[2].drop(['MP'], axis=1)
+# d[2] = d[2].drop(['MP'], axis=1)
 for i in range(3):
   d[i]=d[i].reset_index(drop=True)
 

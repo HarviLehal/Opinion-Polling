@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_United_Kingdom_general_election"
+wikiurl="https://en.wikipedia.org/wiki/Leadership_approval_opinion_polling_for_the_next_United_Kingdom_general_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -20,7 +20,7 @@ parties = ['Starmer','Badenoch','Farage','Davey']
 drops = ['1','2','4','5','6','7','8']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-7])
+  d[i]=pd.DataFrame(df[0])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i] = d[i].dropna(subset=['Date'])
