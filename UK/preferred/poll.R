@@ -39,7 +39,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new)+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
+  geom_point(size=1.75, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values=colss)+
   geom_hline(aes(yintercept=0.5), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   theme_minimal()+
