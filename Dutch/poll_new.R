@@ -49,7 +49,6 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  xlim(min(d$Date), max)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
@@ -80,7 +79,6 @@ plot2<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.x.top = element_blank(),
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
-  xlim(min(d$Date), max)+
   geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
@@ -177,7 +175,7 @@ plot3a<-ggplot(d3, aes(fill=interaction(rev(Date),variable), y=value, x=Date,lab
                                "#7a7fdf","#222ACA","#c2da76","#99C11A","#6e7d9b","#0E2758",
                                "#eba077","#DD601C","#b07677","#7C1B1C","#7d809a","#262B57"))+
   geom_bar(position="fill", stat="identity")+
-  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(d3$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
+  geom_text(data=subset(d3,value != 0),size = 5.5, position = position_stack(vjust = 0.5),fontface=ifelse(subset(d3,value != 0)$Date=='2023 Result',"bold.italic","bold"),color="#FFFFFF")+
   scale_y_continuous(labels = scales::percent)+
   theme_minimal()+
   theme(legend.position = "none",axis.title=element_blank(),
