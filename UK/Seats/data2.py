@@ -21,7 +21,7 @@ parties = ['Lab','Con','Lib Dem','SNP','DUP','IA','Ref','Green','Plaid Cymru','S
 d = {}
 for i in range(1):
   # i=j+1
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i]=d[i].drop(["Event", "Working majority", "Spkr", "Vacant","Unnamed: 18","Unnamed: 21","SF"], axis=1)
   d[i].columns = headers
   for z in parties:
@@ -59,7 +59,7 @@ headers = ["Date","Working majority"]
 parties = ["Working majority"]
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i]=d[i][["Date","Working majority"]]
   d[i].columns = headers
   for z in parties:

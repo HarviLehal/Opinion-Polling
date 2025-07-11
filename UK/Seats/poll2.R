@@ -26,14 +26,23 @@ old <-min(d$Date)
 
 # LOESS GRAPH
 
-plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  # geom_point(size=2,data=d) +
-  geom_point(size=2,data=d)+
-  geom_line()+
-  scale_color_manual(values = c("#e8043c","#0884dc","#ffa41c","#fff48c",
-                                "#d46a4c","#666666","#10b4d4","#528D6B","#005b54",
-                                "#25a928","#f8cc2c","#201464",
-                                "#a09cfc","#999999","#386464"))+
+Date<-d$Date
+Seats<-d$value
+Party<-d$variable
+data <- data.frame(Date,Seats,Party)
+
+
+
+
+
+
+
+plot1<-ggplot(data, aes(x=Date, y=Seats, fill=Party)) + 
+  geom_area(alpha=0.8,na.rm=TRUE,colour="white",size=0.1)+
+  scale_fill_manual(values = c("#e8043c","#0884dc","#ffa41c","#fff48c",
+                               "#d46a4c","#666666","#10b4d4","#528D6B","#005b54",
+                               "#25a928","#f8cc2c","#201464",
+                               "#a09cfc","#999999","#386464"))+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -42,19 +51,16 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.text.y = element_text(face="bold"),
         plot.title = element_text(face="bold"),
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
-        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"),
-        axis.text.x.top = element_blank(),
-        axis.ticks.x.top = element_blank(),
-        axis.line.x.top = element_blank())+
-  geom_hline(aes(yintercept=h))+
-  geom_text(aes((election),h,label = "Majority (326 Seats)",hjust=1 ,vjust = -1),colour="#000000",fontface="bold.italic")+
-  # geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_y_continuous(breaks=seq(0,649,20))+
+  # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_hline(yintercept=325, linetype="dashed", color = "#000000", size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, linewidth=0.75)+
   # geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   # geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
-  scale_x_date(date_breaks = "1 week", date_labels =  "%d %b %Y",limits = c(old-4,election),guide = guide_axis(angle = -90))+
-  scale_y_continuous(breaks=seq(0,650,20))+
-  # add label for the last point of each line and make the text bold, making sure labels don't overlap
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Make-up of the House of Commons Since the 2024 General Election')
+
 plot1
 
 # Bar Chart
@@ -105,5 +111,5 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
 plot<-aplot::plot_list(plot1,plot2,ncol = 2, nrow = 1,widths=c(2,0.5))
 plot
 
-ggsave(plot=plot, file="UK/Seats/plot2.png",width = 24, height = 12, type = "cairo-png")
+ggsave(plot=plot, file="UK/Seats/plot2.png",width = 20, height = 10, type = "cairo-png")
 
