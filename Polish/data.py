@@ -18,10 +18,14 @@ p = re.compile(r'\[[a-z]+\]')
 
 data25=pd.DataFrame(df[3])
 
-headers = ['1','Date','2','PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja','3','4','5','6','7','8']
-parties = ['PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja']
+# headers = ['1','Date','2','PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja','3','4','5','6','7','8']
+# parties = ['PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja']
+# data25.columns = headers
+# drops = ['1','2','3','4','5','6','7','8']
+headers = ['1','Date','2','PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja','Korona','3','4','5']
+parties = ['PiS','KO','PL2050','PSL','Lewica','Razem','Konfederacja','Korona']
 data25.columns = headers
-drops = ['1','2','3','4','5','6','7','8']
+drops = ['1','2','3','4','5']
 data25=data25.drop(drops, axis=1)
 data25.drop(data25.index[[-1,-2,-3,]],inplace=True)
 data25=data25[data25['Date'] != '18 May']
@@ -54,6 +58,8 @@ c[1]=c[1].drop(["PSL"], axis=1)
 c[1].rename(columns={"PL2050": 'Trzecia Droga'}, inplace=True)
 
 data25 = pd.concat(c.values(), ignore_index=True)
+
+data25['Korona'] = np.where(data25['Date']>dateparser.parse("10 April 2025"),data25['Korona'],np.nan)
 
 
 # 2024
@@ -122,14 +128,14 @@ data23 = data23.dropna(subset=['PiS'])
 
 # data = pd.concat([data242,data24,data23])
 data = pd.concat([data25,C,data23])
-data=data[['Date','PiS','KO','Trzecia Droga','PL2050','PSL','Lewica','Razem','Konfederacja']]
+data=data[['Date','PiS','KO','Trzecia Droga','PL2050','PSL','Lewica','Razem','Konfederacja','Korona']]
 data.to_csv('Polish/poll.csv', index=False)
 
 
 
 parties = ['PiS','KO','Lewica','Konfederacja', 'Trzecia Droga','PL2050','PSL']
 UO = ['KO', 'Lewica', 'Trzecia Droga','PL2050','PSL']
-R = ['PiS', 'Konfederacja']
+R = ['PiS', 'Konfederacja','Korona']
 data[parties] = data[parties].astype(float)
 data['Government (KO + Lewica + PL2050 + PSL)'] = data[UO].sum(axis=1)
 data['Right Wing (PiS + Konfederacja)'] = data[R].sum(axis=1)

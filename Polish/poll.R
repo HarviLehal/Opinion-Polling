@@ -23,17 +23,17 @@ election<-as.Date("11 11 2027", "%d %m %Y")
 # election<-max(d$Date)+14
 old <-min(d$Date)
 # MAIN GRAPH
-data<-d[d$variable!='Razem',]
-razem<-d[d$variable=='Razem',]
+data<-d[d$variable!='Korona',]
+razem<-d[d$variable=='Korona',]
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
-  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#F9C013","#2cd494","#851A64","#4f2d8f","#122746"))+
+  scale_color_manual(values = c("#263778","#F68F2D","#1BB100","#F9C013","#2cd494","#851A64","#4f2d8f","#122746","#a37919"))+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d[d$Date!=old,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=data[data$Date!=old,])+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=razem[razem$Date!=old,])+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1.5,linewidth=0.75, data=razem[razem$Date!=old,])+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -96,7 +96,7 @@ plot2<-ggplot(data=d3, aes(x=variable, y=value,fill=interaction(Date,variable), 
   scale_fill_manual(values = c("#7d87ae","#263778","#fabc81","#F68F2D",
                                "#76d066","#1BB100","#fbd971","#F9C013",
                                "#80e5bf","#2cd494","#b676a2","#851A64",
-                               "#9581bc","#4f2d8f","#717d90","#122746"))+
+                               "#9581bc","#4f2d8f","#717d90","#122746","#c8af75","#a37919"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 2)),

@@ -81,7 +81,7 @@ for pollster in pollsters:
     
 # D = D[D['Pollster'] != 'FindOutNow']
 D = D[D['Pollster'] != 'LordAshcroftPolls']
-D = D[D['Pollster'] != 'FreshwaterStrategy']
+# D = D[D['Pollster'] != 'FreshwaterStrategy']
 D = D.drop(['Pollster'], axis=1)
 D.to_csv('UK/general_polling/unbiased_polls.csv', index=False)
 

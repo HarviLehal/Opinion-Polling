@@ -203,3 +203,84 @@ plot<-aplot::plot_list(plot1, plot2,ncol = 1, nrow = 2,heights=c(2,0.3))
 plot
 
 ggsave(plot=plot, file="Slovak/Seats/plot2.png",width = 15, height = 7.5, type="cairo-png")
+
+
+
+
+
+
+
+
+poll <- read_csv("Slovak/Seats/poll.csv")
+d <- reshape2::melt(poll, id.vars="Date")
+d$value<-as.numeric(d$value)
+election<-as.Date("31 12 2028", "%d %m %Y")
+old <-min(d$Date)
+# MAIN GRAPH
+
+# LOESS GRAPH
+
+
+ordered<-c('PS','SASKA','KDH','Demokrati','OLaNOap','Alliance','Republika','SNS*','Hlas*','Smer*')
+ordered<-rev(ordered)
+d<-d %>%
+  mutate(variable =  factor(variable, levels = ordered)) %>%
+  arrange(variable)
+
+
+d <- d %>%
+  group_by(variable) %>%
+  arrange(Date) %>%
+  mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean, na.rm=TRUE)) %>%
+  ungroup()
+
+
+Date<-d$Date
+# Seats<-d$value
+Seats<-d$Moving_Average
+
+Party<-d$variable
+data <- data.frame(Date,Seats,Party)
+
+
+
+
+
+
+plot1<-ggplot(data, aes(x=Date, y=Seats, fill=Party)) + 
+  geom_area(alpha=0.7,na.rm=TRUE,colour="white",size=0.1)+
+  scale_fill_manual(values = c("#c21f1f",
+                               "#81163B",
+                               "#173A70",
+                               "#e61e2a",
+                               "#f48c1f",
+                               "#BED62F",
+                               "#4D0E90",
+                               "#FFE17C",
+                               "#78fc04",
+                               "#00BDFF"))+
+  theme_minimal()+
+  theme(axis.title=element_blank(),legend.title = element_blank(),
+        legend.key.size = unit(2, 'lines'),
+        # legend.position = "none",
+        legend.text =  element_text(face="bold"),
+        axis.text.x = element_text(face="bold"),
+        axis.text.y = element_text(face="bold"),
+        plot.title = element_text(face="bold"),
+        plot.caption  = element_text(face="italic"),
+        panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
+        plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
+  scale_y_continuous(breaks=seq(0,150,10))+
+  # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_hline(yintercept=75, linetype="dashed", color = "#000000", size=0.75)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, linewidth=0.75)+
+  # geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
+  # geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
+  scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  ggtitle('14 Day Average Seat Projection for the Next Slovak Parliamentary Election')+
+  labs(caption = "* Government Parties (Smer-Hlas-SNS)")
+
+
+plot1
+
+ggsave(plot=plot1, file="Slovak/Seats/plot3.png",width = 15, height = 7.5, type="cairo-png")
