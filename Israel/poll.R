@@ -69,12 +69,15 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   
 plot1
 
-d<- d %>%
+z <- d[d$Date!=old&d$Date!=election,]
+
+z<- z %>%
   group_by(variable) %>%
   arrange(Date) %>%
   mutate(Moving_Average = rollapplyr(value, seq_along(Date) - findInterval(Date - 14, Date), mean,na.rm=TRUE))
 
-plot1a<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
+
+plot1a<-ggplot(data=z,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=old,],alpha=0.5)+
   scale_color_manual(values = c("#1c5a9f","#1a3581","#ff4300",
                                 "#00bce0","#0082b3","#032470",
