@@ -124,7 +124,7 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   ggtitle(' 7 Day Average <br> *(2024 Result)*')+
-  scale_x_discrete(limits = rev(levels(d4$variable)),labels = label_wrap(8))+
+  scale_x_discrete(limits = d4$variable[order(d1$value,na.last = FALSE)],labels = label_wrap(8))+
   coord_flip()
 
 plot<-ggarrange(plot1, plot2,ncol = 2, nrow = 1,widths=c(2,0.5))

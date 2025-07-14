@@ -76,6 +76,7 @@ colss <-c("GERB"      ="#0054a6",
           "DPS"       ="#0066b7",
           `PP-DB`     ="#4200ff",
           "V"         ="#c09f62",
+          "MECh"      ="#1a2c44",
           "BSP"       ="#db0f28",
           "ITN"       ="#4bb9de",
           "Velichie"  ="#ad1c20",
@@ -97,7 +98,8 @@ new2<-new2[!is.na(new2$value),]
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(size=1, data=d[d$Date!=election1 & d$Date!=election2 & d$Date!=election3 & d$Date!=election4 & d$Date!=election5 & d$Date!=election0,])+
   scale_color_manual(values =colss)+
-  geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_00)+
+  # geom_smooth(method = "lm",formula=y ~ x + I(x^2),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d_00)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d_00[d_00$Date!=election0&d_00$Date!=next_election,])+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=d_0[d_0$Date!=election1&d_0$Date!=election0,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new[new$Date!=election1&new$Date!=election0,])+
@@ -187,6 +189,7 @@ plot2<-ggplot(data=d7, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#ff6078","#ff4e69","#ff3954","#f92f49","#f0243e","#e61a33","#db0f28","#af0c20","#9e0b1d",
                                "#000000","#000000","#000000","#000000","#000000","#000000","#000000","#6147aa","#574099",
                                "#afe9ff","#a6e6ff","#87ddff","#78d4f9","#69cbf0","#5ac2e7","#4bb9de","#3c94b2","#3685a0",
+                               "#000000","#000000","#000000","#000000","#000000","#000000","#000000","#485669","#485669",
                                "#dddddd","#d9d9d9","#c1c1c1","#b7b7b7","#adadad","#a3a3a3","#999999","#7a7a7a","#6e6e6e",
                                "#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#ad1c20","#8a161a","#7c1417",
                                "#a3acef","#99a3ed","#668adc","#4d81d2","#3378c9","#1a6fc0","#0066b7","#005292","#004a83",

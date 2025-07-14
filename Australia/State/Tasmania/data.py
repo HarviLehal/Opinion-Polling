@@ -5,7 +5,7 @@ import numpy as np
 import dateparser
 import re
 
-wikiurl="https://en.wikipedia.org/wiki/Next_Tasmanian_state_election"
+wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_2025_Tasmanian_state_election"
 table_class="wikitable sortable jquery-tablesorter"
 response=requests.get(wikiurl)
 print(response.status_code)
@@ -15,12 +15,12 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date','1','2','3','Liberal', 'Labor', 'Green','4','5', 'JLN*','o1', 'o2']
-parties = ['Liberal', 'Labor', 'Green', 'JLN*','o1', 'o2']
-drops=['1','2','3','4','5']
+headers=['Date','1','2','3','Liberal', 'Labor', 'Green','o1','o2', 'JLN*','o3', 'o4']
+parties = ['Liberal', 'Labor', 'Green','o1','o2', 'JLN*','o3', 'o4']
+drops=['1','2','3']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-7])
+  d[i]=pd.DataFrame(df[0])
   d[i].columns = headers
   d[i]=d[i].drop(drops, axis=1)
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
