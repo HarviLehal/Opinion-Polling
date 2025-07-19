@@ -22,7 +22,7 @@ for i in range(2):
     heads.append(df[i+3].columns[j][0])
   d[i]=pd.DataFrame(df[i+3])
   d[i].columns = heads
-  d[i].rename(columns={'Fieldwork date':'Date','Ishin':'NIK','Reiwa':'REI','Komei':'KMT'}, inplace=True)
+  d[i].rename(columns={'Fieldwork date':'Date','Ishin':'NIK','Reiwa':'REI','Komei':'KMT','Sansei':'DIY'}, inplace=True)
   d[i] = d[i].drop(d[i].columns[[1, 2,-1,-2,-3,-4]],axis = 1)
   parties = d[i].columns[1:]
   # d[i]=pd.DataFrame(df[i+1])
@@ -34,7 +34,7 @@ for i in range(2):
   d[i]['Date'] = d[i]['Date2']
   d[i] = d[i].drop(['Date2'], axis=1)
   d[i].Date=d[i].Date.astype(str).apply(lambda x: dateparser.parse(x, settings={'PREFER_DAY_OF_MONTH': 'first'}))
-  d[i] = d[i][d[i]['LDP'] != d[i]['SDP']]
+  d[i] = d[i].dropna(subset=['LDP'])
   d[i] = d[i].dropna(subset=['Date'])
 
 

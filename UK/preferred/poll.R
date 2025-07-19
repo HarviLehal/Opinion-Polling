@@ -23,9 +23,9 @@ election<-max(d$Date)+14
 
 # new<-d[d$variable!='Denyer'|d$variable!='Adams'|d$variable!='Badenoch',]
 # new2<-d[d$variable=='Denyer'&d$variable=='Adams'&d$variable=='Badenoch',]
-new<-d[d$variable!='Badenoch',]
-new2<-d[d$variable=='Badenoch',]
-new2<-new2[!is.na(new2$value),]
+# new<-d[d$variable!='Badenoch',]
+# new2<-d[d$variable=='Badenoch',]
+# new2<-new2[!is.na(new2$value),]
 
 colss <-c("Starmer" ="#c70000",
           "Badenoch"="#0066b7",
@@ -36,9 +36,9 @@ colss <-c("Starmer" ="#c70000",
           "Adams"   ="#528D6B")
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.5,linewidth=0.75, data=d)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new)+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=d)+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.45,linewidth=0.75, data=new)+
+  # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=1,linewidth=0.75, data=new2)+
   geom_point(size=1.75, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
   scale_color_manual(values=colss)+
   geom_hline(aes(yintercept=0.5), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
@@ -54,7 +54,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,1,0.05))+
   geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
   # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "10 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
+  scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # scale_x_date(date_breaks = "4 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+

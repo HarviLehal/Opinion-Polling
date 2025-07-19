@@ -14,14 +14,19 @@ tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
-headers = ['Date','Lab','Con','Reform','Lib Dem','Green','SNP','PC']
-parties = ['Lab','Con','Reform','Lib Dem','Green','SNP','PC']
+headers = ['Date','Ages', 'Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
+parties = ['Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
 d = {}
 for i in range(2):
   # i=j+1
   d[i]=pd.DataFrame(df[i])
-  d[i]=d[i].drop(["Pollster", "Client", "Area", "Others", "Lead", "Sample size"], axis=1)
+  d[i]=d[i].drop(['Pollster',"Client", "Area", "Others", "Lead", "Sample size"], axis=1)
+  if i == 1:
+    headers = ['Date', 'Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
   d[i].columns = headers
+  if i == 0:
+    d[i]=d[i][~d[i].Ages.str.contains("16+")]
+    d[i]=d[i].drop(["Ages"], axis=1)
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]

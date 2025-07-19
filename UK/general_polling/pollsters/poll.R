@@ -53,7 +53,7 @@ plots <- list()
 # create function loop through each dataframe in the list and create a LOESS regression line for each without using lapply
 for (i in 1:length(polls)) {
   x <- polls[[i]]
-  if (names(polls)[i] == "FreshwaterStrategy"){
+  if (names(polls)[i] == "FindOutNow"){
     plot<-geom_line(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.5, linetype="dashed", alpha=1, aes(x=Date, y=formattable::percent(value/100), colour=variable, group=variable), data=x)
   }
   # else if (names(polls)[i] == "LordAshcroftPolls"){
@@ -113,7 +113,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable, fill=v
   geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 months", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Opinion Polling for the Next United Kingdom General Election*')+
-  labs(caption = "* Excluding non BPC Pollster Lord Ashcroft Polls. \n Freshwater Strategies is now a BPC member and included in LOESS and average, shown as dashed")
+  labs(caption = "* Excluding non BPC Pollster Lord Ashcroft Polls.\n Find Out Now included in LOESS and average, shown as dashed")
 plot1
 
 

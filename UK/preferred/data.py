@@ -15,9 +15,9 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]'  )
 
 
-headers = ['Date','1','2','Starmer','Sunak','Farage','3','4','5','6','7','8']
-parties = ['Starmer','Sunak','Farage']
-drops = ['1','2','3','4','5','6','7','8']
+headers = ['Date','1','2','Starmer','Badenoch','3','4','5']
+parties = ['Starmer','Badenoch']
+drops = ['1','2','3','4','5']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[0])
@@ -39,22 +39,10 @@ for i in range(1):
 
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D.loc[~D.index.isin(D.dropna(subset=['Farage']).index)]
-D=D.drop(['Farage'], axis=1)
-parties = ['Starmer','Sunak']
+parties = ['Starmer','Badenoch']
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)
 D = D.drop(["total"], axis=1)
-
-
-split_date = '2 November 2024'
-split_date=dateparser.parse(split_date)
-c={}
-c[0]=D[D["Date"] > split_date]
-c[0].rename(columns={"Sunak": 'Badenoch'}, inplace=True)
-c[1]=D[D["Date"] < split_date]
-D = pd.concat(c.values(), ignore_index=True)
-
 
 D = D.loc[~D.index.isin(D[D["Starmer"]>0.9999].index)]
 
