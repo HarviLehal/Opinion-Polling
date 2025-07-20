@@ -134,8 +134,8 @@ data.to_csv('Belgian/poll_brussel.csv', index=False)
 # SEATS BY PARTY
 
 data=pd.DataFrame(df[3])
-headers = ['Date','1','2','N-VA','VB','MR','PS','PVDA-PTB','LE','Vooruit','CD&V','Open vld','Groen','Ecolo','DéFI','Others','3','Government','Opposition','4']
-parties = ['N-VA','VB','MR','PS','PVDA-PTB','LE','Vooruit','CD&V','Open vld','Groen','Ecolo','DéFI','Others','Government','Opposition']
+headers = ['Date','1','2','N-VA','VB','MR','PS','PVDA-PTB','LE','Vooruit','CD&V','Open vld','Groen','Ecolo','DéFI','Others','3','Majorité (N-VA, MR, LE, Vooruit, CD&V)','Opposition (VB, PS, PTB-PVDA, Open Vld, Groen, Ecolo)','4']
+parties = ['N-VA','VB','MR','PS','PVDA-PTB','LE','Vooruit','CD&V','Open vld','Groen','Ecolo','DéFI','Others','Majorité (N-VA, MR, LE, Vooruit, CD&V)','Opposition (VB, PS, PTB-PVDA, Open Vld, Groen, Ecolo)']
 drop = ['1','2','3','4']
 data.columns = headers
 data=data.drop(drop, axis=1)
@@ -158,13 +158,13 @@ for z in parties:
 
 print(data)
 
-bloc = ['Government','Opposition']
+bloc = ['Majorité (N-VA, MR, LE, Vooruit, CD&V)','Opposition (VB, PS, PTB-PVDA, Open Vld, Groen, Ecolo)']
 data1 = data.drop(bloc, axis=1)
 data1=data1.dropna(subset=['VB'])
 data1.to_csv('Belgian/seats.csv', index=False)
 parties = ['N-VA','VB','MR','PS','PVDA-PTB','LE','Vooruit','CD&V','Open vld','Groen','Ecolo','DéFI','Others']
 data2 = data.drop(parties, axis=1)
-data2=data2.dropna(subset=['Government'])
+data2=data2.dropna(subset=['Majorité (N-VA, MR, LE, Vooruit, CD&V)'])
 data2.to_csv('Belgian/seats2.csv', index=False)
 
 

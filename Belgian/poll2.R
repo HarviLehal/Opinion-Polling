@@ -13,7 +13,6 @@ library(ggpubr)
 library(zoo)
 library(dplyr)
 
-py_run_file("Belgian/data.py")
 poll <- read_csv("Belgian/poll_wallonie.csv")
 Sys.setlocale("LC_ALL", "French")
 d <- reshape2::melt(poll, id.vars="Date")

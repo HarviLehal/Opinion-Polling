@@ -13,7 +13,6 @@ library(ggpubr)
 library(zoo)
 library(dplyr)
 
-py_run_file("Belgian/data.py")
 poll <- read_csv("Belgian/seats.csv")
 # Sys.setlocale("LC_ALL", "French")
 d <- reshape2::melt(poll, id.vars="Date")
@@ -49,7 +48,7 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_point(data=d[d$Date==old,],size=5, shape=18, alpha=0.5)+
   geom_point(data=d[d$Date==old,],size=5.25, shape=5, alpha=0.5)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  ggtitle('Projection en sièges sur les fédérales belges')
+  ggtitle('Projection en sièges sur les élections fédérales belges')
 
 
 plot1

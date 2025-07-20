@@ -15,8 +15,8 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', 'Brand', 'mode', 'Sample', 'Labor','Coalition',  'Green', 'ONP', 'TOP', 'IND', 'Other', 'UND', 'Labor2', 'Coalition2']
-parties = ['Labor', 'Coalition', 'Green', 'ONP', 'TOP', 'IND', 'Other', 'Labor2', 'Coalition2']
+headers=['Date', 'Brand', 'mode', 'Sample', 'Labor','Coalition',  'Green', 'ONP', 'IND', 'Other', 'UND', 'Labor2', 'Coalition2']
+parties = ['Labor', 'Coalition', 'Green', 'ONP', 'IND', 'Other', 'Labor2', 'Coalition2']
 d = {}
 for i in range(1):
   d[i]=pd.DataFrame(df[i])
@@ -34,6 +34,7 @@ for i in range(1):
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('—',str(np.nan)) for x in d[i][z]]
     d[i][z] = [x.replace('–',str(np.nan)) for x in d[i][z]]
+  d[i] = d[i].dropna(subset=['Date'])
 
 D = pd.concat(d.values(), ignore_index=True)
 for z in parties:
@@ -49,7 +50,7 @@ E = D.drop(PP, axis=1)
 E.to_csv('Australia/Federal/poll.csv', index=False)
 
 
-parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'TOP', 'Other']
+parties2 = ['Coalition', 'Labor', 'Green', 'ONP', 'Other']
 D = D.drop(parties2, axis=1)
 headers = ['Date', 'Labor', 'Coalition']
 D.columns = headers
