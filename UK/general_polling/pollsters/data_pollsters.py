@@ -16,19 +16,14 @@ p = re.compile(r'\[[a-z 0-9]+\]')
 # same as above but removes any text in brackets from the pollster column
 q = re.compile(r'\(.*\)')
 
-headers = ['Date','Pollster', 'Ages', 'Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
+headers = ['Date','Pollster', 'Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
 parties = ['Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
 d = {}
 for i in range(2):
   # i=j+1
   d[i]=pd.DataFrame(df[i])
   d[i]=d[i].drop(["Client", "Area", "Others", "Lead", "Sample size"], axis=1)
-  if i == 1:
-    headers = ['Date','Pollster', 'Lab', 'Con', 'Reform', 'Lib Dem', 'Green', 'SNP', 'PC']
   d[i].columns = headers
-  if i == 0:
-    d[i]=d[i][~d[i].Ages.str.contains("16+")]
-    d[i]=d[i].drop(["Ages"], axis=1)
   for z in parties:
     d[i][z] = [p.sub('', x) for x in d[i][z].astype(str)]
     d[i][z] = [x.replace('-',str(np.nan)) for x in d[i][z]]

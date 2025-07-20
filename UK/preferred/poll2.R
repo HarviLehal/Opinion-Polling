@@ -11,16 +11,16 @@ library(ggpubr)
 library(zoo)
 library(dplyr)
 
-py_run_file("UK/preferred/data2.py")
 poll <- read_csv("UK/preferred/poll2.csv")
 d <- reshape2::melt(poll, id.vars="Date")
 d$Date<-as.Date(d$Date, "%d %b %Y")
 
 d$value<-formattable::percent(d$value)
-old<-as.Date("04 07 2024", "%d %m %Y")
-old<-min(d$Date)-2
-# election<-as.Date("15 08 2029", "%d %m %Y")
+# old<-as.Date("04 07 2024", "%d %m %Y")
+old<-min(d$Date)-14
+LE25<-as.Date("01 05 2025", "%d %m %Y")
 election<-max(d$Date)+14
+f<-formattable::percent(0.65)
 
 colss <-c("Starmer" ="#c70000",
           "Badenoch"="#0066b7",
@@ -31,10 +31,9 @@ colss <-c("Starmer" ="#c70000",
           "Adams"   ="#528D6B")
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.35,linewidth=0.75, data=d)+
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5) +
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.75,linewidth=0.75, data=d)+
+  geom_point(size=1.75, data=d,alpha=0.5) +
   scale_color_manual(values=colss)+
-  # geom_hline(aes(yintercept=0.5), alpha=0.5, linewidth=1, linetype="dashed", colour="#000000")+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
         legend.key.size = unit(2, 'lines'),
@@ -45,12 +44,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         panel.background = element_rect(fill="#FFFFFF",color="#FFFFFF"),
         plot.background = element_rect(fill = "#FFFFFF",color="#FFFFFF"))+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,1,0.05))+
-  # geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  # geom_vline(xintercept=election, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
-  scale_x_date(date_breaks = "5 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  # scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
-  geom_hline(yintercept = 0, size = 1, colour="#333333",alpha=0)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=LE25, color = "#000000",linetype="dashed",alpha=0.5, size=0.75)+
+  geom_text(aes(LE25,f,label = "Local Elections", vjust = -1, hjust=0, angle=-90),colour="#000000",size=3)+
+  scale_x_date(date_breaks = "2 week", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Preferred PM')
+
 
 
 plot1
@@ -80,7 +79,7 @@ d1<-droplevels(d1)
 
 plot2<-ggplot(data=d1, aes(x=variable, y=value,fill=interaction(Date,variable), group=Date )) +
   geom_bar(stat="identity",width=0.9, position=position_dodge())+
-  scale_fill_manual(values = c("#c70000","#0077b6","#13bece"))+
+  scale_fill_manual(values = c("#c70000","#13bece"))+
   # geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
   #           hjust=0.5, color="#000000",position = position_dodge(1), size=3.5, fontface="bold")+
   geom_text(aes(label = formattable::percent(d1$value, digits = 1),y = 0),
