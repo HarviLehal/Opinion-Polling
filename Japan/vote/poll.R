@@ -21,19 +21,21 @@ d$value<-as.numeric(d$value)/100
 d$value<-formattable::percent(d$value)
 
 election<-as.Date("27 10 2028", "%d %m %Y")
+election1<-as.Date("20 07 2025", "%d %m %Y")
 # election<-max(d$Date)+14
 old <-min(d$Date)
 # MAIN GRAPH
+f<-formattable::percent(0.5)
 
 # LOESS GRAPH
 
 plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
-  geom_point(size=1, data=d[d$Date!=old&d$Date!=election,],alpha=0.5)+
+  geom_point(size=1, data=d[d$Date!=old&d$Date!=election&d$Date!=election1,],alpha=0.5)+
   scale_color_manual(values = c("#3ca324","#00469c","#ffba00",
                                 "#b8ce43","#f95580","#ed008c",
                                 "#db001c","#ee7300","#0b80db",
                                 "#1ca9e9","#777777"))+
-  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,],na.rm = FALSE)+
+  geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=d[d$Date!=old&d$Date!=election&d$Date!=election1,],na.rm = FALSE)+
   # geom_smooth(method = "lm",formula=y ~ x + I(x^3),fullrange=FALSE,se=FALSE, linewidth=0.75, data=d)+
   theme_minimal()+
   theme(axis.title=element_blank(),legend.title = element_blank(),
@@ -48,11 +50,12 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
         axis.ticks.x.top = element_blank(),
         axis.line.x.top = element_blank())+
   scale_y_continuous(name="Vote",labels = scales::percent_format(accuracy = 5L),breaks=seq(0,0.6,0.05))+
-  # geom_vline(xintercept=election, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
+  geom_vline(xintercept=election1, linetype="dashed", color = "#000000", alpha=0.5, size=0.75)+
+  geom_text(aes(election1,f,label = "HoC", vjust = -0.2,hjust=-0, angle=-90),colour="#000000")+
   xlim(min(d$Date), election)+
-  geom_vline(xintercept=old, linetype="solid", color = "#56595c", alpha=0.5, size=0.75)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5, shape=18, alpha=0.5)+
-  geom_point(data=d[d$Date==old|d$Date==election,],size=5.25, shape=5, alpha=0.5)+
+  geom_vline(xintercept=old, linetype="solid", color = "#000000", alpha=0.5, size=0.75)+
+  geom_point(data=d[d$Date==old|d$Date==election|d$Date==election1,],size=5, shape=18, alpha=0.4)+
+  geom_point(data=d[d$Date==old|d$Date==election|d$Date==election1,],size=5.25, shape=5, alpha=0.4)+
   scale_x_date(date_breaks = "2 month", date_labels =  "%b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   # scale_x_date(date_breaks = "2 day", date_labels =  "%d %b %Y",limits = c(old,election),guide = guide_axis(angle = -90))+
   ggtitle('Voting Intention for the Next Japanese General Election (Excluding No Party and Undecided)')
@@ -69,6 +72,7 @@ poll[-1]<-data.frame(apply(poll[-1], 2, function(x)
 d3 <- poll[poll$Date==max(poll$Date),]
 d2 <- poll[poll$Date==min(poll$Date),]
 poll<-poll[poll$Date!=election,]
+poll<-poll[poll$Date!=election1,]
 poll<-poll[poll$Date>(max(poll$Date)-8),]
 d1 <- colMeans(poll[-1],na.rm=TRUE)
 d1 <- as.data.frame(d1)
@@ -85,11 +89,11 @@ d1$value<-formattable::percent(d1$value, digits = 2)
 
 d2 <- reshape2::melt(d2, id.vars="Date")
 d2$value<-as.numeric(d2$value)/100
-d2$value<-formattable::percent(d2$value, digits = 1)
+d2$value<-formattable::percent(d2$value, digits = 2)
 
 d3 <- reshape2::melt(d3, id.vars="Date")
 d3$value<-as.numeric(d3$value)/100
-d3$value<-formattable::percent(d3$value, digits = 1)
+d3$value<-formattable::percent(d3$value, digits = 2)
 
 d4<-rbind(d1,d2,d3)
 d4<-rbind(d1,d2)
@@ -105,14 +109,14 @@ plot2<-ggplot(data=d4, aes(x=variable, y=value,fill=interaction(Date,variable), 
                                "#e96677","#db001c",
                                "#f4ab67","#ed7301",
                                "#6db3e9","#0b80db",
-                               "#77cbf2","#1ca9e9"))+
+                               "#77cbf2","#1ca9e9","#adadad","#777777"))+
   geom_text(aes(label = ifelse(d4$Date != min(d4$Date),
                                ifelse(d4$Date == max(d4$Date),
                                       paste(formattable::percent(d4$value, digits = 1)),
                                       paste(formattable::percent(d4$value, digits = 1))), ""),
                 y = 0),hjust=0, color="#000000",position = position_dodge(0.9), size=3.5, fontface="bold")+
-  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),
-                               paste("(",formattable::percent(d4$value, digits = 1),")"),""),
+  geom_text(aes(label = ifelse(d4$Date == min(d4$Date),ifelse(is.na(d4$value)==FALSE,
+                               paste("(",formattable::percent(d4$value, digits = 2),")"),""),""),
                 y = 0),hjust=0, color="#000000", position = position_dodge(0.9), size=3.5, fontface="bold.italic")+
   theme_minimal()+
   theme(legend.position = "none",

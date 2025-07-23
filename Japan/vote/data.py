@@ -3,6 +3,7 @@ import requests # library to handle requests
 from bs4 import BeautifulSoup # library to parse HTML documents
 import numpy as np
 import dateparser
+import re
 
 wikiurl="https://en.wikipedia.org/wiki/Opinion_polling_for_the_next_Japanese_general_election"
 table_class="wikitable sortable jquery-tablesorter"
@@ -11,9 +12,10 @@ print(response.status_code)
 soup = BeautifulSoup(response.text, 'html.parser')
 tables = soup.find_all('table',class_="wikitable")
 df=pd.read_html(str(tables))
+p = re.compile(r'\[[^\]]*\]')
 
-headers = ['Date','1','2','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','3','4','5','6']
-parties = ['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']
+headers = ['Date','1','2','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','Other','4','5','6']
+parties = ['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','Other']
 drops = ['1','2','3','4','5','6']
 d = {}
 for i in range(2):
@@ -23,7 +25,7 @@ for i in range(2):
   d[i]=pd.DataFrame(df[i+3])
   d[i].columns = heads
   d[i].rename(columns={'Fieldwork date':'Date','Ishin':'NIK','Reiwa':'REI','Komei':'KMT','Sansei':'DIY'}, inplace=True)
-  d[i] = d[i].drop(d[i].columns[[1, 2,-1,-2,-3,-4]],axis = 1)
+  d[i] = d[i].drop(d[i].columns[[1, 2,-1,-2,-3]],axis = 1)
   parties = d[i].columns[1:]
   # d[i]=pd.DataFrame(df[i+1])
   # d[i].columns = headers
@@ -40,11 +42,12 @@ for i in range(2):
 
 
 D = pd.concat(d.values(), ignore_index=True)
-D = D[['Date','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']]
-parties=['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP']
+D = D[['Date','LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','Others']]
+parties=['LDP','CDP','DPFP','NIK','KMT','REI','JCP','DIY','CPJ','SDP','Others']
 for z in parties:
+  D[z] = [p.sub('', x) for x in D[z].astype(str)]
   D[z] = pd.to_numeric(D[z], errors='coerce')
-D.drop(D.index[[-1]],inplace=True)
+# D.drop(D.index[[-1]],inplace=True)
 
 D['total']=D[parties].sum(axis=1)
 D[parties] = D[parties].div(D['total'], axis=0)*100
