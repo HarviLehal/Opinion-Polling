@@ -30,6 +30,7 @@ for i in range(2):
   # d[i]=pd.DataFrame(df[i+1])
   # d[i].columns = headers
   # d[i]=d[i].drop(drops, axis=1)
+  d[i]=d[i][~d[i].Date.str.contains("20 Jul")]
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)
   d[i]['Date2'] = [x+ str(2025-i) for x in d[i]['Date2'].astype(str)]
