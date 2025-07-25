@@ -15,13 +15,13 @@ df=pd.read_html(str(tables))
 p = re.compile(r'\[[a-z]+\]')
 
 
-headers=['Date', 'Firm', 'Labor', 'LNP', 'Green', 'ONP', 'Other', 'Labor2', 'Coalition2']
+headers=['Date', '1','2','3', 'Labor', 'LNP', 'Green', '4', 'Other', 'Labor2', 'Coalition2']
 parties = ['Labor', 'LNP', 'Green', 'Other', 'Labor2', 'Coalition2']
 d = {}
 for i in range(1):
-  d[i]=pd.DataFrame(df[-1])
+  d[i]=pd.DataFrame(df[-2])
   d[i].columns = headers
-  d[i]=d[i].drop(["Firm","ONP"], axis=1)
+  d[i]=d[i].drop(["1","2",'3','4'], axis=1)
   d[0].loc[len(d[0].index)-1,['Date']] = '25 March 2023'
   d[i]['Date2'] = d[i]['Date'].str.split('–').str[1]
   d[i].Date2.fillna(d[i].Date, inplace=True)

@@ -45,10 +45,10 @@ plot1<-ggplot(data=d,aes(x=Date,y=value, colour=variable, group=variable)) +
   geom_hline(aes(yintercept=h), alpha=0.75, linetype="longdash", colour="#000000")+
   geom_text(aes(election-2,h,label = "7% Threshold", vjust = -1, hjust=1,fontface="italic",alpha=0.75),colour="#000000")+
   geom_point(size=1, data=d[d$Date!=old|d$Date!=election,],alpha=0.25)+
-  scale_color_manual(values = colss)+
-  # scale_color_manual(values = c("#FFCC00","#ed1c24","#870000",
-  #                               "#951b88","#3db5e6","#404040",
-  #                               "#007d60","#b61f23","#004e81"))+
+  # scale_color_manual(values = colss)+
+  scale_color_manual(values = c("#FFCC00","#ed1c24","#870000",
+                                "#3db5e6","#951b88","#007d60",
+                                "#404040","#b61f23","#004e81"))+
   geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.475,linewidth=0.75, data=d[d$Date!=old&d$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.7,linewidth=0.75, data=AH[AH$Date!=old&AH$Date!=election,])+
   # geom_smooth(method="loess",fullrange=FALSE,se=FALSE,span=0.25,linewidth=0.75, data=parties[parties$Date!=old&parties$Date!=election,])+
